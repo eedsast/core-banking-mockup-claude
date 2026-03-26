@@ -82,21 +82,15 @@
     color: #5f5e5a;
     line-height: 1.5;
   }
-
-  /* Zone colours */
   .zone-setup   { background: #e1f5ee; border: 1px solid #0f6e56; }
   .zone-setup .zone-title { color: #085041; }
   .zone-setup .zone-sub   { color: #0f6e56; }
-
   .zone-ops     { background: #eeedfe; border: 1px solid #534ab7; }
   .zone-ops .zone-title { color: #26215c; }
   .zone-ops .zone-sub   { color: #534ab7; }
-
   .zone-ledger  { background: #faece7; border: 1px solid #993c1d; }
   .zone-ledger .zone-title { color: #4a1b0c; }
   .zone-ledger .zone-sub   { color: #993c1d; }
-
-  /* Arrow between zones */
   .arrow-row {
     display: flex;
     align-items: center;
@@ -107,8 +101,6 @@
     color: #888780;
   }
   .arrow-row svg { flex-shrink: 0; }
-
-  /* Note box for removed accruals */
   .note {
     background: #fff9ee;
     border: 1px solid #ba7517;
@@ -121,13 +113,7 @@
     gap: 10px;
     align-items: flex-start;
   }
-  .note-label {
-    font-weight: 500;
-    white-space: nowrap;
-    color: #854f0b;
-  }
-
-  /* Legend */
+  .note-label { font-weight: 500; white-space: nowrap; color: #854f0b; }
   .legend {
     display: flex;
     gap: 20px;
@@ -142,129 +128,52 @@
     font-size: 12px;
     color: #5f5e5a;
   }
-  .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 </style>
 </head>
 <body>
-
 <h1>Accounting Service — Internal Architecture</h1>
 <p class="subtitle">Tenant-scoped · Double-entry · Immutable ledger</p>
-
 <div class="outer">
   <div class="outer-title">Accounting service</div>
   <div class="outer-sub">All zones are tenant-isolated · append-only journal is the source of truth</div>
-
-  <!-- Zone 1: Setup & Definition -->
   <div class="zone zone-setup">
     <div class="zone-title">Setup &amp; definition</div>
     <div class="zone-sub">Config-time · defines the accounting structure · low-write, high-read</div>
     <div class="cards">
-      <div class="card">
-        <div class="card-title">GL product definition</div>
-        <div class="card-sub">Account type, normal balance, classification (asset, liability, equity, income, expense)</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Chart of accounts</div>
-        <div class="card-sub">Hierarchy, account codes, segment structure, parent-child mapping</div>
-      </div>
-      <div class="card">
-        <div class="card-title">GL account opening</div>
-        <div class="card-sub">Currency assignment, branch binding, opening balance, status</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Accounting setup</div>
-        <div class="card-sub">Rounding mode &amp; scale, fiscal year &amp; period definition, period-close rules, suspense / FX gain-loss accounts, posting rules</div>
-      </div>
+      <div class="card"><div class="card-title">GL product definition</div><div class="card-sub">Account type, normal balance, classification (asset, liability, equity, income, expense)</div></div>
+      <div class="card"><div class="card-title">Chart of accounts</div><div class="card-sub">Hierarchy, account codes, segment structure, parent-child mapping</div></div>
+      <div class="card"><div class="card-title">GL account opening</div><div class="card-sub">Currency assignment, branch binding, opening balance, status</div></div>
+      <div class="card"><div class="card-title">Accounting setup</div><div class="card-sub">Rounding mode &amp; scale, fiscal year &amp; period definition, period-close rules, suspense / FX gain-loss accounts, posting rules</div></div>
     </div>
   </div>
-
-  <!-- Arrow -->
-  <div class="arrow-row">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 2v10M4 9l4 4 4-4" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    business events trigger GL operations
-  </div>
-
-  <!-- Zone 2: GL Operations -->
+  <div class="arrow-row"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v10M4 9l4 4 4-4" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>business events trigger GL operations</div>
   <div class="zone zone-ops">
     <div class="zone-title">GL account operations</div>
     <div class="zone-sub">Runtime · triggered by scheduled jobs or domain service events · each operation produces journal entries</div>
     <div class="cards">
-      <div class="card">
-        <div class="card-title">FX revaluation</div>
-        <div class="card-sub">Unrealised P&amp;L on open FX positions, driven by tenant exchange rates</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Amortisation</div>
-        <div class="card-sub">Effective interest rate method, fee amortisation over instrument life</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Depreciation</div>
-        <div class="card-sub">Straight-line, declining balance, units of production methods</div>
-      </div>
-      <div class="card">
-        <div class="card-title">GL account info</div>
-        <div class="card-sub">Current balance, period balance, account statement, status enquiry</div>
-      </div>
+      <div class="card"><div class="card-title">FX revaluation</div><div class="card-sub">Unrealised P&amp;L on open FX positions, driven by tenant exchange rates</div></div>
+      <div class="card"><div class="card-title">Amortisation</div><div class="card-sub">Effective interest rate method, fee amortisation over instrument life</div></div>
+      <div class="card"><div class="card-title">Depreciation</div><div class="card-sub">Straight-line, declining balance, units of production methods</div></div>
+      <div class="card"><div class="card-title">GL account info</div><div class="card-sub">Current balance, period balance, account statement, status enquiry</div></div>
     </div>
   </div>
-
-  <!-- Arrow -->
-  <div class="arrow-row">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 2v10M4 9l4 4 4-4" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    all operations post here as immutable entries
-  </div>
-
-  <!-- Zone 3: Journal & Ledger -->
+  <div class="arrow-row"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v10M4 9l4 4 4-4" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>all operations post here as immutable entries</div>
   <div class="zone zone-ledger">
     <div class="zone-title">Journal &amp; transaction ledger</div>
     <div class="zone-sub">Immutable · append-only · no updates, no deletes · corrections via reversal entries only</div>
     <div class="cards">
-      <div class="card">
-        <div class="card-title">Journal entry</div>
-        <div class="card-sub">Header: date, narrative, source system, reference, status (posted / reversed)</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Transaction lines</div>
-        <div class="card-sub">One leg per account, debit/credit flag, amount in transaction currency and base currency</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Period &amp; closing</div>
-        <div class="card-sub">Period lock, trial balance snapshot, closing entries, carry-forward</div>
-      </div>
+      <div class="card"><div class="card-title">Journal entry</div><div class="card-sub">Header: date, narrative, source system, reference, status (posted / reversed)</div></div>
+      <div class="card"><div class="card-title">Transaction lines</div><div class="card-sub">One leg per account, debit/credit flag, amount in transaction currency and base currency</div></div>
+      <div class="card"><div class="card-title">Period &amp; closing</div><div class="card-sub">Period lock, trial balance snapshot, closing entries, carry-forward</div></div>
     </div>
   </div>
-
-  <!-- Note: accruals removed -->
-  <div class="note">
-    <span class="note-label">Note —</span>
-    <span>Accruals are <strong>not</strong> handled here. Domain services (e.g. LMS for loan accruals) calculate and initiate accruals within their own context. The Accounting service receives the result as a standard GL journal entry. This keeps accrual business logic co-located with the domain that owns it.</span>
-  </div>
+  <div class="note"><span class="note-label">Note —</span><span>Accruals are <strong>not</strong> handled here. Domain services (e.g. LMS for loan accruals) calculate and initiate accruals within their own context. The Accounting service receives the result as a standard GL journal entry. This keeps accrual business logic co-located with the domain that owns it.</span></div>
 </div>
-
-<!-- Legend -->
 <div class="legend">
-  <div class="legend-item">
-    <div class="legend-dot" style="background:#1d9e75;"></div>
-    Setup &amp; definition (config-time)
-  </div>
-  <div class="legend-item">
-    <div class="legend-dot" style="background:#534ab7;"></div>
-    GL operations (runtime)
-  </div>
-  <div class="legend-item">
-    <div class="legend-dot" style="background:#993c1d;"></div>
-    Journal &amp; ledger (immutable)
-  </div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1d9e75;"></div>Setup &amp; definition (config-time)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#534ab7;"></div>GL operations (runtime)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#993c1d;"></div>Journal &amp; ledger (immutable)</div>
 </div>
-
 </body>
 </html>
