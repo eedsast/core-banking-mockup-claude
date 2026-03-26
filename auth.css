@@ -1,0 +1,95 @@
+/* auth.css — Authorisation module styles
+   Loaded lazily by loadAuthModule() */
+
+.sec-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .sec-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .sec-cards-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sec-card {
+    padding: 20px 24px;
+    border-right: 1px solid var(--border);
+  }
+
+  .sec-card:last-child { border-right: none; }
+
+  .sec-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .sec-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+  }
+
+  .sec-fields-flat {
+    display: flex;
+    gap: 48px;
+    padding: 20px 24px;
+  }
+
+  .sec-field-full { grid-column: 1 / -1; }
+
+  .sec-lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+
+  .sec-val {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .sec-hint {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .sec-input {
+    width: 100%;
+    padding: 5px 9px;
+    border: 1.5px solid var(--accent);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    background: #f4f9ff;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .sec-input:focus {
+    border-color: var(--accent-light);
+    box-shadow: 0 0 0 3px rgba(46,125,209,0.12);
+  }
+
+  .sec-action-btns { display: flex; gap: 8px; }

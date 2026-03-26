@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authorisation vs Administration — Entity Ownership</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f4ef;
+    padding: 40px 24px;
+    min-height: 100vh;
+    color: #2c2c2a;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    color: #1a1a18;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #888780;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* ── Column layout ── */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+  .col-header {
+    border-radius: 10px;
+    padding: 10px 16px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .col-admin   { background: #e1f5ee; color: #085041; border: 1px solid #0f6e56; }
+  .col-auth    { background: #eeedfe; color: #26215c; border: 1px solid #534ab7; }
+  .col-mid     { /* spacer */ }
+
+  .entity-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #888780;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    margin: 14px 0 6px;
+    grid-column: 1 / -1;
+  }
+
+  .card {
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+  .card-title { font-weight: 500; margin-bottom: 3px; font-size: 13px; }
+  .card-sub   { font-size: 11px; line-height: 1.5; }
+
+  .card-admin {
+    background: #e1f5ee;
+    border: 0.5px solid #1d9e75;
+    color: #085041;
+  }
+  .card-admin .card-sub { color: #0f6e56; }
+
+  .card-auth {
+    background: #eeedfe;
+    border: 0.5px solid #7f77dd;
+    color: #26215c;
+  }
+  .card-auth .card-sub { color: #534ab7; }
+
+  .card-empty {
+    background: #f1efe8;
+    border: 0.5px solid #d3d1c7;
+    color: #888780;
+    font-size: 11px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 62px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .mid-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    gap: 4px;
+  }
+  .mid-label {
+    font-size: 10px;
+    color: #b4b2a9;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 0.04em;
+  }
+  .mid-arrow {
+    width: 1px;
+    flex: 1;
+    border-left: 1px dashed #b4b2a9;
+    min-height: 20px;
+  }
+  .mid-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #b4b2a9;
+    flex-shrink: 0;
+  }
+
+  /* ── Provisioning flow ── */
+  .flow-section {
+    background: #ffffff;
+    border: 1px solid #d3d1c7;
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .flow-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a18;
+    margin-bottom: 4px;
+  }
+  .flow-sub {
+    font-size: 12px;
+    color: #888780;
+    margin-bottom: 20px;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 34px;
+    bottom: -6px;
+    width: 1px;
+    background: #d3d1c7;
+  }
+
+  .step-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-num.admin  { background: #e1f5ee; color: #085041; border: 1px solid #1d9e75; }
+  .step-num.event  { background: #faeeda; color: #633806; border: 1px solid #ba7517; }
+  .step-num.auth   { background: #eeedfe; color: #26215c; border: 1px solid #7f77dd; }
+  .step-num.user   { background: #f1efe8; color: #444441; border: 1px solid #b4b2a9; }
+
+  .step-body { flex: 1; padding-top: 6px; padding-bottom: 12px; }
+  .step-actor {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+  .step-actor.admin  { color: #0f6e56; }
+  .step-actor.event  { color: #854f0b; }
+  .step-actor.auth   { color: #534ab7; }
+  .step-actor.user   { color: #5f5e5a; }
+
+  .step-action {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a18;
+    margin-bottom: 2px;
+  }
+  .step-detail {
+    font-size: 12px;
+    color: #5f5e5a;
+    line-height: 1.5;
+  }
+  .step-code {
+    display: inline-block;
+    background: #f1efe8;
+    border: 0.5px solid #d3d1c7;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px;
+    color: #3c3489;
+    padding: 1px 6px;
+    margin-top: 4px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #5f5e5a;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Authorisation vs Administration — Entity Ownership</h1>
+  <p class="subtitle">Each entity is split across both services — each service owns a different facet · includes service authorisation per organisation and branch</p>
+
+  <!-- Column headers -->
+  <div class="columns">
+    <div class="col-header col-admin">Administration service</div>
+    <div></div>
+    <div class="col-header col-auth">Authorisation service</div>
+
+    <!-- Organisation -->
+    <div class="entity-label" style="grid-column:1/-1; margin-top:4px;">Organisation</div>
+    <div class="card card-admin">
+      <div class="card-title">Owned here</div>
+      <div class="card-sub">Legal entity, country, timezone, lifecycle status. Created by Superadmin.</div>
+    </div>
+    <div class="mid-cell"><div class="mid-dot"></div><div class="mid-arrow"></div><div class="mid-dot"></div></div>
+    <div class="card-empty">Not here — org is a structural concept, not an identity or access concept</div>
+
+    <!-- Branches -->
+    <div class="entity-label" style="grid-column:1/-1;">Branches</div>
+    <div class="card card-admin">
+      <div class="card-title">Owned here</div>
+      <div class="card-sub">Hierarchy, codes, region, parent branch, status. Linked to organisation.</div>
+    </div>
+    <div class="mid-cell"><div class="mid-dot"></div><div class="mid-arrow"></div><div class="mid-dot"></div></div>
+    <div class="card-empty">Not here — branch is a structural concept, not an access concept</div>
+
+    <!-- Service Access -->
+    <div class="entity-label" style="grid-column:1/-1;">Service Access (per Org / Branch)</div>
+    <div class="card card-admin">
+      <div class="card-title">Service enablement config — owned here</div>
+      <div class="card-sub">Which microservices are enabled for a given organisation and/or branch. Configured by Superadmin. Stored as a service enablement matrix keyed by <code style="font-size:10px;background:#c9f0e0;padding:1px 4px;border-radius:3px;">org_id</code> + <code style="font-size:10px;background:#c9f0e0;padding:1px 4px;border-radius:3px;">branch_id</code> + <code style="font-size:10px;background:#c9f0e0;padding:1px 4px;border-radius:3px;">service_code</code>.</div>
+    </div>
+    <div class="mid-cell">
+      <div class="mid-dot"></div>
+      <div class="mid-arrow"></div>
+      <div class="mid-label">service_codes[ ]</div>
+      <div class="mid-arrow"></div>
+      <div class="mid-dot"></div>
+    </div>
+    <div class="card card-auth">
+      <div class="card-title">Service scope enforcement — owned here</div>
+      <div class="card-sub">At token issuance, resolves the user's <code style="font-size:10px;background:#dddcfc;padding:1px 4px;border-radius:3px;">org_id</code> + <code style="font-size:10px;background:#dddcfc;padding:1px 4px;border-radius:3px;">branch_id</code> to embed only the permitted service scopes. Requests to non-enabled services are rejected at token validation.</div>
+    </div>
+
+    <!-- Users -->
+    <div class="entity-label" style="grid-column:1/-1;">Users</div>
+    <div class="card card-admin">
+      <div class="card-title">User profile — owned here</div>
+      <div class="card-sub">Name, organisation, branch assignment, employment status, contact details. Source of record.</div>
+    </div>
+    <div class="mid-cell">
+      <div class="mid-dot"></div>
+      <div class="mid-arrow"></div>
+      <div class="mid-label">user_id</div>
+      <div class="mid-arrow"></div>
+      <div class="mid-dot"></div>
+    </div>
+    <div class="card card-auth">
+      <div class="card-title">User credentials — owned here</div>
+      <div class="card-sub">Identity record, password hash, MFA config, active sessions, issued tokens. Created on user.created event.</div>
+    </div>
+
+    <!-- Roles -->
+    <div class="entity-label" style="grid-column:1/-1;">Roles</div>
+    <div class="card card-admin">
+      <div class="card-title">Role assignment — owned here</div>
+      <div class="card-sub">Which role a specific user holds within a specific org or branch. Business configuration decision.</div>
+    </div>
+    <div class="mid-cell">
+      <div class="mid-dot"></div>
+      <div class="mid-arrow"></div>
+      <div class="mid-label">role_code</div>
+      <div class="mid-arrow"></div>
+      <div class="mid-dot"></div>
+    </div>
+    <div class="card card-auth">
+      <div class="card-title">Role definitions — owned here</div>
+      <div class="card-sub">What permissions and scopes each role carries. RBAC rules evaluated at token issuance.</div>
+    </div>
+  </div>
+
+  <!-- Provisioning flow -->
+  <div class="flow-section">
+    <div class="flow-title">Provisioning flow in sequence</div>
+    <div class="flow-sub">From Superadmin action to a user holding a valid token with embedded permissions and service scopes</div>
+
+    <div class="step">
+      <div class="step-num admin">1</div>
+      <div class="step-body">
+        <div class="step-actor admin">Superadmin → Administration service</div>
+        <div class="step-action">Create Organisation</div>
+        <div class="step-detail">Legal name, country, timezone, base locale. Organisation receives a unique <span class="step-code">org_id</span>.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num admin">2</div>
+      <div class="step-body">
+        <div class="step-actor admin">Superadmin → Administration service</div>
+        <div class="step-action">Create Branch under Organisation</div>
+        <div class="step-detail">Branch code, region, address, parent branch (if hierarchy). Linked via <span class="step-code">org_id</span>.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num admin">3</div>
+      <div class="step-body">
+        <div class="step-actor admin">Superadmin → Administration service</div>
+        <div class="step-action">Configure service access per Organisation / Branch</div>
+        <div class="step-detail">Superadmin selects which microservices are enabled for this org and optionally overridden per branch. Stored as a service enablement matrix: <span class="step-code">{ org_id, branch_id, service_codes[ ] }</span>. A branch inherits its org's service set unless explicitly restricted.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num event">4</div>
+      <div class="step-body">
+        <div class="step-actor event">Administration service → Event bus</div>
+        <div class="step-action">Publishes service.access.configured event</div>
+        <div class="step-detail">Payload: <span class="step-code">{ org_id, branch_id, service_codes[ ] }</span>. Authorisation service subscribes and caches the enablement matrix in its own read model — no runtime lookup needed.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num admin">5</div>
+      <div class="step-body">
+        <div class="step-actor admin">Superadmin → Administration service</div>
+        <div class="step-action">Create User, assign role LOCAL_ADMIN</div>
+        <div class="step-detail">User profile created with name, email, org and branch binding. Role assignment stored in Administration.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num event">6</div>
+      <div class="step-body">
+        <div class="step-actor event">Administration service → Event bus</div>
+        <div class="step-action">Publishes user.created event</div>
+        <div class="step-detail">Payload: <span class="step-code">{ user_id, org_id, branch_id, role_code }</span>. Administration is the source — it does not call Authorisation directly.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num auth">7</div>
+      <div class="step-body">
+        <div class="step-actor auth">Authorisation service ← Event bus</div>
+        <div class="step-action">Creates credential record for user_id</div>
+        <div class="step-detail">Identity record initialised. Welcome email / password-set flow triggered. Credential store is Authorisation's own — never shared with Administration.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num auth">8</div>
+      <div class="step-body">
+        <div class="step-actor auth">Authorisation service ← Event bus</div>
+        <div class="step-action">Resolves role_code → permission set → stores in read model</div>
+        <div class="step-detail">Role definitions are looked up internally. The resolved permission set is stored in Authorisation's own read model so no cross-service call is needed at login time.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num user">9</div>
+      <div class="step-body">
+        <div class="step-actor user">User → Authorisation service</div>
+        <div class="step-action">Authenticates, receives token with embedded scopes and service access</div>
+        <div class="step-detail">Token contains <span class="step-code">user_id</span>, <span class="step-code">org_id</span>, <span class="step-code">branch_id</span>, <span class="step-code">role</span>, <span class="step-code">scopes[]</span>, <span class="step-code">services[]</span>. The <span class="step-code">services[]</span> claim lists only the microservices enabled for the user's org and branch — self-contained, no further auth calls needed per request.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num user">10</div>
+      <div class="step-body">
+        <div class="step-actor user">Token → Any downstream service</div>
+        <div class="step-action">Permission and service access validated locally from token claims</div>
+        <div class="step-detail">Each microservice validates the token signature, reads <span class="step-code">scopes[]</span> for permission checks, and verifies its own <span class="step-code">service_code</span> is present in <span class="step-code">services[]</span>. Requests to non-enabled services are rejected with <span class="step-code">403 Service Not Enabled</span>. No runtime call back to Authorisation on the hot path.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#1d9e75;"></div>
+      Administration service action
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#ba7517;"></div>
+      Domain event (async)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#7f77dd;"></div>
+      Authorisation service reaction
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#b4b2a9;"></div>
+      End-user / downstream service
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
