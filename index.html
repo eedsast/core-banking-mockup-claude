@@ -384,6 +384,7 @@
   .bg-api  { background: #e8f2fd; color: #1a6ab5; }
   .bg-arch { background: #fff3e0; color: #a05d00; }
   .bg-data { background: #e8f8f0; color: #1a7a45; }
+  .bg-doc  { background: #f3f0ff; color: #5a3fb0; }
   .bg-ops  { background: #fde8f8; color: #8a1a70; }
   .bg-test { background: #e8fde8; color: #1a6a20; }
   .bg-spec { background: #fdf0e8; color: #8a3a10; }
@@ -1181,6 +1182,113 @@
   .sri-label { font-size: 12.5px; font-weight: 600; color: #cde; flex: 1; }
   .sri-sub { font-size: 11px; color: #6a8faf; }
   .sri-mod { font-size: 10px; color: #4a7fab; font-weight: 600; }
+
+  /* ── PROFILE DROPDOWN ─────────────────────────────────────────────────── */
+  .user-info { position: relative; }
+  .user-dropdown {
+    display: none; position: fixed;
+    top: calc(var(--header-height) + 6px); right: 16px; z-index: 3001;
+    background: #162840; border: 1px solid #2a4f7a;
+    border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    min-width: 230px; overflow: hidden;
+  }
+  .user-dropdown.open { display: block; }
+  .user-dd-header { padding: 14px 16px; background: rgba(255,255,255,0.04); }
+  .user-dd-name { font-weight: 600; color: #d0dde8; font-size: 13px; }
+  .user-dd-email { color: #6a8faf; font-size: 11.5px; margin-top: 2px; }
+  .user-dd-sep { height: 1px; background: rgba(255,255,255,0.08); }
+  .user-dd-section { padding: 6px 0; }
+  .user-dd-section-label {
+    padding: 6px 16px 4px; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; color: #4a6a8a;
+  }
+  .user-dd-item {
+    padding: 9px 16px; font-size: 13px; color: #a8c4e0;
+    cursor: pointer; display: flex; align-items: center; gap: 10px;
+    transition: background 0.12s;
+  }
+  .user-dd-item:hover { background: rgba(255,255,255,0.07); }
+  .user-dd-item.active { color: #fff; background: rgba(255,255,255,0.06); }
+  .user-dd-item .dd-check { margin-left: auto; opacity: 0; color: #27ae60; font-size: 14px; }
+  .user-dd-item.active .dd-check { opacity: 1; }
+  .user-dd-logout { color: #f87171; }
+
+  /* ── LIGHT / GREY MODE ────────────────────────────────────────────────── */
+  body.theme-light {
+    --primary: #4b5563; --primary-dark: #374151;
+    --accent: #6b7280; --accent-light: #9ca3af;
+    --sidebar-bg: #f3f4f6; --sidebar-hover: #e5e7eb; --sidebar-active: #6b7280;
+    --content-bg: #f1f3f5; --card-bg: #ffffff;
+    --text-main: #1f2937; --text-muted: #6b7280; --text-light: #1f2937;
+    --border: #e5e7eb;
+  }
+  body.theme-light .app-header { background: #374151; box-shadow: 0 2px 6px rgba(0,0,0,0.18); }
+  body.theme-light .header-right .user-info { color: #d1d5db; }
+  body.theme-light .header-date .date-label { color: #9ca3af; }
+  body.theme-light .header-date .date-val { color: #e5e7eb; }
+  body.theme-light .header-icon-btn { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.08); color: #d1d5db; }
+  body.theme-light .header-icon-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+  body.theme-light .header-divider { background: rgba(255,255,255,0.15); }
+  body.theme-light .sidebar { border-right: 1px solid #e5e7eb; }
+  body.theme-light .sidebar::-webkit-scrollbar-thumb { background: #d1d5db; }
+  body.theme-light .sidebar-header { border-bottom: 1px solid #e5e7eb; background: #f3f4f6; }
+  body.theme-light .sidebar-header .mod-name { color: #374151; }
+  body.theme-light .sidebar-header .mod-sub { color: #9ca3af; }
+  body.theme-light .back-btn { color: #9ca3af; }
+  body.theme-light .back-btn:hover { background: #e5e7eb; color: #374151; }
+  body.theme-light .nav-group-header { color: #6b7280; }
+  body.theme-light .nav-group-header:hover { background: #e5e7eb; color: #374151; }
+  body.theme-light .nav-item { color: #4b5563; }
+  body.theme-light .nav-item:hover { background: #e5e7eb; color: #374151; }
+  body.theme-light .nav-item.active { background: #e5e7eb; color: #1f2937; border-left-color: #6b7280; }
+  body.theme-light .nav-flat { color: #4b5563; }
+  body.theme-light .nav-flat:hover { background: #e5e7eb; color: #374151; }
+  body.theme-light .nav-flat.active { background: #e5e7eb; color: #1f2937; border-left-color: #6b7280; }
+  body.theme-light .group-label { color: #9ca3af; }
+  body.theme-light .nav-arrow { stroke: #9ca3af; }
+  body.theme-light .home-greeting h1 { color: #1f2937; }
+  body.theme-light .section-label { color: #9ca3af; }
+  body.theme-light .module-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-color: #9ca3af; }
+  body.theme-light .module-card .card-title { color: #1f2937; }
+  body.theme-light .module-card .card-desc { color: #6b7280; }
+  body.theme-light .module-card .card-tag { background: #e5e7eb; color: #6b7280; border-color: #d1d5db; }
+  body.theme-light .module-card::before { background: #9ca3af; }
+  body.theme-light .content-title { color: #1f2937; }
+  body.theme-light .content-subtitle { color: #6b7280; }
+  body.theme-light .breadcrumb { color: #9ca3af; }
+  body.theme-light .bc-sep { color: #d1d5db; }
+  body.theme-light .bc-current { color: #374151; }
+  body.theme-light .table-wrap { border-color: #e5e7eb; }
+  body.theme-light .mock-table thead th { background: #f3f4f6; color: #6b7280; border-bottom-color: #e5e7eb; }
+  body.theme-light .mock-table tbody tr { border-bottom-color: #f3f4f6; }
+  body.theme-light .mock-table tbody tr:hover { background: #f9fafb; }
+  body.theme-light .mock-table td { color: #374151; }
+  body.theme-light .stat-box { background: #fff; border-color: #e5e7eb; }
+  body.theme-light .stat-val { color: #374151; }
+  body.theme-light .stat-lbl { color: #9ca3af; }
+  body.theme-light .badge.blue,
+  body.theme-light .badge.green,
+  body.theme-light .badge.orange,
+  body.theme-light .badge.red { background: #e5e7eb; color: #374151; border: 1px solid #d1d5db; }
+  body.theme-light .fee-status-active { background: #e5e7eb; color: #374151; border-color: #d1d5db; }
+  body.theme-light .fee-status-inactive { background: #f3f4f6; color: #9ca3af; border-color: #e5e7eb; }
+  body.theme-light .btn-create-fee { background: #4b5563; border-color: #374151; }
+  body.theme-light .btn-create-fee:hover { background: #374151; }
+  body.theme-light .fee-page-title { color: #1f2937; }
+  body.theme-light .fee-page-sub { color: #9ca3af; }
+  body.theme-light .fee-btn-edit { background: #e5e7eb; color: #374151; border-color: #d1d5db; }
+  body.theme-light .fee-btn-edit:hover { background: #d1d5db; }
+  body.theme-light .fee-form-input { background: #fff; border-color: #d1d5db; color: #374151; }
+  body.theme-light .user-dropdown { background: #fff; border-color: #e5e7eb; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  body.theme-light .user-dd-header { background: #f9fafb; }
+  body.theme-light .user-dd-name { color: #1f2937; }
+  body.theme-light .user-dd-email { color: #9ca3af; }
+  body.theme-light .user-dd-sep { background: #e5e7eb; }
+  body.theme-light .user-dd-section-label { color: #9ca3af; }
+  body.theme-light .user-dd-item { color: #374151; }
+  body.theme-light .user-dd-item:hover { background: #f3f4f6; }
+  body.theme-light .user-dd-item.active { background: #f3f4f6; color: #1f2937; }
+  body.theme-light .user-dd-logout { color: #b91c1c; }
 </style>
 </head>
 <body>
@@ -1244,13 +1352,36 @@
     </div>
     <div class="header-divider"></div>
     <!-- User -->
-    <div class="user-info">
+    <div class="user-info" id="userInfoBtn" onclick="toggleUserDropdown(event)">
       <div class="avatar">SS</div>
       <span>Sasa Stanic</span>
       <svg width="10" height="10" viewBox="0 0 10 10" fill="#8aafd4"><path d="M2 3.5l3 3 3-3"/></svg>
     </div>
   </div>
 </header>
+<!-- Profile Dropdown -->
+<div id="userDropdown" class="user-dropdown">
+  <div class="user-dd-header">
+    <div class="user-dd-name">Sasa Stanic</div>
+    <div class="user-dd-email">sasa.stanic@gmail.com</div>
+  </div>
+  <div class="user-dd-sep"></div>
+  <div class="user-dd-section">
+    <div class="user-dd-section-label">Appearance</div>
+    <div class="user-dd-item active" id="theme-dark" onclick="setTheme('dark',event)">
+      <span>🌙</span> Dark Mode <span class="dd-check">✓</span>
+    </div>
+    <div class="user-dd-item" id="theme-light" onclick="setTheme('light',event)">
+      <span>☀️</span> Light Mode <span class="dd-check">✓</span>
+    </div>
+  </div>
+  <div class="user-dd-sep"></div>
+  <div class="user-dd-section">
+    <div class="user-dd-item user-dd-logout">
+      <span>↩</span> Sign Out
+    </div>
+  </div>
+</div>
 
 <!-- ════════════ HOME PAGE ════════════ -->
 <div id="home-page" class="home-page">
@@ -2027,6 +2158,104 @@
 
 <!-- Artifact viewer overlay removed — artifacts open via blob URL in new tab -->
 
+<!-- ════════════ ADD CURRENCY MODAL ════════════ -->
+<div class="modal-overlay" id="lpCurrencyModal" onclick="if(event.target===this)closeLpCurrencyModal()">
+  <div class="modal-box" style="width:600px;max-width:96vw;">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-hicon" style="background:#f3f0ff;font-size:18px">💱</div>
+        <div>
+          <div class="modal-title">Add Currency</div>
+          <div class="modal-subtitle">Configure currency parameters</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeLpCurrencyModal()">✕</button>
+    </div>
+    <div class="modal-body" style="padding:24px 28px;overflow-y:auto;max-height:calc(85vh - 120px);">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+
+        <!-- Currency -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Currency</label>
+          <select id="lpcurr-currency" class="fee-form-input">
+            <option value="">Select an item</option>
+            <option value="EUR">EUR — Euro</option>
+            <option value="USD">USD — US Dollar</option>
+            <option value="GBP">GBP — British Pound</option>
+            <option value="CHF">CHF — Swiss Franc</option>
+            <option value="RSD">RSD — Serbian Dinar</option>
+          </select>
+        </div>
+
+        <!-- Status -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Status</label>
+          <select id="lpcurr-status" class="fee-form-input">
+            <option value="Active" selected>Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <!-- Interest Rate Name -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Interest Rate Name</label>
+          <select id="lpcurr-rate-name" class="fee-form-input">
+            <option value="">Select an item</option>
+            <option value="BNPL standard interest 17% - EUR" selected>BNPL standard interest 17% - EUR</option>
+            <option value="EUR interest 17%">EUR interest 17%</option>
+            <option value="BNPL 0% interest EUR demo">BNPL 0% interest EUR demo</option>
+            <option value="BNPL with 17% interest rate for demo">BNPL with 17% interest rate for demo</option>
+          </select>
+        </div>
+
+        <!-- Interest Rate Type -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Interest Rate Type</label>
+          <select id="lpcurr-rate-type" class="fee-form-input">
+            <option value="Fixed" selected>Fixed</option>
+            <option value="Variable">Variable</option>
+          </select>
+        </div>
+
+        <!-- Min Loan Amount -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Min Loan Amount</label>
+          <input type="number" id="lpcurr-min" class="fee-form-input" value="50" min="0" step="1"/>
+        </div>
+
+        <!-- Max Loan Amount -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Max Loan Amount</label>
+          <input type="number" id="lpcurr-max" class="fee-form-input" value="10000" min="0" step="1"/>
+        </div>
+
+        <!-- Default Loan Amount -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Default Loan Amount</label>
+          <input type="number" id="lpcurr-default" class="fee-form-input" value="1000" min="0" step="1"/>
+        </div>
+
+        <!-- Valid From -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Valid From</label>
+          <input type="date" id="lpcurr-valid-from" class="fee-form-input" value="2026-03-27"/>
+        </div>
+
+        <!-- Valid To (spans only left column) -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Valid To</label>
+          <input type="date" id="lpcurr-valid-to" class="fee-form-input" value="2099-12-31"/>
+        </div>
+
+      </div><!-- /grid -->
+    </div><!-- /modal-body -->
+    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;padding:16px 28px;border-top:1px solid #e8f0f8;">
+      <button onclick="closeLpCurrencyModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='#f3f0ff'" onmouseout="this.style.background='#fff'">Cancel</button>
+      <button onclick="saveLpCurrency()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s;" onmouseover="this.style.background='#5a3fb0'" onmouseout="this.style.background='#6b4fc8'"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add</button>
+    </div>
+  </div>
+</div>
+
 <!-- ════════════ ARTIFACT MODAL ════════════ -->
 <div class="modal-overlay" id="artifactModal" data-action="close-artifacts">
   <div class="modal-box">
@@ -2141,7 +2370,7 @@ function toggleGroup(header) {
 }
 
 // Sections that render their own full-page header (title + subtitle + CTA)
-const SELF_HEADED_SECTIONS = new Set(['fees', 'penalty', 'security', 'services', 'exchangerate', 'collection', 'accrual', 'interestdef', 'loanprod', 'loansim', 'eod', 'eod-scheduler', 'eod-monitor', 'loan-report-open', 'loan-report-closed', 'loan-report-eom', 'loaninfo', 'organisation', 'users', 'roles', 'permissions', 'role-assignments', 'branch', 'user-list', 'loan-detail', 'rule-groups', 'dec-rules', 'rule-thresholds', 'property-mappings', 'outcome-codes', 'execution-logs', 'analytics', 'dec-users', 'api-keys', 'import-json']);
+const SELF_HEADED_SECTIONS = new Set(['fees', 'penalty', 'security', 'services', 'exchangerate', 'collection', 'accrual', 'interestdef', 'loanprod', 'loansim', 'eod', 'eod-scheduler', 'eod-monitor', 'loan-report-open', 'loan-report-closed', 'loan-report-eom', 'loaninfo', 'organisation', 'users', 'roles', 'permissions', 'role-assignments', 'branch', 'user-list', 'loan-detail', 'rule-groups', 'rule-group-schema', 'rule-group-test', 'dec-rules', 'rule-thresholds', 'property-mappings', 'outcome-codes', 'execution-logs', 'analytics', 'dec-users', 'api-keys', 'import-json']);
 
 // ── FORM UTILITIES (shared by module files) ─────────────────────────────────
 // ── FORM UTILITIES ────────────────────────────────────────────────────────────
@@ -2190,17 +2419,17 @@ function feeRow(a, b) {
 
 
 // ── SVG ICON CONSTANTS ────────────────────────────────────────────────────────
-const _I_PENCIL_12 = '${_I_PENCIL_12}';
-const _I_PLUS_14 = '${_I_PLUS_14}';
-const _I_BIN_12 = '${_I_BIN_12}';
-const _I_BACK_14 = '${_I_BACK_14}';
-const _I_SAVE_14 = '${_I_SAVE_14}';
-const _I_BIN_11 = '${_I_BIN_11}';
-const _I_BACK_14B = '${_I_BACK_14B}';
-const _I_PLUS_12 = '${_I_PLUS_12}';
-const _I_CHECK_13 = '${_I_CHECK_13}';
-const _I_PENCIL_11 = '${_I_PENCIL_11}';
-const _I_PLUS_12B = '${_I_PLUS_12B}';
+const _I_PENCIL_12 = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2.5l2 2-7.5 7.5H2v-2z"/><path d="M8 4l2 2"/></svg>';
+const _I_PLUS_14 = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg>';
+const _I_BIN_12 = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h10"/><path d="M5 4V2.5h4V4"/><path d="M3 4l.8 7.5h6.4L11 4"/></svg>';
+const _I_BACK_14 = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>';
+const _I_SAVE_14 = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h8l2 2v8H2z"/><path d="M4 2v4h6V2"/><path d="M4 8h6v4H4z"/></svg>';
+const _I_BIN_11 = '<svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h10"/><path d="M5 4V2.5h4V4"/><path d="M3 4l.8 7.5h6.4L11 4"/></svg>';
+const _I_BACK_14B = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2L4 7l5 5"/></svg>';
+const _I_PLUS_12 = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg>';
+const _I_CHECK_13 = '<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7l3.5 3.5 6-6"/></svg>';
+const _I_PENCIL_11 = '<svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2.5l2 2-7.5 7.5H2v-2z"/><path d="M8 4l2 2"/></svg>';
+const _I_PLUS_12B = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg>';
 
 
 function renderContent(containerId, mod, section, title, subtitle) {
@@ -2756,6 +2985,18 @@ const artifactData = {
         meta: 'Entity-relationship diagram for the Repayment Plan domain',
         badge: 'bg-data', label: 'Data Model',
         url: 'https://dbdiagram.io/d/Repayment-plan-6925a7a97d9416ddff0804a5' },
+      { icon: '📄', name: 'Loans — Internal Solution Approach',
+        meta: 'Internal reference document: MVP scope, repayment patterns, migration options and assumptions',
+        badge: 'bg-doc', label: 'Document',
+        url: 'loans_internal_solution.html' },
+      { icon: '📐', name: 'Repayment Plan Calculation',
+        meta: 'Detailed repayment plan calculation methodology: equal instalments, interest methods, irregular rates and EIR',
+        badge: 'bg-doc', label: 'Document',
+        url: 'repayment_plan_calculation.html' },
+      { icon: '📊', name: 'Effective Interest Rate',
+        meta: 'Methodology and examples for EIR calculation: annuities, irregular cash flows and APR equivalence',
+        badge: 'bg-doc', label: 'Document',
+        url: 'effective_interest_rate.html' },
     ]
   },
   loyalty: {
@@ -2811,8 +3052,17 @@ function closeArtifacts(e) {
 }
 
 function openViewer(url, title) {
-  // All artifact files (local and external) open directly in a new tab
-  window.open(url, '_blank', 'noopener');
+  // Use a real <a> element so the browser resolves the URL natively
+  // via document.baseURI — works with file://, computer://, http:// etc.
+  // window.open() is intentionally avoided: it mis-resolves relative
+  // paths in some protocol contexts and is blocked by popup-blockers.
+  var a = document.createElement('a');
+  a.href = url;           // browser resolves relative → absolute via baseURI
+  a.target = '_blank';
+  if (url.startsWith('http')) a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 function closeViewer() {
@@ -2907,7 +3157,7 @@ function loadLoansModule() {
 
     // 2. Load mock data first, then module JS
     var mockScript = document.createElement('script');
-    mockScript.src = 'data/mock-loans.js';
+    mockScript.src = 'mock-loans.js';
     mockScript.onload = function() {
       var s = document.createElement('script');
       s.src = 'loans.js';
@@ -2973,7 +3223,7 @@ function loadLoansModule() {
   window.loadClientsModule = makeLoader('clients', null,       'clients.js');
   window.loadDigsigModule  = makeLoader('digsig',  null,       'digsig.js');
   window.loadInfobipModule = makeLoader('infobip', null,       'infobip.js');
-  window.loadAdminModule   = makeLoader('admin',   null,       'admin.js',  'data/mock-admin.js');
+  window.loadAdminModule   = makeLoader('admin',   null,       'admin.js',  'mock-admin.js');
   window.loadAuthModule    = makeLoader('auth',    'auth.css', 'auth.js');
   // Stub module loaders — uncomment each when the corresponding JS file has real content:
   // window.loadCardsModule      = makeLoader('cards',      null, 'cards.js');
@@ -3026,12 +3276,42 @@ document.addEventListener('click', function(e) {
       break;
 
     case 'open-viewer':
-      openViewer(el.dataset.url, el.dataset.name);
+      (function() {
+        var url = el.getAttribute('data-url') || '';
+        if (!url) return;
+        var a = document.createElement('a');
+        a.href = url;        // browser resolves relative path via document.baseURI
+        a.target = '_blank';
+        if (url.startsWith('http')) a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      })();
       break;
 
     case 'download-artifact':
       // Let the native <a> navigate; just prevent openViewer from also firing
       e.stopImmediatePropagation();
+      break;
+
+    // ── Fee Definition ───────────────────────────────────────────────────────
+    // ── Decision Engine — Run Test ───────────────────────────────────────────
+    case 'run-test':
+      (function() {
+        var ph = document.getElementById('dec-test-placeholder');
+        var res = document.getElementById('dec-test-results');
+        var btn = el;
+        if (ph) ph.style.display = 'none';
+        if (res) { res.style.display = 'block'; }
+        if (btn) {
+          btn.disabled = true;
+          btn.innerHTML = '&#9654; Running…';
+          setTimeout(function() {
+            btn.disabled = false;
+            btn.innerHTML = '&#9654; Run Test';
+          }, 800);
+        }
+      })();
       break;
 
     // ── Fee Definition ───────────────────────────────────────────────────────
@@ -3487,15 +3767,9 @@ document.addEventListener('click', function(e) {
       break;
     }
 
-    case 'lp-add-currency': {
-      const cc = prompt('Enter currency code (e.g. EUR, USD, GBP):');
-      if (cc && cc.trim()) {
-        window._lpCurrencies = window._lpCurrencies || [];
-        window._lpCurrencies.push(cc.trim().toUpperCase());
-        lpRefreshCurrencies();
-      }
+    case 'lp-add-currency':
+      document.getElementById('lpCurrencyModal').classList.add('open');
       break;
-    }
 
     case 'lp-add-fee': {
       const fn = prompt('Enter fee name:');
@@ -3732,6 +4006,46 @@ function searchKeydown(e) {
 // ─────────────────────────────────────────────────────────────────────────────
 var _envOptions = ['UAT', 'PROD', 'DEV'];
 var _currentEnv = 'UAT';
+// ── ADD CURRENCY MODAL ───────────────────────────────────────────────────────
+function closeLpCurrencyModal() {
+  document.getElementById('lpCurrencyModal').classList.remove('open');
+}
+function saveLpCurrency() {
+  var currency = document.getElementById('lpcurr-currency').value;
+  if (!currency) { alert('Please select a Currency.'); return; }
+  var entry = {
+    currency:  currency,
+    status:    document.getElementById('lpcurr-status').value,
+    rateName:  document.getElementById('lpcurr-rate-name').value,
+    rateType:  document.getElementById('lpcurr-rate-type').value,
+    minAmt:    document.getElementById('lpcurr-min').value,
+    maxAmt:    document.getElementById('lpcurr-max').value,
+    defaultAmt:document.getElementById('lpcurr-default').value,
+    validFrom: document.getElementById('lpcurr-valid-from').value,
+    validTo:   document.getElementById('lpcurr-valid-to').value,
+  };
+  window._lpCurrencies = window._lpCurrencies || [];
+  window._lpCurrencies.push(entry);
+  if (typeof lpRefreshCurrencies === 'function') lpRefreshCurrencies();
+  closeLpCurrencyModal();
+}
+
+// ── THEME TOGGLE ─────────────────────────────────────────────────────────────
+var _currentTheme = 'dark';
+function setTheme(theme, ev) {
+  if (ev) ev.stopPropagation();
+  _currentTheme = theme;
+  document.body.classList.toggle('theme-light', theme === 'light');
+  document.getElementById('theme-dark').classList.toggle('active', theme === 'dark');
+  document.getElementById('theme-light').classList.toggle('active', theme === 'light');
+}
+
+// ── USER DROPDOWN ─────────────────────────────────────────────────────────────
+function toggleUserDropdown(ev) {
+  ev.stopPropagation();
+  document.getElementById('userDropdown').classList.toggle('open');
+}
+
 var _envPickerEl = null;
 
 function setEnv(env) {
@@ -3784,10 +4098,15 @@ document.addEventListener('DOMContentLoaded', function() {
   var badge = document.getElementById('envBadge');
   if (badge) badge.onclick = function() { showEnvPicker(badge); };
 
-  // Close env picker on outside click
+  // Close env picker and user dropdown on outside click
   document.addEventListener('click', function(ev) {
     if (_envPickerEl && !_envPickerEl.contains(ev.target) && ev.target.id !== 'envBadge') {
       _envPickerEl.remove(); _envPickerEl = null;
+    }
+    var dd = document.getElementById('userDropdown');
+    var btn = document.getElementById('userInfoBtn');
+    if (dd && dd.classList.contains('open') && !dd.contains(ev.target) && btn && !btn.contains(ev.target)) {
+      dd.classList.remove('open');
     }
   });
 

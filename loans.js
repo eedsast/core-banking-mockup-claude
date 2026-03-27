@@ -2462,12 +2462,44 @@ function lpRefreshCurrencies() {
   if (!window._lpCurrencies || !window._lpCurrencies.length) {
     body.innerHTML = '<div class="lp-sub-empty">No currencies added yet. Click "Add Currency" to create the first one.</div>';
   } else {
-    body.innerHTML = '<div class="lp-cust-row"><div class="lp-cust-tags">' +
+    body.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px">' +
+      '<thead><tr style="background:#f6f9fc;border-bottom:1px solid #dce8f0">' +
+        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Currency</th>' +
+        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Interest Rate</th>' +
+        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Type</th>' +
+        '<th style="padding:7px 10px;text-align:right;color:#6a8faf;font-weight:600">Min</th>' +
+        '<th style="padding:7px 10px;text-align:right;color:#6a8faf;font-weight:600">Max</th>' +
+        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Valid From</th>' +
+        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Valid To</th>' +
+        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Status</th>' +
+        '<th style="padding:7px 10px"></th>' +
+      '</tr></thead><tbody>' +
       window._lpCurrencies.map(function(c, i) {
-        return '<span class="lp-cust-tag">' + c +
-          '<button onclick="window._lpCurrencies.splice(' + i + ',1);lpRefreshCurrencies()" title="Remove">×</button></span>';
+        var isObj   = (typeof c === 'object');
+        var curr    = isObj ? c.currency    : c;
+        var rate    = isObj ? (c.rateName   || '') : '';
+        var type    = isObj ? (c.rateType   || '') : '';
+        var min     = isObj ? (c.minAmt     || '') : '';
+        var max     = isObj ? (c.maxAmt     || '') : '';
+        var vFrom   = isObj ? (c.validFrom  || '') : '';
+        var vTo     = isObj ? (c.validTo    || '') : '';
+        var status  = isObj ? (c.status     || 'Active') : 'Active';
+        var statusCls = (status === 'Active' || status === 'ACTIVE') ? 'fee-status-active' : 'fee-status-inactive';
+        return '<tr style="border-bottom:1px solid #f0f4f8">' +
+          '<td style="padding:7px 10px;font-weight:600;color:#1a2e42">' + curr + '</td>' +
+          '<td style="padding:7px 10px;color:#3a5570;font-size:11.5px">' + rate + '</td>' +
+          '<td style="padding:7px 10px"><span class="badge orange" style="font-size:11px">' + type + '</span></td>' +
+          '<td style="padding:7px 10px;text-align:right;color:#3a5570">' + min + '</td>' +
+          '<td style="padding:7px 10px;text-align:right;color:#3a5570">' + max + '</td>' +
+          '<td style="padding:7px 10px;font-size:11.5px;color:#6a8faf">' + vFrom + '</td>' +
+          '<td style="padding:7px 10px;font-size:11.5px;color:#6a8faf">' + vTo + '</td>' +
+          '<td style="padding:7px 10px"><span class="' + statusCls + '">' + status + '</span></td>' +
+          '<td style="padding:7px 10px;text-align:center">' +
+            '<button onclick="window._lpCurrencies.splice(' + i + ',1);lpRefreshCurrencies()" title="Remove" ' +
+              'style="background:#fde8e8;color:#c0392b;border:1px solid #f5b7b1;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:12px">\xd7</button>' +
+          '</td></tr>';
       }).join('') +
-    '</div></div>';
+      '</tbody></table>';
   }
 }
 function lpRefreshFees() {

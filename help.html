@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help & Reference — Core Banking</title>
+<style>
+/* ── RESET & BASE ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f0f4f8;
+  color: #2a3f55;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────── */
+.hdr {
+  background: #1a2e42;
+  color: #fff;
+  padding: 0 28px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  border-bottom: 2px solid #0d1f30;
+}
+.hdr-logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: #8aafd4;
+  letter-spacing: .03em;
+}
+.hdr-sep { color: #2a4a62; font-size: 18px; }
+.hdr-title { font-size: 13px; color: #b8cfe0; font-weight: 400; }
+.hdr-badge {
+  margin-left: auto;
+  background: #0d3a5c;
+  border: 1px solid #1e5a8a;
+  color: #8aafd4;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  letter-spacing: .04em;
+}
+
+/* ── LAYOUT ─────────────────────────────────────────────────── */
+.layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────────────── */
+.sidebar {
+  width: 252px;
+  flex-shrink: 0;
+  background: #1e3348;
+  overflow-y: auto;
+  padding: 16px 0 32px;
+  border-right: 1px solid #0d1f30;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: #2a4a62; border-radius: 2px; }
+
+.sb-search {
+  margin: 0 12px 16px;
+  position: relative;
+}
+.sb-search input {
+  width: 100%;
+  background: #0d2035;
+  border: 1px solid #2a4a62;
+  border-radius: 6px;
+  color: #b8cfe0;
+  font-size: 12px;
+  padding: 7px 10px 7px 30px;
+  outline: none;
+}
+.sb-search input::placeholder { color: #4a6a82; }
+.sb-search input:focus { border-color: #4a8ab4; }
+.sb-search-icon {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4a6a82;
+}
+
+.sb-group { margin-bottom: 4px; }
+.sb-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #4a7090;
+  padding: 10px 16px 4px;
+}
+.sb-link {
+  display: block;
+  padding: 7px 16px 7px 20px;
+  font-size: 12.5px;
+  color: #8aafd4;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: background .12s, border-color .12s, color .12s;
+  line-height: 1.4;
+}
+.sb-link:hover {
+  background: #0d2a40;
+  color: #c8e0f0;
+  border-left-color: #4a8ab4;
+}
+.sb-link.active {
+  background: #0d2a40;
+  color: #fff;
+  border-left-color: #8aafd4;
+  font-weight: 600;
+}
+.sb-link-sub {
+  padding-left: 28px;
+  font-size: 12px;
+  color: #6a90a8;
+}
+.sb-link-sub:hover, .sb-link-sub.active {
+  color: #b8cfe0;
+}
+.sb-divider {
+  height: 1px;
+  background: #1a3550;
+  margin: 8px 16px;
+}
+
+/* ── MAIN CONTENT ─────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px 60px;
+}
+.main::-webkit-scrollbar { width: 6px; }
+.main::-webkit-scrollbar-track { background: #e8eef4; }
+.main::-webkit-scrollbar-thumb { background: #b0c4d8; border-radius: 3px; }
+
+/* ── SECTION WRAPPERS ─────────────────────────────────────────── */
+.help-section {
+  max-width: 820px;
+  margin-bottom: 56px;
+  scroll-margin-top: 24px;
+}
+.help-section:last-child { margin-bottom: 0; }
+
+.section-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #4a8ab4;
+  margin-bottom: 6px;
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a2e42;
+  margin-bottom: 8px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #d0dce8;
+}
+.section-lead {
+  font-size: 14px;
+  color: #5a7a95;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+/* ── CONTENT ELEMENTS ─────────────────────────────────────────── */
+h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e3a55;
+  margin: 24px 0 8px;
+}
+h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2a5070;
+  margin: 18px 0 6px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+p { font-size: 13.5px; line-height: 1.75; color: #3a5570; margin-bottom: 12px; }
+p:last-child { margin-bottom: 0; }
+
+ul, ol { padding-left: 20px; margin-bottom: 12px; }
+li { font-size: 13.5px; line-height: 1.75; color: #3a5570; margin-bottom: 4px; }
+
+code {
+  background: #e0eaf4;
+  border: 1px solid #c0d4e8;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: #1a5080;
+}
+
+/* ── INFO / NOTE / WARNING BOXES ────────────────────────────── */
+.info-box, .note-box, .warn-box, .tip-box {
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.info-box {
+  background: #e6f1fb;
+  border-left: 4px solid #185fa5;
+  color: #0c3a70;
+}
+.note-box {
+  background: #e8f5ee;
+  border-left: 4px solid #0f6e56;
+  color: #084a38;
+}
+.warn-box {
+  background: #fff5e6;
+  border-left: 4px solid #d35400;
+  color: #7a3000;
+}
+.tip-box {
+  background: #f0eeff;
+  border-left: 4px solid #534ab7;
+  color: #2a1e80;
+}
+.box-label {
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* ── DEFINITION TABLE ────────────────────────────────────────── */
+.def-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 13px;
+}
+.def-table th {
+  background: #1a2e42;
+  color: #8aafd4;
+  text-align: left;
+  padding: 9px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.def-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #dce8f0;
+  vertical-align: top;
+  color: #3a5570;
+  line-height: 1.6;
+}
+.def-table tr:nth-child(even) td { background: #f6f9fc; }
+.def-table td:first-child {
+  font-weight: 600;
+  color: #1a3a55;
+  white-space: nowrap;
+  min-width: 160px;
+}
+.def-table code { font-size: 11.5px; }
+
+/* ── FORMULA BOX ─────────────────────────────────────────────── */
+.formula {
+  background: #0d2035;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 14px 0;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12.5px;
+  color: #9fe1cb;
+  line-height: 1.8;
+}
+.formula .comment { color: #4a7090; }
+
+/* ── BACK TO TOP ─────────────────────────────────────────────── */
+.back-top {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #4a8ab4;
+  text-decoration: none;
+}
+.back-top:hover { color: #1a5080; text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ═══════════════════════════════════════════════════ -->
+<header class="hdr">
+  <span class="hdr-logo">Core Banking</span>
+  <span class="hdr-sep">›</span>
+  <span class="hdr-title">Help &amp; Reference Manual</span>
+  <span class="hdr-badge">v1.0</span>
+</header>
+
+<div class="layout">
+
+<!-- ══ SIDEBAR ══════════════════════════════════════════════════ -->
+<nav class="sidebar">
+
+  <div class="sb-search">
+    <svg class="sb-search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/>
+    </svg>
+    <input type="text" id="sbSearch" placeholder="Search topics…" oninput="filterSidebar(this.value)">
+  </div>
+
+  <div class="sb-group">
+    <div class="sb-group-label">Getting Started</div>
+    <a class="sb-link" href="#overview">Overview</a>
+    <a class="sb-link" href="#navigation">Navigation</a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-group">
+    <div class="sb-group-label">Loan Management</div>
+    <a class="sb-link" href="#loan-products">Loan Products</a>
+    <a class="sb-link sb-link-sub" href="#accounting-method">↳ Accounting Method</a>
+    <a class="sb-link sb-link-sub" href="#day-count">↳ Day Count Convention</a>
+    <a class="sb-link sb-link-sub" href="#interest-type">↳ Interest Type</a>
+    <a class="sb-link" href="#repayment-plan">Repayment Plan</a>
+    <a class="sb-link" href="#interest-accrual">Interest Accrual</a>
+    <a class="sb-link" href="#collections">Collections</a>
+    <a class="sb-link" href="#penalties">Penalty Definitions</a>
+    <a class="sb-link" href="#eir">Effective Interest Rate (EIR)</a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-group">
+    <div class="sb-group-label">Decision Engine</div>
+    <a class="sb-link" href="#rule-groups">Rule Groups</a>
+    <a class="sb-link" href="#rules">Rules</a>
+    <a class="sb-link sb-link-sub" href="#rule-types">↳ Rule Types</a>
+    <a class="sb-link" href="#thresholds">Rule Thresholds</a>
+    <a class="sb-link" href="#outcome-codes">Outcome Codes</a>
+    <a class="sb-link" href="#property-mappings">Property Mappings</a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-group">
+    <div class="sb-group-label">Accounting</div>
+    <a class="sb-link" href="#gl-product">GL Product Definition</a>
+    <a class="sb-link" href="#chart-of-accounts">Chart of Accounts</a>
+    <a class="sb-link" href="#journal-entry">Journal Entry</a>
+    <a class="sb-link" href="#period-close">Period Close</a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-group">
+    <div class="sb-group-label">Glossary</div>
+    <a class="sb-link" href="#glossary">All Terms A–Z</a>
+  </div>
+
+</nav>
+
+<!-- ══ MAIN CONTENT ══════════════════════════════════════════════ -->
+<main class="main" id="mainContent">
+
+  <!-- ── OVERVIEW ─────────────────────────────────────────────── -->
+  <section class="help-section" id="overview">
+    <span class="section-tag">Getting Started</span>
+    <div class="section-title">Overview</div>
+    <p class="section-lead">This manual covers the parameters, configuration options, and business rules used throughout the Core Banking platform. Use the sidebar to jump directly to any topic, or link here from any <strong>?</strong> help button in the application.</p>
+    <div class="info-box">
+      <span class="box-label">Linking from the application</span>
+      Help buttons in the application open this page at the exact relevant section using anchor links (e.g. <code>help.html#accounting-method</code>). You can bookmark any section URL directly.
+    </div>
+  </section>
+
+  <!-- ── NAVIGATION ───────────────────────────────────────────── -->
+  <section class="help-section" id="navigation">
+    <span class="section-tag">Getting Started</span>
+    <div class="section-title">Navigation</div>
+    <p>Use the left sidebar to browse topics by module. The search box at the top of the sidebar filters links in real time. Click any sidebar link to jump to the corresponding section. All sections are reachable via direct URL anchor (e.g. <code>help.html#eir</code>).</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--  LOAN MANAGEMENT                                          -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- ── LOAN PRODUCTS ────────────────────────────────────────── -->
+  <section class="help-section" id="loan-products">
+    <span class="section-tag">Loan Management</span>
+    <div class="section-title">Loan Products</div>
+    <p class="section-lead">A Loan Product is the master template that defines the financial and operational parameters for a class of loans. Every loan account opened on the platform is bound to exactly one Loan Product, and inherits its rules at origination.</p>
+    <p>Key parameters defined at the product level include the interest rate structure, repayment type, allowed currencies, tenor limits, fee schedule, and accounting treatment. Individual loan accounts may override some parameters within bounds set by the product.</p>
+  </section>
+
+  <!-- ── ACCOUNTING METHOD ─────────────────────────────────────── -->
+  <section class="help-section" id="accounting-method">
+    <span class="section-tag">Loan Management › Loan Products</span>
+    <div class="section-title">Accounting Method</div>
+    <p class="section-lead">The Accounting Method controls <strong>how interest is recognised and posted</strong> to the General Ledger throughout the life of a loan. It determines the timing and amount of each accrual entry.</p>
+
+    <h3>Available Methods</h3>
+    <table class="def-table">
+      <thead><tr><th>Method</th><th>Description</th><th>Typical use</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Accrual</td>
+          <td>Interest is accrued daily and posted to an accrued interest receivable account. Revenue is recognised as it is earned, regardless of cash receipt.</td>
+          <td>Standard retail and SME lending, IFRS 9 compliant portfolios</td>
+        </tr>
+        <tr>
+          <td>Cash Basis</td>
+          <td>Interest is recognised only when cash is received. No accrual entries are posted in advance.</td>
+          <td>Non-performing loans, stage 3 assets, high-credit-risk portfolios</td>
+        </tr>
+        <tr>
+          <td>EIR (Effective Interest Rate)</td>
+          <td>Interest and fee income are spread over the loan life using the constant-yield (effective interest rate) method. Origination fees and direct costs are included in the EIR calculation.</td>
+          <td>IFRS 9 / IFRS 15 compliant recognition; mortgage and structured products</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note-box">
+      <span class="box-label">Important</span>
+      Once a loan account is opened, the Accounting Method cannot be changed. Changes to the method on a Loan Product apply only to accounts opened after the change is saved.
+    </div>
+
+    <h3>How Accrual Works</h3>
+    <p>Each night the EoD batch calculates the interest accrued for the day using the formula below, then posts a debit to <em>Accrued Interest Receivable</em> and a credit to <em>Interest Income</em>.</p>
+    <div class="formula">
+Daily accrual = Outstanding principal × Annual rate ÷ Day count basis
+<span class="comment">
+-- Example (Actual/365, 10 % p.a., balance 10 000):
+-- Daily accrual = 10 000 × 0.10 / 365 = 2.7397</span>
+    </div>
+
+    <h3>EIR Method Detail</h3>
+    <p>Under the EIR method the system calculates an internal rate of return that equates the present value of all expected cash flows (including fees) to the initial loan amount. This rate is then applied to the amortised cost balance each period to determine income. See <a href="#eir">Effective Interest Rate (EIR)</a> for the full calculation.</p>
+
+    <div class="warn-box">
+      <span class="box-label">Regulatory note</span>
+      IFRS 9 requires the EIR method for loans measured at amortised cost. Using Cash Basis for performing loans may result in under-recognition of income and require restatement.
+    </div>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── DAY COUNT CONVENTION ──────────────────────────────────── -->
+  <section class="help-section" id="day-count">
+    <span class="section-tag">Loan Management › Loan Products</span>
+    <div class="section-title">Day Count Convention</div>
+    <p class="section-lead">The Day Count Convention defines how the number of days in an interest period and the number of days in a year are calculated. Different conventions produce different accrual amounts even with the same nominal rate.</p>
+
+    <table class="def-table">
+      <thead><tr><th>Convention</th><th>Days in period</th><th>Days in year</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Actual / 365</td><td>Actual calendar days</td><td>365 (fixed)</td><td>Most common in retail banking; leap years use 365 denominator</td></tr>
+        <tr><td>Actual / 360</td><td>Actual calendar days</td><td>360 (fixed)</td><td>Common in money markets and US commercial lending; produces slightly higher interest</td></tr>
+        <tr><td>Actual / Actual</td><td>Actual calendar days</td><td>365 or 366 (leap year)</td><td>Precise; used in government bonds and IFRS-compliant instruments</td></tr>
+        <tr><td>30 / 360</td><td>Each month treated as 30 days</td><td>360</td><td>Simplifies calculation; common in fixed-income securities and some mortgage markets</td></tr>
+        <tr><td>30E / 360</td><td>European variant of 30/360</td><td>360</td><td>End-of-month dates adjusted to 30; used in Eurobonds</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <span class="box-label">Tip</span>
+      Actual/365 and Actual/360 give different annual yields for the same nominal rate. A loan at 10 % Actual/360 is effectively ~10.14 % Actual/365. Always confirm the convention with your product team before launch.
+    </div>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── INTEREST TYPE ─────────────────────────────────────────── -->
+  <section class="help-section" id="interest-type">
+    <span class="section-tag">Loan Management › Loan Products</span>
+    <div class="section-title">Interest Type</div>
+    <p class="section-lead">Determines whether the interest rate applied to a loan is fixed throughout its life or can vary in line with a reference rate.</p>
+    <table class="def-table">
+      <thead><tr><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Fixed</td><td>The interest rate is set at origination and does not change for the loan term. Provides payment certainty for the borrower.</td></tr>
+        <tr><td>Variable</td><td>The rate floats against a reference index (e.g. EURIBOR, SOFR, central bank rate). Repricing occurs on a defined schedule.</td></tr>
+        <tr><td>Mixed</td><td>Fixed for an initial period (e.g. 24 months), then converts to variable for the remainder of the term.</td></tr>
+      </tbody>
+    </table>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── REPAYMENT PLAN ────────────────────────────────────────── -->
+  <section class="help-section" id="repayment-plan">
+    <span class="section-tag">Loan Management</span>
+    <div class="section-title">Repayment Plan</div>
+    <p class="section-lead">The Repayment Plan (also called Amortisation Schedule) defines how the outstanding principal and interest are distributed across instalments over the loan term.</p>
+    <table class="def-table">
+      <thead><tr><th>Plan Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Annuity (French)</td><td>Equal total instalments throughout the term. Each payment contains a growing principal component and a shrinking interest component.</td></tr>
+        <tr><td>Linear (German)</td><td>Equal principal instalments. The interest portion decreases each period as the outstanding balance reduces. Total payments are higher initially.</td></tr>
+        <tr><td>Bullet</td><td>Interest-only payments during the term; full principal repaid at maturity. Common in short-term and bridge financing.</td></tr>
+        <tr><td>Balloon</td><td>Regular instalments (annuity or linear) with a large lump-sum payment at maturity covering the residual principal.</td></tr>
+        <tr><td>Irregular</td><td>Custom schedule with manually defined due dates and amounts. Used for restructured or bespoke facilities.</td></tr>
+      </tbody>
+    </table>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── INTEREST ACCRUAL ──────────────────────────────────────── -->
+  <section class="help-section" id="interest-accrual">
+    <span class="section-tag">Loan Management</span>
+    <div class="section-title">Interest Accrual</div>
+    <p class="section-lead">Interest Accrual defines the rules and frequency for recognising interest income between instalment due dates. Accrual runs as part of the nightly EoD batch.</p>
+    <h3>Accrual Frequency</h3>
+    <p>Defines how often accrual entries are posted to the GL. Options are: <strong>Daily</strong> (one entry per calendar day), <strong>Monthly</strong> (one entry on the last day of each month), or <strong>On Due Date</strong> (accrual posted only when an instalment falls due).</p>
+    <h3>Suspended Accrual</h3>
+    <p>When a loan enters a non-performing state (typically 90+ days past due), accrual is suspended. Interest continues to accrue off-balance-sheet in a memorandum account and is recognised as income only upon collection.</p>
+    <div class="info-box">
+      <span class="box-label">EoD Batch</span>
+      Accrual is calculated and posted automatically each night. Manual adjustment is possible via a journal override with appropriate authorisation.
+    </div>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── COLLECTIONS ───────────────────────────────────────────── -->
+  <section class="help-section" id="collections">
+    <span class="section-tag">Loan Management</span>
+    <div class="section-title">Collections</div>
+    <p class="section-lead">A Collection Definition specifies the rules for triggering and processing collections when a loan instalment becomes overdue.</p>
+    <h3>Collection Trigger</h3>
+    <p>Collections can be triggered automatically by the EoD batch when a due date passes without full payment, or manually by an authorised user. The trigger threshold (number of days past due) is set per product.</p>
+    <h3>Collection Allocation</h3>
+    <p>When a collection payment is received, the platform allocates it in the following default order: <strong>Penalty interest → Overdue interest → Overdue principal → Current interest → Current principal</strong>. The allocation order can be customised per product.</p>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── PENALTIES ─────────────────────────────────────────────── -->
+  <section class="help-section" id="penalties">
+    <span class="section-tag">Loan Management</span>
+    <div class="section-title">Penalty Definitions</div>
+    <p class="section-lead">Penalty Definitions control the rate and basis of charges applied when a borrower misses a scheduled payment or repays early.</p>
+    <table class="def-table">
+      <thead><tr><th>Penalty Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Late Payment Penalty</td><td>A daily rate applied to the overdue amount for each calendar day past the due date. Expressed as an annual percentage rate.</td></tr>
+        <tr><td>Early Repayment Fee</td><td>A one-time charge calculated on the prepaid principal, compensating the bank for lost future interest income. May be a flat amount or a percentage.</td></tr>
+        <tr><td>Non-utilisation Fee</td><td>Applied to revolving and overdraft facilities where the borrower does not draw the committed limit. Charged on the undrawn portion.</td></tr>
+      </tbody>
+    </table>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── EIR ───────────────────────────────────────────────────── -->
+  <section class="help-section" id="eir">
+    <span class="section-tag">Loan Management</span>
+    <div class="section-title">Effective Interest Rate (EIR)</div>
+    <p class="section-lead">The Effective Interest Rate (EIR) is the rate that exactly discounts the estimated future cash flows of a loan back to its net carrying amount at initial recognition. Under IFRS 9 it is the basis for interest income recognition on amortised-cost assets.</p>
+    <h3>What is included in the EIR</h3>
+    <ul>
+      <li>Nominal contractual interest</li>
+      <li>Origination fees charged to the borrower (e.g. processing fee, commitment fee)</li>
+      <li>Direct incremental origination costs (e.g. broker commissions)</li>
+      <li>Any discount or premium on the principal</li>
+    </ul>
+    <h3>Calculation Approach</h3>
+    <p>The system solves for the internal rate of return <em>r</em> in the following equation, where <em>CF<sub>t</sub></em> is the cash flow at time <em>t</em> and <em>n</em> is the number of periods:</p>
+    <div class="formula">
+Net proceeds = Σ [ CF<sub>t</sub> / (1 + r)<sup>t</sup> ]  for t = 1 to n
+<span class="comment">
+-- Net proceeds = Loan amount – upfront fees + direct costs
+-- CF = scheduled principal + interest payments</span>
+    </div>
+    <div class="note-box">
+      <span class="box-label">Preliminary vs Final EIR</span>
+      A <strong>preliminary EIR</strong> is calculated at application stage using the expected repayment schedule. The <strong>final EIR</strong> is locked at loan opening once all fees are confirmed and may differ slightly from the preliminary figure. Both are visible in the loan account detail view.
+    </div>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--  DECISION ENGINE                                          -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- ── RULE GROUPS ───────────────────────────────────────────── -->
+  <section class="help-section" id="rule-groups">
+    <span class="section-tag">Decision Engine</span>
+    <div class="section-title">Rule Groups</div>
+    <p class="section-lead">A Rule Group is a named container that bundles together a set of related rules evaluated as a unit. Typically one Rule Group exists per loan product or credit use-case (e.g. "Consumer Loan Rules", "Mortgage Rules").</p>
+    <p>When an application is submitted to the Decision Engine, the calling system specifies which Rule Group to execute. All active rules within the group are evaluated in priority order.</p>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── RULES ─────────────────────────────────────────────────── -->
+  <section class="help-section" id="rules">
+    <span class="section-tag">Decision Engine</span>
+    <div class="section-title">Rules</div>
+    <p class="section-lead">A Rule is a single evaluable condition that contributes to the overall credit decision. Rules are processed in ascending priority order within their group.</p>
+    <h3 id="rule-types">Rule Types</h3>
+    <table class="def-table">
+      <thead><tr><th>Type</th><th>Description</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Filter</td>
+          <td>A hard pass/fail gate. If the condition is not met, the application is immediately declined and no further rules are evaluated.</td>
+          <td>Decline or continue</td>
+        </tr>
+        <tr>
+          <td>Score</td>
+          <td>A weighted condition that contributes a numeric score. The total score is compared against Rule Thresholds to determine the outcome.</td>
+          <td>Adds to total score</td>
+        </tr>
+      </tbody>
+    </table>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── THRESHOLDS ────────────────────────────────────────────── -->
+  <section class="help-section" id="thresholds">
+    <span class="section-tag">Decision Engine</span>
+    <div class="section-title">Rule Thresholds</div>
+    <p class="section-lead">Rule Thresholds map score ranges to decision outcomes. After all Score rules are evaluated and a total score is calculated, it is matched against the active thresholds for the Rule Group to determine the final outcome.</p>
+    <div class="info-box">
+      <span class="box-label">Example</span>
+      Score 750–999 → APPROVED · Score 600–749 → REFERRED · Score 0–599 → DECLINED
+    </div>
+    <p>Thresholds must be contiguous (no gaps) and non-overlapping. The system validates this constraint when thresholds are saved.</p>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── OUTCOME CODES ─────────────────────────────────────────── -->
+  <section class="help-section" id="outcome-codes">
+    <span class="section-tag">Decision Engine</span>
+    <div class="section-title">Outcome Codes</div>
+    <p class="section-lead">Outcome Codes are the standardised responses returned by the Decision Engine after evaluating an application. They are returned in the API response and drive downstream workflow routing.</p>
+    <table class="def-table">
+      <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>APPROVED</code></td><td>Application meets all criteria. Loan opening may proceed automatically.</td></tr>
+        <tr><td><code>REFERRED</code></td><td>Application requires manual underwriter review before a decision is made.</td></tr>
+        <tr><td><code>DECLINED</code></td><td>Application does not meet minimum criteria. Loan opening is rejected.</td></tr>
+        <tr><td><code>CONDITIONALLY_APPROVED</code></td><td>Approved subject to additional conditions (e.g. collateral, guarantor).</td></tr>
+        <tr><td><code>PENDING_DOCS</code></td><td>Decision deferred pending receipt of required documentation.</td></tr>
+        <tr><td><code>ERROR</code></td><td>The engine could not complete evaluation due to a system or data error. See execution logs.</td></tr>
+      </tbody>
+    </table>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── PROPERTY MAPPINGS ─────────────────────────────────────── -->
+  <section class="help-section" id="property-mappings">
+    <span class="section-tag">Decision Engine</span>
+    <div class="section-title">Property Mappings</div>
+    <p class="section-lead">Property Mappings define how fields in the incoming API request are translated into internal engine properties used by rules. This decouples the rule logic from the API contract — if the source field name changes, only the mapping needs updating, not the rules themselves.</p>
+    <table class="def-table">
+      <thead><tr><th>Field</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Source Field</td><td>The JSON path in the incoming API payload (e.g. <code>applicant.monthlyIncome</code>).</td></tr>
+        <tr><td>Engine Property</td><td>The internal constant name used in rule conditions (e.g. <code>NET_MONTHLY_INCOME</code>).</td></tr>
+        <tr><td>Type</td><td>Data type used for comparison: <code>Decimal</code>, <code>Integer</code>, or <code>String</code>.</td></tr>
+        <tr><td>Required</td><td>If true, the engine returns an <code>ERROR</code> outcome when the field is absent from the request.</td></tr>
+      </tbody>
+    </table>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--  ACCOUNTING                                               -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- ── GL PRODUCT ───────────────────────────────────────────── -->
+  <section class="help-section" id="gl-product">
+    <span class="section-tag">Accounting</span>
+    <div class="section-title">GL Product Definition</div>
+    <p class="section-lead">A GL Product Definition is the template that defines the accounting characteristics of a General Ledger account type: its normal balance side, classification, and posting behaviour.</p>
+    <table class="def-table">
+      <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Account Type</td><td>Asset, Liability, Equity, Income, or Expense. Determines the normal balance direction.</td></tr>
+        <tr><td>Normal Balance</td><td>Debit (assets, expenses) or Credit (liabilities, equity, income). Entries on the normal side increase the balance.</td></tr>
+        <tr><td>Classification</td><td>Sub-classification for reporting (e.g. Current Asset, Non-current Liability).</td></tr>
+        <tr><td>Currency Mode</td><td>Single currency or multi-currency. Multi-currency accounts revalue FX positions nightly.</td></tr>
+      </tbody>
+    </table>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── CHART OF ACCOUNTS ─────────────────────────────────────── -->
+  <section class="help-section" id="chart-of-accounts">
+    <span class="section-tag">Accounting</span>
+    <div class="section-title">Chart of Accounts</div>
+    <p class="section-lead">The Chart of Accounts (CoA) is the hierarchical structure of all GL accounts used by the organisation. It defines account codes, parent-child relationships, and the segment structure used for reporting.</p>
+    <div class="note-box">
+      <span class="box-label">Tenant isolation</span>
+      Each tenant maintains its own Chart of Accounts. Account codes from one tenant cannot be referenced in postings for another tenant.
+    </div>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── JOURNAL ENTRY ─────────────────────────────────────────── -->
+  <section class="help-section" id="journal-entry">
+    <span class="section-tag">Accounting</span>
+    <div class="section-title">Journal Entry</div>
+    <p class="section-lead">A Journal Entry is an immutable double-entry record in the GL. Every financial event in the system (loan disbursement, interest accrual, fee collection, etc.) generates one or more journal entries.</p>
+    <h3>Structure</h3>
+    <p>Each journal entry has a <strong>header</strong> (date, narrative, source system, reference, status) and two or more <strong>lines</strong> (account, debit/credit flag, amount in transaction currency, amount in base currency). The sum of debits must equal the sum of credits.</p>
+    <h3>Corrections</h3>
+    <p>Journal entries are append-only and cannot be deleted or modified. Corrections are made by posting a <strong>reversal entry</strong> (equal and opposite), followed by the corrected entry. Both the original and the reversal remain visible in the audit trail.</p>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ── PERIOD CLOSE ──────────────────────────────────────────── -->
+  <section class="help-section" id="period-close">
+    <span class="section-tag">Accounting</span>
+    <div class="section-title">Period Close</div>
+    <p class="section-lead">Period Close locks an accounting period against new postings, generates a trial balance snapshot, and prepares closing entries that carry balances forward to the next period.</p>
+    <div class="warn-box">
+      <span class="box-label">Irreversible action</span>
+      Once a period is locked it cannot be reopened without a system administrator override. Ensure all accruals, adjustments, and reconciliations are complete before closing.
+    </div>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--  GLOSSARY                                                 -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <section class="help-section" id="glossary">
+    <span class="section-tag">Reference</span>
+    <div class="section-title">Glossary — All Terms A–Z</div>
+    <p class="section-lead">Quick definitions for all key terms used across the platform.</p>
+    <table class="def-table">
+      <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td>Accrual</td><td>The daily recognition of interest income earned but not yet received in cash.</td></tr>
+        <tr><td>Amortised Cost</td><td>The amount at which a financial asset is measured after deducting principal repayments and adding/deducting cumulative amortisation using the EIR method.</td></tr>
+        <tr><td>Annuity</td><td>A series of equal periodic payments combining principal and interest such that the loan is fully repaid at maturity.</td></tr>
+        <tr><td>Balloon Payment</td><td>A large lump-sum payment due at maturity representing the residual principal balance after regular instalment payments.</td></tr>
+        <tr><td>Bullet Loan</td><td>A loan where only interest is paid periodically and the full principal is repaid at maturity.</td></tr>
+        <tr><td>Day Count Convention</td><td>The rule used to calculate the number of days in an interest period and the number of days in a year for interest accrual purposes.</td></tr>
+        <tr><td>DTI</td><td>Debt-to-Income ratio. Total monthly debt obligations divided by gross monthly income. Used as a credit filter in the Decision Engine.</td></tr>
+        <tr><td>EIR</td><td>Effective Interest Rate. The rate that equates the present value of all expected cash flows to the net carrying amount at initial recognition. See <a href="#eir">EIR section</a>.</td></tr>
+        <tr><td>EoD</td><td>End of Day. The nightly batch processing window during which accruals, penalty calculations, balance updates, and reporting extracts are generated.</td></tr>
+        <tr><td>Filter Rule</td><td>A hard go/no-go rule in the Decision Engine that immediately declines an application if the condition is not met.</td></tr>
+        <tr><td>GL</td><td>General Ledger. The master record of all financial transactions, organised by account.</td></tr>
+        <tr><td>IFRS 9</td><td>International Financial Reporting Standard 9. Governs the classification, measurement, and impairment of financial instruments.</td></tr>
+        <tr><td>LTV</td><td>Loan-to-Value ratio. Loan amount divided by the appraised value of collateral. Used as a credit filter for secured products.</td></tr>
+        <tr><td>Non-performing Loan (NPL)</td><td>A loan where the borrower is 90 or more days past due on a scheduled payment. Accrual is typically suspended on NPLs.</td></tr>
+        <tr><td>Outcome Code</td><td>The standardised result returned by the Decision Engine after evaluating a credit application. See <a href="#outcome-codes">Outcome Codes</a>.</td></tr>
+        <tr><td>Period</td><td>An accounting period, typically a calendar month, during which transactions are recorded and at the end of which the GL is closed.</td></tr>
+        <tr><td>Property Mapping</td><td>The configuration that maps an API request field to a Decision Engine internal property. See <a href="#property-mappings">Property Mappings</a>.</td></tr>
+        <tr><td>Rediscounting</td><td>The accounting process of reversing previously recognised unearned income, used in certain accrual adjustments.</td></tr>
+        <tr><td>Referred</td><td>A Decision Engine outcome indicating that the application requires manual underwriter review.</td></tr>
+        <tr><td>Rule Group</td><td>A named set of credit rules evaluated together for a specific product or use-case. See <a href="#rule-groups">Rule Groups</a>.</td></tr>
+        <tr><td>Rule Threshold</td><td>A score band mapped to a decision outcome in the Decision Engine. See <a href="#thresholds">Rule Thresholds</a>.</td></tr>
+        <tr><td>Score Rule</td><td>A weighted rule in the Decision Engine that contributes a numeric score to the total, which is then compared against thresholds.</td></tr>
+        <tr><td>Tenant</td><td>An isolated organisational entity within the platform. Each tenant has its own data, configuration, and GL.</td></tr>
+      </tbody>
+    </table>
+    <a class="back-top" href="#overview">↑ Back to top</a>
+  </section>
+
+</main>
+</div>
+
+<script>
+// ── Active link tracking ─────────────────────────────────────────
+const sections = document.querySelectorAll('.help-section');
+const links    = document.querySelectorAll('.sb-link');
+const main     = document.getElementById('mainContent');
+
+function setActive() {
+  let current = '';
+  sections.forEach(s => {
+    if (s.offsetTop - main.scrollTop <= 80) current = s.id;
+  });
+  links.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+}
+main.addEventListener('scroll', setActive);
+setActive();
+
+// ── Sidebar search ───────────────────────────────────────────────
+function filterSidebar(q) {
+  q = q.toLowerCase().trim();
+  links.forEach(l => {
+    const match = !q || l.textContent.toLowerCase().includes(q);
+    l.style.display = match ? '' : 'none';
+  });
+  document.querySelectorAll('.sb-group-label').forEach(g => {
+    const grp   = g.parentElement;
+    const visible = [...grp.querySelectorAll('.sb-link')].some(l => l.style.display !== 'none');
+    grp.style.display = visible ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>
