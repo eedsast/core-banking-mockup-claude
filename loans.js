@@ -1975,7 +1975,7 @@ function openLoanProductForm(mod, data) {
         <div class="lp-help-title">Cash vs Accruals Accounting</div>
         <div class="lp-help-sub">Accounting methodologies</div>
         <div class="lp-help-text">
-          Mambu supports two main accounting methodologies you can choose from based on your internal operations:
+          OneFor Core Banking suite supports two main accounting methodologies you can choose from based on your internal operations:
           <ul><li>Cash</li><li>Accruals based accounting</li></ul>
           The key difference between the two methodologies is the moment when income or expenses are recognised in the General Ledger (GL).<br><br>
           You can select the methodology for each of your products independently.<br><br>
@@ -2641,3 +2641,4 @@ function buildPenaltySection(mod) {
       </div>
     </div>`;
 }
+  
