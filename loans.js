@@ -2641,4 +2641,3 @@ function buildPenaltySection(mod) {
       </div>
     </div>`;
 }
-  
