@@ -2438,7 +2438,8 @@ function renderContent(containerId, mod, section, title, subtitle) {
   const _LOANS_SECTIONS = new Set([
     'loan-detail','loaninfo','eod-monitor','eod','eod-scheduler',
     'loansim','loanprod','interestdef','accrual','collection',
-    'loan-report-open','loan-report-closed','loan-report-eom','penalty'
+    'loan-report-open','loan-report-closed','loan-report-eom','penalty',
+    'customer-report'
   ]);
   if (_LOANS_SECTIONS.has(section)) {
     if (typeof renderLoansContent !== 'function') {
