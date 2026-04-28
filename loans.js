@@ -1279,7 +1279,10 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
             <tbody id="cr-tbody">${crLoans.map(crRowHtml).join('')}</tbody>
           </table>
         </div>
-        <div style="margin-top:10px;color:#6a8faf;font-size:12px" id="cr-count">Showing ${crLoans.length} loans</div>
+        <div style="margin-top:12px" id="cr-count-wrap">
+          <div style="color:#6a8faf;font-size:12px;margin-bottom:6px" id="cr-count">Showing ${crLoans.length} loans</div>
+          <div id="cr-subtotals"></div>
+        </div>
       </div>
 
       <!-- Modal -->
@@ -1299,15 +1302,43 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
       </div>`;
 
     // ── JS logic (runs immediately, no innerHTML script needed) ──────────────────
-    const crModal    = el.querySelector('#cr-modal');
-    const crModalBody= el.querySelector('#cr-modal-body');
-    const crModalSub = el.querySelector('#cr-modal-subtitle');
-    const crTbody    = el.querySelector('#cr-tbody');
-    const crCount    = el.querySelector('#cr-count');
+    const crModal     = el.querySelector('#cr-modal');
+    const crModalBody = el.querySelector('#cr-modal-body');
+    const crModalSub  = el.querySelector('#cr-modal-subtitle');
+    const crTbody     = el.querySelector('#cr-tbody');
+    const crCount     = el.querySelector('#cr-count');
+    const crSubtotals = el.querySelector('#cr-subtotals');
 
-    function crRenderRows(rows) {
+    const parseAmt = s => parseFloat((s || '0').replace(/,/g, '')) || 0;
+
+    function crRenderRows(rows, filtered) {
       crTbody.innerHTML = rows.map(crRowHtml).join('');
-      crCount.textContent = `Showing ${rows.length} loans`;
+      crCount.textContent = `Showing ${rows.length} loan${rows.length !== 1 ? 's' : ''}`;
+
+      // Subtotals — only shown when a filter is active
+      if (filtered && rows.length > 0) {
+        const totDisb  = rows.reduce((s, r) => s + parseAmt(r.disbAmt),  0);
+        const totOut   = rows.reduce((s, r) => s + parseAmt(r.outPrinc), 0);
+        const totDue   = rows.reduce((s, r) => s + parseAmt(r.dueAmt),   0);
+        const fmtNum   = n => n.toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });
+        const cell     = (lbl, val, red) => `
+          <div style="display:flex;flex-direction:column;align-items:flex-end">
+            <div style="font-size:11px;color:#6a8faf;margin-bottom:2px">${lbl}</div>
+            <div style="font-size:13px;font-weight:700;color:${red?'#c62828':'#1a2640'}">${val} EUR</div>
+          </div>`;
+        crSubtotals.innerHTML = `
+          <div style="display:flex;gap:24px;justify-content:flex-end;align-items:center;
+                      background:#f0f4fa;border:1px solid #c5d8f5;border-radius:8px;
+                      padding:10px 18px;font-size:13px">
+            <div style="font-size:12px;color:#3a5272;font-weight:600;margin-right:8px">Subtotals</div>
+            ${cell('Disbursement Amount', fmtNum(totDisb), false)}
+            ${cell('Outstanding Principal', fmtNum(totOut), false)}
+            ${cell('Due Amount', fmtNum(totDue), totDue > 0)}
+          </div>`;
+      } else {
+        crSubtotals.innerHTML = '';
+      }
+
       crTbody.querySelectorAll('.cr-eye-btn').forEach(btn => {
         btn.addEventListener('click', () => crOpenModal(btn.dataset.crId));
       });
@@ -1384,19 +1415,20 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
       const cust   = el.querySelector('#cr-filter-cust').value.trim().toLowerCase();
       const loan   = el.querySelector('#cr-filter-loan').value.trim().toLowerCase();
       const status = el.querySelector('#cr-filter-status').value;
-      const filtered = crLoans.filter(r =>
+      const isFiltered = !!(cust || loan || status !== 'All');
+      const results = crLoans.filter(r =>
         (!cust   || r.custId.toLowerCase().includes(cust)) &&
         (!loan   || r.loanNo.toLowerCase().includes(loan) || r.loanId.toLowerCase().includes(loan)) &&
         (status === 'All' || r.status === status)
       );
-      crRenderRows(filtered);
+      crRenderRows(results, isFiltered);
     });
     el.querySelector('#cr-btn-clear').addEventListener('click', () => {
       el.querySelector('#cr-filter-cust').value   = '';
       el.querySelector('#cr-filter-loan').value   = '';
       el.querySelector('#cr-filter-prod').value   = '';
       el.querySelector('#cr-filter-status').value = 'All';
-      crRenderRows(crLoans);
+      crRenderRows(crLoans, false);
     });
 
     // Close modal
