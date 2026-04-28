@@ -2271,6 +2271,7 @@
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Scope</th>
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Trigger</th>
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Method</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Currency</th>
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Status</th>
           </tr>
         </thead>
@@ -4037,10 +4038,10 @@ var _currentEnv = 'UAT';
 // ── ADD CURRENCY MODAL ───────────────────────────────────────────────────────
 // ── LP FEE PICKER ────────────────────────────────────────────────────────────
 var LP_FEE_CATALOG = [
-  { id:13, name:'Talat fee',                 version:'v1.0', scope:'Account',      trigger:'Per Instalment', method:'Fixed',      status:'Active'  },
-  { id:12, name:'Upfront processing fee 3%', version:'v1.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', status:'Pending' },
-  { id:11, name:'100 bucks fee',             version:'v1.0', scope:'Loan Product', trigger:'Per Instalment', method:'Fixed',      status:'Active'  },
-  { id:10, name:'Upfront fee 2%',            version:'v2.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', status:'Active'  },
+  { id:13, name:'Talat fee',                 version:'v1.0', scope:'Account',      trigger:'Per Instalment', method:'Fixed',      currency:'EUR', status:'Active'  },
+  { id:12, name:'Upfront processing fee 3%', version:'v1.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', currency:'',    status:'Pending' },
+  { id:11, name:'100 bucks fee',             version:'v1.0', scope:'Loan Product', trigger:'Per Instalment', method:'Fixed',      currency:'EUR', status:'Active'  },
+  { id:10, name:'Upfront fee 2%',            version:'v2.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', currency:'',    status:'Active'  },
 ];
 var _lpFeePickerSelected = null;
 
@@ -4078,6 +4079,7 @@ function lpFeePickerRender(list) {
       + '<td style="padding:10px 12px;color:#3a5272">' + f.scope + '</td>'
       + '<td style="padding:10px 12px;color:#3a5272">' + f.trigger + '</td>'
       + '<td style="padding:10px 12px">' + methodBadge + '</td>'
+      + '<td style="padding:10px 12px;font-weight:600;color:#1a2640">' + (f.currency || '—') + '</td>'
       + '<td style="padding:10px 12px"><span class="' + statusCls + '">' + f.status + '</span></td>'
       + '</tr>';
   }).join('');
