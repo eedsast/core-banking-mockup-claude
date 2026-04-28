@@ -3067,6 +3067,7 @@ function lpRefreshFees() {
       + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Scope</th>'
       + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Trigger</th>'
       + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Method</th>'
+      + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Currency</th>'
       + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Status</th>'
       + '<th style="padding:7px 10px"></th>'
       + '</tr></thead><tbody>'
@@ -3076,14 +3077,16 @@ function lpRefreshFees() {
           var version = isObj ? (f.version || '') : '';
           var scope   = isObj ? (f.scope   || '') : '';
           var trigger = isObj ? (f.trigger || '') : '';
-          var method  = isObj ? (f.method  || '') : '';
-          var status  = isObj ? (f.status  || 'Active') : 'Active';
+          var method   = isObj ? (f.method   || '') : '';
+          var currency = isObj ? (f.currency || '') : '';
+          var status   = isObj ? (f.status   || 'Active') : 'Active';
           return '<tr style="border-bottom:1px solid #f0f4f8">'
             + '<td style="padding:7px 10px;font-weight:500;color:#1a2e42">' + name + '</td>'
             + '<td style="padding:7px 10px;color:#6a8faf">' + version + '</td>'
             + '<td style="padding:7px 10px;color:#3a5570">' + scope + '</td>'
             + '<td style="padding:7px 10px;color:#3a5570">' + trigger + '</td>'
             + '<td style="padding:7px 10px">' + methodBadge(method) + '</td>'
+            + '<td style="padding:7px 10px;font-weight:600;color:#1a2640">' + (currency || '—') + '</td>'
             + '<td style="padding:7px 10px"><span class="' + statusCls(status) + '">' + status + '</span></td>'
             + '<td style="padding:7px 10px;text-align:center">'
             +   '<button onclick="window._lpFees.splice(' + i + ',1);lpRefreshFees()" title="Remove" '

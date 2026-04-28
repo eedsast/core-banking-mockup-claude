@@ -4111,7 +4111,7 @@ function closeLpFeeModal() {
 function saveLpFee() {
   if (!_lpFeePickerSelected) { alert('Please select a fee from the list.'); return; }
   var f = _lpFeePickerSelected;
-  var entry = { feeId:f.id, feeName:f.name, version:f.version, trigger:f.trigger, method:f.method, scope:f.scope, status:f.status };
+  var entry = { feeId:f.id, feeName:f.name, version:f.version, trigger:f.trigger, method:f.method, currency:f.currency||'', scope:f.scope, status:f.status };
   window._lpFees = window._lpFees || [];
   window._lpFees.push(entry);
   if (typeof lpRefreshFees === 'function') lpRefreshFees();
