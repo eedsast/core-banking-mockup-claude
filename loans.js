@@ -3052,14 +3052,45 @@ function lpRefreshFees() {
   var body = document.getElementById('lp-fees-body');
   if (!body) return;
   if (!window._lpFees || !window._lpFees.length) {
-    body.innerHTML = '<div class="lp-sub-empty">No fees added yet. Click "+ Add Fee" to create the first one.</div>';
+    body.innerHTML = '<div class="lp-sub-empty">No fees added yet. Click "+ Add Fee" to select from the fee definitions list.</div>';
   } else {
-    body.innerHTML = '<div class="lp-cust-row"><div class="lp-cust-tags">' +
-      window._lpFees.map(function(f, i) {
-        return '<span class="lp-cust-tag">' + f +
-          '<button onclick="window._lpFees.splice(' + i + ',1);lpRefreshFees()" title="Remove">×</button></span>';
-      }).join('') +
-    '</div></div>';
+    var statusCls = function(s) { return (s === 'Active') ? 'fee-status-active' : 'fee-status-inactive'; };
+    var methodBadge = function(m) {
+      return m === 'Fixed'
+        ? '<span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Fixed</span>'
+        : '<span style="background:#e3f2fd;color:#1565c0;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Percentage</span>';
+    };
+    body.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px">'
+      + '<thead><tr style="background:#f6f9fc;border-bottom:1px solid #dce8f0">'
+      + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Name</th>'
+      + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Version</th>'
+      + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Scope</th>'
+      + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Trigger</th>'
+      + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Method</th>'
+      + '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Status</th>'
+      + '<th style="padding:7px 10px"></th>'
+      + '</tr></thead><tbody>'
+      + window._lpFees.map(function(f, i) {
+          var isObj = typeof f === 'object';
+          var name    = isObj ? (f.feeName || '') : f;
+          var version = isObj ? (f.version || '') : '';
+          var scope   = isObj ? (f.scope   || '') : '';
+          var trigger = isObj ? (f.trigger || '') : '';
+          var method  = isObj ? (f.method  || '') : '';
+          var status  = isObj ? (f.status  || 'Active') : 'Active';
+          return '<tr style="border-bottom:1px solid #f0f4f8">'
+            + '<td style="padding:7px 10px;font-weight:500;color:#1a2e42">' + name + '</td>'
+            + '<td style="padding:7px 10px;color:#6a8faf">' + version + '</td>'
+            + '<td style="padding:7px 10px;color:#3a5570">' + scope + '</td>'
+            + '<td style="padding:7px 10px;color:#3a5570">' + trigger + '</td>'
+            + '<td style="padding:7px 10px">' + methodBadge(method) + '</td>'
+            + '<td style="padding:7px 10px"><span class="' + statusCls(status) + '">' + status + '</span></td>'
+            + '<td style="padding:7px 10px;text-align:center">'
+            +   '<button onclick="window._lpFees.splice(' + i + ',1);lpRefreshFees()" title="Remove" '
+            +   'style="background:#fde8e8;color:#c0392b;border:1px solid #f5b7b1;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:12px">&times;</button>'
+            + '</td></tr>';
+        }).join('')
+      + '</tbody></table>';
   }
 }
 window.lpRefreshCustTypes = lpRefreshCustTypes;
