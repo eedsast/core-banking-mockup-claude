@@ -1701,6 +1701,7 @@
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="accrual" data-title="Interest Accrual Definitions" data-subtitle="Configure accrual calendars and methods">Interest Accrual Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="collection" data-title="Collection Definitions" data-subtitle="Set up collection schedules and rules">Collection Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="penalty" data-title="Penalty Definitions" data-subtitle="Define late payment and penalty structures">Penalty Definitions</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="feedef" data-title="Fee Definitions" data-subtitle="Manage fee definitions for loan products">Fee Definitions</div>
         </div>
       </div>
 
@@ -2371,7 +2372,7 @@ function toggleGroup(header) {
 }
 
 // Sections that render their own full-page header (title + subtitle + CTA)
-const SELF_HEADED_SECTIONS = new Set(['fees', 'penalty', 'security', 'services', 'exchangerate', 'collection', 'accrual', 'interestdef', 'loanprod', 'loansim', 'eod', 'eod-scheduler', 'eod-monitor', 'loan-report-open', 'loan-report-closed', 'loan-report-eom', 'customer-report', 'loaninfo', 'organisation', 'users', 'roles', 'permissions', 'role-assignments', 'branch', 'user-list', 'loan-detail', 'rule-groups', 'rule-group-schema', 'rule-group-test', 'dec-rules', 'rule-thresholds', 'property-mappings', 'outcome-codes', 'execution-logs', 'analytics', 'dec-users', 'api-keys', 'import-json']);
+const SELF_HEADED_SECTIONS = new Set(['fees', 'penalty', 'feedef', 'security', 'services', 'exchangerate', 'collection', 'accrual', 'interestdef', 'loanprod', 'loansim', 'eod', 'eod-scheduler', 'eod-monitor', 'loan-report-open', 'loan-report-closed', 'loan-report-eom', 'customer-report', 'loaninfo', 'organisation', 'users', 'roles', 'permissions', 'role-assignments', 'branch', 'user-list', 'loan-detail', 'rule-groups', 'rule-group-schema', 'rule-group-test', 'dec-rules', 'rule-thresholds', 'property-mappings', 'outcome-codes', 'execution-logs', 'analytics', 'dec-users', 'api-keys', 'import-json']);
 
 // ── FORM UTILITIES (shared by module files) ─────────────────────────────────
 // ── FORM UTILITIES ────────────────────────────────────────────────────────────
@@ -2439,7 +2440,7 @@ function renderContent(containerId, mod, section, title, subtitle) {
     'loan-detail','loaninfo','eod-monitor','eod','eod-scheduler',
     'loansim','loanprod','interestdef','accrual','collection',
     'loan-report-open','loan-report-closed','loan-report-eom','penalty',
-    'customer-report'
+    'customer-report','feedef'
   ]);
   if (_LOANS_SECTIONS.has(section)) {
     if (typeof renderLoansContent !== 'function') {

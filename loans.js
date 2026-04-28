@@ -1678,6 +1678,95 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
     }
   }
   // Penalty section
+  // ── FEE DEFINITIONS ──────────────────────────────────────────────────────────
+  if (section === 'feedef') {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+
+    const FEED_DATA = [
+      { id:13, name:'Talat fee',                 scope:'Account',      trigger:'Per Instalment', freq:'—', basis:'—',      method:'—',          status:'Active',  created:'16.03.2026' },
+      { id:12, name:'Upfront processing fee 3%', scope:'Loan Product', trigger:'Up Front',       freq:'—', basis:'Loan Amount', method:'Percentage', status:'Pending', created:'28.01.2026' },
+      { id:11, name:'100 bucks fee',             scope:'Loan Product', trigger:'Per Instalment', freq:'—', basis:'—',      method:'Fixed',      status:'Active',  created:'13.01.2026' },
+      { id:10, name:'Upfront fee 2%',            scope:'Loan Product', trigger:'Up Front',       freq:'—', basis:'Loan Amount', method:'Percentage', status:'Active',  created:'07.01.2026' },
+    ];
+
+    const statusBadge = s => s === 'Active'
+      ? `<span class="fee-status-active">Active</span>`
+      : `<span class="fee-status-inactive">${s}</span>`;
+
+    const rowsHtml = FEED_DATA.map(r => `
+      <tr>
+        <td style="padding:14px 16px">${r.id}</td>
+        <td style="padding:14px 16px;font-weight:500">${r.name}</td>
+        <td style="padding:14px 16px">${r.scope}</td>
+        <td style="padding:14px 16px">${r.trigger}</td>
+        <td style="padding:14px 16px">${r.freq}</td>
+        <td style="padding:14px 16px">${r.basis}</td>
+        <td style="padding:14px 16px">${r.method}</td>
+        <td style="padding:14px 16px">${statusBadge(r.status)}</td>
+        <td style="padding:14px 16px">${r.created}</td>
+        <td style="padding:14px 16px">
+          <div class="fee-actions">
+            <button class="fee-btn-edit" data-feed-id="${r.id}" title="Edit">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 2l3 3-9 9H2v-3L11 2z"/></svg>
+              Edit
+            </button>
+            <button class="fee-btn-delete" title="Delete">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 4 13 4"/><path d="M5 4V2h6v2M6 7v5M10 7v5"/><path d="M4 4l1 10h6l1-10"/></svg>
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>`).join('');
+
+    el.innerHTML = `
+      <div class="fee-page-header">
+        <div>
+          <div class="fee-page-title">Fee Definitions</div>
+          <div class="fee-page-sub">Manage fee definitions</div>
+        </div>
+        <button class="btn-create-fee" id="feedef-create-btn">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+          Create Fee Definition
+        </button>
+      </div>
+
+      <div class="fee-table-wrap">
+        <table class="fee-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Name</th><th>Scope</th><th>Trigger</th>
+              <th>Frequency</th><th>Basis</th><th>Method</th>
+              <th>Status</th><th>Created At</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="feedef-tbody">${rowsHtml}</tbody>
+        </table>
+      </div>
+
+      <div class="fee-pagination">
+        <div style="font-size:13px;color:var(--text-muted)">Showing 1-${FEED_DATA.length} of ${FEED_DATA.length} results</div>
+        <div class="fee-pag-controls">
+          <button class="fee-pag-prev" disabled>Previous</button>
+          <button class="fee-pag-num active">1</button>
+          <button class="fee-pag-next" disabled>Next</button>
+        </div>
+      </div>`;
+
+    // Wire Edit buttons
+    el.querySelectorAll('.fee-btn-edit').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const row = FEED_DATA.find(r => r.id === parseInt(btn.dataset.feedId));
+        openFeeDefForm(containerId, row);
+      });
+    });
+    // Wire Create button
+    el.querySelector('#feedef-create-btn').addEventListener('click', () => {
+      openFeeDefForm(containerId, null);
+    });
+    return;
+  }
+
   if (section === 'penalty') {
     const el = document.getElementById(containerId);
     if (el) el.innerHTML = buildPenaltySection(mod);
@@ -1686,6 +1775,193 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
   // Fallback
   const el = document.getElementById(containerId);
   if (el) el.innerHTML = '<div style="padding:32px;text-align:center;color:var(--text-muted)">Section not found in loans module.</div>';
+}
+
+function openFeeDefForm(containerId, data) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const d = data || {};
+  const isEdit = !!d.id;
+
+  el.innerHTML = `
+    <div class="fee-form-topbar">
+      <div class="fee-form-topbar-left">
+        <button class="fee-form-back" id="feedef-back-btn" title="Back">
+          ${_I_BACK_14}
+        </button>
+        <div>
+          <div class="fee-form-heading">Fee Definition</div>
+          <div class="fee-form-subheading">Configure fee settings</div>
+        </div>
+      </div>
+      <button class="btn-fee-save">
+        ${_I_SAVE_14}
+        Save
+      </button>
+    </div>
+
+    <!-- Core Information -->
+    <div class="fee-form-section">
+      <div class="fee-form-section-title">Core Information</div>
+      <div class="fee-form-row full">
+        <div class="fee-form-field">
+          <label class="fee-form-label">Name</label>
+          <input class="fee-form-input" type="text" id="ff-name"
+            placeholder="Enter fee name" value="${d.name || ''}"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scope & Trigger -->
+    <div class="fee-form-section">
+      <div class="fee-form-section-title">Scope &amp; Trigger</div>
+      <div class="fee-form-row">
+        <div class="fee-form-field">
+          <label class="fee-form-label">Scope</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="ff-scope">
+              <option ${(d.scope||'Loan Product')==='Loan Product'?'selected':''}>Loan Product</option>
+              <option ${(d.scope||'')==='Account'?'selected':''}>Account</option>
+            </select>
+          </div>
+        </div>
+        <div class="fee-form-field">
+          <label class="fee-form-label">Trigger event</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="ff-trigger">
+              <option ${(d.trigger||'Up Front')==='Up Front'?'selected':''}>Up Front</option>
+              <option ${(d.trigger||'')==='Per Instalment'?'selected':''}>Per Instalment</option>
+              <option ${(d.trigger||'')==='Periodic'?'selected':''}>Periodic</option>
+              <option ${(d.trigger||'')==='Event Based'?'selected':''}>Event Based</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculation -->
+    <div class="fee-form-section" id="ff-calc-section">
+      <div class="fee-form-section-title">Calculation</div>
+      <div class="fee-form-row">
+        <div class="fee-form-field">
+          <label class="fee-form-label">Calculation method</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="ff-method">
+              <option ${(d.method||'Fixed')==='Fixed'?'selected':''}>Fixed</option>
+              <option ${(d.method||'')==='Percentage'?'selected':''}>Percentage</option>
+            </select>
+          </div>
+        </div>
+        <div class="fee-form-field" id="ff-fixed-amt-wrap">
+          <label class="fee-form-label">Fixed amount</label>
+          <input class="fee-form-input" type="text" id="ff-fixed-amt" placeholder="e.g. 50" value="${d.fixedAmt||''}"/>
+        </div>
+        <div class="fee-form-field" id="ff-pct-base-wrap" style="display:none">
+          <label class="fee-form-label">Calculation base</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="ff-pct-base">
+              <option>Loan Amount</option>
+              <option>Outstanding Balance</option>
+              <option>Overdue Amount</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fixed extra row: Currency + EIR -->
+      <div class="fee-form-row" id="ff-fixed-row2">
+        <div class="fee-form-field">
+          <label class="fee-form-label">Currency</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="ff-currency">
+              <option>EUR</option><option>USD</option><option>GBP</option>
+            </select>
+          </div>
+        </div>
+        <div class="fee-form-field">
+          <label class="fee-form-label">Included in EIR calculation</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="ff-eir">
+              <option>Yes</option><option>No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Percentage extra rows -->
+      <div id="ff-pct-rows" style="display:none">
+        <div class="fee-form-row">
+          <div class="fee-form-field">
+            <label class="fee-form-label">Rate (%)</label>
+            <input class="fee-form-input" type="text" id="ff-rate" placeholder="e.g. 2.5" value="${d.rate||''}"/>
+          </div>
+          <div class="fee-form-field">
+            <label class="fee-form-label">Min. amount</label>
+            <input class="fee-form-input" type="text" id="ff-min" placeholder="Optional" value="${d.minAmt||''}"/>
+          </div>
+        </div>
+        <div class="fee-form-row">
+          <div class="fee-form-field">
+            <label class="fee-form-label">Max. amount</label>
+            <input class="fee-form-input" type="text" id="ff-max" placeholder="Optional" value="${d.maxAmt||''}"/>
+          </div>
+          <div class="fee-form-field">
+            <label class="fee-form-label">Included in EIR calculation</label>
+            <div class="fee-select-wrap">
+              <select class="fee-form-select" id="ff-eir-pct">
+                <option>Yes</option><option>No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Validity & Status -->
+    <div class="fee-form-section">
+      <div class="fee-form-section-title">Validity &amp; Status</div>
+      <div class="fee-form-row">
+        <div class="fee-form-field">
+          <label class="fee-form-label">Valid from</label>
+          <input class="fee-form-input" type="text" id="ff-from" placeholder="Select date" value="${d.validFrom||''}"/>
+        </div>
+        <div class="fee-form-field">
+          <label class="fee-form-label">Valid to</label>
+          <input class="fee-form-input" type="text" id="ff-to" value="${d.validTo||'31.12.2099'}"/>
+        </div>
+      </div>
+      <div class="fee-form-row">
+        <div class="fee-form-field">
+          <label class="fee-form-label">Status</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="ff-status">
+              <option ${(d.status||'Pending')==='Pending'?'selected':''}>Pending</option>
+              <option ${(d.status||'')==='Active'?'selected':''}>Active</option>
+              <option ${(d.status||'')==='Inactive'?'selected':''}>Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div class="fee-form-field"></div>
+      </div>
+    </div>`;
+
+  // Back button
+  el.querySelector('#feedef-back-btn').addEventListener('click', () => {
+    renderLoansContent(containerId, 'loans', 'feedef', 'Fee Definitions', 'Manage fee definitions for loan products');
+  });
+
+  // Method toggle
+  function toggleMethod() {
+    const method = el.querySelector('#ff-method').value;
+    const isFixed = method === 'Fixed';
+    el.querySelector('#ff-fixed-amt-wrap').style.display  = isFixed ? '' : 'none';
+    el.querySelector('#ff-fixed-row2').style.display      = isFixed ? '' : 'none';
+    el.querySelector('#ff-pct-base-wrap').style.display   = isFixed ? 'none' : '';
+    el.querySelector('#ff-pct-rows').style.display        = isFixed ? 'none' : '';
+  }
+  el.querySelector('#ff-method').addEventListener('change', toggleMethod);
+  // Set initial state from data
+  if (d.method === 'Percentage') toggleMethod();
 }
 
 function openPenaltyForm(mod, data) {
