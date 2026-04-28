@@ -1174,6 +1174,269 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
       </div>
       ${renderTable(['ID','Name','Oldest First','Status','Created At','Actions'], rowsHtml, collRows.length, {wrapStyle:'margin-top:0;'})}`;
   }
+  // ── CUSTOMER REPORT ────────────────────────────────────────────────────────
+  if (section === 'customer-report') {
+    const crLoans = [
+      { custId:'99',  loanNo:'000000759837', disbDate:'04.03.2026', disbAmt:'1,999.00',  outPrinc:'1,999.00', dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'40' },
+      { custId:'99',  loanNo:'000000207024', disbDate:'26.01.2026', disbAmt:'1,000.00',  outPrinc:'650.00',   dueAmt:'322.83', daysArr:35, status:'Overdue',  loanId:'25' },
+      { custId:'99',  loanNo:'000000454835', disbDate:'23.01.2026', disbAmt:'1,200.00',  outPrinc:'889.17',   dueAmt:'322.83', daysArr:0,  status:'Active',   loanId:'21' },
+      { custId:'99',  loanNo:'000000698990', disbDate:'28.02.2027', disbAmt:'2,000.00',  outPrinc:'2,000.00', dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'37' },
+      { custId:'99',  loanNo:'000000298566', disbDate:'04.03.2026', disbAmt:'1,699.50',  outPrinc:'1,699.50', dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'38' },
+      { custId:'99',  loanNo:'000000119031', disbDate:'04.03.2026', disbAmt:'10,000.00', outPrinc:'10,000.00',dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'41' },
+      { custId:'99',  loanNo:'000000829988', disbDate:'04.03.2026', disbAmt:'1,999.50',  outPrinc:'1,999.50', dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'39' },
+      { custId:'99',  loanNo:'000000919318', disbDate:'05.03.2026', disbAmt:'1,000.00',  outPrinc:'1,000.00', dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'45' },
+      { custId:'99',  loanNo:'000000188479', disbDate:'05.03.2026', disbAmt:'1,699.50',  outPrinc:'1,699.50', dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'47' },
+      { custId:'99',  loanNo:'000000928537', disbDate:'06.03.2026', disbAmt:'5,000.00',  outPrinc:'5,000.00', dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'49' },
+      { custId:'99',  loanNo:'000000505321', disbDate:'26.01.2026', disbAmt:'1,000.00',  outPrinc:'780.00',   dueAmt:'88.71',  daysArr:12, status:'Overdue',  loanId:'28' },
+      { custId:'1',   loanNo:'000000911989', disbDate:'29.12.2025', disbAmt:'1,000.00',  outPrinc:'1,000.00', dueAmt:'0.00',   daysArr:0,  status:'Active',   loanId:'4'  },
+    ];
+
+    const statusOpts = ['All','Active','Overdue','Closed','Pending'];
+    const statusBadge = s => {
+      if (s === 'Active')  return `<span style="background:#e8f5e9;color:#2e7d32;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600">Active</span>`;
+      if (s === 'Overdue') return `<span style="background:#ffebee;color:#c62828;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600">Overdue</span>`;
+      if (s === 'Closed')  return `<span style="background:#f3e5f5;color:#6a1b9a;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600">Closed</span>`;
+      return `<span style="background:#fff8e1;color:#e65100;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600">${s}</span>`;
+    };
+
+    const rowsHtml = crLoans.map(r => `
+      <tr>
+        <td>${r.custId}</td>
+        <td style="font-weight:500">${r.loanNo}</td>
+        <td>${r.disbDate}</td>
+        <td style="text-align:right">${r.disbAmt} EUR</td>
+        <td style="text-align:right">${r.outPrinc} EUR</td>
+        <td style="text-align:right;${r.dueAmt!=='0.00'?'color:#c62828;font-weight:600':''}">
+          ${r.dueAmt} EUR
+        </td>
+        <td style="text-align:center;${r.daysArr>0?'color:#c62828;font-weight:600':''}">
+          ${r.daysArr > 0 ? r.daysArr : '—'}
+        </td>
+        <td>${statusBadge(r.status)}</td>
+        <td style="text-align:center">
+          <button class="cr-eye-btn" data-action="cr-view-loan" data-loan-id="${r.loanId}"
+            style="background:none;border:1px solid #c5d8f5;border-radius:6px;padding:4px 8px;cursor:pointer;color:#1a6ab5;display:inline-flex;align-items:center;gap:4px;font-size:12px"
+            title="View loan details">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </td>
+      </tr>`).join('');
+
+    return `
+      <div class="rpt-wrap" style="padding:20px 28px">
+        <div class="pg-header" style="margin-bottom:16px">
+          <div>
+            <div class="pg-title">Customer Report</div>
+            <div class="pg-sub">Search and view loan details per customer</div>
+          </div>
+        </div>
+
+        <!-- Search filters -->
+        <div class="rpt-filter-card" style="margin-bottom:20px">
+          <div class="rpt-filter-row" style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end">
+            <div class="rpt-filter-field">
+              <label class="rpt-filter-label">Customer ID</label>
+              <input id="cr-filter-cust" class="rpt-input" type="text" placeholder="e.g. 99"
+                style="border:1px solid #d0ddef;border-radius:6px;padding:6px 10px;font-size:13px;width:140px"/>
+            </div>
+            <div class="rpt-filter-field">
+              <label class="rpt-filter-label">Loan ID</label>
+              <input id="cr-filter-loan" class="rpt-input" type="text" placeholder="e.g. 57"
+                style="border:1px solid #d0ddef;border-radius:6px;padding:6px 10px;font-size:13px;width:140px"/>
+            </div>
+            <div class="rpt-filter-field">
+              <label class="rpt-filter-label">Product ID</label>
+              <input id="cr-filter-prod" class="rpt-input" type="text" placeholder="e.g. 44"
+                style="border:1px solid #d0ddef;border-radius:6px;padding:6px 10px;font-size:13px;width:140px"/>
+            </div>
+            <div class="rpt-filter-field">
+              <label class="rpt-filter-label">Loan Status</label>
+              <div class="rpt-select-wrap">
+                <select id="cr-filter-status" class="rpt-select" style="min-width:140px">
+                  ${statusOpts.map(s=>`<option>${s}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <button onclick="crApplyFilter()" style="padding:7px 20px;background:#1a6ab5;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;height:32px">
+              Search
+            </button>
+            <button onclick="crClearFilter()" style="padding:7px 16px;background:#f0f4fa;color:#1a6ab5;border:1px solid #c5d8f5;border-radius:6px;font-size:13px;cursor:pointer;height:32px">
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- Results table -->
+        <div class="rpt-table-wrap" style="overflow-x:auto">
+          <table class="rpt-table" id="cr-table" style="width:100%;border-collapse:collapse;font-size:13px">
+            <thead>
+              <tr style="background:#f0f4fa;border-bottom:2px solid #c5d8f5">
+                <th style="padding:9px 12px;text-align:left;font-weight:600;color:#3a5272">Customer ID</th>
+                <th style="padding:9px 12px;text-align:left;font-weight:600;color:#3a5272">Loan Number</th>
+                <th style="padding:9px 12px;text-align:left;font-weight:600;color:#3a5272">Disbursement Date</th>
+                <th style="padding:9px 12px;text-align:right;font-weight:600;color:#3a5272">Disbursement Amount</th>
+                <th style="padding:9px 12px;text-align:right;font-weight:600;color:#3a5272">Outstanding Principal</th>
+                <th style="padding:9px 12px;text-align:right;font-weight:600;color:#3a5272">Due Amount</th>
+                <th style="padding:9px 12px;text-align:center;font-weight:600;color:#3a5272">Days in Arrears</th>
+                <th style="padding:9px 12px;text-align:left;font-weight:600;color:#3a5272">Status</th>
+                <th style="padding:9px 12px;text-align:center;font-weight:600;color:#3a5272"></th>
+              </tr>
+            </thead>
+            <tbody id="cr-tbody">
+              ${rowsHtml}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:10px;color:#6a8faf;font-size:12px" id="cr-count">Showing ${crLoans.length} loans</div>
+      </div>
+
+      <!-- Loan detail modal -->
+      <div id="cr-modal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(15,25,50,0.45);align-items:center;justify-content:center">
+        <div style="background:#fff;border-radius:12px;width:820px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.25)">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px 14px;border-bottom:1px solid #e8f0f8">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#1a2640">Loan Details</div>
+              <div style="font-size:12px;color:#6a8faf;margin-top:2px" id="cr-modal-subtitle">Loan #</div>
+            </div>
+            <button onclick="crCloseModal()" style="background:none;border:none;cursor:pointer;color:#6a8faf;padding:4px">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div style="padding:20px 24px" id="cr-modal-body"></div>
+        </div>
+      </div>
+
+      <script>
+      // Customer Report filter + modal logic
+      const CR_LOANS = ${JSON.stringify(crLoans)};
+
+      function crApplyFilter() {
+        const cust   = document.getElementById('cr-filter-cust').value.trim().toLowerCase();
+        const loan   = document.getElementById('cr-filter-loan').value.trim().toLowerCase();
+        const prod   = document.getElementById('cr-filter-prod').value.trim().toLowerCase();
+        const status = document.getElementById('cr-filter-status').value;
+        const filtered = CR_LOANS.filter(r =>
+          (!cust   || r.custId.toLowerCase().includes(cust)) &&
+          (!loan   || r.loanNo.toLowerCase().includes(loan) || r.loanId.toLowerCase().includes(loan)) &&
+          (status === 'All' || r.status === status)
+        );
+        crRenderRows(filtered);
+      }
+
+      function crClearFilter() {
+        document.getElementById('cr-filter-cust').value = '';
+        document.getElementById('cr-filter-loan').value = '';
+        document.getElementById('cr-filter-prod').value = '';
+        document.getElementById('cr-filter-status').value = 'All';
+        crRenderRows(CR_LOANS);
+      }
+
+      function crRenderRows(rows) {
+        const statusBadge = s => {
+          const map = { Active:'#e8f5e9,#2e7d32', Overdue:'#ffebee,#c62828', Closed:'#f3e5f5,#6a1b9a' };
+          const [bg, col] = (map[s] || '#fff8e1,#e65100').split(',');
+          return \`<span style="background:\${bg};color:\${col};padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600">\${s}</span>\`;
+        };
+        const tbody = document.getElementById('cr-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = rows.map(r => \`
+          <tr style="border-bottom:1px solid #f0f4fa">
+            <td style="padding:9px 12px">\${r.custId}</td>
+            <td style="padding:9px 12px;font-weight:500">\${r.loanNo}</td>
+            <td style="padding:9px 12px">\${r.disbDate}</td>
+            <td style="padding:9px 12px;text-align:right">\${r.disbAmt} EUR</td>
+            <td style="padding:9px 12px;text-align:right">\${r.outPrinc} EUR</td>
+            <td style="padding:9px 12px;text-align:right;\${r.dueAmt!=='0.00'?'color:#c62828;font-weight:600':''}">\${r.dueAmt} EUR</td>
+            <td style="padding:9px 12px;text-align:center;\${r.daysArr>0?'color:#c62828;font-weight:600':''}">\${r.daysArr > 0 ? r.daysArr : '—'}</td>
+            <td style="padding:9px 12px">\${statusBadge(r.status)}</td>
+            <td style="padding:9px 12px;text-align:center">
+              <button onclick="crOpenModal('\${r.loanId}')"
+                style="background:none;border:1px solid #c5d8f5;border-radius:6px;padding:4px 8px;cursor:pointer;color:#1a6ab5;display:inline-flex;align-items:center" title="View">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </td>
+          </tr>\`).join('');
+        document.getElementById('cr-count').textContent = \`Showing \${rows.length} loans\`;
+      }
+
+      function crOpenModal(loanId) {
+        const d = (typeof MOCK_LOAN_DATA !== 'undefined' && MOCK_LOAN_DATA[loanId])
+                  || (typeof MOCK_LOAN_FALLBACK === 'function' ? MOCK_LOAN_FALLBACK(loanId) : null);
+        if (!d) return;
+        const loan = CR_LOANS.find(r => r.loanId === loanId) || {};
+        const totalDue = loan.dueAmt || '0.00';
+        document.getElementById('cr-modal-subtitle').textContent = 'Loan #' + (loan.loanNo || loanId);
+        document.getElementById('cr-modal-body').innerHTML = \`
+          <!-- Loan Summary -->
+          <div style="background:#f7f9fc;border:1px solid #e4ecf7;border-radius:8px;padding:16px 20px;margin-bottom:18px">
+            <div style="font-size:13px;font-weight:700;color:#1a2640;margin-bottom:12px;letter-spacing:.02em">Loan Summary</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px 20px">
+              \${[
+                ['Product Name',            d.product],
+                ['Customer Name',           d.customer],
+                ['Loan Amount',             d.loanAmt],
+                ['Outstanding Balance',     d.outstanding],
+                ['Disbursement Date',       d.disbursed],
+                ['Maturity Date',           d.maturity],
+                ['First Repayment Date',    d.firstRepay],
+                ['Number of Instalments',   d.instalments],
+                ['Preferential Rate (%)',   d.prefRate],
+                ['Annual Interest Rate (%)',d.annualRate],
+                ['Total Interest Rate (%)', d.totalRate],
+                ['Total Due Amount',        totalDue + ' EUR'],
+              ].map(([lbl,val]) => \`
+                <div>
+                  <div style="font-size:11px;color:#6a8faf;margin-bottom:3px">\${lbl}</div>
+                  <div style="font-size:13px;font-weight:600;color:#1a2640">\${val}</div>
+                </div>\`).join('')}
+            </div>
+          </div>
+
+          <!-- Financial Details -->
+          <div style="border:1px solid #e4ecf7;border-radius:8px;overflow:hidden">
+            <div style="background:#f0f4fa;padding:10px 16px;font-size:13px;font-weight:700;color:#1a2640;border-bottom:1px solid #e4ecf7">Financial Details</div>
+            <div style="padding:14px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px 20px">
+              \${[
+                ['Loan Amount',                    d.loanAmt],
+                ['Outstanding Balance',            d.outstanding],
+                ['Accrued Interest',               d.accruedInt],
+                ['Accrued Fee',                    d.accruedFee || '—'],
+                ['Penalty Interest Amount',        d.penaltyAmt],
+                ['Interest Accrued On',            d.intAccruedOn],
+                ['Fee Accrued On',                 d.feeAccruedOn || '—'],
+                ['Penalty Interest Accrued On',    d.penaltyAccruedOn],
+                ['Effective Interest Rate',        d.effRate],
+                ['Next Payment Date',              d.nextPayDate],
+                ['Next Payment Amount',            d.nextPayAmt],
+                ['Total Due Amount',               totalDue + ' EUR'],
+              ].map(([lbl,val]) => \`
+                <div style="padding:8px 0;border-bottom:1px solid #f0f4fa">
+                  <div style="font-size:11px;color:#6a8faf;margin-bottom:2px">\${lbl}</div>
+                  <div style="font-size:13px;font-weight:600;color:#1a2640">\${val}</div>
+                </div>\`).join('')}
+            </div>
+          </div>\`;
+        const modal = document.getElementById('cr-modal');
+        modal.style.display = 'flex';
+      }
+
+      function crCloseModal() {
+        document.getElementById('cr-modal').style.display = 'none';
+      }
+
+      // Also wire up eye buttons from initial render
+      document.querySelectorAll('[data-action="cr-view-loan"]').forEach(btn => {
+        btn.addEventListener('click', () => crOpenModal(btn.dataset.loanId));
+      });
+
+      document.getElementById('cr-modal').addEventListener('click', function(e) {
+        if (e.target === this) crCloseModal();
+      });
+      <\/script>`;
+  }
+
     // ── LOAN REPORTS ─────────────────────────────────────────────────────────────
   if (section === 'loan-report-open' || section === 'loan-report-closed' || section === 'loan-report-eom') {
     const isOpen   = section === 'loan-report-open';

@@ -1,0 +1,17 @@
+# Credentials — never commit secrets
+credentials.json
+
+# Test results output
+test-results/
+
+# Local testing scripts
+run_loan_tests.py
+step1_get_loans.py
+step2_get_loans_db.py
+penalty_interest_from_database.py
+steps1_2_3_loans_comparison.py
+steps1_to_5.py
+collect_data.py
+analyse_data.py
+step3_penalty_interest.py
+run_collect.bat

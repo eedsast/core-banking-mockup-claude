@@ -416,7 +416,7 @@
   .sidebar {
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
-    min-height: calc(100vh - var(--header-height));
+    height: calc(100vh - var(--header-height));
     position: fixed;
     top: var(--header-height);
     left: 0;
@@ -1713,6 +1713,7 @@
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-open" data-title="Open Loans Report" data-subtitle="All currently active and disbursed loan accounts">Open Loans</div>
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-closed" data-title="Closed Loans Report" data-subtitle="Fully settled and closed loan accounts">Closed Loans</div>
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-eom" data-title="EoM Loans Report" data-subtitle="End-of-month loan portfolio snapshot">EoM Loans</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="customer-report" data-title="Customer Report" data-subtitle="Search and view loan details per customer">Customer Report</div>
         </div>
       </div>
 
@@ -2370,7 +2371,7 @@ function toggleGroup(header) {
 }
 
 // Sections that render their own full-page header (title + subtitle + CTA)
-const SELF_HEADED_SECTIONS = new Set(['fees', 'penalty', 'security', 'services', 'exchangerate', 'collection', 'accrual', 'interestdef', 'loanprod', 'loansim', 'eod', 'eod-scheduler', 'eod-monitor', 'loan-report-open', 'loan-report-closed', 'loan-report-eom', 'loaninfo', 'organisation', 'users', 'roles', 'permissions', 'role-assignments', 'branch', 'user-list', 'loan-detail', 'rule-groups', 'rule-group-schema', 'rule-group-test', 'dec-rules', 'rule-thresholds', 'property-mappings', 'outcome-codes', 'execution-logs', 'analytics', 'dec-users', 'api-keys', 'import-json']);
+const SELF_HEADED_SECTIONS = new Set(['fees', 'penalty', 'security', 'services', 'exchangerate', 'collection', 'accrual', 'interestdef', 'loanprod', 'loansim', 'eod', 'eod-scheduler', 'eod-monitor', 'loan-report-open', 'loan-report-closed', 'loan-report-eom', 'customer-report', 'loaninfo', 'organisation', 'users', 'roles', 'permissions', 'role-assignments', 'branch', 'user-list', 'loan-detail', 'rule-groups', 'rule-group-schema', 'rule-group-test', 'dec-rules', 'rule-thresholds', 'property-mappings', 'outcome-codes', 'execution-logs', 'analytics', 'dec-users', 'api-keys', 'import-json']);
 
 // ── FORM UTILITIES (shared by module files) ─────────────────────────────────
 // ── FORM UTILITIES ────────────────────────────────────────────────────────────
