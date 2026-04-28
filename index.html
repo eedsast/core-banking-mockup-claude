@@ -2161,6 +2161,85 @@
 <!-- Artifact viewer overlay removed — artifacts open via blob URL in new tab -->
 
 <!-- ════════════ ADD CURRENCY MODAL ════════════ -->
+<!-- ════════════ ADD CURRENCY MODAL (Loan Product) ════════════ -->
+<div class="modal-overlay" id="lpCurrencyModal" onclick="if(event.target===this)closeLpCurrencyModal()">
+  <div class="modal-box" style="width:600px;max-width:96vw;">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-hicon" style="background:#f3f0ff;font-size:18px">💱</div>
+        <div>
+          <div class="modal-title">Add Currency</div>
+          <div class="modal-subtitle">Configure currency parameters</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeLpCurrencyModal()">✕</button>
+    </div>
+    <div class="modal-body" style="padding:24px 28px;overflow-y:auto;max-height:calc(85vh - 120px);">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+        <div class="fee-form-group">
+          <label class="fee-form-label">Currency</label>
+          <select id="lpcurr-currency" class="fee-form-input">
+            <option value="">Select an item</option>
+            <option value="EUR">EUR — Euro</option>
+            <option value="USD">USD — US Dollar</option>
+            <option value="GBP">GBP — British Pound</option>
+            <option value="CHF">CHF — Swiss Franc</option>
+            <option value="RSD">RSD — Serbian Dinar</option>
+          </select>
+        </div>
+        <div class="fee-form-group">
+          <label class="fee-form-label">Status</label>
+          <select id="lpcurr-status" class="fee-form-input">
+            <option value="Active" selected>Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="fee-form-group">
+          <label class="fee-form-label">Interest Rate Name</label>
+          <select id="lpcurr-rate-name" class="fee-form-input">
+            <option value="">Select an item</option>
+            <option value="BNPL standard interest 17% - EUR" selected>BNPL standard interest 17% - EUR</option>
+            <option value="EUR interest 17%">EUR interest 17%</option>
+            <option value="BNPL 0% interest EUR demo">BNPL 0% interest EUR demo</option>
+            <option value="BNPL with 17% interest rate for demo">BNPL with 17% interest rate for demo</option>
+          </select>
+        </div>
+        <div class="fee-form-group">
+          <label class="fee-form-label">Interest Rate Type</label>
+          <select id="lpcurr-rate-type" class="fee-form-input">
+            <option value="Fixed" selected>Fixed</option>
+            <option value="Variable">Variable</option>
+          </select>
+        </div>
+        <div class="fee-form-group">
+          <label class="fee-form-label">Min Loan Amount</label>
+          <input type="number" id="lpcurr-min" class="fee-form-input" value="50" min="0" step="1"/>
+        </div>
+        <div class="fee-form-group">
+          <label class="fee-form-label">Max Loan Amount</label>
+          <input type="number" id="lpcurr-max" class="fee-form-input" value="10000" min="0" step="1"/>
+        </div>
+        <div class="fee-form-group">
+          <label class="fee-form-label">Default Loan Amount</label>
+          <input type="number" id="lpcurr-default" class="fee-form-input" value="1000" min="0" step="1"/>
+        </div>
+        <div class="fee-form-group">
+          <label class="fee-form-label">Valid From</label>
+          <input type="date" id="lpcurr-valid-from" class="fee-form-input" value="2026-03-27"/>
+        </div>
+        <div class="fee-form-group">
+          <label class="fee-form-label">Valid To</label>
+          <input type="date" id="lpcurr-valid-to" class="fee-form-input" value="2099-12-31"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;padding:16px 28px;border-top:1px solid #e8f0f8;">
+      <button onclick="closeLpCurrencyModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='#f3f0ff'" onmouseout="this.style.background='#fff'">Cancel</button>
+      <button onclick="saveLpCurrency()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s;" onmouseover="this.style.background='#5a3fb0'" onmouseout="this.style.background='#6b4fc8'"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add</button>
+    </div>
+  </div>
+</div>
+
 <!-- ════════════ ADD FEE PICKER (Loan Product) ════════════ -->
 <div class="modal-overlay" id="lpFeeModal" onclick="if(event.target===this)closeLpFeeModal()">
   <div class="modal-box" style="width:740px;max-width:96vw;">
@@ -3723,11 +3802,11 @@ document.addEventListener('click', function(e) {
     }
 
     case 'lp-add-currency':
-      openLpFeeModal(null);
+      document.getElementById('lpCurrencyModal').classList.add('open');
       break;
 
     case 'lp-add-fee':
-      openLpFeeModal(null);
+      openLpFeeModal();
       break;
 
     // ── Interest Rate Definition ─────────────────────────────────────────────
@@ -4037,8 +4116,28 @@ function saveLpFee() {
   closeLpFeeModal();
 }
 
-// keep old name as alias so any lingering references don't break
-function closeLpCurrencyModal() { closeLpFeeModal(); }
+function closeLpCurrencyModal() {
+  document.getElementById('lpCurrencyModal').classList.remove('open');
+}
+function saveLpCurrency() {
+  var currency = document.getElementById('lpcurr-currency').value;
+  if (!currency) { alert('Please select a Currency.'); return; }
+  var entry = {
+    currency:   currency,
+    status:     document.getElementById('lpcurr-status').value,
+    rateName:   document.getElementById('lpcurr-rate-name').value,
+    rateType:   document.getElementById('lpcurr-rate-type').value,
+    minAmt:     document.getElementById('lpcurr-min').value,
+    maxAmt:     document.getElementById('lpcurr-max').value,
+    defaultAmt: document.getElementById('lpcurr-default').value,
+    validFrom:  document.getElementById('lpcurr-valid-from').value,
+    validTo:    document.getElementById('lpcurr-valid-to').value,
+  };
+  window._lpCurrencies = window._lpCurrencies || [];
+  window._lpCurrencies.push(entry);
+  if (typeof lpRefreshCurrencies === 'function') lpRefreshCurrencies();
+  closeLpCurrencyModal();
+}
 
 // ── THEME TOGGLE ─────────────────────────────────────────────────────────────
 var _currentTheme = 'dark';
