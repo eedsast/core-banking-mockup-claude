@@ -2161,99 +2161,117 @@
 <!-- Artifact viewer overlay removed — artifacts open via blob URL in new tab -->
 
 <!-- ════════════ ADD CURRENCY MODAL ════════════ -->
-<div class="modal-overlay" id="lpCurrencyModal" onclick="if(event.target===this)closeLpCurrencyModal()">
-  <div class="modal-box" style="width:600px;max-width:96vw;">
+<!-- ════════════ ADD/EDIT FEE MODAL (Loan Product) ════════════ -->
+<div class="modal-overlay" id="lpFeeModal" onclick="if(event.target===this)closeLpFeeModal()">
+  <div class="modal-box" style="width:660px;max-width:96vw;">
     <div class="modal-header">
       <div class="modal-header-left">
-        <div class="modal-hicon" style="background:#f3f0ff;font-size:18px">💱</div>
+        <div class="modal-hicon" style="background:#f3f0ff;font-size:18px">$</div>
         <div>
-          <div class="modal-title">Add Currency</div>
-          <div class="modal-subtitle">Configure currency parameters</div>
+          <div class="modal-title" id="lpFeeModal-title">Add Fee</div>
+          <div class="modal-subtitle">Configure fee parameters</div>
         </div>
       </div>
-      <button class="modal-close" onclick="closeLpCurrencyModal()">✕</button>
+      <button class="modal-close" onclick="closeLpFeeModal()">✕</button>
     </div>
     <div class="modal-body" style="padding:24px 28px;overflow-y:auto;max-height:calc(85vh - 120px);">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
 
-        <!-- Currency -->
+        <!-- Fee -->
         <div class="fee-form-group">
-          <label class="fee-form-label">Currency</label>
-          <select id="lpcurr-currency" class="fee-form-input">
+          <label class="fee-form-label">Fee</label>
+          <select id="lpfee-fee" class="fee-form-input" onchange="lpFeeOnChange()">
             <option value="">Select an item</option>
-            <option value="EUR">EUR — Euro</option>
-            <option value="USD">USD — US Dollar</option>
-            <option value="GBP">GBP — British Pound</option>
-            <option value="CHF">CHF — Swiss Franc</option>
-            <option value="RSD">RSD — Serbian Dinar</option>
+            <option value="13">Talat fee (Per Instalment / Fixed)</option>
+            <option value="12">Upfront processing fee 3% (Up Front / Percentage)</option>
+            <option value="11">100 bucks fee (Per Instalment / Fixed)</option>
+            <option value="10">Upfront fee 2% (Up Front / Percentage)</option>
           </select>
         </div>
 
         <!-- Status -->
         <div class="fee-form-group">
           <label class="fee-form-label">Status</label>
-          <select id="lpcurr-status" class="fee-form-input">
-            <option value="Active" selected>Active</option>
+          <select id="lpfee-status" class="fee-form-input">
+            <option value="Pending" selected>Pending</option>
+            <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
           </select>
         </div>
 
-        <!-- Interest Rate Name -->
+        <!-- Fee Version -->
         <div class="fee-form-group">
-          <label class="fee-form-label">Interest Rate Name</label>
-          <select id="lpcurr-rate-name" class="fee-form-input">
-            <option value="">Select an item</option>
-            <option value="BNPL standard interest 17% - EUR" selected>BNPL standard interest 17% - EUR</option>
-            <option value="EUR interest 17%">EUR interest 17%</option>
-            <option value="BNPL 0% interest EUR demo">BNPL 0% interest EUR demo</option>
-            <option value="BNPL with 17% interest rate for demo">BNPL with 17% interest rate for demo</option>
-          </select>
+          <label class="fee-form-label">Fee version</label>
+          <input type="text" id="lpfee-version" class="fee-form-input" placeholder="e.g. v1.0" style="background:var(--input-bg,#f7f9fc);color:var(--text-muted,#6a8faf)" readonly/>
         </div>
 
-        <!-- Interest Rate Type -->
+        <!-- Trigger Event (auto-filled) -->
         <div class="fee-form-group">
-          <label class="fee-form-label">Interest Rate Type</label>
-          <select id="lpcurr-rate-type" class="fee-form-input">
-            <option value="Fixed" selected>Fixed</option>
-            <option value="Variable">Variable</option>
-          </select>
+          <label class="fee-form-label">Trigger event</label>
+          <input type="text" id="lpfee-trigger" class="fee-form-input" placeholder="—" style="background:var(--input-bg,#f7f9fc);color:var(--text-muted,#6a8faf)" readonly/>
         </div>
 
-        <!-- Min Loan Amount -->
-        <div class="fee-form-group">
-          <label class="fee-form-label">Min Loan Amount</label>
-          <input type="number" id="lpcurr-min" class="fee-form-input" value="50" min="0" step="1"/>
+        <!-- Calculation Base (auto-filled) -->
+        <div class="fee-form-group" style="grid-column:1/-1">
+          <label class="fee-form-label">Calculation base</label>
+          <input type="text" id="lpfee-calcbase-display" class="fee-form-input" placeholder="—" style="background:var(--input-bg,#f7f9fc);color:var(--text-muted,#6a8faf)" readonly/>
         </div>
 
-        <!-- Max Loan Amount -->
-        <div class="fee-form-group">
-          <label class="fee-form-label">Max Loan Amount</label>
-          <input type="number" id="lpcurr-max" class="fee-form-input" value="10000" min="0" step="1"/>
-        </div>
+      </div>
 
-        <!-- Default Loan Amount -->
-        <div class="fee-form-group">
-          <label class="fee-form-label">Default Loan Amount</label>
-          <input type="number" id="lpcurr-default" class="fee-form-input" value="1000" min="0" step="1"/>
+      <!-- Fixed fields -->
+      <div id="lpfee-fixed-fields" style="display:none;margin-top:16px">
+        <div style="height:1px;background:#e8f0f8;margin-bottom:16px"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div class="fee-form-group">
+            <label class="fee-form-label">Amount</label>
+            <input type="text" id="lpfee-amount" class="fee-form-input" placeholder="Optional"/>
+          </div>
+          <div class="fee-form-group">
+            <label class="fee-form-label">Currency</label>
+            <input type="text" id="lpfee-currency" class="fee-form-input" placeholder="—" style="background:var(--input-bg,#f7f9fc);color:var(--text-muted,#6a8faf)" readonly/>
+          </div>
         </div>
+      </div>
 
-        <!-- Valid From -->
-        <div class="fee-form-group">
-          <label class="fee-form-label">Valid From</label>
-          <input type="date" id="lpcurr-valid-from" class="fee-form-input" value="2026-03-27"/>
+      <!-- Percentage fields -->
+      <div id="lpfee-pct-fields" style="display:none;margin-top:16px">
+        <div style="height:1px;background:#e8f0f8;margin-bottom:16px"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div class="fee-form-group">
+            <label class="fee-form-label">Calculation base</label>
+            <input type="text" id="lpfee-pct-base" class="fee-form-input" placeholder="—" style="background:var(--input-bg,#f7f9fc);color:var(--text-muted,#6a8faf)" readonly/>
+          </div>
+          <div class="fee-form-group">
+            <label class="fee-form-label">Rate (%)</label>
+            <input type="text" id="lpfee-rate" class="fee-form-input" placeholder="Optional"/>
+          </div>
+          <div class="fee-form-group">
+            <label class="fee-form-label">Min. amount</label>
+            <input type="text" id="lpfee-min" class="fee-form-input" placeholder="Optional"/>
+          </div>
+          <div class="fee-form-group">
+            <label class="fee-form-label">Max. amount</label>
+            <input type="text" id="lpfee-max" class="fee-form-input" placeholder="Optional"/>
+          </div>
         </div>
+      </div>
 
-        <!-- Valid To (spans only left column) -->
+      <!-- Valid From / Valid To -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px">
         <div class="fee-form-group">
-          <label class="fee-form-label">Valid To</label>
-          <input type="date" id="lpcurr-valid-to" class="fee-form-input" value="2099-12-31"/>
+          <label class="fee-form-label">Valid from</label>
+          <input type="text" id="lpfee-from" class="fee-form-input" placeholder="Select date"/>
         </div>
-
-      </div><!-- /grid -->
-    </div><!-- /modal-body -->
+        <div class="fee-form-group">
+          <label class="fee-form-label">Valid to</label>
+          <input type="text" id="lpfee-to" class="fee-form-input" value="31.12.2099"/>
+        </div>
+      </div>
+    </div>
     <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;padding:16px 28px;border-top:1px solid #e8f0f8;">
-      <button onclick="closeLpCurrencyModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='#f3f0ff'" onmouseout="this.style.background='#fff'">Cancel</button>
-      <button onclick="saveLpCurrency()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s;" onmouseover="this.style.background='#5a3fb0'" onmouseout="this.style.background='#6b4fc8'"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add</button>
+      <button onclick="closeLpFeeModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer">Cancel</button>
+      <button onclick="saveLpFee()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add</button>
     </div>
   </div>
 </div>
@@ -3775,18 +3793,12 @@ document.addEventListener('click', function(e) {
     }
 
     case 'lp-add-currency':
-      document.getElementById('lpCurrencyModal').classList.add('open');
+      openLpFeeModal(null);
       break;
 
-    case 'lp-add-fee': {
-      const fn = prompt('Enter fee name:');
-      if (fn && fn.trim()) {
-        window._lpFees = window._lpFees || [];
-        window._lpFees.push(fn.trim());
-        lpRefreshFees();
-      }
+    case 'lp-add-fee':
+      openLpFeeModal(null);
       break;
-    }
 
     // ── Interest Rate Definition ─────────────────────────────────────────────
     case 'open-interest-rate-form':
@@ -4014,28 +4026,81 @@ function searchKeydown(e) {
 var _envOptions = ['UAT', 'PROD', 'DEV'];
 var _currentEnv = 'UAT';
 // ── ADD CURRENCY MODAL ───────────────────────────────────────────────────────
-function closeLpCurrencyModal() {
-  document.getElementById('lpCurrencyModal').classList.remove('open');
+// ── LP FEE MODAL ─────────────────────────────────────────────────────────────
+var LP_FEE_DEFS = {
+  '13': { trigger:'Per Instalment', calcBase:'Fixed',      currency:'EUR', version:'v1.0', pctBase:'' },
+  '12': { trigger:'Up Front',       calcBase:'Percentage', currency:'',    version:'v1.0', pctBase:'Loan Amount' },
+  '11': { trigger:'Per Instalment', calcBase:'Fixed',      currency:'EUR', version:'v1.0', pctBase:'' },
+  '10': { trigger:'Up Front',       calcBase:'Percentage', currency:'',    version:'v2.0', pctBase:'Loan Amount' },
+};
+
+function openLpFeeModal(data) {
+  var m = document.getElementById('lpFeeModal');
+  document.getElementById('lpFeeModal-title').textContent = data ? 'Edit Fee' : 'Add Fee';
+  document.getElementById('lpfee-fee').value = data ? (data.feeId || '') : '';
+  document.getElementById('lpfee-status').value = data ? (data.status || 'Pending') : 'Pending';
+  document.getElementById('lpfee-version').value = '';
+  document.getElementById('lpfee-trigger').value = '';
+  document.getElementById('lpfee-calcbase-display').value = '';
+  document.getElementById('lpfee-fixed-fields').style.display = 'none';
+  document.getElementById('lpfee-pct-fields').style.display = 'none';
+  document.getElementById('lpfee-from').value = data ? (data.validFrom || '') : '';
+  document.getElementById('lpfee-to').value = data ? (data.validTo || '31.12.2099') : '31.12.2099';
+  if (data && data.feeId) lpFeeOnChange();
+  m.classList.add('open');
 }
-function saveLpCurrency() {
-  var currency = document.getElementById('lpcurr-currency').value;
-  if (!currency) { alert('Please select a Currency.'); return; }
+
+function lpFeeOnChange() {
+  var val = document.getElementById('lpfee-fee').value;
+  var def = LP_FEE_DEFS[val];
+  if (!def) {
+    document.getElementById('lpfee-version').value = '';
+    document.getElementById('lpfee-trigger').value = '';
+    document.getElementById('lpfee-calcbase-display').value = '';
+    document.getElementById('lpfee-fixed-fields').style.display = 'none';
+    document.getElementById('lpfee-pct-fields').style.display = 'none';
+    return;
+  }
+  document.getElementById('lpfee-version').value = def.version;
+  document.getElementById('lpfee-trigger').value = def.trigger;
+  document.getElementById('lpfee-calcbase-display').value = def.calcBase;
+  if (def.calcBase === 'Fixed') {
+    document.getElementById('lpfee-fixed-fields').style.display = 'block';
+    document.getElementById('lpfee-pct-fields').style.display = 'none';
+    document.getElementById('lpfee-currency').value = def.currency;
+  } else {
+    document.getElementById('lpfee-fixed-fields').style.display = 'none';
+    document.getElementById('lpfee-pct-fields').style.display = 'block';
+    document.getElementById('lpfee-pct-base').value = def.pctBase;
+  }
+}
+
+function closeLpFeeModal() {
+  document.getElementById('lpFeeModal').classList.remove('open');
+}
+
+function saveLpFee() {
+  var feeId = document.getElementById('lpfee-fee').value;
+  if (!feeId) { alert('Please select a Fee.'); return; }
+  var def = LP_FEE_DEFS[feeId] || {};
   var entry = {
-    currency:  currency,
-    status:    document.getElementById('lpcurr-status').value,
-    rateName:  document.getElementById('lpcurr-rate-name').value,
-    rateType:  document.getElementById('lpcurr-rate-type').value,
-    minAmt:    document.getElementById('lpcurr-min').value,
-    maxAmt:    document.getElementById('lpcurr-max').value,
-    defaultAmt:document.getElementById('lpcurr-default').value,
-    validFrom: document.getElementById('lpcurr-valid-from').value,
-    validTo:   document.getElementById('lpcurr-valid-to').value,
+    feeId:     feeId,
+    feeName:   document.getElementById('lpfee-fee').options[document.getElementById('lpfee-fee').selectedIndex].text,
+    version:   document.getElementById('lpfee-version').value,
+    trigger:   def.trigger || '',
+    calcBase:  def.calcBase || '',
+    status:    document.getElementById('lpfee-status').value,
+    validFrom: document.getElementById('lpfee-from').value,
+    validTo:   document.getElementById('lpfee-to').value,
   };
-  window._lpCurrencies = window._lpCurrencies || [];
-  window._lpCurrencies.push(entry);
-  if (typeof lpRefreshCurrencies === 'function') lpRefreshCurrencies();
-  closeLpCurrencyModal();
+  window._lpFees = window._lpFees || [];
+  window._lpFees.push(entry);
+  if (typeof lpRefreshFees === 'function') lpRefreshFees();
+  closeLpFeeModal();
 }
+
+// keep old name as alias so any lingering references don't break
+function closeLpCurrencyModal() { closeLpFeeModal(); }
 
 // ── THEME TOGGLE ─────────────────────────────────────────────────────────────
 var _currentTheme = 'dark';

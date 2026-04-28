@@ -1803,11 +1803,16 @@ function openFeeDefForm(containerId, data) {
     <!-- Core Information -->
     <div class="fee-form-section">
       <div class="fee-form-section-title">Core Information</div>
-      <div class="fee-form-row full">
+      <div class="fee-form-row">
         <div class="fee-form-field">
           <label class="fee-form-label">Name</label>
           <input class="fee-form-input" type="text" id="ff-name"
             placeholder="Enter fee name" value="${d.name || ''}"/>
+        </div>
+        <div class="fee-form-field">
+          <label class="fee-form-label">Fee version</label>
+          <input class="fee-form-input" type="text" id="ff-version"
+            placeholder="e.g. v1.0" value="${d.version || ''}"/>
         </div>
       </div>
     </div>
