@@ -1369,7 +1369,6 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
               ['Preferential Rate (%)',    d.prefRate],
               ['Annual Interest Rate (%)', d.annualRate],
               ['Total Interest Rate (%)',  d.totalRate],
-              ['Total Due Amount',         totalDue + ' EUR', dueColor],
             ].map(([lbl, val, col]) => `
               <div>
                 <div style="font-size:11px;color:#6a8faf;margin-bottom:3px">${lbl}</div>
@@ -1395,6 +1394,8 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
               ['Next Payment Date',           d.nextPayDate],
               ['Next Payment Amount',         d.nextPayAmt],
               ['Total Due Amount',            totalDue + ' EUR', dueColor],
+              ['Current Days Past Due',       loan.daysArr > 0 ? String(loan.daysArr) : '0', loan.daysArr > 0 ? '#c62828' : '#1a2640'],
+              ['Max Days Past Due',           loan.daysArr > 0 ? String(loan.daysArr) : '0', loan.daysArr > 0 ? '#c62828' : '#1a2640'],
             ].map(([lbl, val, col]) => `
               <div style="padding:8px 0;border-bottom:1px solid #f0f4fa">
                 <div style="font-size:11px;color:#6a8faf;margin-bottom:2px">${lbl}</div>
