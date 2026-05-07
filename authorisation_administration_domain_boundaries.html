@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Banking — Architecture Boundary Diagram</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f4ef;
+    padding: 40px 24px;
+    min-height: 100vh;
+    color: #2c2c2a;
+  }
+
+  h1 {
+    font-size: 19px;
+    font-weight: 500;
+    text-align: center;
+    color: #1a1a18;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #888780;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .note-global {
+    font-size: 12px;
+    color: #854f0b;
+    text-align: center;
+    background: #faeeda;
+    border: 1px solid #ba7517;
+    border-radius: 6px;
+    padding: 6px 16px;
+    display: inline-block;
+    margin: 0 auto 28px;
+    display: block;
+    max-width: 620px;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto 32px;
+  }
+
+  /* ── Pillar shell ── */
+  .pillar {
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pillar-admin  { background: #e1f5ee; border: 1px solid #1d9e75; }
+  .pillar-auth   { background: #eeedfe; border: 1px solid #7f77dd; }
+  .pillar-domain { background: #e6f1fb; border: 1px solid #378add; }
+
+  .pillar-header { margin-bottom: 4px; }
+  .pillar-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .pillar-admin  .pillar-title { color: #085041; }
+  .pillar-auth   .pillar-title { color: #26215c; }
+  .pillar-domain .pillar-title { color: #0c447c; }
+
+  .pillar-sub {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .pillar-admin  .pillar-sub { color: #0f6e56; }
+  .pillar-auth   .pillar-sub { color: #534ab7; }
+  .pillar-domain .pillar-sub { color: #185fa5; }
+
+  /* ── Section inside pillar ── */
+  .section {
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .section-title {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  /* Admin sections */
+  .s-global  { background: #ffffff; border: 0.5px solid #1d9e75; }
+  .s-global .section-title  { color: #085041; }
+  .s-tenant  { background: #f0faf6; border: 0.5px solid #5dcaa5; }
+  .s-tenant .section-title  { color: #0f6e56; }
+
+  /* Auth sections */
+  .s-identity  { background: #ffffff; border: 0.5px solid #7f77dd; }
+  .s-identity .section-title { color: #26215c; }
+  .s-session   { background: #f5f4ff; border: 0.5px solid #afa9ec; }
+  .s-session .section-title  { color: #534ab7; }
+  .s-security  { background: #eeedfe; border: 0.5px solid #afa9ec; }
+  .s-security .section-title { color: #534ab7; }
+
+  /* Domain sections */
+  .s-setup    { background: #ffffff; border: 0.5px solid #378add; }
+  .s-setup .section-title   { color: #0c447c; }
+  .s-product  { background: #eef6fd; border: 0.5px solid #85b7eb; }
+  .s-product .section-title { color: #185fa5; }
+  .s-ops      { background: #e6f1fb; border: 0.5px solid #85b7eb; }
+  .s-ops .section-title     { color: #185fa5; }
+  .s-acct     { background: #eef6fd; border: 0.5px solid #85b7eb; }
+  .s-acct .section-title    { color: #185fa5; }
+
+  /* ── Item rows ── */
+  .items { display: flex; flex-direction: column; gap: 5px; }
+  .item {
+    font-size: 12px;
+    color: #2c2c2a;
+    padding: 5px 8px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 5px;
+    line-height: 1.4;
+  }
+  .item-label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 1px;
+  }
+  .item-sub {
+    font-size: 11px;
+    color: #5f5e5a;
+  }
+
+  /* ── Events strip ── */
+  .events-row {
+    max-width: 1100px;
+    margin: 0 auto 28px;
+    background: #faeeda;
+    border: 1px solid #ba7517;
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .events-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #633806;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .event-card {
+    background: #fff9ee;
+    border: 0.5px solid #ef9f27;
+    border-radius: 7px;
+    padding: 8px 10px;
+  }
+  .event-from {
+    font-size: 10px;
+    font-weight: 500;
+    color: #854f0b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 3px;
+  }
+  .event-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #412402;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    margin-bottom: 2px;
+  }
+  .event-sub {
+    font-size: 11px;
+    color: #854f0b;
+  }
+
+  /* ── Domain examples note ── */
+  .domain-note {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #e6f1fb;
+    border: 1px solid #378add;
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 12px;
+    color: #0c447c;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .domain-note-label {
+    font-weight: 500;
+    white-space: nowrap;
+    color: #185fa5;
+  }
+  .domain-services-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .ds-pill {
+    background: #ffffff;
+    border: 0.5px solid #85b7eb;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: #185fa5;
+    font-weight: 500;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #5f5e5a;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Core Banking — Architecture Boundary Diagram</h1>
+<p class="subtitle">Three-pillar model · Multitenant · Multicurrency · Microservice</p>
+<p class="note-global">Global config (org hierarchy, currency registry, service catalogue, user provisioning) lives in Administration · gated by Superadmin RBAC scope</p>
+
+<!-- ══ THREE PILLARS ══ -->
+<div class="pillars">
+
+  <!-- PILLAR 1: Administration -->
+  <div class="pillar pillar-admin">
+    <div class="pillar-header">
+      <div class="pillar-title">Administration service</div>
+      <div class="pillar-sub">Structure, configuration &amp; provisioning · Superadmin + Local Admin scope</div>
+    </div>
+
+    <div class="section s-global">
+      <div class="section-title">Global scope — Superadmin only</div>
+      <div class="items">
+        <div class="item"><span class="item-label">Organisation management</span><span class="item-sub">Create, suspend, close legal entities</span></div>
+        <div class="item"><span class="item-label">Branch hierarchy</span><span class="item-sub">Codes, region, parent-child structure</span></div>
+        <div class="item"><span class="item-label">Currency registry</span><span class="item-sub">ISO 4217 master list, lifecycle</span></div>
+        <div class="item"><span class="item-label">Service catalogue</span><span class="item-sub">Licensed products per organisation</span></div>
+        <div class="item"><span class="item-label">User provisioning</span><span class="item-sub">Local admin creation &amp; role assignment</span></div>
+        <div class="item"><span class="item-label">Audit log</span><span class="item-sub">All superadmin operations</span></div>
+      </div>
+    </div>
+
+    <div class="section s-tenant">
+      <div class="section-title">Tenant scope — Local Admin</div>
+      <div class="items">
+        <div class="item"><span class="item-label">Currency enablement</span><span class="item-sub">Subset of global list, base currency</span></div>
+        <div class="item"><span class="item-label">Exchange rate service</span><span class="item-sub">Source config, rate types, approval, cross-rate</span></div>
+        <div class="item"><span class="item-label">Service enablement</span><span class="item-sub">Activate licensed services for org</span></div>
+        <div class="item"><span class="item-label">Local users &amp; roles</span><span class="item-sub">Branch staff, role binding</span></div>
+        <div class="item"><span class="item-label">Display preferences</span><span class="item-sub">Rounding, symbol, ordering</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLAR 2: Authorisation -->
+  <div class="pillar pillar-auth">
+    <div class="pillar-header">
+      <div class="pillar-title">Authorisation service</div>
+      <div class="pillar-sub">Identity, access control &amp; session · runtime authentication on hot path</div>
+    </div>
+
+    <div class="section s-identity">
+      <div class="section-title">Identity &amp; credentials</div>
+      <div class="items">
+        <div class="item"><span class="item-label">User identity record</span><span class="item-sub">Credential store, password hash, MFA</span></div>
+        <div class="item"><span class="item-label">Authentication flows</span><span class="item-sub">Login, password reset, MFA challenge</span></div>
+        <div class="item"><span class="item-label">Token issuance</span><span class="item-sub">JWT with embedded org, branch, scopes</span></div>
+      </div>
+    </div>
+
+    <div class="section s-session">
+      <div class="section-title">RBAC &amp; session</div>
+      <div class="items">
+        <div class="item"><span class="item-label">Role definitions</span><span class="item-sub">Permission sets, scopes per role</span></div>
+        <div class="item"><span class="item-label">Permission read model</span><span class="item-sub">Pre-resolved from admin events</span></div>
+        <div class="item"><span class="item-label">Session management</span><span class="item-sub">Timeout, refresh, revocation</span></div>
+        <div class="item"><span class="item-label">Token validation</span><span class="item-sub">Verified locally by downstream services</span></div>
+      </div>
+    </div>
+
+    <div class="section s-security">
+      <div class="section-title">Security policy — Superadmin only</div>
+      <div class="items">
+        <div class="item"><span class="item-label">Password policy</span><span class="item-sub">Length, complexity, validity, history</span></div>
+        <div class="item"><span class="item-label">Session policy</span><span class="item-sub">Timeout, max failed attempts, lock reset</span></div>
+        <div class="item"><span class="item-label">Other settings</span><span class="item-sub">Inactivity warning, tab-close logout</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLAR 3: Domain Service -->
+  <div class="pillar pillar-domain">
+    <div class="pillar-header">
+      <div class="pillar-title">Domain service</div>
+      <div class="pillar-sub">Example: Loan Management Service (LMS) · same pattern applies to every domain</div>
+    </div>
+
+    <div class="section s-setup">
+      <div class="section-title">Setup &amp; definition — Local Admin</div>
+      <div class="items">
+        <div class="item"><span class="item-label">Loan product definition</span><span class="item-sub">Type, interest method, fee structure</span></div>
+        <div class="item"><span class="item-label">Currency config</span><span class="item-sub">Enabled currencies consumed from Admin</span></div>
+        <div class="item"><span class="item-label">Roles &amp; permissions</span><span class="item-sub">Domain-specific RBAC scopes</span></div>
+        <div class="item"><span class="item-label">Parameter definition</span><span class="item-sub">Limits, thresholds, eligibility rules</span></div>
+        <div class="item"><span class="item-label">Workflow config</span><span class="item-sub">Approval chains, SLA definitions</span></div>
+      </div>
+    </div>
+
+    <div class="section s-product">
+      <div class="section-title">Core domain operations — runtime</div>
+      <div class="items">
+        <div class="item"><span class="item-label">Loan application &amp; booking</span><span class="item-sub">Origination, disbursement, activation</span></div>
+        <div class="item"><span class="item-label">Repayment schedule</span><span class="item-sub">Amortisation plan, instalment calc</span></div>
+        <div class="item"><span class="item-label">Collections &amp; arrears</span><span class="item-sub">Overdue tracking, penalty accrual</span></div>
+        <div class="item"><span class="item-label">Early settlement</span><span class="item-sub">Prepayment, breakage cost calc</span></div>
+      </div>
+    </div>
+
+    <div class="section s-acct">
+      <div class="section-title">Accounting bridge — events out</div>
+      <div class="items">
+        <div class="item"><span class="item-label">Accrual calculation</span><span class="item-sub">Owned here — result sent as GL entry</span></div>
+        <div class="item"><span class="item-label">Fee &amp; interest posting</span><span class="item-sub">Triggers journal entry in Accounting svc</span></div>
+        <div class="item"><span class="item-label">Provision &amp; write-off</span><span class="item-sub">Initiated here, booked via GL event</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ EVENT BUS STRIP ══ -->
+<div class="events-row">
+  <div class="events-title">Key domain events flowing between pillars</div>
+  <div class="events-grid">
+    <div class="event-card">
+      <div class="event-from">Administration → Authorisation</div>
+      <div class="event-name">user.created</div>
+      <div class="event-sub">Triggers credential record creation</div>
+    </div>
+    <div class="event-card">
+      <div class="event-from">Administration → Authorisation</div>
+      <div class="event-name">role.assigned</div>
+      <div class="event-sub">Updates permission read model</div>
+    </div>
+    <div class="event-card">
+      <div class="event-from">Administration → Domain services</div>
+      <div class="event-name">currency.enabled</div>
+      <div class="event-sub">Domain services update available currencies</div>
+    </div>
+    <div class="event-card">
+      <div class="event-from">Domain service → Accounting service</div>
+      <div class="event-name">gl.journal.requested</div>
+      <div class="event-sub">Accruals, fees, provisions posted as entries</div>
+    </div>
+    <div class="event-card">
+      <div class="event-from">Administration → Domain services</div>
+      <div class="event-name">organisation.provisioned</div>
+      <div class="event-sub">Domain services initialise tenant context</div>
+    </div>
+    <div class="event-card">
+      <div class="event-from">Domain service → Domain service</div>
+      <div class="event-name">loan.disbursed</div>
+      <div class="event-sub">Example: triggers payment or account debit</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ OTHER DOMAIN SERVICES ══ -->
+<div class="domain-note">
+  <div>
+    <div style="font-weight:500; color:#0c447c; margin-bottom:4px;">Same pattern applies to all domain services</div>
+    <div style="font-size:12px; color:#185fa5; margin-bottom:8px;">Every domain service has the same three internal layers: Setup &amp; definition (config-time) · Core operations (runtime) · Accounting bridge (events out). Currency config and roles are always consumed from Administration — never redefined locally.</div>
+    <div class="domain-services-list">
+      <span class="ds-pill">LMS — Loans</span>
+      <span class="ds-pill">DDA — Deposits &amp; accounts</span>
+      <span class="ds-pill">Payments</span>
+      <span class="ds-pill">Customer / CRM</span>
+      <span class="ds-pill">Collateral</span>
+      <span class="ds-pill">Decision engine</span>
+      <span class="ds-pill">Loan origination</span>
+      <span class="ds-pill">Cards</span>
+      <span class="ds-pill">Trade finance</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LEGEND ══ -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#1d9e75;"></div>
+    Administration
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#7f77dd;"></div>
+    Authorisation
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#378add;"></div>
+    Domain services
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#ba7517;"></div>
+    Domain events (async)
+  </div>
+</div>
+
+</body>
+</html>
