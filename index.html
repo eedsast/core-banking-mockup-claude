@@ -1417,11 +1417,17 @@
       <div class="card-desc">Client onboarding, KYC, profiles and relationship management</div>
       <div class="card-tag">client-service-boundaries</div>
     </div>
-        <div class="module-card" style="--card-accent:#16a085;--icon-bg:#e4f7f3;" data-action="show-module" data-module="accounts">
+    <div class="module-card" style="--card-accent:#16a085;--icon-bg:#e4f7f3;" data-action="show-module" data-module="accounts">
       <div class="card-icon">🏦</div>
-      <div class="card-title">Accounts / Deposits</div>
-      <div class="card-desc">Transaction & deposit accounts, products, transactions</div>
+      <div class="card-title">Accounts</div>
+      <div class="card-desc">Transaction &amp; current accounts, savings, overdraft management</div>
       <div class="card-tag">accounts-service-boundaries</div>
+    </div>
+    <div class="module-card" style="--card-accent:#7f77dd;--icon-bg:#eeedfe;" data-action="show-module" data-module="deposits">
+      <div class="card-icon">💰</div>
+      <div class="card-title">Deposits</div>
+      <div class="card-desc">Term deposits, fixed deposits, maturity and rollover management</div>
+      <div class="card-tag">deposits-service-boundaries</div>
     </div>
     <div class="module-card" style="--card-accent:#d35400;--icon-bg:#fdf0e6;" data-action="show-module" data-module="loans">
       <div class="card-icon">📋</div>
@@ -1723,12 +1729,12 @@
   <main class="main-content" id="content-loans"></main>
 </div>
 
-<!-- ── ACCOUNTS / DEPOSITS ── -->
+<!-- ── ACCOUNTS ── -->
 <div id="page-accounts" class="detail-page">
   <nav class="sidebar">
     <div class="sidebar-header">
       <div class="mod-icon" style="background:#0a5c45;">🏦</div>
-      <div><div class="mod-name">Accounts / Deposits</div><div class="mod-sub">accounts-service-boundaries</div></div>
+      <div><div class="mod-name">Accounts</div><div class="mod-sub">accounts-service-boundaries</div></div>
     </div>
     <div class="back-btn" data-action="show-home">
       <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><use href="#ico-back"/></svg>
@@ -1737,11 +1743,10 @@
     <div class="sidebar-nav">
 
       <div class="nav-flat active" data-action="set-content" data-module="accounts" data-section="txninfo" data-title="Transaction Accounts Information" data-subtitle="Browse and manage transaction (current) accounts">🔄 Transaction Accounts Info</div>
-      <div class="nav-flat" data-action="set-content" data-module="accounts" data-section="depinfo" data-title="Deposit Accounts Information" data-subtitle="Browse and manage deposit / savings accounts">💰 Deposit Accounts Info</div>
 
       <div class="nav-group">
         <div class="nav-group-header" data-action="toggle-group">
-          <span class="group-label"><span class="group-icon">⚙️</span>Account/Deposit Operations</span>
+          <span class="group-label"><span class="group-icon">⚙️</span>Account Operations</span>
           <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
         </div>
         <div class="nav-children">
@@ -1751,12 +1756,12 @@
 
       <div class="nav-group">
         <div class="nav-group-header" data-action="toggle-group">
-          <span class="group-label"><span class="group-icon">📦</span>Account/Deposit Product Defs</span>
+          <span class="group-label"><span class="group-icon">📦</span>Account Product Definitions</span>
           <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
         </div>
         <div class="nav-children">
-          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accprod" data-title="Account/Deposit Product" data-subtitle="Define account and deposit product parameters">Account/Deposit Product</div>
-          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accinterest" data-title="Interest Rate Definitions" data-subtitle="Configure deposit interest rate structures">Interest Rate Definitions</div>
+          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accprod" data-title="Account Product" data-subtitle="Define transaction and savings account product parameters">Account Product</div>
+          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accinterest" data-title="Interest Rate Definitions" data-subtitle="Configure savings and overdraft interest rate structures">Interest Rate Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acccalc" data-title="Interest Calculation" data-subtitle="Set interest calculation methods and calendars">Interest Calculation</div>
           <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acccollect" data-title="Collection Definitions" data-subtitle="Define collection rules for accounts">Collection Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accpenalty" data-title="Penalty Definitions" data-subtitle="Configure overdraft and penalty charges">Penalty Definitions</div>
@@ -1770,6 +1775,53 @@
     </div>
   </nav>
   <main class="main-content" id="content-accounts"></main>
+</div>
+
+<!-- ── DEPOSITS ── -->
+<div id="page-deposits" class="detail-page">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="mod-icon" style="background:#26215c;">💰</div>
+      <div><div class="mod-name">Deposits</div><div class="mod-sub">deposits-service-boundaries</div></div>
+    </div>
+    <div class="back-btn" data-action="show-home">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><use href="#ico-back"/></svg>
+      All Modules
+    </div>
+    <div class="sidebar-nav">
+
+      <div class="nav-flat active" data-action="set-content" data-module="deposits" data-section="depinfo" data-title="Deposit Accounts Information" data-subtitle="Browse and manage term and fixed deposit accounts">💰 Deposit Accounts Info</div>
+
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">⚙️</span>Deposit Operations</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depeod" data-title="End of Day Manual Run" data-subtitle="Trigger end-of-day batch processing for deposits">End of Day Manual Run</div>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">📦</span>Deposit Product Definitions</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depprod" data-title="Deposit Product" data-subtitle="Define term and fixed deposit product parameters">Deposit Product</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depinterest" data-title="Interest Rate Definitions" data-subtitle="Configure deposit interest rate structures and tiers">Interest Rate Definitions</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depcalc" data-title="Interest Calculation" data-subtitle="Set interest calculation methods, compounding and EIR">Interest Calculation</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="deprollover" data-title="Rollover Rules" data-subtitle="Configure automatic rollover and maturity instructions">Rollover Rules</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="deppenalty" data-title="Early Withdrawal Penalty" data-subtitle="Define early exit penalty calculation methods">Early Withdrawal Penalty</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depfees" data-title="Fee Definitions" data-subtitle="Define deposit maintenance and placement fees">Fee Definitions</div>
+        </div>
+      </div>
+
+      <div class="nav-flat" data-action="set-content" data-module="deposits" data-section="deptransactions" data-title="Deposit Transactions" data-subtitle="View placement, maturity and breakage transactions">📑 Deposit Transactions</div>
+
+    </div>
+  </nav>
+  <main class="main-content" id="content-deposits"></main>
 </div>
 
 <!-- ── LOAN APPLICATION ── -->
@@ -2320,6 +2372,7 @@ const moduleMap = {
   admin:      { pageId: 'page-admin',      contentId: 'content-admin',      defaultSection: 'organisation', defaultTitle: 'Organisation Management',        defaultSub: 'Manage legal entities and organisational hierarchy' },
   loans:      { pageId: 'page-loans',      contentId: 'content-loans',      defaultSection: 'loaninfo',     defaultTitle: 'Loan Information',               defaultSub: 'View and manage existing loan account details' },
   accounts:   { pageId: 'page-accounts',   contentId: 'content-accounts',   defaultSection: 'txninfo',      defaultTitle: 'Transaction Accounts Information',defaultSub: 'Browse and manage transaction (current) accounts' },
+  deposits:   { pageId: 'page-deposits',   contentId: 'content-deposits',   defaultSection: 'depinfo',      defaultTitle: 'Deposit Accounts Information',    defaultSub: 'Browse and manage term and fixed deposit accounts' },
   loanapp:    { pageId: 'page-loanapp',    contentId: 'content-loanapp',    defaultSection: 'newapp',       defaultTitle: 'New Application',                defaultSub: 'Create a new loan application' },
   decision:   { pageId: 'page-decision',   contentId: 'content-decision',   defaultSection: 'rule-groups',  defaultTitle: 'Rule Groups',                   defaultSub: 'Organise rules into logical groups' },
   payments:   { pageId: 'page-payments',   contentId: 'content-payments',   defaultSection: 'domestic',     defaultTitle: 'Domestic Payments',              defaultSub: 'Process local intrabank and interbank transfers' },
@@ -2511,7 +2564,7 @@ function renderContent(containerId, mod, section, title, subtitle) {
   }
 
   const el = document.getElementById(containerId);
-  const modLabels = { auth: 'Authorisation', admin: 'Administration', loans: 'Loan Management', accounts: 'Accounts/Deposits', loanapp: 'Loan Application', decision: 'Decision Engine', payments: 'Payments', cards: 'Cards', accounting: 'Accounting', loyalty: 'Loyalty' };
+  const modLabels = { auth: 'Authorisation', admin: 'Administration', loans: 'Loan Management', accounts: 'Accounts', deposits: 'Deposits', loanapp: 'Loan Application', decision: 'Decision Engine', payments: 'Payments', cards: 'Cards', accounting: 'Accounting', loyalty: 'Loyalty' };
   const modLabel = modLabels[mod] || mod;
   const selfHeaded = SELF_HEADED_SECTIONS.has(section);
 
@@ -3032,6 +3085,24 @@ const artifactData = {
         meta: 'Interactive Swagger UI — explore and test all Loan Service REST endpoints',
         badge: 'bg-api', label: 'API',
         url: 'https://api.dev.loanservice.onefor.com/swagger/index.html' },
+    ]
+  },
+  accounts: {
+    icon: '🏦', title: 'Accounts', service: 'accounts-service-boundaries',
+    items: [
+      { icon: '🏗️', name: 'Accounts vs Deposits — Context Boundaries',
+        meta: 'Architecture analysis: why Accounts (transaction/current/overdraft) and Deposits (term/fixed) are two separate bounded contexts',
+        badge: 'bg-arch', label: 'Architecture',
+        url: 'accounts_deposits_context_boundaries.html' },
+    ]
+  },
+  deposits: {
+    icon: '💰', title: 'Deposits', service: 'deposits-service-boundaries',
+    items: [
+      { icon: '🏗️', name: 'Accounts vs Deposits — Context Boundaries',
+        meta: 'Architecture analysis: why Accounts (transaction/current/overdraft) and Deposits (term/fixed) are two separate bounded contexts',
+        badge: 'bg-arch', label: 'Architecture',
+        url: 'accounts_deposits_context_boundaries.html' },
     ]
   },
   loyalty: {

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounts vs Deposits — Context Boundaries</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f4ef;
+    padding: 40px 24px;
+    min-height: 100vh;
+    color: #2c2c2a;
+  }
+  h1 { font-size: 19px; font-weight: 500; text-align: center; color: #1a1a18; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #888780; text-align: center; margin-bottom: 28px; }
+  .container { max-width: 1060px; margin: 0 auto; }
+
+  /* ── Verdict banner ── */
+  .verdict-banner {
+    background: #085041;
+    color: #e1f5ee;
+    border-radius: 12px;
+    padding: 16px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .verdict-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .verdict-text { font-size: 13px; line-height: 1.65; }
+  .verdict-text strong { color: #9FE1CB; }
+
+  /* ── Two column comparison ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .svc-card {
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .svc-accounts { background: #e6f1fb; border: 1px solid #378add; }
+  .svc-deposits { background: #eeedfe; border: 1px solid #7f77dd; }
+
+  .svc-title { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+  .svc-accounts .svc-title { color: #0c447c; }
+  .svc-deposits .svc-title { color: #26215c; }
+
+  .svc-sub { font-size: 11px; margin-bottom: 4px; }
+  .svc-accounts .svc-sub { color: #378add; }
+  .svc-deposits .svc-sub { color: #7f77dd; }
+
+  .zone {
+    background: #ffffff;
+    border-radius: 9px;
+    padding: 12px 14px;
+    border: 0.5px solid #d3d1c7;
+  }
+  .zone-title {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888780;
+    margin-bottom: 8px;
+  }
+  .items { display: flex; flex-direction: column; gap: 5px; }
+  .item {
+    font-size: 12px;
+    color: #2c2c2a;
+    padding: 5px 8px;
+    background: #fafaf8;
+    border-radius: 5px;
+    line-height: 1.45;
+  }
+  .item strong { font-weight: 500; display: block; margin-bottom: 1px; }
+  .item span { font-size: 11px; color: #5f5e5a; }
+
+  /* ── Domain model diff table ── */
+  .diff-section { margin-bottom: 24px; }
+  .diff-header {
+    background: #1a1a18;
+    color: #f1efe8;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .diff-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    background: #ffffff;
+    border: 1px solid #d3d1c7;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+  }
+  .diff-table th {
+    padding: 9px 14px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #ece9e0;
+  }
+  .th-attr  { background: #f1efe8; color: #444441; width: 22%; }
+  .th-acc   { background: #e6f1fb; color: #0c447c; width: 39%; }
+  .th-dep   { background: #eeedfe; color: #26215c; width: 39%; }
+  .diff-table td {
+    padding: 9px 14px;
+    border-bottom: 0.5px solid #ece9e0;
+    vertical-align: top;
+    line-height: 1.5;
+    color: #2c2c2a;
+  }
+  .diff-table tr:last-child td { border-bottom: none; }
+  .diff-table tr:nth-child(even) td { background: #fafaf8; }
+  .diff-table td:first-child { color: #888780; font-weight: 500; font-size: 11px; }
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 7px;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .tag-diff   { background: #faece7; color: #4a1b0c; border: 0.5px solid #993c1d; }
+  .tag-shared { background: #e1f5ee; color: #085041; border: 0.5px solid #1d9e75; }
+
+  /* ── Shared kernel ── */
+  .shared-section {
+    background: #faeeda;
+    border: 1px solid #ba7517;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+  .shared-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #633806;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .shared-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .shared-card {
+    background: #fff9ee;
+    border: 0.5px solid #ef9f27;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .shared-card-title { font-size: 12px; font-weight: 500; color: #412402; margin-bottom: 3px; }
+  .shared-card-sub   { font-size: 11px; color: #854f0b; line-height: 1.5; }
+
+  /* ── Event flows ── */
+  .events-section {
+    background: #f1efe8;
+    border: 1px solid #b4b2a9;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+  .events-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a18;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .events-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .event-card {
+    background: #ffffff;
+    border: 0.5px solid #d3d1c7;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .event-from { font-size: 10px; font-weight: 500; color: #888780; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .event-name { font-family: 'SF Mono','Fira Code',monospace; font-size: 12px; font-weight: 500; color: #1a1a18; margin-bottom: 3px; }
+  .event-sub  { font-size: 11px; color: #5f5e5a; line-height: 1.5; }
+
+  /* ── Anti-pattern warning ── */
+  .warning {
+    background: #faece7;
+    border: 1px solid #993c1d;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: #4a1b0c;
+    line-height: 1.6;
+  }
+  .warning strong { font-weight: 500; color: #7a2e18; }
+
+  /* ── Summary ── */
+  .summary {
+    background: #1a1a18;
+    color: #f1efe8;
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .summary h3 {
+    font-size: 12px;
+    font-weight: 500;
+    color: #9FE1CB;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .summary-item {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: #d3d1c7;
+    line-height: 1.55;
+    margin-bottom: 7px;
+  }
+  .summary-item::before { content: '→'; color: #9FE1CB; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Accounts vs Deposits — Context Boundaries</h1>
+  <p class="subtitle">Domain analysis for: Current accounts · Savings · Term deposits · Overdraft</p>
+
+  <!-- ══ VERDICT ══ -->
+  <div class="verdict-banner">
+    <div class="verdict-icon">✓</div>
+    <div class="verdict-text">
+      <strong>Split into two bounded contexts.</strong> With current accounts + overdraft on one side and term deposits on the other, your business rules diverge enough to justify separation. Current accounts are <strong>operational</strong> — daily transactions, overdraft limits, real-time balance checks. Deposits are <strong>contractual</strong> — maturity dates, interest accrual, rollover rules, early withdrawal penalties. Forcing these into one service means one service owns two fundamentally different lifecycle models, two different interest engines, and two different regulatory reporting paths. That is too much for one bounded context.
+    </div>
+  </div>
+
+  <!-- ══ TWO SERVICE CARDS ══ -->
+  <div class="compare-grid">
+
+    <!-- Accounts Service -->
+    <div class="svc-card svc-accounts">
+      <div>
+        <div class="svc-title">Accounts Service</div>
+        <div class="svc-sub">Transaction Accounts · Current · Savings · Overdraft</div>
+      </div>
+
+      <div class="zone">
+        <div class="zone-title">Setup &amp; definition</div>
+        <div class="items">
+          <div class="item"><strong>Account product definition</strong><span>Type (current, savings, overdraft), fee structure, minimum balance rules</span></div>
+          <div class="item"><strong>Overdraft parameters</strong><span>Limit, interest rate on overdraft, grace period, penalty</span></div>
+          <div class="item"><strong>Interest configuration</strong><span>Savings interest tiers, calculation method, crediting frequency</span></div>
+          <div class="item"><strong>Transaction limits</strong><span>Daily limits, single transaction cap, channel restrictions</span></div>
+        </div>
+      </div>
+
+      <div class="zone">
+        <div class="zone-title">Core operations — runtime</div>
+        <div class="items">
+          <div class="item"><strong>Account opening &amp; KYC link</strong><span>Opens account, links to Customer service entity</span></div>
+          <div class="item"><strong>Debit / credit posting</strong><span>Real-time balance update, available balance calculation</span></div>
+          <div class="item"><strong>Overdraft management</strong><span>Limit check, overdraft utilisation, excess handling</span></div>
+          <div class="item"><strong>Savings interest accrual</strong><span>Daily accrual calculation, monthly/quarterly crediting</span></div>
+          <div class="item"><strong>Statement generation</strong><span>Transaction history, period statements</span></div>
+          <div class="item"><strong>Account status management</strong><span>Freeze, block, dormancy, closure</span></div>
+        </div>
+      </div>
+
+      <div class="zone">
+        <div class="zone-title">Accounting bridge — events out</div>
+        <div class="items">
+          <div class="item"><strong>Every debit/credit → GL entry</strong><span>Posts to Accounting service via gl.journal.requested event</span></div>
+          <div class="item"><strong>Overdraft interest → GL entry</strong><span>Accrual calculated here, posted as journal event</span></div>
+          <div class="item"><strong>Savings interest → GL entry</strong><span>Credited to account, corresponding GL event fired</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deposits Service -->
+    <div class="svc-card svc-deposits">
+      <div>
+        <div class="svc-title">Deposits Service</div>
+        <div class="svc-sub">Term Deposits · Fixed Deposits · Time Deposits</div>
+      </div>
+
+      <div class="zone">
+        <div class="zone-title">Setup &amp; definition</div>
+        <div class="items">
+          <div class="item"><strong>Deposit product definition</strong><span>Tenor options, minimum/maximum amount, currency eligibility</span></div>
+          <div class="item"><strong>Interest rate structure</strong><span>Fixed vs floating, tier-based rates, rate calendar</span></div>
+          <div class="item"><strong>Rollover rules</strong><span>Auto-rollover, principal-only, principal+interest, manual</span></div>
+          <div class="item"><strong>Early withdrawal policy</strong><span>Penalty calculation method, notice period requirements</span></div>
+          <div class="item"><strong>Maturity instructions</strong><span>Default action on maturity, sweep-to-account rules</span></div>
+        </div>
+      </div>
+
+      <div class="zone">
+        <div class="zone-title">Core operations — runtime</div>
+        <div class="items">
+          <div class="item"><strong>Deposit placement</strong><span>Open deposit, link to funding account, lock funds</span></div>
+          <div class="item"><strong>Interest accrual engine</strong><span>Daily accrual on principal, EIR method, compounding</span></div>
+          <div class="item"><strong>Maturity processing</strong><span>Rollover execution, principal + interest release to Accounts service</span></div>
+          <div class="item"><strong>Early withdrawal</strong><span>Penalty calculation, partial/full breakage, approval workflow</span></div>
+          <div class="item"><strong>Certificate of deposit</strong><span>Issuance, amendment, cancellation</span></div>
+          <div class="item"><strong>Rate repricing</strong><span>Floating rate update, notification to customer</span></div>
+        </div>
+      </div>
+
+      <div class="zone">
+        <div class="zone-title">Accounting bridge — events out</div>
+        <div class="items">
+          <div class="item"><strong>Placement → GL entry</strong><span>Debit Accounts service, credit deposit liability account</span></div>
+          <div class="item"><strong>Accrued interest → GL entry</strong><span>Calculated here, posted to Accounting service daily</span></div>
+          <div class="item"><strong>Maturity payout → GL entry</strong><span>Principal + interest release triggers GL event</span></div>
+          <div class="item"><strong>Early withdrawal penalty → GL entry</strong><span>Penalty income posted via journal event</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ DOMAIN MODEL DIFF ══ -->
+  <div class="diff-section">
+    <div class="diff-header">Why the domain models are fundamentally different</div>
+    <table class="diff-table">
+      <thead>
+        <tr>
+          <th class="th-attr">Attribute</th>
+          <th class="th-acc">Accounts — Current / Savings / Overdraft</th>
+          <th class="th-dep">Deposits — Term / Fixed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Lifecycle</td>
+          <td>Open-ended · no maturity date · runs until closed <span class="tag tag-diff">different</span></td>
+          <td>Contractual · fixed start and maturity date · time-bound <span class="tag tag-diff">different</span></td>
+        </tr>
+        <tr>
+          <td>Balance behaviour</td>
+          <td>Fluctuates daily · debits and credits freely · available vs ledger balance <span class="tag tag-diff">different</span></td>
+          <td>Locked at placement · principal fixed until maturity or breakage <span class="tag tag-diff">different</span></td>
+        </tr>
+        <tr>
+          <td>Interest engine</td>
+          <td>Tiered savings rate on credit balance · overdraft rate on debit balance <span class="tag tag-diff">different</span></td>
+          <td>Fixed or floating rate on full principal · EIR · compounding rules <span class="tag tag-diff">different</span></td>
+        </tr>
+        <tr>
+          <td>Rollover</td>
+          <td>Not applicable <span class="tag tag-diff">different</span></td>
+          <td>Auto-rollover, principal-only, P+I, manual instruction <span class="tag tag-diff">different</span></td>
+        </tr>
+        <tr>
+          <td>Early exit</td>
+          <td>No concept · customer can withdraw freely <span class="tag tag-diff">different</span></td>
+          <td>Early withdrawal penalty · notice period · partial breakage rules <span class="tag tag-diff">different</span></td>
+        </tr>
+        <tr>
+          <td>Transaction posting</td>
+          <td>Real-time debit/credit · high frequency <span class="tag tag-diff">different</span></td>
+          <td>Rare events: placement, interest, maturity, breakage <span class="tag tag-diff">different</span></td>
+        </tr>
+        <tr>
+          <td>Regulatory reporting</td>
+          <td>Current account balances · overdraft exposure · dormancy <span class="tag tag-diff">different</span></td>
+          <td>Deposit concentration · maturity ladder · liquidity reporting <span class="tag tag-diff">different</span></td>
+        </tr>
+        <tr>
+          <td>Account identifier</td>
+          <td>IBAN / account number · used for payment routing <span class="tag tag-shared">shared concept</span></td>
+          <td>Deposit reference number · not routable for payments <span class="tag tag-shared">shared concept</span></td>
+        </tr>
+        <tr>
+          <td>Customer link</td>
+          <td>Linked to Customer service via customer_id <span class="tag tag-shared">shared</span></td>
+          <td>Linked to Customer service via customer_id <span class="tag tag-shared">shared</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ SHARED CONCEPTS ══ -->
+  <div class="shared-section">
+    <div class="shared-title">Shared concepts — how the two services interact</div>
+    <div class="shared-grid">
+      <div class="shared-card">
+        <div class="shared-card-title">Deposit funding link</div>
+        <div class="shared-card-sub">When a deposit is placed, Deposits service instructs Accounts service to debit the funding account. Accounts service posts the debit and fires a confirmation event. Both services stay consistent via events — never direct DB calls.</div>
+      </div>
+      <div class="shared-card">
+        <div class="shared-card-title">Maturity sweep</div>
+        <div class="shared-card-sub">On maturity, Deposits service fires a maturity.completed event. Accounts service receives it and credits the proceeds to the customer's current account. No synchronous call between services.</div>
+      </div>
+      <div class="shared-card">
+        <div class="shared-card-title">Customer service</div>
+        <div class="shared-card-sub">Both services link to the same customer_id from the Customer / CRM service. Neither owns customer data — they consume it. KYC status checked via Customer service before account or deposit opening.</div>
+      </div>
+      <div class="shared-card">
+        <div class="shared-card-title">Currency &amp; rates</div>
+        <div class="shared-card-sub">Both consume enabled currencies from Administration service. Deposit interest rates come from the Deposits service own rate config. FX revaluation for FX deposits handled within Deposits service, GL event fired to Accounting.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ EVENT FLOWS ══ -->
+  <div class="events-section">
+    <div class="events-title">Key events between the two services and the rest of the system</div>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-from">Deposits → Accounts</div>
+        <div class="event-name">deposit.placement.requested</div>
+        <div class="event-sub">Accounts service debits funding account, confirms availability before placement completes</div>
+      </div>
+      <div class="event-card">
+        <div class="event-from">Deposits → Accounts</div>
+        <div class="event-name">deposit.matured</div>
+        <div class="event-sub">Accounts service credits principal + interest to customer's nominated current account</div>
+      </div>
+      <div class="event-card">
+        <div class="event-from">Accounts → Accounting</div>
+        <div class="event-name">gl.journal.requested</div>
+        <div class="event-sub">Every debit/credit, overdraft accrual, savings interest posted as GL entry</div>
+      </div>
+      <div class="event-card">
+        <div class="event-from">Deposits → Accounting</div>
+        <div class="event-name">gl.journal.requested</div>
+        <div class="event-sub">Placement, accrued interest, maturity payout, penalty income all posted as GL entries</div>
+      </div>
+      <div class="event-card">
+        <div class="event-from">Accounts → Payments</div>
+        <div class="event-name">account.debit.authorised</div>
+        <div class="event-sub">Payments service requests debit authorisation from Accounts service before executing outbound payment</div>
+      </div>
+      <div class="event-card">
+        <div class="event-from">Customer → Accounts + Deposits</div>
+        <div class="event-name">customer.kyc.updated</div>
+        <div class="event-sub">Both services update account/deposit status if KYC expires or is revoked</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ANTI-PATTERN WARNING ══ -->
+  <div class="warning">
+    <strong>Anti-pattern to avoid:</strong> Do not create a generic "Account service" that tries to handle all account types through a discriminator column or polymorphic table. A table with 40 nullable columns where 20 are only relevant to term deposits and 20 only to current accounts is a design smell. The domain models are different enough that they deserve separate tables, separate APIs, separate deployment cycles, and separate teams owning them. The short-term convenience of one service becomes long-term pain when the deposit interest engine needs to change independently of the overdraft limit logic.
+  </div>
+
+  <!-- ══ SUMMARY ══ -->
+  <div class="summary">
+    <div>
+      <h3>Why split is the right answer here</h3>
+      <div class="summary-item">Business rules diverge completely — lifecycle, interest engine, rollover, early exit are all different</div>
+      <div class="summary-item">Transaction frequency differs — Accounts service has high-frequency real-time posting; Deposits has rare lifecycle events</div>
+      <div class="summary-item">Regulatory reporting paths are different — current account reporting vs liquidity maturity ladder</div>
+      <div class="summary-item">Teams can evolve independently — deposit rate engine changes do not risk current account posting</div>
+      <div class="summary-item">Scaling profiles differ — Accounts service needs horizontal scaling for payment throughput; Deposits is batch-oriented</div>
+    </div>
+    <div>
+      <h3>Rules for keeping the split clean</h3>
+      <div class="summary-item">Never share a database — each service owns its own schema and tables entirely</div>
+      <div class="summary-item">Deposits instructs Accounts service via events — never via direct API call or shared table</div>
+      <div class="summary-item">Both post to Accounting via the same gl.journal.requested event — Accounting does not know or care who sent it</div>
+      <div class="summary-item">customer_id is the only shared key — neither service duplicates customer profile data</div>
+      <div class="summary-item">Overdraft lives in Accounts service — it is a feature of a current account, not a separate service</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
