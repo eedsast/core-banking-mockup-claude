@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Help & Reference — Core Banking</title>
-<style>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1.0">
+    <title>Help &amp; Reference — Core Banking</title>
+    <style>
 /* ── RESET & BASE ────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 14px; scroll-behavior: smooth; }
@@ -30,12 +32,7 @@ body {
   flex-shrink: 0;
   border-bottom: 2px solid #0d1f30;
 }
-.hdr-logo {
-  font-size: 15px;
-  font-weight: 700;
-  color: #8aafd4;
-  letter-spacing: .03em;
-}
+.hdr-logo { font-size: 15px; font-weight: 700; color: #8aafd4; letter-spacing: .03em; }
 .hdr-sep { color: #2a4a62; font-size: 18px; }
 .hdr-title { font-size: 13px; color: #b8cfe0; font-weight: 400; }
 .hdr-badge {
@@ -50,15 +47,11 @@ body {
 }
 
 /* ── LAYOUT ─────────────────────────────────────────────────── */
-.layout {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
+.layout { display: flex; flex: 1; overflow: hidden; }
 
 /* ── SIDEBAR ─────────────────────────────────────────────────── */
 .sidebar {
-  width: 252px;
+  width: 280px;
   flex-shrink: 0;
   background: #1e3348;
   overflow-y: auto;
@@ -69,10 +62,7 @@ body {
 .sidebar::-webkit-scrollbar-track { background: transparent; }
 .sidebar::-webkit-scrollbar-thumb { background: #2a4a62; border-radius: 2px; }
 
-.sb-search {
-  margin: 0 12px 16px;
-  position: relative;
-}
+.sb-search { margin: 0 12px 16px; position: relative; }
 .sb-search input {
   width: 100%;
   background: #0d2035;
@@ -100,11 +90,11 @@ body {
   text-transform: uppercase;
   letter-spacing: .08em;
   color: #4a7090;
-  padding: 10px 16px 4px;
+  padding: 12px 16px 6px;
 }
 .sb-link {
   display: block;
-  padding: 7px 16px 7px 20px;
+  padding: 6px 16px 6px 20px;
   font-size: 12.5px;
   color: #8aafd4;
   text-decoration: none;
@@ -124,33 +114,23 @@ body {
   font-weight: 600;
 }
 .sb-link-sub {
-  padding-left: 28px;
-  font-size: 12px;
+  padding-left: 32px;
+  font-size: 11.5px;
   color: #6a90a8;
 }
-.sb-link-sub:hover, .sb-link-sub.active {
-  color: #b8cfe0;
-}
-.sb-divider {
-  height: 1px;
-  background: #1a3550;
-  margin: 8px 16px;
-}
+.sb-link-sub:hover, .sb-link-sub.active { color: #b8cfe0; }
+.sb-divider { height: 1px; background: #1a3550; margin: 8px 16px; }
 
 /* ── MAIN CONTENT ─────────────────────────────────────────────── */
-.main {
-  flex: 1;
-  overflow-y: auto;
-  padding: 32px 40px 60px;
-}
+.main { flex: 1; overflow-y: auto; padding: 32px 40px 60px; }
 .main::-webkit-scrollbar { width: 6px; }
 .main::-webkit-scrollbar-track { background: #e8eef4; }
 .main::-webkit-scrollbar-thumb { background: #b0c4d8; border-radius: 3px; }
 
 /* ── SECTION WRAPPERS ─────────────────────────────────────────── */
 .help-section {
-  max-width: 820px;
-  margin-bottom: 56px;
+  max-width: 920px;
+  margin-bottom: 48px;
   scroll-margin-top: 24px;
 }
 .help-section:last-child { margin-bottom: 0; }
@@ -172,32 +152,34 @@ body {
   padding-bottom: 10px;
   border-bottom: 2px solid #d0dce8;
 }
+.subsection-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a2e42;
+  margin: 28px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #dce8f0;
+}
 .section-lead {
   font-size: 14px;
   color: #5a7a95;
   line-height: 1.7;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 /* ── CONTENT ELEMENTS ─────────────────────────────────────────── */
-h3 {
-  font-size: 15px;
-  font-weight: 700;
-  color: #1e3a55;
-  margin: 24px 0 8px;
-}
+h3 { font-size: 15px; font-weight: 700; color: #1e3a55; margin: 22px 0 8px; }
 h4 {
   font-size: 13px;
   font-weight: 700;
   color: #2a5070;
-  margin: 18px 0 6px;
+  margin: 16px 0 6px;
   text-transform: uppercase;
   letter-spacing: .04em;
 }
 p { font-size: 13.5px; line-height: 1.75; color: #3a5570; margin-bottom: 12px; }
 p:last-child { margin-bottom: 0; }
-
-ul, ol { padding-left: 20px; margin-bottom: 12px; }
+ul, ol { padding-left: 22px; margin-bottom: 12px; }
 li { font-size: 13.5px; line-height: 1.75; color: #3a5570; margin-bottom: 4px; }
 
 code {
@@ -218,31 +200,11 @@ code {
   font-size: 13px;
   line-height: 1.65;
 }
-.info-box {
-  background: #e6f1fb;
-  border-left: 4px solid #185fa5;
-  color: #0c3a70;
-}
-.note-box {
-  background: #e8f5ee;
-  border-left: 4px solid #0f6e56;
-  color: #084a38;
-}
-.warn-box {
-  background: #fff5e6;
-  border-left: 4px solid #d35400;
-  color: #7a3000;
-}
-.tip-box {
-  background: #f0eeff;
-  border-left: 4px solid #534ab7;
-  color: #2a1e80;
-}
-.box-label {
-  font-weight: 700;
-  margin-bottom: 4px;
-  display: block;
-}
+.info-box { background: #e6f1fb; border-left: 4px solid #185fa5; color: #0c3a70; }
+.note-box { background: #e8f5ee; border-left: 4px solid #0f6e56; color: #084a38; }
+.warn-box { background: #fff5e6; border-left: 4px solid #d35400; color: #7a3000; }
+.tip-box  { background: #f0eeff; border-left: 4px solid #534ab7; color: #2a1e80; }
+.box-label { font-weight: 700; margin-bottom: 4px; display: block; }
 
 /* ── DEFINITION TABLE ────────────────────────────────────────── */
 .def-table {
@@ -262,20 +224,55 @@ code {
   letter-spacing: .05em;
 }
 .def-table td {
-  padding: 10px 14px;
+  padding: 9px 14px;
   border-bottom: 1px solid #dce8f0;
   vertical-align: top;
   color: #3a5570;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 .def-table tr:nth-child(even) td { background: #f6f9fc; }
 .def-table td:first-child {
   font-weight: 600;
   color: #1a3a55;
   white-space: nowrap;
-  min-width: 160px;
+  min-width: 140px;
 }
 .def-table code { font-size: 11.5px; }
+
+/* ── SCHEDULE TABLE (repayment plans) ────────────────────────── */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 24px;
+  font-size: 12.5px;
+}
+.schedule-table th {
+  background: #2a5070;
+  color: #c8e0f0;
+  text-align: right;
+  padding: 8px 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.schedule-table th:first-child, .schedule-table th:nth-child(2) { text-align: left; }
+.schedule-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #dce8f0;
+  color: #3a5570;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.schedule-table td:first-child, .schedule-table td:nth-child(2) { text-align: left; }
+.schedule-table tr:nth-child(even) td { background: #f6f9fc; }
+.schedule-table tfoot td {
+  font-weight: 700;
+  color: #1a3a55;
+  background: #e8eef4 !important;
+  border-top: 2px solid #2a5070;
+  border-bottom: none;
+}
 
 /* ── FORMULA BOX ─────────────────────────────────────────────── */
 .formula {
@@ -287,497 +284,3177 @@ code {
   font-size: 12.5px;
   color: #9fe1cb;
   line-height: 1.8;
+  white-space: pre-wrap;
 }
 .formula .comment { color: #4a7090; }
+
+/* ── PARAMETER CARD ─────────────────────────────────────────── */
+.param-card {
+  background: #fff;
+  border: 1px solid #dce8f0;
+  border-left: 3px solid #4a8ab4;
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.param-card .param-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a3a55;
+  margin-bottom: 4px;
+}
+.param-card .param-values {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a5080;
+  background: #e0eaf4;
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+  letter-spacing: .02em;
+}
+.param-card p { margin-bottom: 6px; }
+.param-card p:last-child { margin-bottom: 0; }
 
 /* ── BACK TO TOP ─────────────────────────────────────────────── */
 .back-top {
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 12px;
   font-size: 12px;
   color: #4a8ab4;
   text-decoration: none;
 }
 .back-top:hover { color: #1a5080; text-decoration: underline; }
 </style>
-</head>
-<body>
+  </head>
+  <body>
+    <!-- ══ HEADER ═══════════════════════════════════════════════════ -->
+    <header class="hdr"> <span class="hdr-logo">Core Banking</span> <span
+        class="hdr-sep">›</span> <span class="hdr-title">Help &amp;
+        Reference Manual</span> <span class="hdr-badge">v1.0</span> </header>
+    <div class="layout">
+      <!-- ══ SIDEBAR ══════════════════════════════════════════════════ -->
+      <nav class="sidebar">
+        <div class="sb-search">
+          <svg class="sb-search-icon" width="13" height="13" viewBox="0
+            0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6.5" cy="6.5" r="5"></circle>
+            <line x1="10.5" y1="10.5" x2="14" y2="14"></line> </svg> <input
+            id="sbSearch" placeholder="Search topics…"
+            oninput="filterSidebar(this.value)" type="text"> </div>
+        <div class="sb-group">
+          <div class="sb-group-label">Getting Started</div>
+          <a class="sb-link" href="#overview">Overview</a> <a
+            class="sb-link" href="#navigation">Navigation</a> </div>
+        <div class="sb-divider"></div>
+        <div class="sb-group">
+          <div class="sb-group-label">Loan Management</div>
+          <a class="sb-link" href="#loan-products">Loan Products</a> <a
+            class="sb-link sb-link-sub" href="#category">↳ Category</a>
+          <a class="sb-link sb-link-sub" href="#purpose">↳ Purpose</a> <a
+            class="sb-link sb-link-sub" href="#allowed-customer-types">↳
+            Allowed Customer types</a> <a class="sb-link sb-link-sub"
+            href="#product-currencies">↳ Product Currencies</a> <a
+            class="sb-link sb-link-sub" href="#accounting-method">↳
+            Accounting Method</a> <a class="sb-link sb-link-sub"
+            href="#posting-frequency">↳ Posting frequency</a> <a
+            class="sb-link sb-link-sub" href="#eir-method">↳ EIR method
+            amortization</a> <a class="sb-link sb-link-sub"
+            href="#interest-type">↳ Interest Type</a> <a class="sb-link
+            sb-link-sub" href="#day-count">↳ Day Count Convention</a> <a
+            class="sb-link sb-link-sub" href="#interest-calc-method">↳
+            Interest Calculation Method</a> <a class="sb-link
+            sb-link-sub" href="#interest-frequency">↳ Interest
+            Calculation frequency</a> <a class="sb-link sb-link-sub"
+            href="#repayment-pattern">↳ Repayment Schedule pattern</a> <a
+            class="sb-link sb-link-sub" href="#repayment-date-pattern">↳
+            Repayment Date pattern</a> <a class="sb-link sb-link-sub"
+            href="#irregular-adjustment">↳ Irregular Period Adjustment</a>
+          <a class="sb-link sb-link-sub" href="#repayment-examples">↳
+            Repayment Plan Examples</a> <a class="sb-link sb-link-sub"
+            href="#rounding-mode">↳ Repayment Rounding mode</a> <a
+            class="sb-link sb-link-sub" href="#schedule-method">↳ Short
+            Month Handling</a> <a class="sb-link sb-link-sub"
+            href="#interest-calculated-at">↳ Interest calculated at</a>
+          <a class="sb-link sb-link-sub" href="#non-working-day">↳
+            Business Day Convention</a> <a class="sb-link sb-link-sub"
+            href="#backdated-disbursement">↳ Backdated disbursement</a>
+          <a class="sb-link sb-link-sub" href="#min-instalments">↳
+            Minimal instalment count</a> <a class="sb-link sb-link-sub"
+            href="#max-instalments">↳ Maximum instalment count</a> <a
+            class="sb-link sb-link-sub" href="#default-instalments">↳
+            Default instalment count</a> <a class="sb-link sb-link-sub"
+            href="#initial-state">↳ Initial Loan Account state</a> <a
+            class="sb-link sb-link-sub" href="#grace-period">↳ Grace
+            period</a> <a class="sb-link sb-link-sub"
+            href="#adjust-last">↳ Adjust last instalment</a> <a
+            class="sb-link sb-link-sub" href="#collateral">↳ Collateral
+            required</a> <a class="sb-link sb-link-sub"
+            href="#down-payment">↳ Down Payment required</a> <a
+            class="sb-link sb-link-sub" href="#deposit">↳ Deposit
+            required</a> <a class="sb-link sb-link-sub"
+            href="#insurance">↳ Insurance required</a> <a
+            class="sb-link sb-link-sub" href="#early-repayment">↳ Early
+            Repayment possible</a> <a class="sb-link sb-link-sub"
+            href="#ltv-limit">↳ Loan to Value limit</a> <a
+            class="sb-link sb-link-sub" href="#default-pd">↳ Default PD
+            value</a> <a class="sb-link sb-link-sub"
+            href="#default-lgd">↳ Default LGD value</a> <a
+            class="sb-link sb-link-sub" href="#provisioning">↳
+            Provisioning method</a> <a class="sb-link"
+            href="#collections">Collection Definitions</a> <a
+            class="sb-link" href="#penalties">Penalty Definitions</a> <a
+            class="sb-link sb-link-sub" href="#penalty-fields">↳
+            Configuration Fields</a> </div>
+        <div class="sb-divider"></div>
+        <div class="sb-group">
+          <div class="sb-group-label">Loan Accounts</div>
+          <a class="sb-link" href="#loan-account-overview">Loan Account
+            Overview</a> <a class="sb-link sb-link-sub"
+            href="#disbursement-date">↳ Disbursement Date</a> <a
+            class="sb-link sb-link-sub" href="#first-repayment-date">↳
+            First Repayment Date</a> <a class="sb-link sb-link-sub"
+            href="#eir">↳ Effective Interest Rate (EIR)</a> <a
+            class="sb-link sb-link-sub" href="#days-in-arrears">↳ Days
+            in Arrears</a> <a class="sb-link sb-link-sub"
+            href="#max-dia-lifecycle">↳ Max Days in Arrears (Lifecycle)</a>
+          <a class="sb-link sb-link-sub" href="#max-dia-month">↳ Max
+            Days in Arrears (Month)</a> <a class="sb-link sb-link-sub"
+            href="#asset-risk-class">↳ Asset Risk Classification</a> <a
+            class="sb-link sb-link-sub" href="#performance-stage">↳
+            Performance Stage</a> </div>
+        <div class="sb-divider"></div>
+        <div class="sb-group">
+          <div class="sb-group-label">Interest Calculation Formulas</div>
+          <a class="sb-link" href="#formulas-overview">Universal Formula
+            Reference</a> <a class="sb-link sb-link-sub"
+            href="#formula-rm">↳ Periodic Rate (r_m)</a> <a
+            class="sb-link sb-link-sub" href="#formula-emi">↳ EMI /
+            Annuity</a> <a class="sb-link sb-link-sub"
+            href="#formula-interest">↳ Interest Portion per Period</a> <a
+            class="sb-link sb-link-sub" href="#formula-last-instalment">↳
+            Last Instalment Rule</a> <a class="sb-link sb-link-sub"
+            href="#formula-pseudocode">↳ Unified Pseudocode</a> <a
+            class="sb-link sb-link-sub" href="#formula-examples">↳
+            Repayment Plan Examples</a> </div>
+        <div class="sb-divider"></div>
+        <div class="sb-group">
+          <div class="sb-group-label">Glossary</div>
+          <a class="sb-link" href="#glossary">All Terms A–Z</a> </div>
+      </nav>
+      <!-- ══ MAIN CONTENT ══════════════════════════════════════════════ -->
+      <main class="main" id="mainContent">
+        <!-- ── OVERVIEW ─────────────────────────────────────────────── -->
+        <section class="help-section" id="overview"> <span
+            class="section-tag">Getting Started</span>
+          <div class="section-title">Overview</div>
+          <p class="section-lead">This manual covers the parameters,
+            configuration options, and business rules used throughout
+            the Core Banking platform. Use the sidebar to jump directly
+            to any topic, or link here from any <strong>?</strong> help
+            button in the application.</p>
+          <div class="info-box"> <span class="box-label">Linking from
+              the application</span> Help buttons in the application
+            open this page at the exact relevant section using anchor
+            links (e.g. <code>help.html#accounting-method</code>). You
+            can bookmark any section URL directly. </div>
+        </section>
+        <!-- ── NAVIGATION ───────────────────────────────────────────── -->
+        <section class="help-section" id="navigation"> <span
+            class="section-tag">Getting Started</span>
+          <div class="section-title">Navigation</div>
+          <p>Use the left sidebar to browse topics by module. The search
+            box at the top of the sidebar filters links in real time.
+            Click any sidebar link to jump to the corresponding section.
+            All sections are reachable via direct URL anchor (e.g. <code>help.html#eir</code>).</p>
+        </section>
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!--  LOAN MANAGEMENT                                          -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- ── LOAN PRODUCTS ────────────────────────────────────────── -->
+        <section class="help-section" id="loan-products"> <span
+            class="section-tag">Loan Management</span>
+          <div class="section-title">Loan Products</div>
+          <p class="section-lead">A Loan Product is the master template
+            that defines the financial and operational parameters for a
+            Loan products. Every loan account opened on the platform is
+            bound to exactly one Loan Product, and inherits its rules at
+            origination.</p>
+          <p>Key parameters defined at the product level include the
+            allowed Currencies, Interest rate structure, Repayment
+            schedule type, Interest calculation method, tenor limits,
+            fee structure, and accounting treatment. Individual loan
+            accounts may override some parameters within bounds set by
+            the product.</p>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── CATEGORY ──────────────────────────────────────────────── -->
+        <section class="help-section" id="category"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Category</div>
+          <p data-start="700" data-end="767">This field could be defined
+            and used by organisation as per their need. <br>
+            There are no predefined IFRS9 categories, but there are some
+            examples that are usually seen in the banks.</p>
+          <div class="TyagGW_tableContainer">
+            <div tabindex="-1" class="group TyagGW_tableWrapper flex
+              flex-col-reverse w-fit">
+              <table data-start="769" data-end="1578" class="w-fit
+                min-w-(--thread-content-width)">
+                <thead data-start="769" data-end="803"><tr
+                    data-start="769" data-end="803">
+                    <th data-start="769" data-end="780"
+                      data-col-size="sm" class=""><font color="#3a5570">Category</font></th>
+                    <th data-start="780" data-end="803"
+                      data-col-size="md" class=""><font color="#3a5570">Typical
 
-<!-- ══ HEADER ═══════════════════════════════════════════════════ -->
-<header class="hdr">
-  <span class="hdr-logo">Core Banking</span>
-  <span class="hdr-sep">›</span>
-  <span class="hdr-title">Help &amp; Reference Manual</span>
-  <span class="hdr-badge">v1.0</span>
-</header>
 
-<div class="layout">
+                        Description</font></th>
+                  </tr>
+                </thead><tbody data-start="814" data-end="1578">
+                  <tr data-start="814" data-end="864">
+                    <td data-start="814" data-end="829"
+                      data-col-size="sm"><font color="#3a5570">Retail
+                        Loans</font></td>
+                    <td data-col-size="md" data-start="829"
+                      data-end="864"><font color="#3a5570">Individual /
+                        consumer borrowers</font></td>
+                  </tr>
+                  <tr data-start="865" data-end="919">
+                    <td data-start="865" data-end="883"
+                      data-col-size="sm"><font color="#3a5570">Corporate
+                        Loans</font></td>
+                    <td data-col-size="md" data-start="883"
+                      data-end="919"><font color="#3a5570">Large
+                        corporates and enterprises</font></td>
+                  </tr>
+                  <tr data-start="920" data-end="961">
+                    <td data-start="920" data-end="932"
+                      data-col-size="sm"><font color="#3a5570">SME Loans</font></td>
+                    <td data-start="932" data-end="961"
+                      data-col-size="md"><font color="#3a5570">Small
+                        &amp; medium businesses</font></td>
+                  </tr>
+                  <tr data-start="962" data-end="1033">
+                    <td data-start="962" data-end="993"
+                      data-col-size="sm"><font color="#3a5570">Commercial
 
-<!-- ══ SIDEBAR ══════════════════════════════════════════════════ -->
-<nav class="sidebar">
 
-  <div class="sb-search">
-    <svg class="sb-search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/>
-    </svg>
-    <input type="text" id="sbSearch" placeholder="Search topics…" oninput="filterSidebar(this.value)">
-  </div>
+                        Real Estate (CRE)</font></td>
+                    <td data-start="993" data-end="1033"
+                      data-col-size="md"><font color="#3a5570">Income-generating
 
-  <div class="sb-group">
-    <div class="sb-group-label">Getting Started</div>
-    <a class="sb-link" href="#overview">Overview</a>
-    <a class="sb-link" href="#navigation">Navigation</a>
-  </div>
 
-  <div class="sb-divider"></div>
+                        property financing</font></td>
+                  </tr>
+                  <tr data-start="1034" data-end="1100">
+                    <td data-start="1034" data-end="1052"
+                      data-col-size="sm"><font color="#3a5570">Project
+                        Finance</font></td>
+                    <td data-start="1052" data-end="1100"
+                      data-col-size="md"><font color="#3a5570">Infrastructure
 
-  <div class="sb-group">
-    <div class="sb-group-label">Loan Management</div>
-    <a class="sb-link" href="#loan-products">Loan Products</a>
-    <a class="sb-link sb-link-sub" href="#accounting-method">↳ Accounting Method</a>
-    <a class="sb-link sb-link-sub" href="#day-count">↳ Day Count Convention</a>
-    <a class="sb-link sb-link-sub" href="#interest-type">↳ Interest Type</a>
-    <a class="sb-link" href="#repayment-plan">Repayment Plan</a>
-    <a class="sb-link" href="#interest-accrual">Interest Accrual</a>
-    <a class="sb-link" href="#collections">Collections</a>
-    <a class="sb-link" href="#penalties">Penalty Definitions</a>
-    <a class="sb-link" href="#eir">Effective Interest Rate (EIR)</a>
-  </div>
 
-  <div class="sb-divider"></div>
+                        / energy / long-term projects</font></td>
+                  </tr>
+                  <tr data-start="1101" data-end="1147">
+                    <td data-start="1101" data-end="1118"
+                      data-col-size="sm"><font color="#3a5570">Mortgage
+                        Loans</font></td>
+                    <td data-start="1118" data-end="1147"
+                      data-col-size="md"><font color="#3a5570">Residential
 
-  <div class="sb-group">
-    <div class="sb-group-label">Decision Engine</div>
-    <a class="sb-link" href="#rule-groups">Rule Groups</a>
-    <a class="sb-link" href="#rules">Rules</a>
-    <a class="sb-link sb-link-sub" href="#rule-types">↳ Rule Types</a>
-    <a class="sb-link" href="#thresholds">Rule Thresholds</a>
-    <a class="sb-link" href="#outcome-codes">Outcome Codes</a>
-    <a class="sb-link" href="#property-mappings">Property Mappings</a>
-  </div>
 
-  <div class="sb-divider"></div>
+                        housing loans</font></td>
+                  </tr>
+                  <tr data-start="1148" data-end="1208">
+                    <td data-start="1148" data-end="1167"
+                      data-col-size="sm"><font color="#3a5570">Consumer
+                        Finance</font></td>
+                    <td data-start="1167" data-end="1208"
+                      data-col-size="md"><font color="#3a5570">Personal
+                        cash loans, instalment loans</font></td>
+                  </tr>
+                  <tr data-start="1209" data-end="1270">
+                    <td data-start="1209" data-end="1236"
+                      data-col-size="sm"><font color="#3a5570">Credit
+                        Cards / Revolving</font></td>
+                    <td data-start="1236" data-end="1270"
+                      data-col-size="md"><font color="#3a5570">Unsecured
+                        revolving facilities</font></td>
+                  </tr>
+                  <tr data-start="1271" data-end="1324">
+                    <td data-start="1271" data-end="1281"
+                      data-col-size="sm"><font color="#3a5570">Leasing</font></td>
+                    <td data-start="1281" data-end="1324"
+                      data-col-size="md"><font color="#3a5570">Finance
+                        and operating lease receivables</font></td>
+                  </tr>
+                  <tr data-start="1325" data-end="1387">
+                    <td data-start="1325" data-end="1341"
+                      data-col-size="sm"><font color="#3a5570">Trade
+                        Finance</font></td>
+                    <td data-start="1341" data-end="1387"
+                      data-col-size="md"><font color="#3a5570">Letters
+                        of credit, guarantees, receivables</font></td>
+                  </tr>
+                  <tr data-start="1388" data-end="1437">
+                    <td data-start="1388" data-end="1409"
+                      data-col-size="sm"><font color="#3a5570">Agricultural
 
-  <div class="sb-group">
-    <div class="sb-group-label">Accounting</div>
-    <a class="sb-link" href="#gl-product">GL Product Definition</a>
-    <a class="sb-link" href="#chart-of-accounts">Chart of Accounts</a>
-    <a class="sb-link" href="#journal-entry">Journal Entry</a>
-    <a class="sb-link" href="#period-close">Period Close</a>
-  </div>
 
-  <div class="sb-divider"></div>
+                        Loans</font></td>
+                    <td data-start="1409" data-end="1437"
+                      data-col-size="md"><font color="#3a5570">Farming
+                        and agribusiness</font></td>
+                  </tr>
+                  <tr data-start="1438" data-end="1498">
+                    <td data-start="1438" data-end="1466"
+                      data-col-size="sm"><font color="#3a5570">Sovereign
+                        / Public Sector</font></td>
+                    <td data-start="1466" data-end="1498"
+                      data-col-size="md"><font color="#3a5570">Government-related
 
-  <div class="sb-group">
-    <div class="sb-group-label">Glossary</div>
-    <a class="sb-link" href="#glossary">All Terms A–Z</a>
-  </div>
 
-</nav>
+                        exposures</font></td>
+                  </tr>
+                  <tr data-start="1499" data-end="1578">
+                    <td data-start="1499" data-end="1536"
+                      data-col-size="sm"><font color="#3a5570">Interbank
+                        / Financial Institutions</font></td>
+                    <td data-start="1536" data-end="1578"
+                      data-col-size="md"><font color="#3a5570">Banks and
+                        regulated financial entities</font></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p data-path-to-node="4"><br>
+            It is also common to segment loans as per <b>Client
+              categories</b>, each class typically has its own risk
+            model:</p>
+          <ul data-path-to-node="5">
+            <li>
+              <p data-path-to-node="5,0,0"><b data-path-to-node="5,0,0"
+                  data-index-in-node="0">Retail:</b> High-volume,
+                small-ticket loans to individuals (e.g., overdrafts,
+                personal loans)</p>
+            </li>
+            <li>
+              <p data-path-to-node="5,1,0"><b data-path-to-node="5,1,0"
+                  data-index-in-node="0">SME (Small &amp; Medium
+                  Enterprises):</b> Loans to smaller businesses, often
+                grouped by industry</p>
+            </li>
+            <li>
+              <p data-path-to-node="5,3,0"><b data-path-to-node="5,2,0"
+                  data-index-in-node="0">Corporate:</b> Large,
+                idiosyncratic loans that require individual assessment
+                rather than just statistical modeling</p>
+            </li>
+            <li>
+              <p data-path-to-node="5,3,0"><b data-path-to-node="5,3,0"
+                  data-index-in-node="0">Sovereign/Public Sector:</b>
+                Loans to governments or state agencies. These often have
+                the lowest risk weighting.</p>
+            </li>
+            <li>
+              <p data-path-to-node="5,4,0"><b data-path-to-node="5,4,0"
+                  data-index-in-node="0">Interbank:</b> Loans and
+                placements with other financial institutions.</p>
+            </li>
+          </ul>
+          <p>Additionally, it can also be used for segmentation on
+            current (<b>short-term</b> <span class="">≤ 12 months</span>)
+            and non-current (<b>long-term</b> <span class="">&gt; 12
+              months</span>) asset requested under Under IAS 1
+            Presentation of Financial statements. <br>
+          </p>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── PURPOSE ───────────────────────────────────────────────── -->
+        <section class="help-section" id="purpose"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Purpose</div>
+          <p>This field could be defined and used by organisation as per
+            their need. <br>
+            Purpose is captured on product level and inherit on account
+            level. At account level it is mandatory for regulatory
+            reporting (AnaCredit, credit registry submissions) and
+            influences credit scoring in the Decision Engine.<br>
+          </p>
+          <font color="#3a5570"><b>Retail / Consumer Purposes</b></font><br>
+          <div class="TyagGW_tableContainer">
+            <div tabindex="-1" class="group TyagGW_tableWrapper flex
+              flex-col-reverse w-fit">
+              <table data-start="1848" data-end="2347" class="w-fit
+                min-w-(--thread-content-width)">
+                <thead data-start="1848" data-end="1878"><tr
+                    data-start="1848" data-end="1878">
+                    <th data-start="1848" data-end="1858"
+                      data-col-size="sm" class=""><font color="#3a5570">Purpose</font></th>
+                    <th data-start="1858" data-end="1878"
+                      data-col-size="sm" class=""><font color="#3a5570">Typical
 
-<!-- ══ MAIN CONTENT ══════════════════════════════════════════════ -->
-<main class="main" id="mainContent">
 
-  <!-- ── OVERVIEW ─────────────────────────────────────────────── -->
-  <section class="help-section" id="overview">
-    <span class="section-tag">Getting Started</span>
-    <div class="section-title">Overview</div>
-    <p class="section-lead">This manual covers the parameters, configuration options, and business rules used throughout the Core Banking platform. Use the sidebar to jump directly to any topic, or link here from any <strong>?</strong> help button in the application.</p>
-    <div class="info-box">
-      <span class="box-label">Linking from the application</span>
-      Help buttons in the application open this page at the exact relevant section using anchor links (e.g. <code>help.html#accounting-method</code>). You can bookmark any section URL directly.
+                        Examples</font></th>
+                  </tr>
+                </thead><tbody data-start="1889" data-end="2347">
+                  <tr data-start="1889" data-end="1929">
+                    <td data-start="1889" data-end="1905"
+                      data-col-size="sm"><font color="#3a5570">Mortgage</font><br>
+                    </td>
+                    <td data-start="1905" data-end="1929"
+                      data-col-size="sm"><font color="#3a5570">Residential
+
+
+                        mortgage</font></td>
+                  </tr>
+                  <tr data-start="1930" data-end="1978">
+                    <td data-start="1930" data-end="1949"
+                      data-col-size="sm"><font color="#3a5570">Home
+                        Improvement</font></td>
+                    <td data-start="1949" data-end="1978"
+                      data-col-size="sm"><font color="#3a5570">Renovation,
+
+
+                        refurbishment</font></td>
+                  </tr>
+                  <tr data-start="1979" data-end="2022">
+                    <td data-start="1979" data-end="1998"
+                      data-col-size="sm"><font color="#3a5570">Vehicle
+                        Purchase</font></td>
+                    <td data-start="1998" data-end="2022"
+                      data-col-size="sm"><font color="#3a5570">Car loan,
+                        motorcycle</font></td>
+                  </tr>
+                  <tr data-start="2023" data-end="2076">
+                    <td data-start="2023" data-end="2046"
+                      data-col-size="sm"><font color="#3a5570">Personal
+                        Consumption</font></td>
+                    <td data-start="2046" data-end="2076"
+                      data-col-size="sm"><font color="#3a5570">General
+                        cash/personal loan</font></td>
+                  </tr>
+                  <tr data-start="2077" data-end="2110">
+                    <td data-start="2077" data-end="2089"
+                      data-col-size="sm"><font color="#3a5570">Buy Now
+                        Pay Later<br>
+                      </font></td>
+                    <td data-start="2089" data-end="2110"
+                      data-col-size="sm"><font color="#3a5570">Buy Now
+                        Pay Later</font><br>
+                    </td>
+                  </tr>
+                  <tr data-start="2145" data-end="2194">
+                    <td data-start="2145" data-end="2166"
+                      data-col-size="sm"><font color="#3a5570">Debt
+                        Consolidation</font></td>
+                    <td data-start="2166" data-end="2194"
+                      data-col-size="sm"><font color="#3a5570">Refinance
+                        existing debts</font></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p><br>
+          </p>
+          <font color="#3a5570"><b>Business / SME Purposes</b></font><br>
+          <div class="TyagGW_tableContainer">
+            <div tabindex="-1" class="group TyagGW_tableWrapper flex
+              flex-col-reverse w-fit">
+              <table data-start="2382" data-end="2886" class="w-fit
+                min-w-(--thread-content-width)">
+                <thead data-start="2382" data-end="2412"><tr
+                    data-start="2382" data-end="2412">
+                    <th data-start="2382" data-end="2392"
+                      data-col-size="sm" class=""><font color="#3a5570">Purpose</font></th>
+                    <th data-start="2392" data-end="2412"
+                      data-col-size="sm" class=""><font color="#3a5570">Typical
+
+
+                        Examples</font></th>
+                  </tr>
+                </thead><tbody data-start="2423" data-end="2886">
+                  <tr data-start="2423" data-end="2466">
+                    <td data-start="2423" data-end="2441"
+                      data-col-size="sm"><font color="#3a5570">Working
+                        Capital</font></td>
+                    <td data-start="2441" data-end="2466"
+                      data-col-size="sm"><font color="#3a5570">Day-to-day
+
+
+                        operations</font></td>
+                  </tr>
+                  <tr data-start="2467" data-end="2522">
+                    <td data-start="2467" data-end="2487"
+                      data-col-size="sm"><font color="#3a5570">CAPEX /
+                        Equipment</font></td>
+                    <td data-start="2487" data-end="2522"
+                      data-col-size="sm"><font color="#3a5570">Machinery,
+
+
+                        production equipment</font></td>
+                  </tr>
+                  <tr data-start="2523" data-end="2575">
+                    <td data-start="2523" data-end="2554"
+                      data-col-size="sm"><font color="#3a5570">Commercial
+
+
+                        Property Purchase</font></td>
+                    <td data-start="2554" data-end="2575"
+                      data-col-size="sm"><font color="#3a5570">Office,
+                        warehouse</font></td>
+                  </tr>
+                  <tr data-start="2576" data-end="2617">
+                    <td data-start="2576" data-end="2598"
+                      data-col-size="sm"><font color="#3a5570">Inventory
+                        Financing</font></td>
+                    <td data-start="2598" data-end="2617"
+                      data-col-size="sm"><font color="#3a5570">Stock
+                        purchases</font></td>
+                  </tr>
+                  <tr data-start="2618" data-end="2661">
+                    <td data-start="2618" data-end="2634"
+                      data-col-size="sm"><font color="#3a5570">Trade
+                        Finance</font></td>
+                    <td data-start="2634" data-end="2661"
+                      data-col-size="sm"><font color="#3a5570">Import/export
+
+
+                        financing</font></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p><br>
+          </p>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── ACCOUNTING METHOD ─────────────────────────────────────── -->
+        <section class="help-section" id="accounting-method"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Accounting Method</div>
+          <p class="section-lead">Accrual or Cash basis. The Accounting
+            Method defines <strong>how interest is recognised and
+              posted</strong> to the General Ledger throughout the life
+            of a loan. It determines the timing and amount of each
+            accrual entry.</p>
+          <h3>Available Methods</h3>
+          <table class="def-table">
+            <thead><tr>
+                <th>Method</th>
+                <th>Description</th>
+                <th>Typical use</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>Accrual</td>
+                <td>Interest is accrued daily and posted to an accrued
+                  interest receivable account. Revenue is recognised as
+                  it is earned, regardless of cash receipt.</td>
+                <td>Standard retail and SME lending.</td>
+              </tr>
+              <tr>
+                <td>Cash Basis</td>
+                <td>Interest is recognised only when cash is received.
+                  No accrual entries are posted in advance.</td>
+                <td>Applied in some countries or for written-off loans.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-box"> <span class="box-label">Important</span>
+            Once a loan account is opened, the Accounting Method cannot
+            be changed. Changes to the method on a Loan Product apply
+            only to accounts opened after the change is saved. </div>
+          <h3>How Accrual Works — Straight-line amortization</h3>
+          <p>Each night the EoD Interest Accrual batch calculates the
+            interest accrued for the day using the formula below, then
+            posts a debit to <em>Accrued Interest Receivable</em> and a
+            credit to <em>Interest Income</em>. Posting will be done
+            according to the Posting frequency parameter, either daily
+            or monthly (cumulative amount at the end of month).</p>
+          <div class="formula">Daily accrual = Outstanding principal × Annual rate ÷ Day count basis
+
+<span class="comment">-- Example (Actual/Actual, 10% p.a., balance 10 000):
+-- Daily accrual = 10 000 × 0.10 / 365 (or 366) = 2.7397 or 2.7322</span></div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── POSTING FREQUENCY ─────────────────────────────────────── -->
+        <section class="help-section" id="posting-frequency"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Posting frequency</div>
+          <div class="param-card">
+            <div class="param-values">Possible values: Daily · Monthly</div>
+            <p>Defines how and when interest accrual entries are
+              recognised in the General Ledger. Under <strong>Accrual</strong>
+              accounting, accrued interest can be posted to the GL
+              either every day, or once at month-end as a cumulative
+              amount covering all days in the period.</p>
+            <p>Daily posting produces a higher transaction volume but
+              makes intra-month reporting more accurate. Monthly posting
+              is lighter on the GL but means the trial balance does not
+              reflect accrued interest until the month-end close.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── EIR METHOD ────────────────────────────────────────────── -->
+        <section class="help-section" id="eir-method"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">EIR method amortization</div>
+          <p>Possibe values: Boolean flag — <strong>True / False</strong>.
+            <br>
+            If marked True, EIR method amortization will be enabled.</p>
+          <p>For clients that report according to IFRS 9 (usually
+            mandatory for financial institutions with a banking licence,
+            but not for EMIs), double General Ledger booking will be
+            enabled. Double GL keeping is mandatory because we still
+            need straight-line amortization for clients, and because the
+            tax authorities do not recognise IFRS 9 impairment (ECL) as
+            a tax-deductible expense until the loss is actually realised
+            or documented.</p>
+          <p>Under the EIR method the system calculates an internal rate
+            of return (effective interest rate) that equates the present
+            value of all expected cash flows (including fees) to the
+            initial loan amount. This rate is then applied to the
+            amortized cost balance each period to determine income. See
+            <a href="#eir">Effective Interest Rate (EIR)</a> for the
+            full calculation.</p>
+          <table class="def-table">
+            <tbody>
+              <tr>
+                <td>EIR (Effective Interest Rate)</td>
+                <td>Interest and fee income are spread over the loan
+                  life using the constant-yield (effective interest
+                  rate) method. Origination fees and direct costs are
+                  included in the EIR calculation.</td>
+                <td>IFRS 9 / IFRS 15 compliant recognition; mortgage and
+                  structured products.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="warn-box"> <span class="box-label">Regulatory
+              note</span> IFRS 9 requires the EIR method for loans
+            measured at amortised cost. Using Cash basis or simple
+            Accrual basis accounting for performing loans may result in
+            under-recognition of income and require restatement. </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── PERFORMANCE STAGE ─────────────────────────────────────── -->
+        <!-- ── ALLOWED CUSTOMER TYPES ────────────────────────────────── -->
+        <section class="help-section" id="allowed-customer-types"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Allowed Customer types</div>
+          <p>This field could be defined and used by organisation as per
+            their need. <br>
+            Defines which customer segments may open accounts on this
+            product. Typical values:</p>
+          <ul>
+            <li><strong>Retail / Individual</strong> — natural persons.</li>
+            <li><strong>Self-employed</strong> — registered
+              self-employed individuals.</li>
+            <li><strong>SME</strong> — small and medium-sized
+              enterprises.</li>
+            <li><strong>Corporate</strong> — large corporate entities.</li>
+          </ul>
+          <p>Validation is performed at application stage: if the
+            applicant's customer type is not in the allowed list, the
+            application is rejected before reaching the Decision Engine.</p>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── PRODUCT CURRENCIES ────────────────────────────────────── -->
+        <section class="help-section" id="product-currencies"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Product Currencies</div>
+          <p>This is list of currencies selected from Organisation level
+            that is subset of standard ISO 4217 currency codes (e.g. <code>EUR</code>,
+            <code>USD</code>, <code>CHF</code>, <code>ALL</code>) in
+            which loans on this product may be denominated.</p>
+          <p>Each allowed currency may carry its own interest rate, fee,
+            minimum/maximum amount and tenor. The currency is locked at
+            account opening and cannot be changed afterwards.
+            FX-denominated accounts are revalued nightly against the
+            base currency for GL reporting.</p>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── INTEREST TYPE ─────────────────────────────────────────── -->
+        <section class="help-section" id="interest-type"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Interest Type</div>
+          <p>Determines whether the interest rate applied to a loan is
+            fixed throughout its life or can vary in line with a
+            reference rate.</p>
+          <table class="def-table">
+            <thead><tr>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>Fixed</td>
+                <td>The interest rate is set at origination and does not
+                  change for the loan term. Provides payment certainty
+                  for the borrower.</td>
+              </tr>
+              <tr>
+                <td>Variable</td>
+                <td><em>NOT YET IMPLEMENTED</em> — The rate floats
+                  against a reference index (e.g. EURIBOR, LIBOR,
+                  central bank rate). Repricing occurs on a defined
+                  schedule.</td>
+              </tr>
+              <tr>
+                <td>Mixed</td>
+                <td><em>NOT YET IMPLEMENTED</em> — Fixed for an initial
+                  period (e.g. 24 months), then converts to variable for
+                  the remainder of the term. The initial Repayment Plan
+                  is calculated for the full period using the initial
+                  interest rate, because the future rate is not yet
+                  known.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── DAY COUNT CONVENTION ──────────────────────────────────── -->
+        <section class="help-section" id="day-count"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Day Count Convention</div>
+          <div class="param-card">
+            <div class="param-values">Possible values: THIRTY_360 ·
+              ACT_360 · ACT_365 · ACT_ACT</div>
+            <p>Parameter <code>DayCountConvention</code> defined at
+              Loan Product level. Defines how the number of days in an
+              interest period and the number of days in a year are
+              calculated. Different conventions produce different
+              interest amounts even with the same nominal rate. Must be
+              applied consistently across Loan Product, Loan Simulate,
+              Loan Generate, and Loan Open APIs.</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>Value</th>
+                <th>Days in period</th>
+                <th>Days in year</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>THIRTY_360</code></td>
+                <td>Each month treated as 30 days</td>
+                <td>360</td>
+                <td>Every month treated as 30 days, year as 360.
+                  Calendar-independent. EU consumer credit standard.
+                  Cleanest math for monthly annuity loans. We use the
+                  European variant where every month (including
+                  February) is treated as 30 days.</td>
+              </tr>
+              <tr>
+                <td><code>ACT_360</code></td>
+                <td>Actual calendar days</td>
+                <td>360 (fixed)</td>
+                <td>Actual calendar days between dates, divided by
+                  360-day year. Used for money market loans,
+                  EURIBOR-linked products. Overcharges customer by
+                  ~1.39% effective vs headline rate.</td>
+              </tr>
+              <tr>
+                <td><code>ACT_365</code></td>
+                <td>Actual calendar days</td>
+                <td>365 (fixed)</td>
+                <td>Actual calendar days, divided by 365-day year
+                  (fixed, ignores leap years). UK retail standard.</td>
+              </tr>
+              <tr>
+                <td><code>ACT_ACT</code></td>
+                <td>Actual calendar days</td>
+                <td>365 or 366 (leap year)</td>
+                <td>Actual calendar days, divided by actual year length
+                  (365 or 366). Splits at year boundary for periods
+                  crossing 31-Dec. Most precise — used for bonds and
+                  ISDA-governed instruments.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── INTEREST CALCULATION FREQUENCY ────────────────────────── -->
+        <section class="help-section" id="interest-frequency"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Interest Calculation frequency</div>
+          <div class="param-card">
+            <p>Possible values: Monthly, Quarterly, Half-yearly, Annual.<br>
+              Determines the compounding period and the length of each
+              instalment period in the Repayment Plan. <br>
+            </p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── REPAYMENT SCHEDULE PATTERN ────────────────────────────── -->
+        <section class="help-section" id="repayment-pattern"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Repayment Schedule pattern</div>
+          <div class="param-card">
+            <div class="param-values">Possible values: EQUAL_INSTALMENT
+              · EQUAL_PRINCIPAL · FLAT_RATE · BULLET · BALLOON ·
+              MULTI_DISBURSEMENT</div>
+            <p>Parameter <code>RepaymentSchedulePattern</code> defined
+              at Loan Product level. Defines how the outstanding
+              principal and interest are distributed across instalments
+              over the loan term.</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>Value</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>EQUAL_INSTALMENT</code></td>
+                <td>Annuity loan (a.k.a. French method). Total
+                  instalment is fixed; interest portion decreases and
+                  principal portion increases over time. Most common
+                  consumer/SME loan structure.</td>
+              </tr>
+              <tr>
+                <td><code>EQUAL_PRINCIPAL</code></td>
+                <td>Linear loan (a.k.a. German method). Principal
+                  portion is fixed; interest portion decreases over
+                  time, so total instalment decreases. Common for
+                  corporate and infrastructure loans.</td>
+              </tr>
+              <tr>
+                <td><code>FLAT_RATE</code></td>
+                <td>Flat-rate loan. Equal principal + equal interest =
+                  equal total instalment, with interest calculated on
+                  original principal. Calculated as principal ÷ number
+                  of instalments and total interest ÷ number of
+                  instalments. Effective APR ~2× the headline rate.
+                  Restricted for EU consumer use; viable for
+                  corporate/microfinance.</td>
+              </tr>
+              <tr>
+                <td><code>BULLET</code></td>
+                <td>Principal repaid in full at maturity; only interest
+                  paid periodically during the term. Used for short-term
+                  corporate facilities and bridge financing.</td>
+              </tr>
+              <tr>
+                <td><code>BALLOON</code></td>
+                <td>Post-MVP. Regular instalments plus a larger final
+                  instalment that repays remaining principal.</td>
+              </tr>
+              <tr>
+                <td><code>MULTI_DISBURSEMENT</code></td>
+                <td>Post-MVP. Principal disbursed in multiple tranches;
+                  schedule recalculated as each tranche is drawn.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── REPAYMENT DATE PATTERN ────────────────────────────────── -->
+        <section class="help-section" id="repayment-date-pattern"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Repayment Date pattern</div>
+          <div class="param-card">
+            <div class="param-values">Possible values:
+              REGULAR_ANCHORED_TO_DISBURSEMENT · IRREGULAR_EXPLICIT_DATE
+              · CUSTOM_SCHEDULE</div>
+            <p>Parameter <code>RepaymentDatePattern</code> defined at
+              Loan Product level (default) and overridable on the Loan
+              Simulation screen. Controls whether the schedule of due
+              dates is auto-generated from the disbursement date or
+              requires manual specification of the first repayment date.</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>Value</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>REGULAR_ANCHORED_TO_DISBURSEMENT</code></td>
+                <td>First Repayment Date is auto-computed from
+                  Disbursement Date plus the Interest Calculation
+                  frequency. Subsequent dates follow the same frequency.
+                  The First Repayment Date field is pre-filled and
+                  non-editable on the Loan Simulation screen.</td>
+              </tr>
+              <tr>
+                <td><code>IRREGULAR_EXPLICIT_DATE</code></td>
+                <td>User must manually specify the First Repayment Date
+                  on the Loan Simulation screen. Used for irregular
+                  first periods (e.g. disburse mid-month, first
+                  repayment on month-end). Activates the <code>IrregularPeriodAdjustment</code>
+                  parameter.</td>
+              </tr>
+              <tr>
+                <td><code>CUSTOM_SCHEDULE</code></td>
+                <td>Post-MVP. All instalment dates explicitly defined by
+                  the user — used for project finance and corporate
+                  facilities with custom drawdown / repayment patterns.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── IRREGULAR PERIOD ADJUSTMENT ───────────────────────────── -->
+        <section class="help-section" id="irregular-adjustment"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Irregular Period Adjustment</div>
+          <div class="param-card">
+            <div class="param-values">Possible values:
+              TRUE_EQUAL_INSTALMENT · ADJUST_LAST_INSTALMENT ·
+              ADJUST_FIRST_INSTALMENT</div>
+            <p>Parameter <code>IrregularPeriodAdjustment</code> defined
+              at Loan Product level. Applied only when <code>RepaymentDatePattern
+
+                = IRREGULAR_EXPLICIT_DATE</code>. Determines how the
+              broken-period interest arising from a non-standard first
+              period is absorbed into the repayment schedule.</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>Value</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>TRUE_EQUAL_INSTALMENT</code></td>
+                <td>The annuity is recalculated so that all instalments
+                  are mathematically equal despite the irregular first
+                  period. Customer pays exactly the same amount every
+                  period.</td>
+              </tr>
+              <tr>
+                <td><code>ADJUST_LAST_INSTALMENT</code></td>
+                <td>Standard annuity calculated on regular periods; the
+                  last instalment absorbs the irregularity (slightly
+                  higher or lower than other instalments).</td>
+              </tr>
+              <tr>
+                <td><code>ADJUST_FIRST_INSTALMENT</code></td>
+                <td>Standard annuity calculated on regular periods; the
+                  first instalment carries the broken-period interest
+                  (typically higher than subsequent instalments).</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── INTEREST CALCULATION METHOD ───────────────────────────── -->
+        <section class="help-section" id="interest-calc-method"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Interest Calculation Method</div>
+          <div class="param-card">
+            <div class="param-values">Possible values: CONFORMING ·
+              PROPORTIONAL</div>
+            <p>Parameter <code>InterestCalculationMethod</code> defined
+              at Loan Product level. Determines how the annual interest
+              rate is converted into the periodic rate used for each
+              instalment's interest computation. Both methods compound —
+              they differ in how the conversion is performed.</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>Value</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>CONFORMING</code></td>
+                <td>Periodic rate computed as <code>(1 + r)<sup>1/n</sup>
+                    − 1</code>. The effective annual rate equals the
+                  stated annual rate exactly. <strong>Mandatory for EU
+                    consumer loans</strong> (HNB EKS disclosure
+                  requirement). Aligns with the Croatian regulatory term
+                  "konformna metoda".</td>
+              </tr>
+              <tr>
+                <td><code>PROPORTIONAL</code></td>
+                <td>Periodic rate computed as <code>r / n</code>
+                  (simple division). Effective annual rate exceeds the
+                  stated rate due to compounding (e.g. 17% nominal →
+                  18.39% effective). Allowed for corporate / wholesale
+                  facilities; not allowed for EU consumer products.
+                  Aligns with the Croatian regulatory term
+                  "proporcionalna metoda".</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="info-box"> <span class="box-label">Worked example
+              at 17 % p.a., monthly compounding</span> <strong>Conforming:</strong>
+            r<sub>m</sub> = (1.17)<sup>1/12</sup> − 1 = <strong>1.317 %</strong>
+            → effective annual rate <strong>17.000 %</strong>.<br>
+            <strong>Proportional:</strong> r<sub>m</sub> = 17 % ÷ 12 = <strong>1.4167
+
+              %</strong> → effective annual rate <strong>18.389 %</strong>
+            (a hidden uplift of ~139 bps). </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── REPAYMENT PLAN EXAMPLES ───────────────────────────────── -->
+        <section class="help-section" id="repayment-examples"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Repayment Plan — Worked Examples</div>
+          <p class="section-lead">The four schedules below are all
+            generated from the same loan parameters, so the differences
+            come purely from the chosen Repayment Schedule pattern. All
+            amounts are in EUR.</p>
+          <div class="info-box"> <span class="box-label">Common input
+              parameters</span> Principal: <strong>1 000.00 EUR</strong><br>
+            Term: <strong>6 monthly instalments</strong><br>
+            Nominal interest rate: <strong>17 % p.a.<br>
+            </strong>Disbursement date: <strong>30 November 2025</strong><br>
+            Day count convention: <strong>30 / 360</strong> (monthly
+            rate = 17 % ÷ 12 = <strong>1.41667 %</strong>)<br>
+            First due date: <strong>30 December 2025</strong></div>
+          <!-- ── 1. Equal instalment (French) ── -->
+          <h3 id="example-french">1) Equal instalment<br>
+          </h3>
+          <p>The total monthly instalment is constant. Each payment is
+            split between a growing principal component and a shrinking
+            interest component. The annuity amount is calculated as:</p>
+          <div class="formula">EMI/PMT = P × r × (1+r)<sup>n</sup> / ((1+r)<sup>n</sup> – 1)
+        = 1 000 × 0.0141667 × 1.088068 / 0.088068
+        = <strong>175.03 EUR / month<br></strong></div>
+          <!-- ── 2. Equal principal (German) ── -->
+          <p><br>
+          </p>
+          <table class="schedule-table" width="920" height="252">
+            <thead> <tr>
+                <th>#</th>
+                <th>Due date</th>
+                <th>Opening balance</th>
+                <th>Interest</th>
+                <th>Principal</th>
+                <th>Instalment</th>
+                <th>Closing balance</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2025</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>160.86</td>
+                <td>175.03</td>
+                <td>839.14</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2026</td>
+                <td>839.14</td>
+                <td>11.89</td>
+                <td>163.14</td>
+                <td>175.03</td>
+                <td>676.00</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>28 Feb 2026</td>
+                <td>676.00</td>
+                <td>9.58</td>
+                <td>165.45</td>
+                <td>175.03</td>
+                <td>510.55</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2026</td>
+                <td>510.55</td>
+                <td>7.23</td>
+                <td>167.80</td>
+                <td>175.03</td>
+                <td>342.75</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2026</td>
+                <td>342.75</td>
+                <td>4.86</td>
+                <td>170.17</td>
+                <td>175.03</td>
+                <td>172.58</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2026</td>
+                <td>172.58</td>
+                <td>2.44</td>
+                <td>172.58</td>
+                <td>175.02</td>
+                <td>0.00</td>
+              </tr>
+            </tbody> <tfoot> <tr>
+                <td colspan="3">Totals</td>
+                <td>50.17</td>
+                <td>1 000.00</td>
+                <td>1 050.17</td>
+                <td><br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <h3 id="example-german"><br>
+          </h3>
+          <h3 id="example-german">2) Equal principal<br>
+          </h3>
+          <p>The principal portion is constant in every instalment
+            (Principal ÷ n = 1 000 ÷ 6 = <strong>166.67 EUR</strong>).
+            Interest is calculated on the opening balance each period,
+            so the total instalment is largest in month 1 and declines
+            linearly to month 6.</p>
+          <table class="schedule-table">
+            <thead> <tr>
+                <th>#</th>
+                <th>Due date</th>
+                <th>Opening balance</th>
+                <th>Interest</th>
+                <th>Principal</th>
+                <th>Instalment</th>
+                <th>Closing balance</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2025</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>166.67</td>
+                <td>180.84</td>
+                <td>833.33</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2026</td>
+                <td>833.33</td>
+                <td>11.80</td>
+                <td>166.67</td>
+                <td>178.47</td>
+                <td>666.66</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>28 Feb 2026</td>
+                <td>666.66</td>
+                <td>9.44</td>
+                <td>166.67</td>
+                <td>176.11</td>
+                <td>499.99</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2026</td>
+                <td>499.99</td>
+                <td>7.08</td>
+                <td>166.67</td>
+                <td>173.75</td>
+                <td>333.32</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2026</td>
+                <td>333.32</td>
+                <td>4.72</td>
+                <td>166.67</td>
+                <td>171.39</td>
+                <td>166.65</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2026</td>
+                <td>166.65</td>
+                <td>2.36</td>
+                <td>166.65</td>
+                <td>169.01</td>
+                <td>0.00</td>
+              </tr>
+            </tbody> <tfoot> <tr>
+                <td colspan="3">Totals</td>
+                <td>49.57</td>
+                <td>1 000.00</td>
+                <td>1 049.57</td>
+                <td><br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <!-- ── 3. Bullet ── -->
+          <h3 id="example-bullet">3) Bullet</h3>
+          <p>Only interest is paid in instalments 1–5; the full
+            principal is repaid together with the last interest payment
+            at maturity. Monthly interest is constant: 1 000 × 0.0141667
+            = <strong>14.17 EUR</strong>.</p>
+          <table class="schedule-table">
+            <thead> <tr>
+                <th>#</th>
+                <th>Due date</th>
+                <th>Opening balance</th>
+                <th>Interest</th>
+                <th>Principal</th>
+                <th>Instalment</th>
+                <th>Closing balance</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2025</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>0.00</td>
+                <td>14.17</td>
+                <td>1 000.00</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2026</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>0.00</td>
+                <td>14.17</td>
+                <td>1 000.00</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>28 Feb 2026</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>0.00</td>
+                <td>14.17</td>
+                <td>1 000.00</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2026</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>0.00</td>
+                <td>14.17</td>
+                <td>1 000.00</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2026</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>0.00</td>
+                <td>14.17</td>
+                <td>1 000.00</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2026</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>1 000.00</td>
+                <td>1 014.17</td>
+                <td>0.00</td>
+              </tr>
+            </tbody> <tfoot> <tr>
+                <td colspan="3">Totals</td>
+                <td>85.00</td>
+                <td>1 000.00</td>
+                <td>1 085.00</td>
+                <td><br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <!-- ── 4. Flat ── -->
+          <h3 id="example-flat">4) Flat</h3>
+          <p>Both the principal portion and the interest portion are
+            constant in every instalment, regardless of the outstanding
+            balance. Total interest is calculated up-front on the
+            original principal: 1 000 × 17 % × 6/12 = <strong>85.00 EUR</strong>;
+            then split evenly across the 6 instalments (85.00 ÷ 6 = <strong>14.17
+
+
+              EUR</strong> per month). Principal portion = 1 000 ÷ 6 = <strong>166.67
+
+
+              EUR</strong> per month.</p>
+          <table class="schedule-table">
+            <thead> <tr>
+                <th>#</th>
+                <th>Due date</th>
+                <th>Opening balance</th>
+                <th>Interest</th>
+                <th>Principal</th>
+                <th>Instalment</th>
+                <th>Closing balance</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2025</td>
+                <td>1 000.00</td>
+                <td>14.17</td>
+                <td>166.67</td>
+                <td>180.84</td>
+                <td>833.33</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2026</td>
+                <td>833.33</td>
+                <td>14.17</td>
+                <td>166.67</td>
+                <td>180.84</td>
+                <td>666.66</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>28 Feb 2026</td>
+                <td>666.66</td>
+                <td>14.17</td>
+                <td>166.67</td>
+                <td>180.84</td>
+                <td>499.99</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2026</td>
+                <td>499.99</td>
+                <td>14.17</td>
+                <td>166.67</td>
+                <td>180.84</td>
+                <td>333.32</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2026</td>
+                <td>333.32</td>
+                <td>14.17</td>
+                <td>166.67</td>
+                <td>180.84</td>
+                <td>166.65</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2026</td>
+                <td>166.65</td>
+                <td>14.15</td>
+                <td>166.65</td>
+                <td>180.80</td>
+                <td>0.00</td>
+              </tr>
+            </tbody> <tfoot> <tr>
+                <td colspan="3">Totals</td>
+                <td>85.00</td>
+                <td>1 000.00</td>
+                <td>1 085.00</td>
+                <td><br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <div class="note-box"> <span class="box-label">Comparison
+              summary — total interest paid</span> Equal principal
+            (German) <strong>49.57</strong> &lt; Equal instalment
+            (French) <strong>50.17</strong> &lt;&lt; Flat / Bullet <strong>85.00</strong>.
+            French and German both charge interest only on the actual
+            outstanding balance, so the two are very close. Flat and
+            Bullet effectively charge interest on the full original
+            principal across the whole tenor, which is why the borrower
+            pays significantly more interest for the same nominal rate.
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── REPAYMENT ROUNDING MODE ───────────────────────────────── -->
+        <section class="help-section" id="rounding-mode"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Repayment Rounding mode</div>
+          <div class="param-card">
+            <div class="param-values">Possible values: Round to nearest
+              · Round up</div>
+            <p>Defines the rounding applied to each scheduled instalment
+              amount during plan generation.</p>
+            <ul>
+              <li><strong>Round to nearest</strong> uses standard
+                half-up rounding to the minor currency unit (e.g. 2
+                decimals for EUR). Residual rounding differences are
+                absorbed in the last instalment if <em>Adjust last
+                  instalment</em> is enabled.</li>
+              <li><strong>Round up</strong> always rounds the instalment
+                amount up to the next minor unit. Favours the lender and
+                guarantees that the schedule fully amortises principal
+                and interest.</li>
+            </ul>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── SHORT MONTH HANDLING ──────────────────────────────────── -->
+        <section class="help-section" id="schedule-method"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Short Month Handling</div>
+          <div class="param-card">
+            <div class="param-values">Possible values: PAYMENT_DATE ·
+              LAST_DAY_IN_MONTH</div>
+            <p>Parameter <code>ShortMonthHandling</code> defined at
+              Loan Product level. Controls how due dates are resolved
+              when the anchor day from the disbursement date does not
+              exist in a target month — for example, when a loan
+              disbursed on the 31st reaches February, which has only 28
+              or 29 days.</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>Value</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>PAYMENT_DATE</code></td>
+                <td>The instalment for the short month falls on the
+                  closest available calendar day (e.g. Feb 28 / Feb 29).
+                  In subsequent longer months the schedule reverts back
+                  to the original anchor day. Example: loan disbursed
+                  31-Jan → Feb 28 → Mar 31 → Apr 30 → May 31.</td>
+              </tr>
+              <tr>
+                <td><code>LAST_DAY_IN_MONTH</code></td>
+                <td>Once the schedule encounters a short month, it locks
+                  permanently to the last day of every subsequent month
+                  regardless of how long they are. Example: loan
+                  disbursed 31-Jan → Feb 28 → Mar 31 → Apr 30 → May 31
+                  (visually identical here but the logic differs for
+                  partial periods and end-of-month-anchored loans
+                  starting on Jan 30 or Feb 27).</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── INTEREST CALCULATED AT ────────────────────────────────── -->
+        <section class="help-section" id="interest-calculated-at"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Interest calculated at</div>
+          <div class="param-card">
+            <div class="param-values">Beginning of period · End of
+              period</div>
+            <p>Specifies whether interest is charged in advance or in
+              arrears.</p>
+            <ul>
+              <li><strong>Beginning of period</strong> (in advance) —
+                interest for the period is calculated and recognised on
+                the period start date, on the opening balance. Common
+                for discount loans and some commercial facilities.</li>
+              <li><strong>End of period</strong> (in arrears) — interest
+                is calculated and recognised on the period end date,
+                after taking into account any movements during the
+                period. The standard approach for retail loans.</li>
+            </ul>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── BUSINESS DAY CONVENTION ───────────────────────────────── -->
+        <section class="help-section" id="non-working-day"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Business Day Convention</div>
+          <div class="param-card">
+            <div class="param-values">Possible values: NEXT_BUSINESS_DAY
+              · PREVIOUS_BUSINESS_DAY · NONE</div>
+            <p>Parameter <code>BusinessDayConvention</code> defined at
+              Loan Product level (formerly <code>NonWorkingDayAdjustment</code>).
+
+              Controls what happens when a generated due date falls on a
+              weekend or a public holiday in the loan's calendar.
+              Orthogonal to <code>ShortMonthHandling</code>.</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>Value</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>NEXT_BUSINESS_DAY</code></td>
+                <td>If instalment date falls on weekend or holiday, move
+                  to the next business day. The period is recalculated
+                  accordingly.</td>
+              </tr>
+              <tr>
+                <td><code>PREVIOUS_BUSINESS_DAY</code></td>
+                <td>If instalment date falls on weekend or holiday, move
+                  to the previous business day.</td>
+              </tr>
+              <tr>
+                <td><code>NONE</code></td>
+                <td>No adjustment — instalment date stays on the
+                  calendar day even if it is a non-business day. Useful
+                  when payment processing handles weekends
+                  automatically.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── BACKDATED DISBURSEMENT ────────────────────────────────── -->
+        <section class="help-section" id="backdated-disbursement"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Backdated disbursement possible</div>
+          <div class="param-card">
+            <div class="param-values">True · False</div>
+            <p>Boolean. By default this flag should be set to <strong>False</strong>.
+              The True flag should be used only during a migration
+              period for loans that are being migrated from another
+              system, so that the historical disbursement date can be
+              preserved.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── MINIMAL / MAXIMUM / DEFAULT INSTALMENTS ──────────────── -->
+        <section class="help-section" id="min-instalments"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Minimal instalment count</div>
+          <div class="param-card">
+            <p>Minimum number of instalments allowed for this Product.
+              Take care to keep this consistent with <a
+                href="#interest-frequency">Interest calculation
+                frequency</a> — e.g. if Minimal instalment count = 4 and
+              Interest calculation frequency = Quarterly, the minimum
+              duration of a loan on this product is 1 year.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <section class="help-section" id="max-instalments"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Maximum instalment count</div>
+          <div class="param-card">
+            <p>Maximum number of instalments allowed for this Product.
+              Take care to keep this consistent with <a
+                href="#interest-frequency">Interest calculation
+                frequency</a> — e.g. if Maximum instalment count = 12
+              and Interest calculation frequency = Quarterly, the
+              maximum duration of a loan on this product is 3 years.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <section class="help-section" id="default-instalments"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Default instalment count</div>
+          <div class="param-card">
+            <p>Default number of instalments for this Product. This
+              value is used if the exact number of instalments is not
+              provided in the request to <code>POST
+                /loan/v1/loan-accounts/open</code>. Take care to keep
+              this consistent with <a href="#interest-frequency">Interest
+
+
+                calculation frequency</a> — e.g. if Default instalment
+              count = 12 and Interest calculation frequency = Quarterly,
+              the default duration of a loan on this product is 3 years.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── INITIAL LOAN ACCOUNT STATE ────────────────────────────── -->
+        <section class="help-section" id="initial-state"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Initial Loan Account state</div>
+          <div class="param-card">
+            <div class="param-values">Pending · Active · Closed ·
+              Written-off</div>
+            <p>Defines the initial status the loan account will take
+              after executing Loan opening (via <code>POST
+                /loan/v1/loan-accounts/open</code>). The most common
+              default is <strong>Pending</strong>, which then
+              transitions to <strong>Active</strong> upon first
+              disbursement.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── GRACE PERIOD ──────────────────────────────────────────── -->
+        <section class="help-section" id="grace-period"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Grace period</div>
+          <div class="param-card">
+            <div class="param-values">Yes · No</div>
+            <p>Boolean. If <strong>Yes</strong>, additional parameters
+              below have to be defined.</p>
+          </div>
+          <h3>Grace period days</h3>
+          <p>The <strong>Grace Period</strong> refers to a
+            contractually defined number of days following the scheduled
+            due date of a loan instalment during which the payment can
+            be made without incurring late fees or penalties.</p>
+          <h3>Interest calculated during grace</h3>
+          <p>Yes or No. No interest is charged on the instalment amount
+            if the full payment is received within the defined grace
+            period (e.g. 5 days).</p>
+          <ul>
+            <li><strong>If Yes</strong> and payment is not received by
+              the end of the grace period, penalty interest is
+              calculated and applied from the <strong>original due date</strong>.</li>
+            <li><strong>If No</strong> and payment is not received by
+              the end of the grace period, penalty interest is
+              calculated and applied from the <strong>expiry date of
+                the grace period</strong>.</li>
+          </ul>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── ADJUST LAST INSTALMENT ────────────────────────────────── -->
+        <section class="help-section" id="adjust-last"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Adjust last instalment</div>
+          <div class="param-card">
+            <div class="param-values">Yes · No</div>
+            <p>Controls how rounding residuals introduced during
+              schedule generation are handled.</p>
+            <ul>
+              <li><strong>Yes</strong> — any rounding difference between
+                the sum of generated instalments and the contractual
+                total is absorbed entirely into the <em>final</em>
+                instalment, so the closing balance after the last
+                payment is exactly zero. This is the standard approach.</li>
+              <li><strong>No</strong> — the residual is distributed
+                evenly across all instalments. All instalments may
+                differ slightly from the headline calculated amount.</li>
+            </ul>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── COLLATERAL / DOWN PAYMENT / DEPOSIT / INSURANCE ─────── -->
+        <section class="help-section" id="collateral"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Collateral required</div>
+          <div class="param-card">
+            <div class="param-values">Yes · No</div>
+            <p>Boolean. <em>NOT YET IMPLEMENTED</em> — will be used for
+              mortgage loans or other secured loans where collateral is
+              required.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <section class="help-section" id="down-payment"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Down Payment required</div>
+          <div class="param-card">
+            <div class="param-values">Yes · No</div>
+            <p>Boolean. <em>NOT YET IMPLEMENTED</em> — will be used for
+              loans where a down payment (a certain percentage of the
+              loan amount paid up-front by the borrower) is required.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <section class="help-section" id="deposit"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Deposit required</div>
+          <div class="param-card">
+            <div class="param-values">Yes · No</div>
+            <p>Boolean. <em>NOT YET IMPLEMENTED</em> — will be used for
+              loans where a deposit is required (e.g. Lombard loans).</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <section class="help-section" id="insurance"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Insurance required</div>
+          <div class="param-card">
+            <div class="param-values">Yes · No</div>
+            <p>Boolean. <em>NOT YET IMPLEMENTED</em> — will be used for
+              loans where loan insurance, acting as collateral that will
+              be executed in case of non-performance, is required.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── EARLY REPAYMENT ───────────────────────────────────────── -->
+        <section class="help-section" id="early-repayment"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Early Repayment possible</div>
+          <div class="param-card">
+            <div class="param-values">Yes · No</div>
+            <p>Boolean. Default value is <strong>Yes</strong>. The
+              parameter is checked before the execution of any Early
+              Repayment request — if set to No, partial and full early
+              repayments are rejected at API level. See also <a
+                href="#penalties">Early Repayment Fee</a>.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── LTV LIMIT ─────────────────────────────────────────────── -->
+        <section class="help-section" id="ltv-limit"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Loan to Value limit</div>
+          <div class="param-card">
+            <p>Maximum allowed ratio (in percent) of the loan amount to
+              the appraised value of the pledged collateral. Used as a
+              hard cap by the Decision Engine on secured products. An
+              application where <code>loan_amount / collateral_value
+                &gt; LTV limit</code> is automatically declined.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── DEFAULT PD ────────────────────────────────────────────── -->
+        <section class="help-section" id="default-pd"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Default PD value (%)</div>
+          <div class="param-card">
+            <p>The Probability of Default applied to new loan accounts
+              on this product when no account-specific value is
+              provided. Used in the <code>ECL = PD × LGD × EAD</code>
+              calculation for IFRS 9 impairment. Typically calibrated
+              from historical default rates for the product segment.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── DEFAULT LGD ───────────────────────────────────────────── -->
+        <section class="help-section" id="default-lgd"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Default LGD value (%)</div>
+          <div class="param-card">
+            <p>The Loss Given Default applied by default. Represents the
+              expected economic loss, expressed as a percentage of EAD,
+              that the institution will incur in case of default — net
+              of expected recoveries from collateral, guarantees, and
+              collection.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── PROVISIONING METHOD ───────────────────────────────────── -->
+        <section class="help-section" id="provisioning"> <span
+            class="section-tag">Loan Management › Loan Products</span>
+          <div class="section-title">Provisioning method</div>
+          <div class="param-card">
+            <div class="param-values">Small portfolio · Big portfolio</div>
+            <p>Determines whether ECL parameters can be overridden at
+              account level.</p>
+            <ul>
+              <li><strong>Small portfolio</strong> — PD and LGD are
+                taken from the product defaults only; the account-level
+                overrides on the Loan Account details tab are disabled.
+                Suitable for portfolios where the institution has
+                limited statistically significant data per account.</li>
+              <li><strong>Big portfolio</strong> — PD and LGD can be
+                overridden at account level (e.g. driven by an internal
+                rating model), and the override is used instead of the
+                product default in the ECL calculation.</li>
+            </ul>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── COLLECTIONS ───────────────────────────────────────────── -->
+        <section class="help-section" id="collections"> <span
+            class="section-tag">Loan Management</span>
+          <div class="section-title">Collection Definitions</div>
+          <p class="section-lead">A Collection Definition specifies the
+            rules for triggering and processing collections when a loan
+            instalment becomes overdue.</p>
+          <h3>Collection Trigger</h3>
+          <p>Collections can be triggered automatically by the EoD batch
+            when a due date passes without full payment, or manually by
+            an authorised user. The trigger threshold (number of days
+            past due) is set per product.</p>
+          <h3>Collection Allocation</h3>
+          <p>When a collection payment is received, the platform
+            allocates it in the following default order: <strong>Penalty
+
+
+              interest → Overdue interest → Overdue principal → Current
+              interest → Current principal</strong>. The allocation
+            order can be customised per product.</p>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── PENALTIES ─────────────────────────────────────────────── -->
+        <section class="help-section" id="penalties"> <span
+            class="section-tag">Loan Management</span>
+          <div class="section-title">Penalty Definitions</div>
+          <p class="section-lead">Penalty Definitions control the rate
+            and basis of charges applied when a borrower misses a
+            scheduled payment or repays early, as well as any standing
+            fees attached to the product.</p>
+          <h3>Common Penalty / Fee Types</h3>
+          <table class="def-table">
+            <thead><tr>
+                <th>Penalty Type</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>Late Payment Penalty</td>
+                <td>A daily rate applied to the overdue amount for each
+                  calendar day past the due date. Expressed as an annual
+                  percentage rate.</td>
+              </tr>
+              <tr>
+                <td>Early Repayment Fee</td>
+                <td>A one-time charge calculated on the prepaid
+                  principal, compensating the bank for lost future
+                  interest income. May be a flat amount or a percentage.</td>
+              </tr>
+              <tr>
+                <td>Non-utilisation Fee</td>
+                <td>Applied to revolving and overdraft facilities where
+                  the borrower does not draw the committed limit.
+                  Charged on the undrawn portion.</td>
+              </tr>
+            </tbody>
+          </table>
+          <h3 id="penalty-fields">Configuration Fields</h3>
+          <p>Every Penalty Definition is described by the fields below.
+            Some fields appear conditionally depending on the selected <em>Calculation
+
+
+              method</em>.</p>
+          <h4>Scope &amp; Trigger</h4>
+          <div class="param-card">
+            <div class="param-name">Scope</div>
+            <div class="param-values">Loan Product · Loan Account</div>
+            <p>Defines the level at which the penalty definition
+              applies. <strong>Loan Product</strong> scope means the
+              penalty is inherited by every loan account opened under
+              the product. <strong>Loan Account</strong> scope means
+              the penalty is attached only to a specific account (e.g.
+              as part of a restructure or bespoke contract).</p>
+          </div>
+          <div class="param-card">
+            <div class="param-name">Trigger event</div>
+            <div class="param-values">Up Front · Per Instalment ·
+              Periodic · Event Based</div>
+            <p>Determines <strong>when</strong> the penalty or fee is
+              generated by the system.</p>
+            <ul>
+              <li><strong>Up Front</strong> — charged once at loan
+                opening / disbursement (typical for processing fees,
+                origination fees).</li>
+              <li><strong>Per Instalment</strong> — charged together
+                with every scheduled instalment (e.g. a monthly
+                administration fee).</li>
+              <li><strong>Periodic</strong> — charged at a fixed time
+                interval independent of instalments (e.g. annual
+                maintenance fee on a revolving facility).</li>
+              <li><strong>Event Based</strong> — triggered by a specific
+                business event such as a missed payment, early
+                repayment, restructure, or top-up.</li>
+            </ul>
+          </div>
+          <h4>Calculation</h4>
+          <div class="param-card">
+            <div class="param-name">Calculation method</div>
+            <div class="param-values">Percentage · Fixed</div>
+            <p>Drives how the charge amount is computed and which
+              downstream fields are required.</p>
+            <ul>
+              <li><strong>Percentage</strong> — the charge is calculated
+                as a percentage of a chosen base; the <em>Calculation
+                  base</em>, <em>Rate (%)</em>, <em>Min. amount</em>
+                and <em>Max. amount</em> fields become editable.</li>
+              <li><strong>Fixed</strong> — the charge is a fixed
+                monetary value; the <em>Fixed amount</em> and <em>Currency</em>
+                fields become editable.</li>
+            </ul>
+          </div>
+          <div class="param-card">
+            <div class="param-name">Calculation base <span
+                style="font-weight:400;color:#6a90a8;">(visible when
+                Calculation method = Percentage)</span></div>
+            <div class="param-values">Loan Amount · Outstanding
+              Principal · Overdue Amount · Instalment Amount</div>
+            <p>The value the rate is applied to.</p>
+            <ul>
+              <li><strong>Loan Amount</strong> — the original disbursed
+                principal. Used for up-front and one-off fees.</li>
+              <li><strong>Outstanding Principal</strong> — the principal
+                balance at the time the charge is triggered. Used for
+                periodic fees and early repayment charges.</li>
+              <li><strong>Overdue Amount</strong> — the overdue
+                principal and/or interest at trigger time. Used for
+                late-payment penalties.</li>
+              <li><strong>Instalment Amount</strong> — the scheduled
+                instalment amount. Used for per-instalment fees.</li>
+            </ul>
+          </div>
+          <div class="param-card">
+            <div class="param-name">Rate (%) <span
+                style="font-weight:400;color:#6a90a8;">(visible when
+                Calculation method = Percentage)</span></div>
+            <p>The percentage applied to the Calculation base. Entered
+              as a number (e.g. <code>2.5</code> for 2.5 %). For
+              periodic and per-instalment percentages, the value
+              represents the rate for the relevant period; for an
+              annualised penalty rate (e.g. late-payment interest) the
+              system will pro-rate it by the day count basis.</p>
+          </div>
+          <div class="param-card">
+            <div class="param-name">Min. amount <span
+                style="font-weight:400;color:#6a90a8;">(optional,
+                Percentage only)</span></div>
+            <p>Floor value for the calculated charge. If the percentage
+              calculation yields less than this amount, the charge is
+              rounded up to the Min. amount. Useful to make small
+              percentages economically meaningful (e.g. "0.5 % of
+              outstanding, but never less than 10 EUR").</p>
+          </div>
+          <div class="param-card">
+            <div class="param-name">Max. amount <span
+                style="font-weight:400;color:#6a90a8;">(optional,
+                Percentage only)</span></div>
+            <p>Ceiling value for the calculated charge. If the
+              percentage calculation yields more than this amount, the
+              charge is capped at the Max. amount. Frequently required
+              by consumer-protection regulations on early repayment
+              fees.</p>
+          </div>
+          <div class="param-card">
+            <div class="param-name">Fixed amount <span
+                style="font-weight:400;color:#6a90a8;">(visible when
+                Calculation method = Fixed)</span></div>
+            <p>The exact monetary amount charged when the trigger event
+              fires, expressed in the selected Currency. Independent of
+              the loan or instalment size.</p>
+          </div>
+          <div class="param-card">
+            <div class="param-name">Currency <span
+                style="font-weight:400;color:#6a90a8;">(visible when
+                Calculation method = Fixed)</span></div>
+            <p>ISO 4217 currency of the Fixed amount (e.g. <code>EUR</code>,
+              <code>USD</code>). If different from the loan currency,
+              the system converts at the FX rate effective on the
+              booking date when the charge is posted.</p>
+          </div>
+          <div class="param-card">
+            <div class="param-name">Included in EIR calculation</div>
+            <div class="param-values">Yes · No</div>
+            <p>Determines whether the fee or penalty is part of the cash
+              flows used to compute the loan's <a href="#eir">Effective
+                Interest Rate</a>.</p>
+            <ul>
+              <li><strong>Yes</strong> — typical for predictable,
+                contractual charges known at origination (processing
+                fee, commitment fee, periodic admin fee). IFRS 9
+                requires these to be amortised into interest income via
+                the EIR.</li>
+              <li><strong>No</strong> — typical for contingent or
+                punitive charges that depend on borrower behaviour and
+                cannot be reliably estimated at origination
+                (late-payment penalty, early-repayment fee). These are
+                recognised in income only when the event occurs.</li>
+            </ul>
+          </div>
+          <div class="note-box"> <span class="box-label">Field
+              visibility</span> The form dynamically shows or hides
+            fields based on the selected Calculation method. <em>Percentage</em>
+            reveals Calculation base, Rate, Min. and Max. amount; <em>Fixed</em>
+            reveals Fixed amount and Currency. The Scope, Trigger event
+            and "Included in EIR calculation" fields are always visible.
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── EIR ───────────────────────────────────────────────────── -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!--  LOAN ACCOUNTS                                            -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <section class="help-section" id="loan-account-overview"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">Loan Account Overview</div>
+          <p class="section-lead">A Loan Account is an instance of a
+            Loan Product, created when a credit application is approved
+            and funds are scheduled for disbursement. While the Loan
+            Product defines the template (rates, conventions, patterns),
+            the Loan Account holds the contractual specifics for one
+            borrower: the principal, the disbursement date, the
+            repayment schedule, the running balance, and all
+            lifecycle-dependent attributes such as days in arrears and
+            performance stage. The parameters described in this group
+            are stored at the Loan Account level and may diverge from
+            their original Loan Product values as the loan progresses
+            through its lifecycle.</p>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── DISBURSEMENT DATE ─────────────────────────────────────── -->
+        <section class="help-section" id="disbursement-date"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">Disbursement Date</div>
+          <div class="param-card">
+            <div class="param-values">Type: Date · Mandatory · Entered
+              on Loan Simulation screen</div>
+            <p>Parameter <code>DisbursementDate</code> defined at Loan
+              Account level. The value date on which funds are made
+              available to the customer. Drives all downstream date
+              calculations including interest accrual start and
+              repayment schedule generation. In Croatian regulatory
+              terms aligns with "datum stavljanja na raspolaganje".</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── FIRST REPAYMENT DATE ──────────────────────────────────── -->
+        <section class="help-section" id="first-repayment-date"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">First Repayment Date</div>
+          <div class="param-card">
+            <div class="param-values">Type: Date · Mandatory or
+              auto-computed (depending on RepaymentDatePattern)</div>
+            <p>Parameter <code>FirstRepaymentDate</code> defined at
+              Loan Account level. Entered on the Loan Simulation screen.
+              Behaviour depends on the <code>RepaymentDatePattern</code>
+              value configured at Loan Product level:</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>RepaymentDatePattern</th>
+                <th>Field behaviour</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>REGULAR_ANCHORED_TO_DISBURSEMENT</code></td>
+                <td>Auto-computed as Disbursement Date plus the Interest
+                  Calculation frequency. Field is pre-filled and
+                  non-editable, but the resolved value is persisted to
+                  the database for audit and reproducibility.</td>
+              </tr>
+              <tr>
+                <td><code>IRREGULAR_EXPLICIT_DATE</code></td>
+                <td>User input is mandatory. The user manually specifies
+                  the first instalment date.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <section class="help-section" id="eir"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">Effective Interest Rate (EIR)</div>
+          <p class="section-lead">The Effective Interest Rate (EIR) is
+            the rate that exactly discounts the estimated future cash
+            flows of a loan back to its net carrying amount at initial
+            recognition. Under IFRS 9 it is the basis for interest
+            income recognition on amortised-cost assets.</p>
+          <h3>What is included in the EIR</h3>
+          <ul>
+            <li>Nominal contractual interest</li>
+            <li>Origination fees charged to the borrower (e.g.
+              processing fee, commitment fee)</li>
+            <li>Direct incremental origination costs (e.g. broker
+              commissions)</li>
+            <li>Any discount or premium on the principal</li>
+          </ul>
+          <h3>Calculation Approach</h3>
+          <p>The system solves for the internal rate of return <em>r</em>
+            in the following equation, where <em>CF<sub>t</sub></em> is
+            the cash flow at time <em>t</em> and <em>n</em> is the
+            number of periods:</p>
+          <div class="formula">Net proceeds = Σ [ CF<sub>t</sub> / (1 + r)<sup>t</sup> ]   for t = 1 to n
+
+<span class="comment">-- Net proceeds = Loan amount – upfront fees + direct costs
+-- CF = scheduled principal + interest payments</span></div>
+          <div class="note-box"> <span class="box-label">Preliminary vs
+              Final EIR</span> A <strong>preliminary EIR</strong> is
+            calculated at application stage using the expected repayment
+            schedule. The <strong>final EIR</strong> is locked at loan
+            opening once all fees are confirmed and may differ slightly
+            from the preliminary figure. Both are visible in the loan
+            account detail view. </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── DAYS IN ARREARS ───────────────────────────────────────── -->
+        <section class="help-section" id="days-in-arrears"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">Days in Arrears</div>
+          <div class="param-card">
+            <div class="param-values">Type: Integer · Read-only ·
+              Updated by End-of-Day batch</div>
+            <p>Parameter <code>DaysInArrears</code> (DiA) defined at
+              Loan Account level. The number of calendar days the oldest
+              unpaid scheduled instalment has been overdue as of the
+              current business date. Calculated as the difference
+              between today and the due date of the earliest unsettled
+              instalment. If the customer is fully paid up, the value is
+              zero.</p>
+            <p>DiA is the most important behavioural metric on a loan
+              account: it drives the IFRS 9 staging decision, the asset
+              risk classification under HNB rules, penalty interest
+              accrual, collection workflow triggers, and regulatory
+              reporting (ANACREDIT, FINREP, COREP, NPL flag). The
+              counter resets to zero only when all overdue instalments
+              are settled; partial payments may or may not reduce DiA
+              depending on the configured payment-allocation hierarchy.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── MAX DAYS IN ARREARS (LIFECYCLE) ───────────────────────── -->
+        <section class="help-section" id="max-dia-lifecycle"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">Max Days in Arrears (Lifecycle)</div>
+          <div class="param-card">
+            <div class="param-values">Type: Integer · Read-only ·
+              Monotonically non-decreasing</div>
+            <p>Parameter <code>MaxDaysInArrearsLifecycle</code> defined
+              at Loan Account level. The highest value of <code>DaysInArrears</code>
+              ever observed on this loan account since origination. Once
+              a higher DiA value is reached this attribute is updated
+              and never decreases, even after the customer cures their
+              overdue position.</p>
+            <p>This is a long-memory indicator used for behavioural
+              scoring, internal credit risk modelling, SICR (Significant
+              Increase in Credit Risk) triggers under IFRS 9, customer
+              relationship management, and pricing decisions on future
+              credit applications. A loan that briefly went 95 days past
+              due before curing is still treated differently from a loan
+              that never went above 5 days, even if both have DiA = 0
+              today.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── MAX DAYS IN ARREARS (MONTH) ───────────────────────────── -->
+        <section class="help-section" id="max-dia-month"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">Max Days in Arrears (Month)</div>
+          <div class="param-card">
+            <div class="param-values">Type: Integer · Read-only · Resets
+              monthly</div>
+            <p>Parameter <code>MaxDaysInArrearsMonth</code> defined at
+              Loan Account level. The highest value of <code>DaysInArrears</code>
+              observed on this loan account within the current calendar
+              month. Resets to zero at the start of each month during
+              the End-of-Day batch run.</p>
+            <p>Used primarily for short-horizon behavioural reporting,
+              monthly internal MIS dashboards, dunning workflow
+              prioritisation, and identification of borrowers who cycle
+              in and out of arrears intra-month (a "rolling delinquency"
+              pattern that is hidden when only point-in- time DiA is
+              observed). The monthly history of this value is typically
+              archived in a dedicated table for trend analysis.</p>
+          </div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── ASSET RISK CLASSIFICATION ─────────────────────────────── -->
+        <section class="help-section" id="asset-risk-class"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">Asset Risk Classification</div>
+          <div class="param-card">
+            <div class="param-values">Possible values: A · B-1 · B-2 ·
+              B-3 · C</div>
+            <p>Parameter <code>AssetRiskClassification</code> (ARC)
+              defined at Loan Account level. The regulatory risk
+              category assigned to the exposure in accordance with the
+              HNB <em>Odluka o klasifikaciji izloženosti u rizične
+                skupine i načinu utvrđivanja kreditnih gubitaka</em>
+              (Decision on the classification of exposures into risk
+              groups and the determination of credit losses). Updated at
+              minimum on each reporting date and on every material
+              credit event.</p>
+          </div>
+          <table class="def-table">
+            <thead><tr>
+                <th>Value</th>
+                <th>Description</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td><code>A</code></td>
+                <td>Fully performing exposure with no significant
+                  increase in credit risk. Typically DiA ≤ 30 days and
+                  no other adverse indicators. Aligns with IFRS 9 Stage
+                  1.</td>
+              </tr>
+              <tr>
+                <td><code>B-1</code></td>
+                <td>Partially recoverable exposure with mild
+                  deterioration. Typically 31–90 days past due, or
+                  qualitative indicators of increased credit risk.
+                  Aligns with IFRS 9 Stage 2.</td>
+              </tr>
+              <tr>
+                <td><code>B-2</code></td>
+                <td>Partially recoverable exposure with substantial
+                  deterioration. Higher provisioning required; workout
+                  and restructuring options considered.</td>
+              </tr>
+              <tr>
+                <td><code>B-3</code></td>
+                <td>Partially recoverable exposure with severe
+                  deterioration. Significant loss expectation, formal
+                  recovery procedures usually initiated.</td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td>Fully non-recoverable exposure. 100% provisioning
+                  required; write-off candidate. Aligns with IFRS 9
+                  Stage 3 with high LGD.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── PERFORMANCE STAGE ─────────────────────────────────────── -->
+        <section class="help-section" id="performance-stage"> <span
+            class="section-tag">Loan Accounts</span>
+          <div class="section-title">Performance Stage</div>
+          <p class="section-lead">In the context of IFRS 9, "Performance
+            Stages" refer to the <strong>three-stage model</strong>
+            used to measure the credit risk of a loan. This determines
+            how much money you must set aside as ECL — Expected Credit
+            Loss (impairment) — and how you calculate interest income.
+            The model tracks the journey of a loan from "healthy" to
+            "defaulted".</p>
+          <h3>Stage 1: Performing (healthy)</h3>
+          <p>This is where every loan starts upon initial recognition.</p>
+          <ul>
+            <li><strong>Credit Risk:</strong> No significant increase in
+              credit risk since the loan was issued.</li>
+            <li><strong>Impairment (ECL):</strong> Standard loss on a
+              portfolio basis that you expect from default events that
+              are possible within the next 12 months. Usually calculated
+              from three components: PD (Probability of default), LGD
+              (Loss given default), EAD (Exposure at default), defined
+              at Loan Product level, as <code>ECL = PD × LGD × EAD</code>.</li>
+            <li><strong>Interest Income:</strong> Calculated on the <strong>gross</strong>
+              carrying amount.</li>
+          </ul>
+          <h3>Stage 2: Underperforming (Deteriorating)</h3>
+          <p>The loan moves here if there is a Significant Increase in
+            Credit Risk (SICR), but it has not defaulted yet. A common
+            trigger is a payment being more than <strong>30 days past
+              due</strong>.</p>
+          <ul>
+            <li><strong>Credit Risk:</strong> Risk has increased
+              significantly since day one.</li>
+            <li><strong>Impairment (ECL):</strong> You must now
+              calculate the <strong>Lifetime ECL</strong>. This is a
+              much larger buffer because it covers the risk of default
+              over the entire remaining life of the loan.</li>
+            <li><strong>Interest Income:</strong> Still calculated on
+              the <strong>gross</strong> carrying amount.</li>
+          </ul>
+          <h3>Stage 3: Non-performing (Impaired / Default)</h3>
+          <p>The loan is considered "credit-impaired". This usually
+            happens when a payment is more than <strong>90 days past
+              due</strong>, or the borrower is in bankruptcy.</p>
+          <ul>
+            <li><strong>Credit Risk:</strong> Objective evidence of
+              impairment (default).</li>
+            <li><strong>Impairment (ECL):</strong> You continue to use <strong>Lifetime
+
+
+                ECL</strong>, but the probability of default is now
+              essentially 100%.</li>
+            <li><strong>Interest Income:</strong> Calculated on the <strong>net</strong>
+              carrying amount (Balance minus the Impairment). This
+              reduces the profit shown on the books.</li>
+          </ul>
+          <p><span class="box-label">The "Cure" (Moving Backwards)</span>
+            A loan can move back from Stage 2 to Stage 1, or from Stage
+            3 to Stage 2, but only after a "probation period". For
+            example, if a borrower was 45 days late (Stage 2) but then
+            pays everything and stays on time for 3–6 months, the bank
+            can move them back to Stage 1. </p>
+          <table class="def-table">
+            <thead> <tr>
+                <th>Feature</th>
+                <th>Stage 1 (Performing)</th>
+                <th>Stage 2 (Underperforming)</th>
+                <th>Stage 3 (Non-performing)</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>Criteria</td>
+                <td>Initial recognition</td>
+                <td>Significant risk increase</td>
+                <td>Default / Impaired</td>
+              </tr>
+              <tr>
+                <td>ECL period</td>
+                <td>12-month ECL</td>
+                <td>Lifetime ECL</td>
+                <td>Lifetime ECL</td>
+              </tr>
+              <tr>
+                <td>Interest basis</td>
+                <td>Gross balance</td>
+                <td>Gross balance</td>
+                <td>Net balance</td>
+              </tr>
+              <tr>
+                <td>Typical trigger</td>
+                <td>Up to 30 days late</td>
+                <td>31–90 days late</td>
+                <td>90+ days late</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!--  INTEREST CALCULATION FORMULAS                            -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <section class="help-section" id="formulas-overview"> <span
+            class="section-tag">Interest Calculation Formulas</span>
+          <div class="section-title">Universal Formula Reference</div>
+          <p class="section-lead">Three universal formulas cover all
+            four day-count conventions (30/360, ACT/360, ACT/365,
+            ACT/ACT) and both calculation methods (Conforming,
+            Proportional): the periodic rate, the EMI / annuity, and the
+            per-period interest portion. Only the value fed into them
+            changes; the formulas themselves are identical across every
+            product configuration.</p>
+          <table class="def-table">
+            <thead><tr>
+                <th>Symbol</th>
+                <th>Meaning</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>P</td>
+                <td>Principal (loan amount)</td>
+              </tr>
+              <tr>
+                <td>r</td>
+                <td>Annual nominal interest rate (e.g. 0.17)</td>
+              </tr>
+              <tr>
+                <td>n</td>
+                <td>Number of instalments</td>
+              </tr>
+              <tr>
+                <td>B<sub>k-1</sub></td>
+                <td>Outstanding balance at start of period k</td>
+              </tr>
+              <tr>
+                <td>D<sub>k</sub></td>
+                <td>Days in period k (per day-count convention)</td>
+              </tr>
+              <tr>
+                <td>Y<sub>k</sub></td>
+                <td>Days in year for period k (per day-count convention)</td>
+              </tr>
+              <tr>
+                <td>f<sub>k</sub></td>
+                <td>Year-fraction (accrual factor) for period k = D<sub>k</sub>
+                  / Y<sub>k</sub></td>
+              </tr>
+              <tr>
+                <td>r<sub>m</sub></td>
+                <td>Periodic rate used to compute the annuity</td>
+              </tr>
+              <tr>
+                <td>A</td>
+                <td>Equal instalment (EMI)</td>
+              </tr>
+              <tr>
+                <td>I<sub>k</sub></td>
+                <td>Interest portion of instalment k</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── PERIODIC RATE ─────────────────────────────────────────── -->
+        <section class="help-section" id="formula-rm"> <span
+            class="section-tag">Interest Calculation Formulas</span>
+          <div class="section-title">Periodic Rate (r<sub>m</sub>)</div>
+          <p class="section-lead">Converts the annual nominal rate into
+            the periodic rate, according to the selected Interest
+            Calculation Method.</p>
+          <div class="formula">CONFORMING:    r_m = (1 + r)^f − 1
+PROPORTIONAL:  r_m = r × f
+
+<span class="comment">where f is the year-fraction resolved by the day-count convention:</span>
+
+  30/360    f = 30 / 360 = 1/12
+  ACT/360   f = ActualDays / 360
+  ACT/365   f = ActualDays / 365
+  ACT/ACT   f = ActualDays / Y    (Y = 365 or 366; split at year-end)</div>
+          <div class="info-box"> <span class="box-label">Annuity vs
+              per-period fraction</span> For the annuity calculation
+            (formula 2), f is the regular-period fraction (the nominal
+            month = 1/12 for monthly). For 30/360 this always equals
+            1/12; for ACT conventions most core banking systems also use
+            the nominal 1/12 for the EMI base, then apply each period's
+            actual day-count fraction for the interest split (formula
+            3).</div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── EMI / ANNUITY ─────────────────────────────────────────── -->
+        <section class="help-section" id="formula-emi"> <span
+            class="section-tag">Interest Calculation Formulas</span>
+          <div class="section-title">EMI / Annuity</div>
+          <p class="section-lead">Computes the equal instalment.
+            Identical for all four day-count conventions and both
+            methods — only the value of r<sub>m</sub> (from formula 1)
+            changes.</p>
+          <div class="formula">A = P × [ r_m × (1 + r_m)^n ] / [ (1 + r_m)^n − 1 ]</div>
+          <div class="warn-box"> <span class="box-label">Edge case —
+              zero rate</span> If r<sub>m</sub> = 0 (interest-free loan)
+            the formula divides by zero. Handle separately: A = P / n
+            when r<sub>m</sub> = 0.</div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── INTEREST PORTION ──────────────────────────────────────── -->
+        <section class="help-section" id="formula-interest"> <span
+            class="section-tag">Interest Calculation Formulas</span>
+          <div class="section-title">Interest Portion per Period</div>
+          <p class="section-lead">Splits each instalment into interest
+            and principal. Uses the same method choice as formula 1, but
+            with each period's own actual year-fraction f<sub>k</sub> =
+            D<sub>k</sub> / Y<sub>k</sub>.</p>
+          <div class="formula">I_k = B_(k-1) × g(r, f_k)
+
+  CONFORMING:    g(r, f_k) = (1 + r)^(f_k) − 1
+  PROPORTIONAL:  g(r, f_k) = r × f_k
+
+<span class="comment">then:</span>  P_k = A − I_k        B_k = B_(k-1) − P_k</div>
+          <div class="note-box"> <span class="box-label">ACT/ACT
+              year-boundary split</span> When a period crosses 31-Dec,
+            the year-fraction is the sum of two sub-fractions: f<sub>k</sub>
+            = (D<sub>k,Y1</sub> / Y<sub>1</sub>) + (D<sub>k,Y2</sub> / Y<sub>2</sub>),
+
+            where Y<sub>1</sub>, Y<sub>2</sub> ∈ {365, 366} depending on
+            whether each calendar year is a leap year.</div>
+          <div class="tip-box"> <span class="box-label">Consistency
+              rule</span> The method choice (CONFORMING / PROPORTIONAL)
+            must be identical in formula 1 and formula 3. Mixing them
+            breaks the schedule — the last instalment will not close the
+            balance to zero.</div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── LAST INSTALMENT RULE ──────────────────────────────────── -->
+        <section class="help-section" id="formula-last-instalment"> <span
+            class="section-tag">Interest Calculation Formulas</span>
+          <div class="section-title">Last Instalment Rule (Balance
+            Closing)</div>
+          <p class="section-lead">Because of rounding, the final
+            instalment is computed differently to guarantee a clean zero
+            balance.</p>
+          <div class="formula"><span class="comment">For k &lt; n:</span>
+  I_k = B_(k-1) × g(r, f_k)
+  P_k = A − I_k
+
+<span class="comment">For k = n (last):</span>
+  I_n = B_(n-1) × g(r, f_n)
+  P_n = B_(n-1)                <span class="comment"># pay off whatever remains</span>
+  A_n = P_n + I_n              <span class="comment"># may differ from A by a cent or two</span></div>
+          <p>The last instalment A<sub>n</sub> absorbs all accumulated
+            rounding from previous periods.</p>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── UNIFIED PSEUDOCODE ────────────────────────────────────── -->
+        <section class="help-section" id="formula-pseudocode"> <span
+            class="section-tag">Interest Calculation Formulas</span>
+          <div class="section-title">Unified Pseudocode</div>
+          <p class="section-lead">One interest engine, parameterised by
+            <code>InterestCalculationMethod</code> and <code>DayCountConvention</code>.</p>
+          <div class="formula">function buildSchedule(P, r, n, method, dayCount, dates):
+  <span class="comment"># Step 1 — periodic rate for annuity (nominal regular-period fraction)</span>
+  f_regular = regularFraction(dayCount)        <span class="comment"># 1/12 for monthly</span>
+  rm = periodicRate(method, r, f_regular)
+
+  <span class="comment"># Step 2 — annuity (EMI)</span>
+  if rm == 0:  A = round(P / n, 2)
+  else:        A = round(P * (rm*(1+rm)^n) / ((1+rm)^n - 1), 2)
+
+  <span class="comment"># Step 3 — per-period interest split</span>
+  balance = P
+  for k in 1..n:
+    f_k = yearFraction(dayCount, dates[k-1], dates[k])
+    periodRate_k = applyMethod(method, r, f_k)
+    interest = round(balance * periodRate_k, 2)
+    if k == n:
+      principal = round(balance, 2)            <span class="comment"># close the balance</span>
+      instalment = round(principal + interest, 2)
+    else:
+      principal = round(A - interest, 2)
+      instalment = A
+    balance = round(balance - principal, 2)
+    emit(k, dates[k], interest, principal, instalment, balance)
+
+<span class="comment"># ── helpers ──────────────────────────────────────────────</span>
+function periodicRate(method, r, f):    <span class="comment"># == applyMethod</span>
+  if method == CONFORMING: return (1 + r)^f - 1
+  else:                    return r * f
+
+function yearFraction(dayCount, d0, d1):
+  switch dayCount:
+    case THIRTY_360: return 30 / 360
+    case ACT_360:    return actualDays(d0, d1) / 360
+    case ACT_365:    return actualDays(d0, d1) / 365
+    case ACT_ACT:
+      if year(d0) == year(d1):
+        Y = isLeap(year(d0)) ? 366 : 365
+        return actualDays(d0, d1) / Y
+      else:                                    <span class="comment"># crosses year-end</span>
+        ye = endOfYear(d0)                      <span class="comment"># Dec 31</span>
+        Y1 = isLeap(year(d0)) ? 366 : 365
+        Y2 = isLeap(year(d1)) ? 366 : 365
+        return actualDays(d0, ye)/Y1 + actualDays(ye, d1)/Y2</div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ── FORMULA-BASED REPAYMENT EXAMPLES ──────────────────────── -->
+        <section class="help-section" id="formula-examples"> <span
+            class="section-tag">Interest Calculation Formulas</span>
+          <div class="section-title">Repayment Plan Examples — All Four
+            Day-Count Conventions</div>
+          <p class="section-lead">The four schedules below are generated
+            from identical loan parameters, shown side by side for both
+            calculation methods. Only the day-count convention differs
+            between them.</p>
+          <div class="info-box"> <span class="box-label">Common loan
+              parameters</span> Principal P = <strong>1 000.00 EUR</strong>
+            · Annual rate r = <strong>17 %</strong> · Instalments n = <strong>6</strong>
+            (monthly) · Disbursement = <strong>30 Nov 2027</strong><br>
+            Month-end anchored; February clamps to 29 (2028 is a leap
+            year). Annuity from nominal monthly rate: <strong>174.43
+              EUR</strong> (Conforming, r<sub>m</sub> = 1.3170 %) · <strong>175.03
+
+              EUR</strong> (Proportional, r<sub>m</sub> = 1.4167 %).</div>
+          <table class="def-table">
+            <thead><tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Days from previous</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>Disbursement</td>
+                <td>30 Nov 2027</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2027</td>
+                <td>30</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2028</td>
+                <td>31</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>29 Feb 2028</td>
+                <td>30</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2028</td>
+                <td>30</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2028</td>
+                <td>31</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2028</td>
+                <td>30</td>
+              </tr>
+            </tbody>
+          </table>
+          <h3>1) 30/360</h3>
+          <p>Every period = 30/360 = 0.083333, so the day-count is
+            invisible — both columns are perfectly regular.</p>
+          <table class="schedule-table">
+            <thead><tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Days</th>
+                <th>Inst (C)</th>
+                <th>Int (C)</th>
+                <th>Prin (C)</th>
+                <th>Bal (C)</th>
+                <th>Inst (P)</th>
+                <th>Int (P)</th>
+                <th>Prin (P)</th>
+                <th>Bal (P)</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2027</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>13.17</td>
+                <td>161.26</td>
+                <td>838.74</td>
+                <td>175.03</td>
+                <td>14.17</td>
+                <td>160.86</td>
+                <td>839.14</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2028</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>11.05</td>
+                <td>163.38</td>
+                <td>675.36</td>
+                <td>175.03</td>
+                <td>11.89</td>
+                <td>163.14</td>
+                <td>676.00</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>29 Feb 2028</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>8.89</td>
+                <td>165.54</td>
+                <td>509.82</td>
+                <td>175.03</td>
+                <td>9.58</td>
+                <td>165.45</td>
+                <td>510.55</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2028</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>6.71</td>
+                <td>167.72</td>
+                <td>342.10</td>
+                <td>175.03</td>
+                <td>7.23</td>
+                <td>167.80</td>
+                <td>342.75</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2028</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>4.51</td>
+                <td>169.92</td>
+                <td>172.18</td>
+                <td>175.03</td>
+                <td>4.86</td>
+                <td>170.17</td>
+                <td>172.58</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2028</td>
+                <td>30</td>
+                <td>174.45</td>
+                <td>2.27</td>
+                <td>172.18</td>
+                <td>0.00</td>
+                <td>175.02</td>
+                <td>2.44</td>
+                <td>172.58</td>
+                <td>0.00</td>
+              </tr>
+            </tbody> <tfoot><tr>
+                <td colspan="3">Total</td>
+                <td>1046.60</td>
+                <td>46.60</td>
+                <td>1000.00</td>
+                <td><br>
+                </td>
+                <td>1050.17</td>
+                <td>50.17</td>
+                <td>1000.00</td>
+                <td><br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <h3>2) ACT/360</h3>
+          <p>Actual days ÷ 360. The 360 denominator inflates every
+            period slightly; longer (31-day) months accrue more
+            interest.</p>
+          <table class="schedule-table">
+            <thead><tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Days</th>
+                <th>Inst (C)</th>
+                <th>Int (C)</th>
+                <th>Prin (C)</th>
+                <th>Bal (C)</th>
+                <th>Inst (P)</th>
+                <th>Int (P)</th>
+                <th>Prin (P)</th>
+                <th>Bal (P)</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2027</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>13.17</td>
+                <td>161.26</td>
+                <td>838.74</td>
+                <td>175.03</td>
+                <td>14.17</td>
+                <td>160.86</td>
+                <td>839.14</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2028</td>
+                <td>31</td>
+                <td>174.43</td>
+                <td>11.42</td>
+                <td>163.01</td>
+                <td>675.73</td>
+                <td>175.03</td>
+                <td>12.28</td>
+                <td>162.75</td>
+                <td>676.39</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>29 Feb 2028</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>8.90</td>
+                <td>165.53</td>
+                <td>510.20</td>
+                <td>175.03</td>
+                <td>9.58</td>
+                <td>165.45</td>
+                <td>510.94</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2028</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>6.72</td>
+                <td>167.71</td>
+                <td>342.49</td>
+                <td>175.03</td>
+                <td>7.24</td>
+                <td>167.79</td>
+                <td>343.15</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2028</td>
+                <td>31</td>
+                <td>174.43</td>
+                <td>4.66</td>
+                <td>169.77</td>
+                <td>172.72</td>
+                <td>175.03</td>
+                <td>5.02</td>
+                <td>170.01</td>
+                <td>173.14</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2028</td>
+                <td>30</td>
+                <td>174.99</td>
+                <td>2.27</td>
+                <td>172.72</td>
+                <td>0.00</td>
+                <td>175.59</td>
+                <td>2.45</td>
+                <td>173.14</td>
+                <td>0.00</td>
+              </tr>
+            </tbody> <tfoot><tr>
+                <td colspan="3">Total</td>
+                <td>1047.14</td>
+                <td>47.14</td>
+                <td>1000.00</td>
+                <td><br>
+                </td>
+                <td>1050.74</td>
+                <td>50.74</td>
+                <td>1000.00</td>
+                <td><br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <h3>3) ACT/365</h3>
+          <p>Actual days ÷ 365. Slightly lower interest than ACT/360
+            because the larger denominator shrinks each day's fraction.
+            Fixed 365 ignores the leap year.</p>
+          <table class="schedule-table">
+            <thead><tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Days</th>
+                <th>Inst (C)</th>
+                <th>Int (C)</th>
+                <th>Prin (C)</th>
+                <th>Bal (C)</th>
+                <th>Inst (P)</th>
+                <th>Int (P)</th>
+                <th>Prin (P)</th>
+                <th>Bal (P)</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2027</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>12.99</td>
+                <td>161.44</td>
+                <td>838.56</td>
+                <td>175.03</td>
+                <td>13.97</td>
+                <td>161.06</td>
+                <td>838.94</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2028</td>
+                <td>31</td>
+                <td>174.43</td>
+                <td>11.26</td>
+                <td>163.17</td>
+                <td>675.39</td>
+                <td>175.03</td>
+                <td>12.11</td>
+                <td>162.92</td>
+                <td>676.02</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>29 Feb 2028</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>8.77</td>
+                <td>165.66</td>
+                <td>509.73</td>
+                <td>175.03</td>
+                <td>9.45</td>
+                <td>165.58</td>
+                <td>510.44</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2028</td>
+                <td>30</td>
+                <td>174.43</td>
+                <td>6.62</td>
+                <td>167.81</td>
+                <td>341.92</td>
+                <td>175.03</td>
+                <td>7.13</td>
+                <td>167.90</td>
+                <td>342.54</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2028</td>
+                <td>31</td>
+                <td>174.43</td>
+                <td>4.59</td>
+                <td>169.84</td>
+                <td>172.08</td>
+                <td>175.03</td>
+                <td>4.95</td>
+                <td>170.08</td>
+                <td>172.46</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2028</td>
+                <td>30</td>
+                <td>174.31</td>
+                <td>2.23</td>
+                <td>172.08</td>
+                <td>0.00</td>
+                <td>174.87</td>
+                <td>2.41</td>
+                <td>172.46</td>
+                <td>0.00</td>
+              </tr>
+            </tbody> <tfoot><tr>
+                <td colspan="3">Total</td>
+                <td>1046.46</td>
+                <td>46.46</td>
+                <td>1000.00</td>
+                <td><br>
+                </td>
+                <td>1050.02</td>
+                <td>50.02</td>
+                <td>1000.00</td>
+                <td><br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <h3>4) ACT/ACT</h3>
+          <p>Actual days ÷ actual year length. All instalment dates fall
+            in 2028 (366 days), so periods 2–6 use 366; period 1 (Dec
+            2027) uses 365. This makes ACT/ACT marginally cheaper than
+            ACT/365 from period 2 onward.</p>
+          <table class="schedule-table">
+            <thead><tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Days</th>
+                <th>Year</th>
+                <th>Inst (C)</th>
+                <th>Int (C)</th>
+                <th>Prin (C)</th>
+                <th>Bal (C)</th>
+                <th>Inst (P)</th>
+                <th>Int (P)</th>
+                <th>Prin (P)</th>
+                <th>Bal (P)</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>1</td>
+                <td>30 Dec 2027</td>
+                <td>30</td>
+                <td>365</td>
+                <td>174.43</td>
+                <td>12.99</td>
+                <td>161.44</td>
+                <td>838.56</td>
+                <td>175.03</td>
+                <td>13.97</td>
+                <td>161.06</td>
+                <td>838.94</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>30 Jan 2028</td>
+                <td>31</td>
+                <td>366</td>
+                <td>174.43</td>
+                <td>11.23</td>
+                <td>163.20</td>
+                <td>675.36</td>
+                <td>175.03</td>
+                <td>12.08</td>
+                <td>162.95</td>
+                <td>675.99</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>29 Feb 2028</td>
+                <td>30</td>
+                <td>366</td>
+                <td>174.43</td>
+                <td>8.75</td>
+                <td>165.68</td>
+                <td>509.68</td>
+                <td>175.03</td>
+                <td>9.42</td>
+                <td>165.61</td>
+                <td>510.38</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>30 Mar 2028</td>
+                <td>30</td>
+                <td>366</td>
+                <td>174.43</td>
+                <td>6.60</td>
+                <td>167.83</td>
+                <td>341.85</td>
+                <td>175.03</td>
+                <td>7.11</td>
+                <td>167.92</td>
+                <td>342.46</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>30 Apr 2028</td>
+                <td>31</td>
+                <td>366</td>
+                <td>174.43</td>
+                <td>4.58</td>
+                <td>169.85</td>
+                <td>172.00</td>
+                <td>175.03</td>
+                <td>4.93</td>
+                <td>170.10</td>
+                <td>172.36</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>30 May 2028</td>
+                <td>30</td>
+                <td>366</td>
+                <td>174.23</td>
+                <td>2.23</td>
+                <td>172.00</td>
+                <td>0.00</td>
+                <td>174.76</td>
+                <td>2.40</td>
+                <td>172.36</td>
+                <td>0.00</td>
+              </tr>
+            </tbody> <tfoot><tr>
+                <td colspan="4">Total</td>
+                <td>1046.38</td>
+                <td>46.38</td>
+                <td>1000.00</td>
+                <td><br>
+                </td>
+                <td>1049.91</td>
+                <td>49.91</td>
+                <td>1000.00</td>
+                <td><br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <div class="info-box"> <span class="box-label">Total interest
+              across all eight combinations</span> 30/360: Conforming <strong>46.60</strong>
+            / Proportional <strong>50.17</strong> · ACT/360: <strong>47.14</strong>
+            / <strong>50.74</strong> · ACT/365: <strong>46.46</strong>
+            / <strong>50.02</strong> · ACT/ACT: <strong>46.38</strong>
+            / <strong>49.91</strong>. ACT/360 is dearest (smallest
+            denominator); ACT/ACT is cheapest here (leap-year
+            denominator). The Conforming → Proportional gap (~3.5 EUR)
+            is roughly 2× the spread caused by switching day-count (~0.8
+            EUR).</div>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!--  GLOSSARY                                                 -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <section class="help-section" id="glossary"> <span
+            class="section-tag">Reference</span>
+          <div class="section-title">Glossary — All Terms A–Z</div>
+          <p class="section-lead">Quick definitions for all key terms
+            used across the platform.</p>
+          <table class="def-table">
+            <thead><tr>
+                <th>Term</th>
+                <th>Definition</th>
+              </tr>
+            </thead> <tbody>
+              <tr>
+                <td>Accrual</td>
+                <td>The daily recognition of interest income earned but
+                  not yet received in cash.</td>
+              </tr>
+              <tr>
+                <td>Amortised Cost</td>
+                <td>The amount at which a financial asset is measured
+                  after deducting principal repayments and
+                  adding/deducting cumulative amortisation using the EIR
+                  method.</td>
+              </tr>
+              <tr>
+                <td>Annuity</td>
+                <td>A series of equal periodic payments combining
+                  principal and interest such that the loan is fully
+                  repaid at maturity.</td>
+              </tr>
+              <tr>
+                <td>Asset Risk Classification (ARC)</td>
+                <td>Regulatory risk category assigned to a loan exposure
+                  per HNB classification rules (A, B-1, B-2, B-3, C).
+                  See <a href="#asset-risk-class">Asset Risk
+                    Classification</a>.</td>
+              </tr>
+              <tr>
+                <td>Balloon Payment</td>
+                <td>A large lump-sum payment due at maturity
+                  representing the residual principal balance after
+                  regular instalment payments.</td>
+              </tr>
+              <tr>
+                <td>Bullet Loan</td>
+                <td>A loan where only interest is paid periodically and
+                  the full principal is repaid at maturity.</td>
+              </tr>
+              <tr>
+                <td>Conforming Method</td>
+                <td>Rate conversion method where the periodic rate is
+                  computed as <code>(1+r)<sup>1/n</sup> − 1</code> so
+                  the effective annual rate equals the stated annual
+                  rate exactly. Mandatory for EU consumer loans (HNB
+                  EKS). Croatian term: <em>konformna metoda</em>. See <a
+                    href="#interest-calc-method">Interest Calculation
+                    Method</a>.</td>
+              </tr>
+              <tr>
+                <td>Day Count Convention</td>
+                <td>The rule used to calculate the number of days in an
+                  interest period and the number of days in a year for
+                  interest accrual purposes. See <a href="#day-count">Day
+
+
+                    Count Convention</a>.</td>
+              </tr>
+              <tr>
+                <td>Days in Arrears (DiA)</td>
+                <td>Number of calendar days the oldest unpaid instalment
+                  has been overdue. Drives staging, classification,
+                  penalty accrual, and collections. See <a
+                    href="#days-in-arrears">Days in Arrears</a>.</td>
+              </tr>
+              <tr>
+                <td>DTI</td>
+                <td>Debt-to-Income ratio. Total monthly debt obligations
+                  divided by gross monthly income. Used as a credit
+                  underwriting criterion.</td>
+              </tr>
+              <tr>
+                <td>EAD</td>
+                <td>Exposure at Default. The expected amount outstanding
+                  at the time of default. Component of ECL.</td>
+              </tr>
+              <tr>
+                <td>ECL</td>
+                <td>Expected Credit Loss. Calculated as PD × LGD × EAD
+                  under IFRS 9.</td>
+              </tr>
+              <tr>
+                <td>EIR</td>
+                <td>Effective Interest Rate. The rate that equates the
+                  present value of all expected cash flows to the net
+                  carrying amount at initial recognition. See <a
+                    href="#eir">EIR section</a>.</td>
+              </tr>
+              <tr>
+                <td>EoD</td>
+                <td>End of Day. The nightly batch processing window
+                  during which accruals, penalty calculations, balance
+                  updates, and reporting extracts are generated.</td>
+              </tr>
+              <tr>
+                <td>Flat Rate Loan</td>
+                <td>A loan where principal and interest portions are
+                  equal in every instalment. Interest is calculated on
+                  the original principal (not declining balance), so the
+                  effective APR is roughly double the headline rate.
+                  Also called Add-On Interest Loan (US). Restricted for
+                  EU consumer use.</td>
+              </tr>
+              <tr>
+                <td>GL</td>
+                <td>General Ledger. The master record of all financial
+                  transactions, organised by account.</td>
+              </tr>
+              <tr>
+                <td>IFRS 9</td>
+                <td>International Financial Reporting Standard 9.
+                  Governs the classification, measurement, and
+                  impairment of financial instruments.</td>
+              </tr>
+              <tr>
+                <td>LGD</td>
+                <td>Loss Given Default. The percentage of EAD expected
+                  to be lost in the event of default, net of recoveries.</td>
+              </tr>
+              <tr>
+                <td>LTV</td>
+                <td>Loan-to-Value ratio. Loan amount divided by the
+                  appraised value of collateral. Used as a credit
+                  criterion for secured products.</td>
+              </tr>
+              <tr>
+                <td>Non-performing Loan (NPL)</td>
+                <td>A loan where the borrower is 90 or more days past
+                  due on a scheduled payment. Accrual is typically
+                  suspended on NPLs.</td>
+              </tr>
+              <tr>
+                <td>PD</td>
+                <td>Probability of Default. Likelihood that the borrower
+                  will default within a given horizon (12 months or
+                  lifetime).</td>
+              </tr>
+              <tr>
+                <td>Period</td>
+                <td>An accounting period, typically a calendar month,
+                  during which transactions are recorded and at the end
+                  of which the GL is closed.</td>
+              </tr>
+              <tr>
+                <td>Proportional Method</td>
+                <td>Rate conversion method where the periodic rate is
+                  computed as <code>r / n</code> (simple division). The
+                  effective annual rate exceeds the stated rate due to
+                  compounding (e.g. 17% nominal → 18.39% effective).
+                  Allowed for corporate/wholesale; not allowed for EU
+                  consumer products. Croatian term: <em>proporcionalna
+                    metoda</em>. See <a href="#interest-calc-method">Interest
+
+                    Calculation Method</a>.</td>
+              </tr>
+              <tr>
+                <td>SICR</td>
+                <td>Significant Increase in Credit Risk. The IFRS 9
+                  trigger that moves a loan from Stage 1 to Stage 2.</td>
+              </tr>
+              <tr>
+                <td>Tenant</td>
+                <td>An isolated organisational entity within the
+                  platform. Each tenant has its own data, configuration,
+                  and GL.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="back-top" href="#overview">↑ Back to top</a> </section>
+      </main>
     </div>
-  </section>
-
-  <!-- ── NAVIGATION ───────────────────────────────────────────── -->
-  <section class="help-section" id="navigation">
-    <span class="section-tag">Getting Started</span>
-    <div class="section-title">Navigation</div>
-    <p>Use the left sidebar to browse topics by module. The search box at the top of the sidebar filters links in real time. Click any sidebar link to jump to the corresponding section. All sections are reachable via direct URL anchor (e.g. <code>help.html#eir</code>).</p>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!--  LOAN MANAGEMENT                                          -->
-  <!-- ══════════════════════════════════════════════════════════ -->
-
-  <!-- ── LOAN PRODUCTS ────────────────────────────────────────── -->
-  <section class="help-section" id="loan-products">
-    <span class="section-tag">Loan Management</span>
-    <div class="section-title">Loan Products</div>
-    <p class="section-lead">A Loan Product is the master template that defines the financial and operational parameters for a class of loans. Every loan account opened on the platform is bound to exactly one Loan Product, and inherits its rules at origination.</p>
-    <p>Key parameters defined at the product level include the interest rate structure, repayment type, allowed currencies, tenor limits, fee schedule, and accounting treatment. Individual loan accounts may override some parameters within bounds set by the product.</p>
-  </section>
-
-  <!-- ── ACCOUNTING METHOD ─────────────────────────────────────── -->
-  <section class="help-section" id="accounting-method">
-    <span class="section-tag">Loan Management › Loan Products</span>
-    <div class="section-title">Accounting Method</div>
-    <p class="section-lead">The Accounting Method controls <strong>how interest is recognised and posted</strong> to the General Ledger throughout the life of a loan. It determines the timing and amount of each accrual entry.</p>
-
-    <h3>Available Methods</h3>
-    <table class="def-table">
-      <thead><tr><th>Method</th><th>Description</th><th>Typical use</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>Accrual</td>
-          <td>Interest is accrued daily and posted to an accrued interest receivable account. Revenue is recognised as it is earned, regardless of cash receipt.</td>
-          <td>Standard retail and SME lending, IFRS 9 compliant portfolios</td>
-        </tr>
-        <tr>
-          <td>Cash Basis</td>
-          <td>Interest is recognised only when cash is received. No accrual entries are posted in advance.</td>
-          <td>Non-performing loans, stage 3 assets, high-credit-risk portfolios</td>
-        </tr>
-        <tr>
-          <td>EIR (Effective Interest Rate)</td>
-          <td>Interest and fee income are spread over the loan life using the constant-yield (effective interest rate) method. Origination fees and direct costs are included in the EIR calculation.</td>
-          <td>IFRS 9 / IFRS 15 compliant recognition; mortgage and structured products</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note-box">
-      <span class="box-label">Important</span>
-      Once a loan account is opened, the Accounting Method cannot be changed. Changes to the method on a Loan Product apply only to accounts opened after the change is saved.
-    </div>
-
-    <h3>How Accrual Works</h3>
-    <p>Each night the EoD batch calculates the interest accrued for the day using the formula below, then posts a debit to <em>Accrued Interest Receivable</em> and a credit to <em>Interest Income</em>.</p>
-    <div class="formula">
-Daily accrual = Outstanding principal × Annual rate ÷ Day count basis
-<span class="comment">
--- Example (Actual/365, 10 % p.a., balance 10 000):
--- Daily accrual = 10 000 × 0.10 / 365 = 2.7397</span>
-    </div>
-
-    <h3>EIR Method Detail</h3>
-    <p>Under the EIR method the system calculates an internal rate of return that equates the present value of all expected cash flows (including fees) to the initial loan amount. This rate is then applied to the amortised cost balance each period to determine income. See <a href="#eir">Effective Interest Rate (EIR)</a> for the full calculation.</p>
-
-    <div class="warn-box">
-      <span class="box-label">Regulatory note</span>
-      IFRS 9 requires the EIR method for loans measured at amortised cost. Using Cash Basis for performing loans may result in under-recognition of income and require restatement.
-    </div>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── DAY COUNT CONVENTION ──────────────────────────────────── -->
-  <section class="help-section" id="day-count">
-    <span class="section-tag">Loan Management › Loan Products</span>
-    <div class="section-title">Day Count Convention</div>
-    <p class="section-lead">The Day Count Convention defines how the number of days in an interest period and the number of days in a year are calculated. Different conventions produce different accrual amounts even with the same nominal rate.</p>
-
-    <table class="def-table">
-      <thead><tr><th>Convention</th><th>Days in period</th><th>Days in year</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td>Actual / 365</td><td>Actual calendar days</td><td>365 (fixed)</td><td>Most common in retail banking; leap years use 365 denominator</td></tr>
-        <tr><td>Actual / 360</td><td>Actual calendar days</td><td>360 (fixed)</td><td>Common in money markets and US commercial lending; produces slightly higher interest</td></tr>
-        <tr><td>Actual / Actual</td><td>Actual calendar days</td><td>365 or 366 (leap year)</td><td>Precise; used in government bonds and IFRS-compliant instruments</td></tr>
-        <tr><td>30 / 360</td><td>Each month treated as 30 days</td><td>360</td><td>Simplifies calculation; common in fixed-income securities and some mortgage markets</td></tr>
-        <tr><td>30E / 360</td><td>European variant of 30/360</td><td>360</td><td>End-of-month dates adjusted to 30; used in Eurobonds</td></tr>
-      </tbody>
-    </table>
-
-    <div class="tip-box">
-      <span class="box-label">Tip</span>
-      Actual/365 and Actual/360 give different annual yields for the same nominal rate. A loan at 10 % Actual/360 is effectively ~10.14 % Actual/365. Always confirm the convention with your product team before launch.
-    </div>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── INTEREST TYPE ─────────────────────────────────────────── -->
-  <section class="help-section" id="interest-type">
-    <span class="section-tag">Loan Management › Loan Products</span>
-    <div class="section-title">Interest Type</div>
-    <p class="section-lead">Determines whether the interest rate applied to a loan is fixed throughout its life or can vary in line with a reference rate.</p>
-    <table class="def-table">
-      <thead><tr><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td>Fixed</td><td>The interest rate is set at origination and does not change for the loan term. Provides payment certainty for the borrower.</td></tr>
-        <tr><td>Variable</td><td>The rate floats against a reference index (e.g. EURIBOR, SOFR, central bank rate). Repricing occurs on a defined schedule.</td></tr>
-        <tr><td>Mixed</td><td>Fixed for an initial period (e.g. 24 months), then converts to variable for the remainder of the term.</td></tr>
-      </tbody>
-    </table>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── REPAYMENT PLAN ────────────────────────────────────────── -->
-  <section class="help-section" id="repayment-plan">
-    <span class="section-tag">Loan Management</span>
-    <div class="section-title">Repayment Plan</div>
-    <p class="section-lead">The Repayment Plan (also called Amortisation Schedule) defines how the outstanding principal and interest are distributed across instalments over the loan term.</p>
-    <table class="def-table">
-      <thead><tr><th>Plan Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td>Annuity (French)</td><td>Equal total instalments throughout the term. Each payment contains a growing principal component and a shrinking interest component.</td></tr>
-        <tr><td>Linear (German)</td><td>Equal principal instalments. The interest portion decreases each period as the outstanding balance reduces. Total payments are higher initially.</td></tr>
-        <tr><td>Bullet</td><td>Interest-only payments during the term; full principal repaid at maturity. Common in short-term and bridge financing.</td></tr>
-        <tr><td>Balloon</td><td>Regular instalments (annuity or linear) with a large lump-sum payment at maturity covering the residual principal.</td></tr>
-        <tr><td>Irregular</td><td>Custom schedule with manually defined due dates and amounts. Used for restructured or bespoke facilities.</td></tr>
-      </tbody>
-    </table>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── INTEREST ACCRUAL ──────────────────────────────────────── -->
-  <section class="help-section" id="interest-accrual">
-    <span class="section-tag">Loan Management</span>
-    <div class="section-title">Interest Accrual</div>
-    <p class="section-lead">Interest Accrual defines the rules and frequency for recognising interest income between instalment due dates. Accrual runs as part of the nightly EoD batch.</p>
-    <h3>Accrual Frequency</h3>
-    <p>Defines how often accrual entries are posted to the GL. Options are: <strong>Daily</strong> (one entry per calendar day), <strong>Monthly</strong> (one entry on the last day of each month), or <strong>On Due Date</strong> (accrual posted only when an instalment falls due).</p>
-    <h3>Suspended Accrual</h3>
-    <p>When a loan enters a non-performing state (typically 90+ days past due), accrual is suspended. Interest continues to accrue off-balance-sheet in a memorandum account and is recognised as income only upon collection.</p>
-    <div class="info-box">
-      <span class="box-label">EoD Batch</span>
-      Accrual is calculated and posted automatically each night. Manual adjustment is possible via a journal override with appropriate authorisation.
-    </div>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── COLLECTIONS ───────────────────────────────────────────── -->
-  <section class="help-section" id="collections">
-    <span class="section-tag">Loan Management</span>
-    <div class="section-title">Collections</div>
-    <p class="section-lead">A Collection Definition specifies the rules for triggering and processing collections when a loan instalment becomes overdue.</p>
-    <h3>Collection Trigger</h3>
-    <p>Collections can be triggered automatically by the EoD batch when a due date passes without full payment, or manually by an authorised user. The trigger threshold (number of days past due) is set per product.</p>
-    <h3>Collection Allocation</h3>
-    <p>When a collection payment is received, the platform allocates it in the following default order: <strong>Penalty interest → Overdue interest → Overdue principal → Current interest → Current principal</strong>. The allocation order can be customised per product.</p>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── PENALTIES ─────────────────────────────────────────────── -->
-  <section class="help-section" id="penalties">
-    <span class="section-tag">Loan Management</span>
-    <div class="section-title">Penalty Definitions</div>
-    <p class="section-lead">Penalty Definitions control the rate and basis of charges applied when a borrower misses a scheduled payment or repays early.</p>
-    <table class="def-table">
-      <thead><tr><th>Penalty Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td>Late Payment Penalty</td><td>A daily rate applied to the overdue amount for each calendar day past the due date. Expressed as an annual percentage rate.</td></tr>
-        <tr><td>Early Repayment Fee</td><td>A one-time charge calculated on the prepaid principal, compensating the bank for lost future interest income. May be a flat amount or a percentage.</td></tr>
-        <tr><td>Non-utilisation Fee</td><td>Applied to revolving and overdraft facilities where the borrower does not draw the committed limit. Charged on the undrawn portion.</td></tr>
-      </tbody>
-    </table>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── EIR ───────────────────────────────────────────────────── -->
-  <section class="help-section" id="eir">
-    <span class="section-tag">Loan Management</span>
-    <div class="section-title">Effective Interest Rate (EIR)</div>
-    <p class="section-lead">The Effective Interest Rate (EIR) is the rate that exactly discounts the estimated future cash flows of a loan back to its net carrying amount at initial recognition. Under IFRS 9 it is the basis for interest income recognition on amortised-cost assets.</p>
-    <h3>What is included in the EIR</h3>
-    <ul>
-      <li>Nominal contractual interest</li>
-      <li>Origination fees charged to the borrower (e.g. processing fee, commitment fee)</li>
-      <li>Direct incremental origination costs (e.g. broker commissions)</li>
-      <li>Any discount or premium on the principal</li>
-    </ul>
-    <h3>Calculation Approach</h3>
-    <p>The system solves for the internal rate of return <em>r</em> in the following equation, where <em>CF<sub>t</sub></em> is the cash flow at time <em>t</em> and <em>n</em> is the number of periods:</p>
-    <div class="formula">
-Net proceeds = Σ [ CF<sub>t</sub> / (1 + r)<sup>t</sup> ]  for t = 1 to n
-<span class="comment">
--- Net proceeds = Loan amount – upfront fees + direct costs
--- CF = scheduled principal + interest payments</span>
-    </div>
-    <div class="note-box">
-      <span class="box-label">Preliminary vs Final EIR</span>
-      A <strong>preliminary EIR</strong> is calculated at application stage using the expected repayment schedule. The <strong>final EIR</strong> is locked at loan opening once all fees are confirmed and may differ slightly from the preliminary figure. Both are visible in the loan account detail view.
-    </div>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!--  DECISION ENGINE                                          -->
-  <!-- ══════════════════════════════════════════════════════════ -->
-
-  <!-- ── RULE GROUPS ───────────────────────────────────────────── -->
-  <section class="help-section" id="rule-groups">
-    <span class="section-tag">Decision Engine</span>
-    <div class="section-title">Rule Groups</div>
-    <p class="section-lead">A Rule Group is a named container that bundles together a set of related rules evaluated as a unit. Typically one Rule Group exists per loan product or credit use-case (e.g. "Consumer Loan Rules", "Mortgage Rules").</p>
-    <p>When an application is submitted to the Decision Engine, the calling system specifies which Rule Group to execute. All active rules within the group are evaluated in priority order.</p>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── RULES ─────────────────────────────────────────────────── -->
-  <section class="help-section" id="rules">
-    <span class="section-tag">Decision Engine</span>
-    <div class="section-title">Rules</div>
-    <p class="section-lead">A Rule is a single evaluable condition that contributes to the overall credit decision. Rules are processed in ascending priority order within their group.</p>
-    <h3 id="rule-types">Rule Types</h3>
-    <table class="def-table">
-      <thead><tr><th>Type</th><th>Description</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>Filter</td>
-          <td>A hard pass/fail gate. If the condition is not met, the application is immediately declined and no further rules are evaluated.</td>
-          <td>Decline or continue</td>
-        </tr>
-        <tr>
-          <td>Score</td>
-          <td>A weighted condition that contributes a numeric score. The total score is compared against Rule Thresholds to determine the outcome.</td>
-          <td>Adds to total score</td>
-        </tr>
-      </tbody>
-    </table>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── THRESHOLDS ────────────────────────────────────────────── -->
-  <section class="help-section" id="thresholds">
-    <span class="section-tag">Decision Engine</span>
-    <div class="section-title">Rule Thresholds</div>
-    <p class="section-lead">Rule Thresholds map score ranges to decision outcomes. After all Score rules are evaluated and a total score is calculated, it is matched against the active thresholds for the Rule Group to determine the final outcome.</p>
-    <div class="info-box">
-      <span class="box-label">Example</span>
-      Score 750–999 → APPROVED · Score 600–749 → REFERRED · Score 0–599 → DECLINED
-    </div>
-    <p>Thresholds must be contiguous (no gaps) and non-overlapping. The system validates this constraint when thresholds are saved.</p>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── OUTCOME CODES ─────────────────────────────────────────── -->
-  <section class="help-section" id="outcome-codes">
-    <span class="section-tag">Decision Engine</span>
-    <div class="section-title">Outcome Codes</div>
-    <p class="section-lead">Outcome Codes are the standardised responses returned by the Decision Engine after evaluating an application. They are returned in the API response and drive downstream workflow routing.</p>
-    <table class="def-table">
-      <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
-      <tbody>
-        <tr><td><code>APPROVED</code></td><td>Application meets all criteria. Loan opening may proceed automatically.</td></tr>
-        <tr><td><code>REFERRED</code></td><td>Application requires manual underwriter review before a decision is made.</td></tr>
-        <tr><td><code>DECLINED</code></td><td>Application does not meet minimum criteria. Loan opening is rejected.</td></tr>
-        <tr><td><code>CONDITIONALLY_APPROVED</code></td><td>Approved subject to additional conditions (e.g. collateral, guarantor).</td></tr>
-        <tr><td><code>PENDING_DOCS</code></td><td>Decision deferred pending receipt of required documentation.</td></tr>
-        <tr><td><code>ERROR</code></td><td>The engine could not complete evaluation due to a system or data error. See execution logs.</td></tr>
-      </tbody>
-    </table>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── PROPERTY MAPPINGS ─────────────────────────────────────── -->
-  <section class="help-section" id="property-mappings">
-    <span class="section-tag">Decision Engine</span>
-    <div class="section-title">Property Mappings</div>
-    <p class="section-lead">Property Mappings define how fields in the incoming API request are translated into internal engine properties used by rules. This decouples the rule logic from the API contract — if the source field name changes, only the mapping needs updating, not the rules themselves.</p>
-    <table class="def-table">
-      <thead><tr><th>Field</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td>Source Field</td><td>The JSON path in the incoming API payload (e.g. <code>applicant.monthlyIncome</code>).</td></tr>
-        <tr><td>Engine Property</td><td>The internal constant name used in rule conditions (e.g. <code>NET_MONTHLY_INCOME</code>).</td></tr>
-        <tr><td>Type</td><td>Data type used for comparison: <code>Decimal</code>, <code>Integer</code>, or <code>String</code>.</td></tr>
-        <tr><td>Required</td><td>If true, the engine returns an <code>ERROR</code> outcome when the field is absent from the request.</td></tr>
-      </tbody>
-    </table>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!--  ACCOUNTING                                               -->
-  <!-- ══════════════════════════════════════════════════════════ -->
-
-  <!-- ── GL PRODUCT ───────────────────────────────────────────── -->
-  <section class="help-section" id="gl-product">
-    <span class="section-tag">Accounting</span>
-    <div class="section-title">GL Product Definition</div>
-    <p class="section-lead">A GL Product Definition is the template that defines the accounting characteristics of a General Ledger account type: its normal balance side, classification, and posting behaviour.</p>
-    <table class="def-table">
-      <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td>Account Type</td><td>Asset, Liability, Equity, Income, or Expense. Determines the normal balance direction.</td></tr>
-        <tr><td>Normal Balance</td><td>Debit (assets, expenses) or Credit (liabilities, equity, income). Entries on the normal side increase the balance.</td></tr>
-        <tr><td>Classification</td><td>Sub-classification for reporting (e.g. Current Asset, Non-current Liability).</td></tr>
-        <tr><td>Currency Mode</td><td>Single currency or multi-currency. Multi-currency accounts revalue FX positions nightly.</td></tr>
-      </tbody>
-    </table>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── CHART OF ACCOUNTS ─────────────────────────────────────── -->
-  <section class="help-section" id="chart-of-accounts">
-    <span class="section-tag">Accounting</span>
-    <div class="section-title">Chart of Accounts</div>
-    <p class="section-lead">The Chart of Accounts (CoA) is the hierarchical structure of all GL accounts used by the organisation. It defines account codes, parent-child relationships, and the segment structure used for reporting.</p>
-    <div class="note-box">
-      <span class="box-label">Tenant isolation</span>
-      Each tenant maintains its own Chart of Accounts. Account codes from one tenant cannot be referenced in postings for another tenant.
-    </div>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── JOURNAL ENTRY ─────────────────────────────────────────── -->
-  <section class="help-section" id="journal-entry">
-    <span class="section-tag">Accounting</span>
-    <div class="section-title">Journal Entry</div>
-    <p class="section-lead">A Journal Entry is an immutable double-entry record in the GL. Every financial event in the system (loan disbursement, interest accrual, fee collection, etc.) generates one or more journal entries.</p>
-    <h3>Structure</h3>
-    <p>Each journal entry has a <strong>header</strong> (date, narrative, source system, reference, status) and two or more <strong>lines</strong> (account, debit/credit flag, amount in transaction currency, amount in base currency). The sum of debits must equal the sum of credits.</p>
-    <h3>Corrections</h3>
-    <p>Journal entries are append-only and cannot be deleted or modified. Corrections are made by posting a <strong>reversal entry</strong> (equal and opposite), followed by the corrected entry. Both the original and the reversal remain visible in the audit trail.</p>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ── PERIOD CLOSE ──────────────────────────────────────────── -->
-  <section class="help-section" id="period-close">
-    <span class="section-tag">Accounting</span>
-    <div class="section-title">Period Close</div>
-    <p class="section-lead">Period Close locks an accounting period against new postings, generates a trial balance snapshot, and prepares closing entries that carry balances forward to the next period.</p>
-    <div class="warn-box">
-      <span class="box-label">Irreversible action</span>
-      Once a period is locked it cannot be reopened without a system administrator override. Ensure all accruals, adjustments, and reconciliations are complete before closing.
-    </div>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!--  GLOSSARY                                                 -->
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <section class="help-section" id="glossary">
-    <span class="section-tag">Reference</span>
-    <div class="section-title">Glossary — All Terms A–Z</div>
-    <p class="section-lead">Quick definitions for all key terms used across the platform.</p>
-    <table class="def-table">
-      <thead><tr><th>Term</th><th>Definition</th></tr></thead>
-      <tbody>
-        <tr><td>Accrual</td><td>The daily recognition of interest income earned but not yet received in cash.</td></tr>
-        <tr><td>Amortised Cost</td><td>The amount at which a financial asset is measured after deducting principal repayments and adding/deducting cumulative amortisation using the EIR method.</td></tr>
-        <tr><td>Annuity</td><td>A series of equal periodic payments combining principal and interest such that the loan is fully repaid at maturity.</td></tr>
-        <tr><td>Balloon Payment</td><td>A large lump-sum payment due at maturity representing the residual principal balance after regular instalment payments.</td></tr>
-        <tr><td>Bullet Loan</td><td>A loan where only interest is paid periodically and the full principal is repaid at maturity.</td></tr>
-        <tr><td>Day Count Convention</td><td>The rule used to calculate the number of days in an interest period and the number of days in a year for interest accrual purposes.</td></tr>
-        <tr><td>DTI</td><td>Debt-to-Income ratio. Total monthly debt obligations divided by gross monthly income. Used as a credit filter in the Decision Engine.</td></tr>
-        <tr><td>EIR</td><td>Effective Interest Rate. The rate that equates the present value of all expected cash flows to the net carrying amount at initial recognition. See <a href="#eir">EIR section</a>.</td></tr>
-        <tr><td>EoD</td><td>End of Day. The nightly batch processing window during which accruals, penalty calculations, balance updates, and reporting extracts are generated.</td></tr>
-        <tr><td>Filter Rule</td><td>A hard go/no-go rule in the Decision Engine that immediately declines an application if the condition is not met.</td></tr>
-        <tr><td>GL</td><td>General Ledger. The master record of all financial transactions, organised by account.</td></tr>
-        <tr><td>IFRS 9</td><td>International Financial Reporting Standard 9. Governs the classification, measurement, and impairment of financial instruments.</td></tr>
-        <tr><td>LTV</td><td>Loan-to-Value ratio. Loan amount divided by the appraised value of collateral. Used as a credit filter for secured products.</td></tr>
-        <tr><td>Non-performing Loan (NPL)</td><td>A loan where the borrower is 90 or more days past due on a scheduled payment. Accrual is typically suspended on NPLs.</td></tr>
-        <tr><td>Outcome Code</td><td>The standardised result returned by the Decision Engine after evaluating a credit application. See <a href="#outcome-codes">Outcome Codes</a>.</td></tr>
-        <tr><td>Period</td><td>An accounting period, typically a calendar month, during which transactions are recorded and at the end of which the GL is closed.</td></tr>
-        <tr><td>Property Mapping</td><td>The configuration that maps an API request field to a Decision Engine internal property. See <a href="#property-mappings">Property Mappings</a>.</td></tr>
-        <tr><td>Rediscounting</td><td>The accounting process of reversing previously recognised unearned income, used in certain accrual adjustments.</td></tr>
-        <tr><td>Referred</td><td>A Decision Engine outcome indicating that the application requires manual underwriter review.</td></tr>
-        <tr><td>Rule Group</td><td>A named set of credit rules evaluated together for a specific product or use-case. See <a href="#rule-groups">Rule Groups</a>.</td></tr>
-        <tr><td>Rule Threshold</td><td>A score band mapped to a decision outcome in the Decision Engine. See <a href="#thresholds">Rule Thresholds</a>.</td></tr>
-        <tr><td>Score Rule</td><td>A weighted rule in the Decision Engine that contributes a numeric score to the total, which is then compared against thresholds.</td></tr>
-        <tr><td>Tenant</td><td>An isolated organisational entity within the platform. Each tenant has its own data, configuration, and GL.</td></tr>
-      </tbody>
-    </table>
-    <a class="back-top" href="#overview">↑ Back to top</a>
-  </section>
-
-</main>
-</div>
-
-<script>
+    <script>
 // ── Active link tracking ─────────────────────────────────────────
 const sections = document.querySelectorAll('.help-section');
 const links    = document.querySelectorAll('.sb-link');
 const main     = document.getElementById('mainContent');
+
+// ── Hash navigation (deep links from application ? buttons) ──────
+function scrollToHash(hash) {
+  if (!hash) return;
+  const target = document.querySelector(hash);
+  if (target) {
+    main.scrollTop = target.offsetTop - 24;
+  }
+}
+if (location.hash) scrollToHash(location.hash);
+window.addEventListener('hashchange', () => scrollToHash(location.hash));
 
 function setActive() {
   let current = '';
@@ -799,12 +3476,11 @@ function filterSidebar(q) {
     l.style.display = match ? '' : 'none';
   });
   document.querySelectorAll('.sb-group-label').forEach(g => {
-    const grp   = g.parentElement;
+    const grp = g.parentElement;
     const visible = [...grp.querySelectorAll('.sb-link')].some(l => l.style.display !== 'none');
     grp.style.display = visible ? '' : 'none';
   });
 }
 </script>
-
-</body>
+  </body>
 </html>

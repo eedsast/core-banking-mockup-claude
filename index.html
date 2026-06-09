@@ -312,6 +312,39 @@
     border-radius: 6px;
     border: 1px solid #cce0f8;
   }
+  /* Phase / status badge variants */
+  .module-card--phase1::after {
+    content: 'I Phase';
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    background: #eef2ff; color: #4f46e5;
+    padding: 2px 7px; border-radius: 6px; border: 1px solid #c7d2fe;
+  }
+  .module-card--phase2::after {
+    content: 'II Phase';
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    background: #f0fdfa; color: #0f766e;
+    padding: 2px 7px; border-radius: 6px; border: 1px solid #99f6e4;
+  }
+  .module-card--completed::after {
+    content: 'Completed';
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    background: #dcfce7; color: #15803d;
+    padding: 2px 7px; border-radius: 6px; border: 1px solid #86efac;
+  }
+  .module-card--outofscope::after {
+    content: 'Out of Scope';
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    background: #f1f5f9; color: #64748b;
+    padding: 2px 7px; border-radius: 6px; border: 1px solid #cbd5e1;
+  }
 
   /* ── ARTIFACT MODAL ── */
   .modal-overlay {
@@ -1389,7 +1422,7 @@
     <h1>OneFor Core Banking suite</h1>
     <p>Core Banking System — select a microservice module to continue</p>
     <div style="margin-top:10px;display:flex;align-items:center;gap:18px;font-size:12px;color:#6a8faf;">
-      <span><span id="home-stat-modules" style="font-weight:700;color:#8aafd4;">16</span> modules</span>
+      <span><span id="home-stat-modules" style="font-weight:700;color:#8aafd4;">20</span> modules</span>
       <span style="color:#2a4060">|</span>
       <span>Booking date: <span id="home-booking-date" style="font-weight:600;color:#8aafd4;"></span></span>
       <span style="color:#2a4060">|</span>
@@ -1399,80 +1432,79 @@
   <div class="section-label">Microservice Modules</div>
   <div class="module-grid">
 
-    <div class="module-card" style="--card-accent:#2e7dd1;--icon-bg:#e8f2fd;" data-action="show-module" data-module="auth">
+    <div class="module-card module-card--phase1" style="--card-accent:#2e7dd1;--icon-bg:#e8f2fd;" data-action="show-module" data-module="auth">
       <div class="card-icon">🔐</div>
       <div class="card-title">Authorisation</div>
       <div class="card-desc">User management, role definitions, permissions, security settings and audit logs</div>
       <div class="card-tag">auth-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#8e44ad;--icon-bg:#f3e8fd;" data-action="show-module" data-module="admin">
+    <div class="module-card module-card--phase1" style="--card-accent:#8e44ad;--icon-bg:#f3e8fd;" data-action="show-module" data-module="admin">
       <div class="card-icon">⚙️</div>
       <div class="card-title">Administration</div>
       <div class="card-desc">Organisation setup, branch management, role assignments, services and system definitions</div>
       <div class="card-tag">admin-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#0e7490;--icon-bg:#e0f7fa;" data-action="show-module" data-module="clients">
+    <div class="module-card module-card--phase1" style="--card-accent:#0e7490;--icon-bg:#e0f7fa;" data-action="show-module" data-module="clients">
       <div class="card-icon">👤</div>
       <div class="card-title">Clients</div>
       <div class="card-desc">Client onboarding, KYC, profiles and relationship management</div>
       <div class="card-tag">client-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#16a085;--icon-bg:#e4f7f3;" data-action="show-module" data-module="accounts">
+    <div class="module-card module-card--phase1" style="--card-accent:#16a085;--icon-bg:#e4f7f3;" data-action="show-module" data-module="accounts">
       <div class="card-icon">🏦</div>
       <div class="card-title">Accounts</div>
       <div class="card-desc">Transaction &amp; current accounts, savings, overdraft management</div>
       <div class="card-tag">accounts-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#7f77dd;--icon-bg:#eeedfe;" data-action="show-module" data-module="deposits">
+    <div class="module-card module-card--phase1" style="--card-accent:#7f77dd;--icon-bg:#eeedfe;" data-action="show-module" data-module="deposits">
       <div class="card-icon">💰</div>
       <div class="card-title">Deposits</div>
       <div class="card-desc">Term deposits, fixed deposits, maturity and rollover management</div>
       <div class="card-tag">deposits-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#d35400;--icon-bg:#fdf0e6;" data-action="show-module" data-module="loans">
+    <div class="module-card module-card--completed" style="--card-accent:#d35400;--icon-bg:#fdf0e6;" data-action="show-module" data-module="loans">
       <div class="card-icon">📋</div>
       <div class="card-title">Loan Management</div>
       <div class="card-desc">Loan accounts, operations, product definitions</div>
       <div class="card-tag">loan-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#27ae60;--icon-bg:#e6f7ee;" data-action="show-module" data-module="loanapp">
+    <div class="module-card module-card--phase1" style="--card-accent:#27ae60;--icon-bg:#e6f7ee;" data-action="show-module" data-module="loanapp">
       <div class="card-icon">📝</div>
       <div class="card-title">Loan Application</div>
       <div class="card-desc">Origination, application workflow and tracking</div>
       <div class="card-tag">origination-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#e74c3c;--icon-bg:#fde8e8;" data-action="show-module" data-module="decision">
+    <div class="module-card module-card--completed" style="--card-accent:#e74c3c;--icon-bg:#fde8e8;" data-action="show-module" data-module="decision">
       <div class="card-icon">🤖</div>
       <div class="card-title">Decision Engine</div>
       <div class="card-desc">Scoring, rule execution and credit decisions</div>
       <div class="card-tag">decision-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#2980b9;--icon-bg:#e5f0fa;" data-action="show-module" data-module="payments">
+    <div class="module-card module-card--phase1" style="--card-accent:#2980b9;--icon-bg:#e5f0fa;" data-action="show-module" data-module="payments">
       <div class="card-icon">💳</div>
       <div class="card-title">Payments</div>
       <div class="card-desc">Domestic, SWIFT, SEPA, bulk payment processing</div>
       <div class="card-tag">payment-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#c0392b;--icon-bg:#fdecea;" data-action="show-module" data-module="cards">
+    <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#c0392b;--icon-bg:#fdecea;" data-action="show-module" data-module="cards">
       <div class="card-icon">💳</div>
       <div class="card-title">Cards</div>
       <div class="card-desc">Debit & credit card issuance, limits, blocking</div>
       <div class="card-tag">card-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#2c3e50;--icon-bg:#edf0f3;" data-action="show-module" data-module="accounting">
+    <div class="module-card module-card--phase1" style="--card-accent:#2c3e50;--icon-bg:#edf0f3;" data-action="show-module" data-module="accounting">
       <div class="card-icon">📊</div>
       <div class="card-title">Accounting</div>
       <div class="card-desc">GL, journals, period close, chart of accounts</div>
       <div class="card-tag">accounting-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#4a6741;--icon-bg:#eaf2e8;" data-action="show-module" data-module="invrs">
-      <div class="card-icon">🗄️</div>
-      <div class="card-title">Legacy InVRS</div>
-      <div class="card-desc">Legacy investment registry — read-only bridge adapter</div>
-      <div class="card-tag">invrs-legacy-adapter-boundaries</div>
+    <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#b45309;--icon-bg:#fef3c7;" data-action="show-module" data-module="ifrs9">
+      <div class="card-icon">📐</div>
+      <div class="card-title">IFRS9 Reporting</div>
+      <div class="card-desc">Expected credit loss, staging, provisioning and regulatory reporting</div>
+      <div class="card-tag">ifrs9-service-boundaries</div>
     </div>
-
-    <div class="module-card module-card--soon" style="--card-accent:#0f766e;--icon-bg:#e0f7f5;">
+    <div class="module-card module-card--phase1" style="--card-accent:#0f766e;--icon-bg:#e0f7f5;">
       <div class="card-icon">⚡</div>
       <div class="card-title">Orchestration</div>
       <div class="card-desc">Temporal workflow orchestration for card processing pipelines and event-driven flows</div>
@@ -1484,42 +1516,48 @@
         </a>
       </div>
     </div>
-    <div class="module-card" style="--card-accent:#1d4ed8;--icon-bg:#eff6ff;" data-action="show-module" data-module="digsig">
+    <div class="module-card module-card--phase2" style="--card-accent:#1d4ed8;--icon-bg:#eff6ff;" data-action="show-module" data-module="digsig">
       <div class="card-icon">✍️</div>
       <div class="card-title">Digital Signature</div>
       <div class="card-desc">Certificate management, signing queues, providers and audit trail</div>
       <div class="card-tag">digsig-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#7c3aed;--icon-bg:#f5f3ff;" data-action="show-module" data-module="infobip">
+    <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#7c3aed;--icon-bg:#f5f3ff;">
       <div class="card-icon">📨</div>
-      <div class="card-title">InfoBip</div>
+      <div class="card-title">Infobip SMS/Notifications</div>
       <div class="card-desc">SMS, email and WhatsApp templates, campaign triggers and delivery logs</div>
       <div class="card-tag">infobip-service-boundaries</div>
     </div>
 
-    <div class="module-card module-card--disabled" style="--card-accent:#0d9488;--icon-bg:#e0f7f5;">
+    <div class="module-card module-card--phase2" style="--card-accent:#0d9488;--icon-bg:#e0f7f5;" data-action="show-module" data-module="marketplace">
       <div class="card-icon">🛒</div>
       <div class="card-title">Marketplace</div>
       <div class="card-desc">Third-party integrations, plugins and extension catalogue</div>
       <div class="card-tag">marketplace-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#f39c12;--icon-bg:#fef6e4;" data-action="show-module" data-module="loyalty">
+    <div class="module-card module-card--phase2" style="--card-accent:#f39c12;--icon-bg:#fef6e4;" data-action="show-module" data-module="loyalty">
       <div class="card-icon">⭐</div>
       <div class="card-title">Loyalty</div>
       <div class="card-desc">Campaigns, rewards, tiers, members, redemptions</div>
       <div class="card-tag">loyalty-service-boundaries</div>
     </div>
-    <div class="module-card" style="--card-accent:#6c3fc5;--icon-bg:#f0ebfd;" data-action="show-module" data-module="crypto">
+    <div class="module-card module-card--phase2" style="--card-accent:#6c3fc5;--icon-bg:#f0ebfd;" data-action="show-module" data-module="crypto">
       <div class="card-icon">₿</div>
       <div class="card-title">Crypto</div>
       <div class="card-desc">Digital asset wallets, custody, trading and compliance</div>
       <div class="card-tag">crypto-service-boundaries</div>
     </div>
-    <div class="module-card module-card--disabled module-card--soon" style="--card-accent:#b45309;--icon-bg:#fef3c7;">
+    <div class="module-card module-card--phase2" style="--card-accent:#b45309;--icon-bg:#fef3c7;" data-action="show-module" data-module="collaterals">
       <div class="card-icon">🏦</div>
       <div class="card-title">Collaterals</div>
       <div class="card-desc">Collateral registration, valuation, pledges and lien management</div>
       <div class="card-tag">collateral-service-boundaries</div>
+    </div>
+    <div class="module-card module-card--phase1" style="--card-accent:#0369a1;--icon-bg:#e0f2fe;" data-action="show-module" data-module="fxremit">
+      <div class="card-icon">💱</div>
+      <div class="card-title">FX Remittance</div>
+      <div class="card-desc">Foreign exchange, cross-border remittances, currency conversion and transfer tracking</div>
+      <div class="card-tag">fx-remittance-service-boundaries</div>
     </div>
 
   </div>
@@ -1822,6 +1860,199 @@
     </div>
   </nav>
   <main class="main-content" id="content-deposits"></main>
+</div>
+
+<!-- ── IFRS9 REPORTING ── -->
+<div id="page-ifrs9" class="detail-page">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="mod-icon" style="background:#7c4a04;">📐</div>
+      <div><div class="mod-name">IFRS9 Reporting</div><div class="mod-sub">ifrs9-service-boundaries</div></div>
+    </div>
+    <div class="back-btn" data-action="show-home">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><use href="#ico-back"/></svg>
+      All Modules
+    </div>
+    <div class="sidebar-nav">
+
+      <div class="nav-flat active" data-action="set-content" data-module="ifrs9" data-section="ifrs9-overview" data-title="IFRS9 Overview" data-subtitle="Regulatory reporting overview and submission status">📐 Overview</div>
+
+      <!-- ── Regulatory Reports — Non ECB ── -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">🏛️</span>Regulatory Reports — Non ECB</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-anacredit" data-title="ANACREDIT" data-subtitle="Analytical Credit Datasets — granular credit and credit risk data (Regulation (EU) 2016/867)">ANACREDIT</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-crs" data-title="CRS" data-subtitle="Common Reporting Standard — automatic exchange of financial account information for tax purposes">CRS</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-fraud" data-title="FRAUD" data-subtitle="Reporting on payment transactions fraud (PSD2 / EBA Guidelines on fraud reporting)">FRAUD</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-id1" data-title="ID1" data-subtitle="Interest rate data reporting — statistical interest rate report">ID1</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-kpo-ssp" data-title="KPO-SSP" data-subtitle="Indicators of credit institutions' operations — sub-consolidated supervisory reporting">KPO-SSP</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-nt" data-title="NT" data-subtitle="Cash transactions / cash balances report">NT</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-pob" data-title="POB" data-subtitle="Report on complaints — consumer protection and complaints reporting">POB</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sof" data-title="SOF" data-subtitle="Own funds report / supervisory report of own funds statement">SOF</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-cm" data-title="SPPR-CM" data-subtitle="Payment statistics — Cheques and bills of exchange report">SPPR-CM</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-gn" data-title="SPPR-GN" data-subtitle="Payment statistics — Cash report (cash deposits and withdrawals)">SPPR-GN</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-in" data-title="SPPR-IN" data-subtitle="Payment statistics — Infrastructure report (branches and acceptance devices)">SPPR-IN</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-it" data-title="SPPR-IT" data-subtitle="Payment statistics — Direct debit report">SPPR-IT</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-iz" data-title="SPPR-IZ" data-subtitle="Payment statistics — Issuance of payment instruments report">SPPR-IZ</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-kt" data-title="SPPR-KT" data-subtitle="Payment statistics — Credit transfer report">SPPR-KT</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-np" data-title="SPPR-NP" data-subtitle="Payment statistics — Money remittance report">SPPR-NP</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-otn" data-title="SPPR-OTN" data-subtitle="Payment statistics — Credit/debit without order report">SPPR-OTN</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-pb" data-title="SPPR-PB" data-subtitle="Payment statistics — Business units / branches report">SPPR-PB</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-pr" data-title="SPPR-PR" data-subtitle="Payment statistics — Acceptance of payment instruments report">SPPR-PR</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-rn" data-title="SPPR-RN" data-subtitle="Payment statistics — Accounts report">SPPR-RN</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-sppr-zo" data-title="SPPR-ZO" data-subtitle="Payment statistics — Legal authority report">SPPR-ZO</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-srf" data-title="SRF" data-subtitle="Single Resolution Fund contributions report">SRF</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-tssp" data-title="TSSP" data-subtitle="Quarterly statistical report for payment statistics">TSSP</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ukpo" data-title="UKPO" data-subtitle="Consolidated indicators of credit institutions' operations">UKPO</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-unpu" data-title="UNPU" data-subtitle="Report on internal capital adequacy / internal risk management">UNPU</div>
+        </div>
+      </div>
+
+      <!-- ── ECB Reports ── -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">🇪🇺</span>ECB Reports</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-aa" data-title="AA" data-subtitle="Balance sheet and off-balance sheet items">AA</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-ab" data-title="AB" data-subtitle="Changes in stocks (derived from AA balance sheet record)">AB</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-af" data-title="AF" data-subtitle="Balance sheet items for natural person counterparties">AF</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-an" data-title="AN" data-subtitle="Balance sheet items for non-resident counterparties">AN</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-as" data-title="AS" data-subtitle="Cumulative changes of write-downs and reservations (from AA)">AS</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-ap" data-title="AP" data-subtitle="Cumulative changes of write-downs and reservations (from AF and AN)">AP</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-av" data-title="AV" data-subtitle="Exchange rate-induced credit risk — natural person residents and non-residents">AV</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-aw" data-title="AW" data-subtitle="Exchange rate-induced credit risk (from AA)">AW</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-ae" data-title="AE" data-subtitle="Overdue receivables">AE</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-ak" data-title="AK" data-subtitle="Opportunity of interest rate reset">AK</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-ad" data-title="AD" data-subtitle="Balance sheet and off-balance sheet items — remaining maturity">AD</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-au" data-title="AU" data-subtitle="Investments in capital of other legal persons">AU</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-am" data-title="AM" data-subtitle="Tangible assets">AM</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-iz" data-title="IZ" data-subtitle="Providers of collateral and guarantees">IZ</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-po" data-title="PO" data-subtitle="Lists of groups">PO</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-ks" data-title="KS" data-subtitle="MFI interest rates (interest rate record)">KS</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-oi" data-title="OI" data-subtitle="Other information">OI</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-ah" data-title="AH" data-subtitle="Sold placements by placement buyers">AH</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-ra" data-title="RA" data-subtitle="Profit and loss accounts">RA</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-ecb-cv" data-title="CV" data-subtitle="Collateral values">CV</div>
+        </div>
+      </div>
+
+      <!-- ── COREP FINREP Group Templates ── -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">📦</span>COREP FINREP Group Templates</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-ae" data-title="AE" data-subtitle="EBA group AE — Asset Encumbrance templates">AE</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-corepalm" data-title="COREP ALM" data-subtitle="COREP ALM — Asset and Liability Management group">COREP ALM</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-corepfrtb" data-title="COREP FRTB" data-subtitle="COREP FRTB — Fundamental Review of the Trading Book group">COREP FRTB</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-coreplcrda" data-title="COREP LCRDA" data-subtitle="COREP LCRDA — Liquidity Coverage Ratio Detailed Approaches group">COREP LCRDA</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-coreple" data-title="COREP LE" data-subtitle="COREP LE — Large Exposures group">COREP LE</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-coreplr" data-title="COREP LR" data-subtitle="COREP LR — Leverage Ratio group">COREP LR</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-corepnsfr" data-title="COREP NSFR" data-subtitle="COREP NSFR — Net Stable Funding Ratio group">COREP NSFR</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-corepof" data-title="COREP OF" data-subtitle="COREP OF — Own Funds group">COREP OF</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-finrep9" data-title="FINREP 9" data-subtitle="FINREP 9 — Financial Reporting under IFRS group">FINREP 9</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-grp-irrbb" data-title="IRRBB" data-subtitle="IRRBB — Interest Rate Risk in the Banking Book group">IRRBB</div>
+        </div>
+      </div>
+
+      <!-- ── COREP FINREP Reports ── -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">📑</span>COREP FINREP Reports</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-ca" data-title="CA — Capital Adequacy" data-subtitle="Capital adequacy templates: CA1–CA4, PRUVAL 1–4, Credit losses">CA — Capital Adequacy</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-ca5" data-title="CA5 — Capital Buffers" data-subtitle="Capital buffer templates: CA5.1, CA5.2">CA5 — Capital Buffers</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-gs" data-title="GS — Group Solvency" data-subtitle="Group solvency summary templates">GS — Group Solvency</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-cr" data-title="CR — Credit Risk" data-subtitle="Credit risk templates: CR SA, CR IRB, CR GB, CR SEC, CR SETT, EQU IRB">CR — Credit Risk</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-ccr" data-title="CCR — Counterparty Credit Risk" data-subtitle="Counterparty credit risk templates: CCR 1–11">CCR — Counterparty Credit Risk</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-opr" data-title="OPR — Operational Risk" data-subtitle="Operational risk templates: OPR, OPR OF">OPR — Operational Risk</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-mkr" data-title="MKR — Market Risk" data-subtitle="Market risk templates: MKR SA TDI, SEC, CTP, EQU, FX, COM, MKR IM, CVA, GOV">MKR — Market Risk</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-frtb" data-title="FRTB — Trading Book" data-subtitle="Fundamental Review of the Trading Book templates">FRTB — Trading Book</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-le" data-title="LE — Large Exposures" data-subtitle="Large exposures templates: LE, LE1–LE5">LE — Large Exposures</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-ccb" data-title="CCB — Combined Buffer" data-subtitle="Combined buffer requirement templates">CCB — Combined Buffer</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-lr" data-title="LR — Leverage Ratio" data-subtitle="Leverage ratio templates: LR1, LR2, LR3, LR4, LR5, LRCALC, LR6.1, LR6.2">LR — Leverage Ratio</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-lcr" data-title="LCR — Liquidity Coverage" data-subtitle="Liquidity coverage ratio templates">LCR — Liquidity Coverage</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-nsfr" data-title="NSFR — Net Stable Funding" data-subtitle="Net stable funding ratio templates">NSFR — Net Stable Funding</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-irrbb" data-title="IRRBB — Interest Rate Risk" data-subtitle="Interest rate risk in the banking book templates">IRRBB — Interest Rate Risk</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-ae" data-title="AE — Asset Encumbrance" data-subtitle="Asset encumbrance templates: AE-ASS, AE-COL, AE-NPL, AE-SOU, AE-MAT, AE-CONT, AE-CB, AE-ADV">AE — Asset Encumbrance</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-npe" data-title="NPE LC — Non-Performing Exposures" data-subtitle="Non-performing exposures loan commitments templates: NPE LC1–3">NPE LC — Non-Performing Exposures</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-finrep" data-title="FINREP — Financial Reporting" data-subtitle="FINREP templates under IFRS — balance sheet, P&amp;L, breakdowns">FINREP — Financial Reporting</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-srf" data-title="SRF — Single Resolution Fund" data-subtitle="Single Resolution Fund contribution templates">SRF — Single Resolution Fund</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-kkkl" data-title="KKL" data-subtitle="KKL regulatory report template">KKL</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-rem" data-title="REM — Remuneration" data-subtitle="Remuneration report template">REM — Remuneration</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-dl" data-title="DL — Data Lineage" data-subtitle="Data lineage and quality templates">DL — Data Lineage</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-covid" data-title="COVID" data-subtitle="COVID-19 temporary regulatory relief templates">COVID</div>
+          <div class="nav-item" data-action="set-content" data-module="ifrs9" data-section="ifrs9-rep-crypto" data-title="CRYPTO" data-subtitle="Crypto-asset exposure templates">CRYPTO</div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+  <main class="main-content" id="content-ifrs9"></main>
+</div>
+
+<!-- ── FX REMITTANCE ── -->
+<div id="page-fxremit" class="detail-page">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="mod-icon" style="background:#024f7a;">💱</div>
+      <div><div class="mod-name">FX Remittance</div><div class="mod-sub">fx-remittance-service-boundaries</div></div>
+    </div>
+    <div class="back-btn" data-action="show-home">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><use href="#ico-back"/></svg>
+      All Modules
+    </div>
+    <div class="sidebar-nav">
+
+      <div class="nav-flat active" data-action="set-content" data-module="fxremit" data-section="fx-overview" data-title="FX Remittance Overview" data-subtitle="Foreign exchange and cross-border remittance management">💱 Overview</div>
+
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">🌍</span>Remittance</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-outbound" data-title="Outbound Transfers" data-subtitle="Initiate and track cross-border outgoing remittances">Outbound Transfers</div>
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-inbound" data-title="Inbound Transfers" data-subtitle="Receive and reconcile incoming foreign currency transfers">Inbound Transfers</div>
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-status" data-title="Transfer Status" data-subtitle="Track transfer lifecycle and settlement status">Transfer Status</div>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">💹</span>Currency &amp; Rates</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-rates" data-title="Exchange Rates" data-subtitle="View and manage FX rate feeds and spreads">Exchange Rates</div>
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-conversion" data-title="Currency Conversion" data-subtitle="Execute spot and forward currency conversions">Currency Conversion</div>
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-nostro" data-title="Nostro Accounts" data-subtitle="Manage correspondent bank accounts per currency">Nostro Accounts</div>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">⚙️</span>Configuration</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-corridors" data-title="Payment Corridors" data-subtitle="Define supported country pairs and routing rules">Payment Corridors</div>
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-fees" data-title="Fee Schedules" data-subtitle="Configure remittance fees by corridor and amount band">Fee Schedules</div>
+          <div class="nav-item" data-action="set-content" data-module="fxremit" data-section="fx-compliance" data-title="Compliance &amp; Limits" data-subtitle="AML thresholds, sanction screening and transfer limits">Compliance &amp; Limits</div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+  <main class="main-content" id="content-fxremit"></main>
 </div>
 
 <!-- ── LOAN APPLICATION ── -->
@@ -2378,12 +2609,14 @@ const moduleMap = {
   payments:   { pageId: 'page-payments',   contentId: 'content-payments',   defaultSection: 'domestic',     defaultTitle: 'Domestic Payments',              defaultSub: 'Process local intrabank and interbank transfers' },
   cards:      { pageId: 'page-cards',      contentId: 'content-cards',      defaultSection: 'issuance',     defaultTitle: 'Card Issuance',                 defaultSub: 'Issue and manage debit and credit cards' },
   accounting: { pageId: 'page-accounting', contentId: 'content-accounting', defaultSection: 'coa',          defaultTitle: 'Chart of Accounts',             defaultSub: 'Manage GL account structure and hierarchy' },
+  ifrs9:      { pageId: 'page-ifrs9',      contentId: 'content-ifrs9',      defaultSection: 'ifrs9-overview', defaultTitle: 'IFRS9 Overview',               defaultSub: 'Expected credit loss staging and provisioning summary' },
   loyalty:    { pageId: 'page-loyalty',    contentId: 'content-loyalty',    defaultSection: 'campaigns',    defaultTitle: 'Campaigns',                     defaultSub: 'Create and manage loyalty campaigns' },
   crypto:     { pageId: 'page-crypto',     contentId: 'content-crypto',     defaultSection: 'wallets',       defaultTitle: 'Customer Wallets',               defaultSub: 'Manage customer digital asset wallets' },
   invrs:      { pageId: 'page-invrs',      contentId: 'content-invrs',      defaultSection: 'portfolio',     defaultTitle: 'Portfolio View',                 defaultSub: 'Read-only view of legacy investment portfolios' },
   clients:    { pageId: 'page-clients',    contentId: 'content-clients',    defaultSection: 'client-list',  defaultTitle: 'Client List',                   defaultSub: 'Search and manage all registered clients' },
   digsig:     { pageId: 'page-digsig',     contentId: 'content-digsig',     defaultSection: 'ds-queue',     defaultTitle: 'Document Signing Queue',         defaultSub: 'Documents pending or completed signing' },
   infobip:    { pageId: 'page-infobip',    contentId: 'content-infobip',    defaultSection: 'ib-templates', defaultTitle: 'Message Templates',              defaultSub: 'Create and manage message templates per channel' },
+  fxremit:    { pageId: 'page-fxremit',    contentId: 'content-fxremit',    defaultSection: 'fx-overview',  defaultTitle: 'FX Remittance Overview',         defaultSub: 'Foreign exchange and cross-border remittance management' },
 };
 window._moduleMap = moduleMap; // expose for lazy-loaded modules
 
@@ -2413,6 +2646,13 @@ function showModule(mod) {
   // Loans is lazy-loaded — fetch module first, then render default section
   if (mod === 'loans') {
     loadLoansModule().then(() => {
+      renderContent(m.contentId, mod, m.defaultSection, m.defaultTitle, m.defaultSub);
+    });
+    return;
+  }
+  // IFRS9 is lazy-loaded
+  if (mod === 'ifrs9') {
+    loadIfrs9Module().then(() => {
       renderContent(m.contentId, mod, m.defaultSection, m.defaultTitle, m.defaultSub);
     });
     return;
@@ -2540,6 +2780,18 @@ function renderContent(containerId, mod, section, title, subtitle) {
     return;
   }
 
+  // ── IFRS9 SECTION ROUTING ────────────────────────────────────────────────────
+  if (mod === 'ifrs9') {
+    if (typeof renderIfrs9Content !== 'function') {
+      loadIfrs9Module().then(() => renderContent(containerId, mod, section, title, subtitle));
+      const el = document.getElementById(containerId);
+      if (el) el.innerHTML = '<div style="padding:32px;text-align:center;color:var(--text-muted,#6b7a8d);font-size:14px;">Loading regulatory reporting module…</div>';
+      return;
+    }
+    renderIfrs9Content(containerId, section, title, subtitle);
+    return;
+  }
+
   // ── MODULE DELEGATIONS ──────────────────────────────────────────────────────
   var _modDelegates = {
     admin:    { fn: 'renderAdminContent',    load: loadAdminModule    },
@@ -2564,7 +2816,7 @@ function renderContent(containerId, mod, section, title, subtitle) {
   }
 
   const el = document.getElementById(containerId);
-  const modLabels = { auth: 'Authorisation', admin: 'Administration', loans: 'Loan Management', accounts: 'Accounts', deposits: 'Deposits', loanapp: 'Loan Application', decision: 'Decision Engine', payments: 'Payments', cards: 'Cards', accounting: 'Accounting', loyalty: 'Loyalty' };
+  const modLabels = { auth: 'Authorisation', admin: 'Administration', loans: 'Loan Management', accounts: 'Accounts', deposits: 'Deposits', loanapp: 'Loan Application', decision: 'Decision Engine', payments: 'Payments', cards: 'Cards', accounting: 'Accounting', ifrs9: 'IFRS9 Reporting', loyalty: 'Loyalty', fxremit: 'FX Remittance' };
   const modLabel = modLabels[mod] || mod;
   const selfHeaded = SELF_HEADED_SECTIONS.has(section);
 
@@ -3335,6 +3587,7 @@ function loadLoansModule() {
   // window.loadCardsModule      = makeLoader('cards',      null, 'cards.js');
   // window.loadAccountsModule   = makeLoader('accounts',   null, 'accounts.js');
   // window.loadLoanappModule    = makeLoader('loanapp',    null, 'loanapp.js');
+  window.loadIfrs9Module      = makeLoader('ifrs9',      null, 'ifrs9.js');
   window.loadDecisionModule   = makeLoader('decision',   null, 'decision.js');
   // window.loadPaymentsModule   = makeLoader('payments',   null, 'payments.js');
   // window.loadAccountingModule = makeLoader('accounting', null, 'accounting.js');
@@ -3849,8 +4102,7 @@ document.addEventListener('click', function(e) {
       break;
 
     case 'show-accounting-help': {
-      const h = document.getElementById('lp-accounting-help');
-      if (h) h.classList.add('open');
+      window.open('help.html#accounting-method', '_blank');
       break;
     }
 

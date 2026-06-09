@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1.0">
+    <title>Loan Calculation Formulas — Universal Reference</title>
+    <script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+    <style>
+  :root {
+    --blue: #1F4E79;
+    --mid-blue: #2E75B6;
+    --light-blue: #D6E4F0;
+    --dark-gray: #404040;
+    --light-gray: #F2F2F2;
+    --code-bg: #2d2d2d;
+    --code-text: #f8f8f2;
+    --border: #d8dee4;
+    --box-bg: #eef4fb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--dark-gray);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: #fafbfc;
+  }
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+    background: #fff;
+    min-height: 100vh;
+    box-shadow: 0 0 40px rgba(0,0,0,0.04);
+  }
+  header {
+    border-bottom: 3px solid var(--mid-blue);
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  h1 {
+    font-size: 28px;
+    color: var(--blue);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+  .subtitle {
+    font-size: 15px;
+    color: #6b7785;
+    font-style: italic;
+  }
+  h2 {
+    font-size: 21px;
+    color: var(--blue);
+    margin: 40px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--light-blue);
+    font-weight: 700;
+  }
+  h3 {
+    font-size: 17px;
+    color: var(--mid-blue);
+    margin: 28px 0 8px;
+    font-weight: 600;
+  }
+  p { margin: 10px 0; }
+  code {
+    font-family: "SF Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+    background: var(--light-gray);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.88em;
+    color: #c0392b;
+  }
+  .formula-box {
+    background: var(--box-bg);
+    border: 1px solid var(--light-blue);
+    border-left: 4px solid var(--mid-blue);
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 18px 0;
+    overflow-x: auto;
+  }
+  .formula-box .label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mid-blue);
+    margin-bottom: 6px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    background: var(--blue);
+    color: #fff;
+    text-align: left;
+    padding: 10px 12px;
+    font-weight: 600;
+  }
+  td {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) { background: var(--light-gray); }
+  .note {
+    background: #fff8e6;
+    border: 1px solid #f0d98c;
+    border-left: 4px solid #e0a800;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .note .label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #b8860b;
+    margin-bottom: 4px;
+  }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 18px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: "SF Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 16px 0;
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+  .pseudo-comment { color: #7ec699; }
+  .pseudo-kw { color: #79b8ff; font-weight: 600; }
+  ul, ol { margin: 10px 0; padding-left: 26px; }
+  li { margin: 5px 0; }
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: #8a96a3;
+    text-align: center;
+  }
+</style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Loan Calculation Formulas — Universal Reference</h1>
+        <div class="subtitle">Periodic rate, EMI/annuity, and
+          interest-portion formulas covering all four day-count
+          conventions (30/360, ACT/360, ACT/365, ACT/ACT) and both
+          calculation methods (Conforming, Proportional)</div>
+      </header>
+      <h2>Notation</h2>
+      <table>
+        <thead><tr>
+            <th style="width:90px">Symbol</th>
+            <th>Meaning</th>
+          </tr>
+        </thead> <tbody>
+          <tr>
+            <td>$P$</td>
+            <td>Principal (loan amount)</td>
+          </tr>
+          <tr>
+            <td>$r$</td>
+            <td>Annual nominal interest rate (e.g. 0.17)</td>
+          </tr>
+          <tr>
+            <td>$n$</td>
+            <td>Number of instalments</td>
+          </tr>
+          <tr>
+            <td>$B_{k-1}$</td>
+            <td>Outstanding balance at start of period $k$</td>
+          </tr>
+          <tr>
+            <td>$D_k$</td>
+            <td>Days in period $k$ (per day-count convention)</td>
+          </tr>
+          <tr>
+            <td>$Y_k$</td>
+            <td>Days in year for period $k$ (per day-count convention)</td>
+          </tr>
+          <tr>
+            <td>$f_k$</td>
+            <td>Year-fraction (accrual factor) for period $k$ = $D_k /
+              Y_k$</td>
+          </tr>
+          <tr>
+            <td>$r_m$</td>
+            <td>Periodic rate used to compute the annuity</td>
+          </tr>
+          <tr>
+            <td>$A$</td>
+            <td>Equal instalment (EMI)</td>
+          </tr>
+          <tr>
+            <td>$I_k$</td>
+            <td>Interest portion of instalment $k$</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>1. Periodic Rate $r_m$ (Universal)</h2>
+      <div class="formula-box"> <span class="label">Periodic Rate</span>
+        $$r_m = \begin{cases} (1 + r)^{f} - 1 &amp; \text{if CONFORMING}
+        \\[6pt] r \times f &amp; \text{if PROPORTIONAL} \end{cases}$$
+      </div>
+      <p>Where $f$ is the <strong>year-fraction</strong>, resolved by
+        the day-count convention:</p>
+      <div class="formula-box"> <span class="label">Year-Fraction by
+          Day-Count</span> $$f = \frac{D}{Y} = \begin{cases}
+        \dfrac{30}{360} = \dfrac{1}{12} &amp; \text{30/360} \\[8pt]
+        \dfrac{\text{ActualDays}}{360} &amp; \text{ACT/360} \\[8pt]
+        \dfrac{\text{ActualDays}}{365} &amp; \text{ACT/365} \\[8pt]
+        \dfrac{\text{ActualDays}}{Y_{\text{actual}}} &amp; \text{ACT/ACT
+        (split at year-end)} \end{cases}$$
+      </div>
+      <p>For the <strong>annuity calculation</strong>, $f$ is the <em>regular-period</em>
+        fraction (the nominal month: 1/12 for monthly). For 30/360 this
+        always equals 1/12; for ACT conventions most core banking
+        systems also use the nominal 1/12 for the EMI base, then apply
+        actual-day fractions per period for the interest split (step 3).</p>
+      <h2>2. EMI / Annuity Calculation (Universal)</h2>
+      <div class="formula-box"> <span class="label">Equal Instalment
+          (EMI)</span> $$A = P \times \frac{r_m \times (1 + r_m)^n}{(1 +
+        r_m)^n - 1}$$
+      </div>
+      <p>This formula is <strong>the same for all four day-count
+          conventions and both methods</strong> — the only thing that
+        changes is the value of $r_m$ fed into it (from step 1).</p>
+      <div class="note"> <span class="label">Edge case — zero rate</span><br>
+        If $r_m = 0$ (interest-free loan), the formula divides by zero.
+        Handle separately: $A = P / n$ when $r_m = 0$.
+      </div>
+      <h2>3. Interest Portion per Period (Universal)</h2>
+      <div class="formula-box"> <span class="label">Interest Portion</span>
+        $$I_k = B_{k-1} \times g(r, f_k)$$
+      </div>
+      <p>Where $g$ applies the <strong>same method choice</strong> as
+        step 1, but using <strong>each period's own actual
+          year-fraction</strong> $f_k = D_k / Y_k$:</p>
+      <div class="formula-box"> <span class="label">Method Function</span>
+        $$g(r, f_k) = \begin{cases} (1 + r)^{f_k} - 1 &amp; \text{if
+        CONFORMING} \\[6pt] r \times f_k &amp; \text{if PROPORTIONAL}
+        \end{cases}$$
+      </div>
+      <p>Then the principal portion and new balance:</p>
+      <div class="formula-box"> $$P_k = A - I_k \qquad B_k = B_{k-1} -
+        P_k$$
+      </div>
+      <h2>ACT/ACT Year-Fraction (the only convention needing a split)</h2>
+      <p>For ACT/ACT, when a period crosses 31-Dec, $f_k$ is the sum of
+        two sub-fractions:</p>
+      <div class="formula-box"> <span class="label">Year-Boundary Split</span>
+        $$f_k = \frac{D_{k,Y_1}}{Y_1} + \frac{D_{k,Y_2}}{Y_2}$$
+      </div>
+      <p>Where $Y_1, Y_2 \in \{365, 366\}$ depending on whether each
+        calendar year is a leap year. If the period lies within a single
+        year, this reduces to $D_k / Y_k$ with $Y_k = 366$ in a leap
+        year, else 365.</p>
+      <h2>The Critical Consistency Rule</h2>
+      <div class="note"> <span class="label">Consistency</span><br>
+        The <strong>method choice (CONFORMING / PROPORTIONAL) must be
+          identical</strong> in step 1 and step 3. Mixing them breaks
+        the schedule — the last instalment won't close the balance to
+        zero. The day-count convention also flows through both steps
+        consistently.
+      </div>
+      <h2>Last Instalment Rule (Balance Closing)</h2>
+      <p>Because of rounding, the final instalment is computed
+        differently to guarantee a clean zero balance:</p>
+      <div class="formula-box"> $$\text{For } k &lt; n: \quad I_k =
+        B_{k-1} \times g(r, f_k), \quad P_k = A - I_k$$ $$\text{For } k
+        = n: \quad I_n = B_{n-1} \times g(r, f_n), \quad P_n = B_{n-1},
+        \quad A_n = P_n + I_n$$
+      </div>
+      <p>The last instalment $A_n$ may differ from $A$ by a cent or two
+        — it absorbs all accumulated rounding.</p>
+      <h2>Unified Pseudocode</h2>
+      <pre><code><span class="pseudo-kw">function</span> buildSchedule(P, r, n, method, dayCount, dates):
+    <span class="pseudo-comment"># Step 1 — periodic rate for annuity (nominal regular-period fraction)</span>
+    f_regular = regularFraction(dayCount)        <span class="pseudo-comment"># 1/12 for monthly</span>
+    rm = periodicRate(method, r, f_regular)
+
+    <span class="pseudo-comment"># Step 2 — annuity (EMI)</span>
+    <span class="pseudo-kw">if</span> rm == 0:
+        A = round(P / n, 2)
+    <span class="pseudo-kw">else</span>:
+        A = round(P * (rm * (1+rm)^n) / ((1+rm)^n - 1), 2)
+
+    <span class="pseudo-comment"># Step 3 — per-period interest split</span>
+    balance = P
+    <span class="pseudo-kw">for</span> k <span class="pseudo-kw">in</span> 1..n:
+        f_k = yearFraction(dayCount, dates[k-1], dates[k])   <span class="pseudo-comment"># actual days / Y</span>
+        periodRate_k = applyMethod(method, r, f_k)
+        interest = round(balance * periodRate_k, 2)
+        <span class="pseudo-kw">if</span> k == n:
+            principal = round(balance, 2)        <span class="pseudo-comment"># close the balance</span>
+            instalment = round(principal + interest, 2)
+        <span class="pseudo-kw">else</span>:
+            principal = round(A - interest, 2)
+            instalment = A
+        balance = round(balance - principal, 2)
+        emit(k, dates[k], interest, principal, instalment, balance)
+
+<span class="pseudo-comment"># ── helper functions ──────────────────────────────────────────</span>
+<span class="pseudo-kw">function</span> periodicRate(method, r, f):
+    <span class="pseudo-kw">if</span> method == CONFORMING: <span class="pseudo-kw">return</span> (1 + r)^f - 1
+    <span class="pseudo-kw">else</span>:                    <span class="pseudo-kw">return</span> r * f
+
+<span class="pseudo-kw">function</span> applyMethod(method, r, f):       <span class="pseudo-comment"># identical to periodicRate</span>
+    <span class="pseudo-kw">if</span> method == CONFORMING: <span class="pseudo-kw">return</span> (1 + r)^f - 1
+    <span class="pseudo-kw">else</span>:                    <span class="pseudo-kw">return</span> r * f
+
+<span class="pseudo-kw">function</span> yearFraction(dayCount, d0, d1):
+    <span class="pseudo-kw">switch</span> dayCount:
+        <span class="pseudo-kw">case</span> THIRTY_360: <span class="pseudo-kw">return</span> 30 / 360
+        <span class="pseudo-kw">case</span> ACT_360:    <span class="pseudo-kw">return</span> actualDays(d0, d1) / 360
+        <span class="pseudo-kw">case</span> ACT_365:    <span class="pseudo-kw">return</span> actualDays(d0, d1) / 365
+        <span class="pseudo-kw">case</span> ACT_ACT:
+            <span class="pseudo-kw">if</span> year(d0) == year(d1):
+                Y = isLeap(year(d0)) ? 366 : 365
+                <span class="pseudo-kw">return</span> actualDays(d0, d1) / Y
+            <span class="pseudo-kw">else</span>:
+                ye = endOfYear(d0)                       <span class="pseudo-comment"># Dec 31</span>
+                d1part = actualDays(d0, ye)
+                d2part = actualDays(ye, d1)
+                Y1 = isLeap(year(d0)) ? 366 : 365
+                Y2 = isLeap(year(d1)) ? 366 : 365
+                <span class="pseudo-kw">return</span> d1part/Y1 + d2part/Y2</code></pre>
+      <h2>Repayment Plan Examples — All Four Day-Count Conventions</h2>
+      <p>The four schedules below are generated from identical loan
+        parameters, shown side by side for both calculation methods.
+        Only the day-count convention differs between them.</p>
+      <div class="formula-box"> <span class="label">Common Loan
+          Parameters</span> Principal $P$ = <strong>1,000.00 EUR</strong>
+        &nbsp;·&nbsp; Annual rate $r$ = <strong>17%</strong>
+        &nbsp;·&nbsp; Instalments $n$ = <strong>6</strong> (monthly)
+        &nbsp;·&nbsp; Disbursement = <strong>30-Nov-2027</strong><br>
+        Month-end anchored; February clamps to 29 (2028 is a leap year).
+        Annuity derived from the nominal monthly rate: <strong>174.43
+          EUR</strong> (Conforming, $r_m$ = 1.3170%) &nbsp;·&nbsp; <strong>175.03
+          EUR</strong> (Proportional, $r_m$ = 1.4167%).
+      </div>
+      <table>
+        <thead><tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Days from previous</th>
+          </tr>
+        </thead> <tbody>
+          <tr>
+            <td>Disbursement</td>
+            <td>30-Nov-2027</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>30-Dec-2027</td>
+            <td>30</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>30-Jan-2028</td>
+            <td>31</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>29-Feb-2028</td>
+            <td>30</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>30-Mar-2028</td>
+            <td>30</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>30-Apr-2028</td>
+            <td>31</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>30-May-2028</td>
+            <td>30</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>1) 30/360</h3>
+      <p>Every period = 30/360 = 0.083333, so the day-count is invisible
+        — both columns are perfectly regular.</p>
+      <table>
+        <thead><tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Days</th>
+            <th>Inst (Conf)</th>
+            <th>Int (Conf)</th>
+            <th>Prin (Conf)</th>
+            <th>Balance (Conf)</th>
+            <th>Inst (Prop)</th>
+            <th>Int (Prop)</th>
+            <th>Prin (Prop)</th>
+            <th>Balance (Prop)</th>
+          </tr>
+        </thead> <tbody>
+          <tr>
+            <td>1</td>
+            <td>30-Dec-2027</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>13.17</td>
+            <td>161.26</td>
+            <td>838.74</td>
+            <td>175.03</td>
+            <td>14.17</td>
+            <td>160.86</td>
+            <td>839.14</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>30-Jan-2028</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>11.05</td>
+            <td>163.38</td>
+            <td>675.36</td>
+            <td>175.03</td>
+            <td>11.89</td>
+            <td>163.14</td>
+            <td>676.00</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>29-Feb-2028</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>8.89</td>
+            <td>165.54</td>
+            <td>509.82</td>
+            <td>175.03</td>
+            <td>9.58</td>
+            <td>165.45</td>
+            <td>510.55</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>30-Mar-2028</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>6.71</td>
+            <td>167.72</td>
+            <td>342.10</td>
+            <td>175.03</td>
+            <td>7.23</td>
+            <td>167.80</td>
+            <td>342.75</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>30-Apr-2028</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>4.51</td>
+            <td>169.92</td>
+            <td>172.18</td>
+            <td>175.03</td>
+            <td>4.86</td>
+            <td>170.17</td>
+            <td>172.58</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>30-May-2028</td>
+            <td>30</td>
+            <td>174.45</td>
+            <td>2.27</td>
+            <td>172.18</td>
+            <td>0.00</td>
+            <td>175.02</td>
+            <td>2.44</td>
+            <td>172.58</td>
+            <td>0.00</td>
+          </tr>
+          <tr style="font-weight:700;background:var(--light-blue)">
+            <td colspan="3">Total</td>
+            <td>1046.60</td>
+            <td>46.60</td>
+            <td>1000.00</td>
+            <td><br>
+            </td>
+            <td>1050.17</td>
+            <td>50.17</td>
+            <td>1000.00</td>
+            <td><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>2) ACT/360</h3>
+      <p>Actual days ÷ 360. The 360 denominator inflates every period
+        slightly; longer (31-day) months accrue more interest.</p>
+      <table>
+        <thead><tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Days</th>
+            <th>Inst (Conf)</th>
+            <th>Int (Conf)</th>
+            <th>Prin (Conf)</th>
+            <th>Balance (Conf)</th>
+            <th>Inst (Prop)</th>
+            <th>Int (Prop)</th>
+            <th>Prin (Prop)</th>
+            <th>Balance (Prop)</th>
+          </tr>
+        </thead> <tbody>
+          <tr>
+            <td>1</td>
+            <td>30-Dec-2027</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>13.17</td>
+            <td>161.26</td>
+            <td>838.74</td>
+            <td>175.03</td>
+            <td>14.17</td>
+            <td>160.86</td>
+            <td>839.14</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>30-Jan-2028</td>
+            <td>31</td>
+            <td>174.43</td>
+            <td>11.42</td>
+            <td>163.01</td>
+            <td>675.73</td>
+            <td>175.03</td>
+            <td>12.28</td>
+            <td>162.75</td>
+            <td>676.39</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>29-Feb-2028</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>8.90</td>
+            <td>165.53</td>
+            <td>510.20</td>
+            <td>175.03</td>
+            <td>9.58</td>
+            <td>165.45</td>
+            <td>510.94</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>30-Mar-2028</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>6.72</td>
+            <td>167.71</td>
+            <td>342.49</td>
+            <td>175.03</td>
+            <td>7.24</td>
+            <td>167.79</td>
+            <td>343.15</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>30-Apr-2028</td>
+            <td>31</td>
+            <td>174.43</td>
+            <td>4.66</td>
+            <td>169.77</td>
+            <td>172.72</td>
+            <td>175.03</td>
+            <td>5.02</td>
+            <td>170.01</td>
+            <td>173.14</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>30-May-2028</td>
+            <td>30</td>
+            <td>174.99</td>
+            <td>2.27</td>
+            <td>172.72</td>
+            <td>0.00</td>
+            <td>175.59</td>
+            <td>2.45</td>
+            <td>173.14</td>
+            <td>0.00</td>
+          </tr>
+          <tr style="font-weight:700;background:var(--light-blue)">
+            <td colspan="3">Total</td>
+            <td>1047.14</td>
+            <td>47.14</td>
+            <td>1000.00</td>
+            <td><br>
+            </td>
+            <td>1050.74</td>
+            <td>50.74</td>
+            <td>1000.00</td>
+            <td><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>3) ACT/365</h3>
+      <p>Actual days ÷ 365. Slightly lower interest than ACT/360 because
+        the larger denominator shrinks each day's fraction. Fixed 365
+        ignores the leap year.</p>
+      <table>
+        <thead><tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Days</th>
+            <th>Inst (Conf)</th>
+            <th>Int (Conf)</th>
+            <th>Prin (Conf)</th>
+            <th>Balance (Conf)</th>
+            <th>Inst (Prop)</th>
+            <th>Int (Prop)</th>
+            <th>Prin (Prop)</th>
+            <th>Balance (Prop)</th>
+          </tr>
+        </thead> <tbody>
+          <tr>
+            <td>1</td>
+            <td>30-Dec-2027</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>12.99</td>
+            <td>161.44</td>
+            <td>838.56</td>
+            <td>175.03</td>
+            <td>13.97</td>
+            <td>161.06</td>
+            <td>838.94</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>30-Jan-2028</td>
+            <td>31</td>
+            <td>174.43</td>
+            <td>11.26</td>
+            <td>163.17</td>
+            <td>675.39</td>
+            <td>175.03</td>
+            <td>12.11</td>
+            <td>162.92</td>
+            <td>676.02</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>29-Feb-2028</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>8.77</td>
+            <td>165.66</td>
+            <td>509.73</td>
+            <td>175.03</td>
+            <td>9.45</td>
+            <td>165.58</td>
+            <td>510.44</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>30-Mar-2028</td>
+            <td>30</td>
+            <td>174.43</td>
+            <td>6.62</td>
+            <td>167.81</td>
+            <td>341.92</td>
+            <td>175.03</td>
+            <td>7.13</td>
+            <td>167.90</td>
+            <td>342.54</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>30-Apr-2028</td>
+            <td>31</td>
+            <td>174.43</td>
+            <td>4.59</td>
+            <td>169.84</td>
+            <td>172.08</td>
+            <td>175.03</td>
+            <td>4.95</td>
+            <td>170.08</td>
+            <td>172.46</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>30-May-2028</td>
+            <td>30</td>
+            <td>174.31</td>
+            <td>2.23</td>
+            <td>172.08</td>
+            <td>0.00</td>
+            <td>174.87</td>
+            <td>2.41</td>
+            <td>172.46</td>
+            <td>0.00</td>
+          </tr>
+          <tr style="font-weight:700;background:var(--light-blue)">
+            <td colspan="3">Total</td>
+            <td>1046.46</td>
+            <td>46.46</td>
+            <td>1000.00</td>
+            <td><br>
+            </td>
+            <td>1050.02</td>
+            <td>50.02</td>
+            <td>1000.00</td>
+            <td><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>4) ACT/ACT</h3>
+      <p>Actual days ÷ actual year length. All instalment dates fall in
+        2028 (366 days), so periods 2–6 use 366; period 1 (Dec-2027)
+        uses 365. This makes ACT/ACT marginally cheaper than ACT/365
+        from period 2 onward.</p>
+      <table>
+        <thead><tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Days</th>
+            <th>Year</th>
+            <th>Inst (Conf)</th>
+            <th>Int (Conf)</th>
+            <th>Prin (Conf)</th>
+            <th>Balance (Conf)</th>
+            <th>Inst (Prop)</th>
+            <th>Int (Prop)</th>
+            <th>Prin (Prop)</th>
+            <th>Balance (Prop)</th>
+          </tr>
+        </thead> <tbody>
+          <tr>
+            <td>1</td>
+            <td>30-Dec-2027</td>
+            <td>30</td>
+            <td>365</td>
+            <td>174.43</td>
+            <td>12.99</td>
+            <td>161.44</td>
+            <td>838.56</td>
+            <td>175.03</td>
+            <td>13.97</td>
+            <td>161.06</td>
+            <td>838.94</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>30-Jan-2028</td>
+            <td>31</td>
+            <td>366</td>
+            <td>174.43</td>
+            <td>11.23</td>
+            <td>163.20</td>
+            <td>675.36</td>
+            <td>175.03</td>
+            <td>12.08</td>
+            <td>162.95</td>
+            <td>675.99</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>29-Feb-2028</td>
+            <td>30</td>
+            <td>366</td>
+            <td>174.43</td>
+            <td>8.75</td>
+            <td>165.68</td>
+            <td>509.68</td>
+            <td>175.03</td>
+            <td>9.42</td>
+            <td>165.61</td>
+            <td>510.38</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>30-Mar-2028</td>
+            <td>30</td>
+            <td>366</td>
+            <td>174.43</td>
+            <td>6.60</td>
+            <td>167.83</td>
+            <td>341.85</td>
+            <td>175.03</td>
+            <td>7.11</td>
+            <td>167.92</td>
+            <td>342.46</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>30-Apr-2028</td>
+            <td>31</td>
+            <td>366</td>
+            <td>174.43</td>
+            <td>4.58</td>
+            <td>169.85</td>
+            <td>172.00</td>
+            <td>175.03</td>
+            <td>4.93</td>
+            <td>170.10</td>
+            <td>172.36</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>30-May-2028</td>
+            <td>30</td>
+            <td>366</td>
+            <td>174.23</td>
+            <td>2.23</td>
+            <td>172.00</td>
+            <td>0.00</td>
+            <td>174.76</td>
+            <td>2.40</td>
+            <td>172.36</td>
+            <td>0.00</td>
+          </tr>
+          <tr style="font-weight:700;background:var(--light-blue)">
+            <td colspan="4">Total</td>
+            <td>1046.38</td>
+            <td>46.38</td>
+            <td>1000.00</td>
+            <td><br>
+            </td>
+            <td>1049.91</td>
+            <td>49.91</td>
+            <td>1000.00</td>
+            <td><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Summary — Total Interest Across All Eight Combinations</h3>
+      <table>
+        <thead><tr>
+            <th>Day-Count</th>
+            <th>Conforming</th>
+            <th>Proportional</th>
+            <th>Method Gap</th>
+          </tr>
+        </thead> <tbody>
+          <tr>
+            <td><strong>30/360</strong></td>
+            <td>46.60</td>
+            <td>50.17</td>
+            <td>3.57</td>
+          </tr>
+          <tr>
+            <td><strong>ACT/360</strong></td>
+            <td>47.14</td>
+            <td>50.74</td>
+            <td>3.60</td>
+          </tr>
+          <tr>
+            <td><strong>ACT/365</strong></td>
+            <td>46.46</td>
+            <td>50.02</td>
+            <td>3.56</td>
+          </tr>
+          <tr>
+            <td><strong>ACT/ACT</strong></td>
+            <td>46.38</td>
+            <td>49.91</td>
+            <td>3.53</td>
+          </tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><strong>ACT/360 is the most expensive</strong> in both
+          columns — the 360 denominator over-counts time relative to the
+          actual 365/366-day calendar.</li>
+        <li><strong>ACT/ACT is the cheapest</strong> here because most
+          periods fall in the 366-day leap year, shrinking each day's
+          fraction.</li>
+        <li><strong>The method gap (Conforming → Proportional) is ~3.5
+            EUR</strong> regardless of day-count — roughly 2× the spread
+          caused by switching day-count (~0.8 EUR between cheapest and
+          dearest within a column).</li>
+        <li>The <strong>annuity is identical across day-counts</strong>
+          within each method because it is derived from the nominal
+          monthly rate; the day-count only redistributes interest within
+          the schedule and nudges the final instalment to close the
+          balance.</li>
+      </ul>
+      <div class="footer"> Universal Loan Calculation Reference · Core
+        Banking System Documentation
+      </div>
+    </div>
+  </body>
+</html>
