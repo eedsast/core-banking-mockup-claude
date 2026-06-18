@@ -2445,80 +2445,207 @@
 
 <!-- ════════════ ADD CURRENCY MODAL ════════════ -->
 <!-- ════════════ ADD CURRENCY MODAL (Loan Product) ════════════ -->
+<style>
+  /* ── LP CURRENCY MULTI-SELECT MODAL ── */
+  .lpcurr-list { display:flex; flex-direction:column; gap:0; }
+  .lpcurr-row {
+    border:1.5px solid #e8eef6; border-radius:10px; margin-bottom:10px;
+    overflow:hidden; transition:border-color 0.15s, box-shadow 0.15s;
+  }
+  .lpcurr-row.selected { border-color:#6b4fc8; box-shadow:0 0 0 3px rgba(107,79,200,0.08); }
+  .lpcurr-check-bar {
+    display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer;
+    background:#fafbff; user-select:none;
+  }
+  .lpcurr-row.selected .lpcurr-check-bar { background:#f7f3ff; }
+  .lpcurr-check-bar input[type="checkbox"] {
+    width:17px; height:17px; accent-color:#6b4fc8; cursor:pointer; flex-shrink:0;
+  }
+  .lpcurr-sym {
+    width:34px; height:34px; border-radius:50%; display:flex; align-items:center;
+    justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;
+  }
+  .lpcurr-info { flex:1; }
+  .lpcurr-code { font-size:13px; font-weight:700; color:#1a2e42; }
+  .lpcurr-name { font-size:11.5px; color:#6a8faf; margin-top:1px; }
+  .lpcurr-amounts {
+    display:none; padding:12px 16px 16px; background:#fff;
+    border-top:1px solid #e8eef6;
+    display:none; grid-template-columns:1fr 1fr 1fr; gap:12px;
+  }
+  .lpcurr-row.selected .lpcurr-amounts { display:grid; }
+  .lpcurr-amt-group label { font-size:11px; font-weight:600; color:#6a8faf; display:block; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.3px; }
+  .lpcurr-amt-group input {
+    width:100%; padding:8px 10px; border:1.5px solid #dce6f0; border-radius:7px;
+    font-size:13px; color:#1a2e42; box-sizing:border-box;
+    transition:border-color 0.15s;
+  }
+  .lpcurr-amt-group input:focus { outline:none; border-color:#6b4fc8; }
+  /* ── LP INTEREST RATE MODAL ── */
+  .lpir-currency-block {
+    border:1.5px solid #e8eef6; border-radius:10px; margin-bottom:12px; overflow:hidden;
+  }
+  .lpir-currency-header {
+    display:flex; align-items:center; gap:10px; padding:11px 16px;
+    background:#f7f3ff; border-bottom:1px solid #e8eef6;
+  }
+  .lpir-currency-sym {
+    width:28px; height:28px; border-radius:50%; display:flex; align-items:center;
+    justify-content:center; font-size:12px; font-weight:700;
+  }
+  .lpir-currency-label { font-size:13px; font-weight:700; color:#1a2e42; }
+  .lpir-currency-fullname { font-size:11.5px; color:#7a5fc8; margin-left:4px; }
+  .lpir-fields { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:14px 16px 16px; }
+  .lpir-field label { font-size:11px; font-weight:600; color:#6a8faf; display:block; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.3px; }
+  .lpir-field input, .lpir-field select {
+    width:100%; padding:8px 10px; border:1.5px solid #dce6f0; border-radius:7px;
+    font-size:13px; color:#1a2e42; box-sizing:border-box; background:#fff;
+    transition:border-color 0.15s;
+  }
+  .lpir-field input:focus, .lpir-field select:focus { outline:none; border-color:#6b4fc8; }
+  .lpir-empty { padding:32px; text-align:center; color:#6a8faf; font-size:13px; }
+  .lpir-empty-icon { font-size:28px; margin-bottom:8px; }
+</style>
+
+<!-- ════════════ ADD CURRENCY (Loan Product — multi-select) ════════════ -->
 <div class="modal-overlay" id="lpCurrencyModal" onclick="if(event.target===this)closeLpCurrencyModal()">
-  <div class="modal-box" style="width:600px;max-width:96vw;">
+  <div class="modal-box" style="width:660px;max-width:96vw;">
     <div class="modal-header">
       <div class="modal-header-left">
         <div class="modal-hicon" style="background:#f3f0ff;font-size:18px">💱</div>
         <div>
-          <div class="modal-title">Add Currency</div>
-          <div class="modal-subtitle">Configure currency parameters</div>
+          <div class="modal-title">Add Currencies</div>
+          <div class="modal-subtitle">Select currencies and configure amount limits</div>
         </div>
       </div>
       <button class="modal-close" onclick="closeLpCurrencyModal()">✕</button>
     </div>
-    <div class="modal-body" style="padding:24px 28px;overflow-y:auto;max-height:calc(85vh - 120px);">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
-        <div class="fee-form-group">
-          <label class="fee-form-label">Currency</label>
-          <select id="lpcurr-currency" class="fee-form-input">
-            <option value="">Select an item</option>
-            <option value="EUR">EUR — Euro</option>
-            <option value="USD">USD — US Dollar</option>
-            <option value="GBP">GBP — British Pound</option>
-            <option value="CHF">CHF — Swiss Franc</option>
-            <option value="RSD">RSD — Serbian Dinar</option>
-          </select>
+    <div class="modal-body" style="padding:20px 24px;overflow-y:auto;max-height:calc(85vh - 130px);">
+      <div class="lpcurr-list" id="lpcurr-list">
+        <!-- EUR -->
+        <div class="lpcurr-row" id="lpcurr-row-EUR">
+          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('EUR')">
+            <input type="checkbox" id="lpcurr-cb-EUR" value="EUR" onclick="event.stopPropagation();toggleLpCurrRow('EUR')"/>
+            <div class="lpcurr-sym" style="background:#e8f0fe;color:#1a56db">€</div>
+            <div class="lpcurr-info"><div class="lpcurr-code">EUR</div><div class="lpcurr-name">Euro</div></div>
+          </label>
+          <div class="lpcurr-amounts">
+            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-EUR" placeholder="e.g. 100" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-EUR" placeholder="e.g. 50000" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-EUR" placeholder="e.g. 5000" min="0" step="1"/></div>
+          </div>
         </div>
-        <div class="fee-form-group">
-          <label class="fee-form-label">Status</label>
-          <select id="lpcurr-status" class="fee-form-input">
-            <option value="Active" selected>Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
+        <!-- USD -->
+        <div class="lpcurr-row" id="lpcurr-row-USD">
+          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('USD')">
+            <input type="checkbox" id="lpcurr-cb-USD" value="USD" onclick="event.stopPropagation();toggleLpCurrRow('USD')"/>
+            <div class="lpcurr-sym" style="background:#e6f9f0;color:#0a7a40">$</div>
+            <div class="lpcurr-info"><div class="lpcurr-code">USD</div><div class="lpcurr-name">US Dollar</div></div>
+          </label>
+          <div class="lpcurr-amounts">
+            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-USD" placeholder="e.g. 100" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-USD" placeholder="e.g. 50000" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-USD" placeholder="e.g. 5000" min="0" step="1"/></div>
+          </div>
         </div>
-        <div class="fee-form-group">
-          <label class="fee-form-label">Interest Rate Name</label>
-          <select id="lpcurr-rate-name" class="fee-form-input">
-            <option value="">Select an item</option>
-            <option value="BNPL standard interest 17% - EUR" selected>BNPL standard interest 17% - EUR</option>
-            <option value="EUR interest 17%">EUR interest 17%</option>
-            <option value="BNPL 0% interest EUR demo">BNPL 0% interest EUR demo</option>
-            <option value="BNPL with 17% interest rate for demo">BNPL with 17% interest rate for demo</option>
-          </select>
+        <!-- GBP -->
+        <div class="lpcurr-row" id="lpcurr-row-GBP">
+          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('GBP')">
+            <input type="checkbox" id="lpcurr-cb-GBP" value="GBP" onclick="event.stopPropagation();toggleLpCurrRow('GBP')"/>
+            <div class="lpcurr-sym" style="background:#fde8f5;color:#b0166c">£</div>
+            <div class="lpcurr-info"><div class="lpcurr-code">GBP</div><div class="lpcurr-name">British Pound</div></div>
+          </label>
+          <div class="lpcurr-amounts">
+            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-GBP" placeholder="e.g. 100" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-GBP" placeholder="e.g. 50000" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-GBP" placeholder="e.g. 5000" min="0" step="1"/></div>
+          </div>
         </div>
-        <div class="fee-form-group">
-          <label class="fee-form-label">Interest Rate Type</label>
-          <select id="lpcurr-rate-type" class="fee-form-input">
-            <option value="Fixed" selected>Fixed</option>
-            <option value="Variable">Variable</option>
-          </select>
+        <!-- CHF -->
+        <div class="lpcurr-row" id="lpcurr-row-CHF">
+          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('CHF')">
+            <input type="checkbox" id="lpcurr-cb-CHF" value="CHF" onclick="event.stopPropagation();toggleLpCurrRow('CHF')"/>
+            <div class="lpcurr-sym" style="background:#fff0e0;color:#c06010">Fr</div>
+            <div class="lpcurr-info"><div class="lpcurr-code">CHF</div><div class="lpcurr-name">Swiss Franc</div></div>
+          </label>
+          <div class="lpcurr-amounts">
+            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-CHF" placeholder="e.g. 100" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-CHF" placeholder="e.g. 50000" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-CHF" placeholder="e.g. 5000" min="0" step="1"/></div>
+          </div>
         </div>
-        <div class="fee-form-group">
-          <label class="fee-form-label">Min Loan Amount</label>
-          <input type="number" id="lpcurr-min" class="fee-form-input" value="50" min="0" step="1"/>
+        <!-- RSD -->
+        <div class="lpcurr-row" id="lpcurr-row-RSD">
+          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('RSD')">
+            <input type="checkbox" id="lpcurr-cb-RSD" value="RSD" onclick="event.stopPropagation();toggleLpCurrRow('RSD')"/>
+            <div class="lpcurr-sym" style="background:#e8f4fd;color:#0a5fa0">din</div>
+            <div class="lpcurr-info"><div class="lpcurr-code">RSD</div><div class="lpcurr-name">Serbian Dinar</div></div>
+          </label>
+          <div class="lpcurr-amounts">
+            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-RSD" placeholder="e.g. 10000" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-RSD" placeholder="e.g. 5000000" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-RSD" placeholder="e.g. 500000" min="0" step="1"/></div>
+          </div>
         </div>
-        <div class="fee-form-group">
-          <label class="fee-form-label">Max Loan Amount</label>
-          <input type="number" id="lpcurr-max" class="fee-form-input" value="10000" min="0" step="1"/>
+        <!-- BAM -->
+        <div class="lpcurr-row" id="lpcurr-row-BAM">
+          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('BAM')">
+            <input type="checkbox" id="lpcurr-cb-BAM" value="BAM" onclick="event.stopPropagation();toggleLpCurrRow('BAM')"/>
+            <div class="lpcurr-sym" style="background:#eef6e8;color:#2d6a0a">KM</div>
+            <div class="lpcurr-info"><div class="lpcurr-code">BAM</div><div class="lpcurr-name">Bosnian Convertible Mark</div></div>
+          </label>
+          <div class="lpcurr-amounts">
+            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-BAM" placeholder="e.g. 200" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-BAM" placeholder="e.g. 100000" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-BAM" placeholder="e.g. 10000" min="0" step="1"/></div>
+          </div>
         </div>
-        <div class="fee-form-group">
-          <label class="fee-form-label">Default Loan Amount</label>
-          <input type="number" id="lpcurr-default" class="fee-form-input" value="1000" min="0" step="1"/>
-        </div>
-        <div class="fee-form-group">
-          <label class="fee-form-label">Valid From</label>
-          <input type="date" id="lpcurr-valid-from" class="fee-form-input" value="2026-03-27"/>
-        </div>
-        <div class="fee-form-group">
-          <label class="fee-form-label">Valid To</label>
-          <input type="date" id="lpcurr-valid-to" class="fee-form-input" value="2099-12-31"/>
+        <!-- HRK -->
+        <div class="lpcurr-row" id="lpcurr-row-HRK">
+          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('HRK')">
+            <input type="checkbox" id="lpcurr-cb-HRK" value="HRK" onclick="event.stopPropagation();toggleLpCurrRow('HRK')"/>
+            <div class="lpcurr-sym" style="background:#fdf3e8;color:#a05010">kn</div>
+            <div class="lpcurr-info"><div class="lpcurr-code">HRK</div><div class="lpcurr-name">Croatian Kuna</div></div>
+          </label>
+          <div class="lpcurr-amounts">
+            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-HRK" placeholder="e.g. 500" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-HRK" placeholder="e.g. 200000" min="0" step="1"/></div>
+            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-HRK" placeholder="e.g. 20000" min="0" step="1"/></div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;padding:16px 28px;border-top:1px solid #e8f0f8;">
-      <button onclick="closeLpCurrencyModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='#f3f0ff'" onmouseout="this.style.background='#fff'">Cancel</button>
-      <button onclick="saveLpCurrency()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.15s;" onmouseover="this.style.background='#5a3fb0'" onmouseout="this.style.background='#6b4fc8'"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add</button>
+    <div class="modal-footer" style="display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-top:1px solid #e8f0f8;">
+      <span id="lpcurr-sel-count" style="font-size:12px;color:#6a8faf;">No currencies selected</span>
+      <div style="display:flex;gap:12px;">
+        <button onclick="closeLpCurrencyModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>
+        <button onclick="saveLpCurrencies()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add Selected</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ADD INTEREST RATES (Loan Product — per currency) ════════════ -->
+<div class="modal-overlay" id="lpInterestRateModal" onclick="if(event.target===this)closeLpInterestRateModal()">
+  <div class="modal-box" style="width:640px;max-width:96vw;">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-hicon" style="background:#fff0e6;font-size:18px">📈</div>
+        <div>
+          <div class="modal-title">Add Interest Rates</div>
+          <div class="modal-subtitle">Configure interest rates for selected currencies</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeLpInterestRateModal()">✕</button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px;overflow-y:auto;max-height:calc(85vh - 130px);">
+      <div id="lpir-body">
+        <!-- Populated dynamically by openLpInterestRateModal() -->
+      </div>
+    </div>
+    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;padding:14px 24px;border-top:1px solid #e8f0f8;">
+      <button onclick="closeLpInterestRateModal()" style="padding:9px 22px;border:1.5px solid #e06020;border-radius:20px;background:#fff;color:#e06020;font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>
+      <button onclick="saveLpInterestRates()" style="padding:9px 24px;border:none;border-radius:20px;background:#e06020;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Save Rates</button>
     </div>
   </div>
 </div>
@@ -2555,7 +2682,8 @@
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Trigger</th>
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Method</th>
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Currency</th>
-            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Status</th>
+            <th style="padding:8px 12px;text-align:right;font-weight:600;color:#3a5272">Min Amt</th>
+            <th style="padding:8px 12px;text-align:right;font-weight:600;color:#3a5272">Max Amt</th>
           </tr>
         </thead>
         <tbody id="lpfee-picker-body"></tbody>
@@ -4129,6 +4257,10 @@ document.addEventListener('click', function(e) {
       document.getElementById('lpCurrencyModal').classList.add('open');
       break;
 
+    case 'lp-add-interest-rate':
+      openLpInterestRateModal();
+      break;
+
     case 'lp-add-fee':
       openLpFeeModal();
       break;
@@ -4361,17 +4493,29 @@ var _currentEnv = 'UAT';
 // ── ADD CURRENCY MODAL ───────────────────────────────────────────────────────
 // ── LP FEE PICKER ────────────────────────────────────────────────────────────
 var LP_FEE_CATALOG = [
-  { id:13, name:'Talat fee',                 version:'v1.0', scope:'Account',      trigger:'Per Instalment', method:'Fixed',      currency:'EUR', status:'Active'  },
-  { id:12, name:'Upfront processing fee 3%', version:'v1.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', currency:'',    status:'Pending' },
-  { id:11, name:'100 bucks fee',             version:'v1.0', scope:'Loan Product', trigger:'Per Instalment', method:'Fixed',      currency:'EUR', status:'Active'  },
-  { id:10, name:'Upfront fee 2%',            version:'v2.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', currency:'',    status:'Active'  },
+  { id:13, name:'Talat fee',                       version:'v1.0', scope:'Account',      trigger:'Per Instalment', method:'Fixed',      currency:'EUR', minAmt:'',    maxAmt:'',     status:'Active'   },
+  { id:12, name:'Upfront processing fee 3%',       version:'v1.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', currency:'EUR', minAmt:'100', maxAmt:'500',  status:'Pending'  },
+  { id:11, name:'100 bucks fee',                   version:'v1.0', scope:'Loan Product', trigger:'Per Instalment', method:'Fixed',      currency:'EUR', minAmt:'',    maxAmt:'',     status:'Active'   },
+  { id:10, name:'Upfront fee 2%',                  version:'v2.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', currency:'EUR', minAmt:'200', maxAmt:'2000', status:'Active'   },
+  { id:9,  name:'Monthly maintenance fee',         version:'v1.0', scope:'Account',      trigger:'Monthly',        method:'Fixed',      currency:'EUR', minAmt:'',    maxAmt:'',     status:'Active'   },
+  { id:8,  name:'Late payment fee',                version:'v1.0', scope:'Account',      trigger:'Per Instalment', method:'Fixed',      currency:'USD', minAmt:'',    maxAmt:'',     status:'Active'   },
+  { id:7,  name:'Disbursement fee 1.5%',           version:'v1.0', scope:'Loan Product', trigger:'Disbursement',   method:'Percentage', currency:'USD', minAmt:'150', maxAmt:'3000', status:'Active'   },
+  { id:6,  name:'Early settlement fee 2.5%',       version:'v1.0', scope:'Loan Product', trigger:'Settlement',     method:'Percentage', currency:'EUR', minAmt:'100', maxAmt:'5000', status:'Active'   },
+  { id:5,  name:'Account opening fee',             version:'v1.0', scope:'Account',      trigger:'One-Off',        method:'Fixed',      currency:'RSD', minAmt:'',    maxAmt:'',     status:'Active'   },
+  { id:4,  name:'Annual review fee 0.5%',          version:'v1.0', scope:'Loan Product', trigger:'Annual',         method:'Percentage', currency:'CHF', minAmt:'50',  maxAmt:'1000', status:'Active'   },
+  { id:3,  name:'Insurance administration fee',    version:'v1.0', scope:'Account',      trigger:'Monthly',        method:'Fixed',      currency:'EUR', minAmt:'',    maxAmt:'',     status:'Inactive' },
+  { id:2,  name:'Restructuring fee 1%',            version:'v1.0', scope:'Loan Product', trigger:'Restructuring',  method:'Percentage', currency:'GBP', minAmt:'200', maxAmt:'4000', status:'Active'   },
+  { id:1,  name:'Origination fee 2%',              version:'v1.0', scope:'Loan Product', trigger:'Disbursement',   method:'Percentage', currency:'BAM', minAmt:'100', maxAmt:'2500', status:'Active'   },
 ];
 var _lpFeePickerSelected = null;
+
+var LP_FEE_CATALOG_ACTIVE = LP_FEE_CATALOG.filter(function(f){ return f.status === 'Active'; });
 
 function openLpFeeModal() {
   _lpFeePickerSelected = null;
   document.getElementById('lpfee-search').value = '';
-  lpFeePickerRender(LP_FEE_CATALOG);
+  _lpFeePickerCurrentList = LP_FEE_CATALOG_ACTIVE;
+  lpFeePickerRender(LP_FEE_CATALOG_ACTIVE);
   document.getElementById('lpFeeModal').classList.add('open');
 }
 
@@ -4386,10 +4530,13 @@ function lpFeePickerRender(list) {
   empty.style.display = 'none';
   tbody.innerHTML = list.map(function(f) {
     var sel = _lpFeePickerSelected && _lpFeePickerSelected.id === f.id;
-    var statusCls = f.status === 'Active' ? 'fee-status-active' : 'fee-status-inactive';
-    var methodBadge = f.method === 'Fixed'
-      ? '<span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Fixed</span>'
-      : '<span style="background:#e3f2fd;color:#1565c0;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Percentage</span>';
+    var isPct = f.method === 'Percentage';
+    var methodBadge = isPct
+      ? '<span style="background:#e3f2fd;color:#1565c0;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Percentage</span>'
+      : '<span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Fixed</span>';
+    var minAmt = isPct && f.minAmt ? f.minAmt : '—';
+    var maxAmt = isPct && f.maxAmt ? f.maxAmt : '—';
+    var curr   = f.currency || '—';
     return '<tr data-fee-id="' + f.id + '" onclick="lpFeePickerSelect(' + f.id + ')" style="border-bottom:1px solid #f0f4fa;cursor:pointer;'
       + (sel ? 'background:#f3f0ff;' : '') + '">'
       + '<td style="padding:10px 12px;text-align:center">'
@@ -4402,28 +4549,29 @@ function lpFeePickerRender(list) {
       + '<td style="padding:10px 12px;color:#3a5272">' + f.scope + '</td>'
       + '<td style="padding:10px 12px;color:#3a5272">' + f.trigger + '</td>'
       + '<td style="padding:10px 12px">' + methodBadge + '</td>'
-      + '<td style="padding:10px 12px;font-weight:600;color:#1a2640">' + (f.currency || '—') + '</td>'
-      + '<td style="padding:10px 12px"><span class="' + statusCls + '">' + f.status + '</span></td>'
+      + '<td style="padding:10px 12px;font-weight:600;color:#1a2640">' + curr + '</td>'
+      + '<td style="padding:10px 12px;text-align:right;color:' + (isPct ? '#1a4aa0' : '#b0b8c8') + ';font-size:12px">' + minAmt + '</td>'
+      + '<td style="padding:10px 12px;text-align:right;color:' + (isPct ? '#1a4aa0' : '#b0b8c8') + ';font-size:12px">' + maxAmt + '</td>'
       + '</tr>';
   }).join('');
 }
 
 function lpFeePickerSelect(id) {
   _lpFeePickerSelected = LP_FEE_CATALOG.find(function(f) { return f.id === id; }) || null;
-  lpFeePickerRender(_lpFeePickerCurrentList || LP_FEE_CATALOG);
+  lpFeePickerRender(_lpFeePickerCurrentList || LP_FEE_CATALOG_ACTIVE);
 }
 
-var _lpFeePickerCurrentList = LP_FEE_CATALOG;
+var _lpFeePickerCurrentList = LP_FEE_CATALOG_ACTIVE;
 function lpFeePickerFilter() {
   var q = document.getElementById('lpfee-search').value.trim().toLowerCase();
   _lpFeePickerCurrentList = q
-    ? LP_FEE_CATALOG.filter(function(f) {
+    ? LP_FEE_CATALOG_ACTIVE.filter(function(f) {
         return f.name.toLowerCase().includes(q)
             || f.trigger.toLowerCase().includes(q)
             || f.method.toLowerCase().includes(q)
             || f.scope.toLowerCase().includes(q);
       })
-    : LP_FEE_CATALOG;
+    : LP_FEE_CATALOG_ACTIVE;
   lpFeePickerRender(_lpFeePickerCurrentList);
 }
 
@@ -4441,27 +4589,170 @@ function saveLpFee() {
   closeLpFeeModal();
 }
 
+// ── Currency multi-select modal ───────────────────────────────────────────────
+var _LP_CURR_META = {
+  EUR: { name: 'Euro',                    sym: '€',  bg: '#e8f0fe', col: '#1a56db' },
+  USD: { name: 'US Dollar',               sym: '$',  bg: '#e6f9f0', col: '#0a7a40' },
+  GBP: { name: 'British Pound',           sym: '£',  bg: '#fde8f5', col: '#b0166c' },
+  CHF: { name: 'Swiss Franc',             sym: 'Fr', bg: '#fff0e0', col: '#c06010' },
+  RSD: { name: 'Serbian Dinar',           sym: 'din',bg: '#e8f4fd', col: '#0a5fa0' },
+  BAM: { name: 'Bosnian Convertible Mark',sym: 'KM', bg: '#eef6e8', col: '#2d6a0a' },
+  HRK: { name: 'Croatian Kuna',           sym: 'kn', bg: '#fdf3e8', col: '#a05010' },
+};
+
 function closeLpCurrencyModal() {
   document.getElementById('lpCurrencyModal').classList.remove('open');
 }
-function saveLpCurrency() {
-  var currency = document.getElementById('lpcurr-currency').value;
-  if (!currency) { alert('Please select a Currency.'); return; }
-  var entry = {
-    currency:   currency,
-    status:     document.getElementById('lpcurr-status').value,
-    rateName:   document.getElementById('lpcurr-rate-name').value,
-    rateType:   document.getElementById('lpcurr-rate-type').value,
-    minAmt:     document.getElementById('lpcurr-min').value,
-    maxAmt:     document.getElementById('lpcurr-max').value,
-    defaultAmt: document.getElementById('lpcurr-default').value,
-    validFrom:  document.getElementById('lpcurr-valid-from').value,
-    validTo:    document.getElementById('lpcurr-valid-to').value,
-  };
+
+function toggleLpCurrRow(code) {
+  var cb  = document.getElementById('lpcurr-cb-' + code);
+  var row = document.getElementById('lpcurr-row-' + code);
+  if (!cb || !row) return;
+  // If called from label onclick, checkbox state has already toggled
+  var checked = cb.checked;
+  row.classList.toggle('selected', checked);
+  // Update counter
+  var total = document.querySelectorAll('#lpcurr-list input[type="checkbox"]:checked').length;
+  var lbl = document.getElementById('lpcurr-sel-count');
+  if (lbl) lbl.textContent = total === 0 ? 'No currencies selected'
+    : total === 1 ? '1 currency selected'
+    : total + ' currencies selected';
+}
+
+function saveLpCurrencies() {
+  var codes = ['EUR','USD','GBP','CHF','RSD','BAM','HRK'];
+  var added = [];
+  codes.forEach(function(code) {
+    var cb = document.getElementById('lpcurr-cb-' + code);
+    if (!cb || !cb.checked) return;
+    var min = document.getElementById('lpcurr-min-' + code);
+    var max = document.getElementById('lpcurr-max-' + code);
+    var def = document.getElementById('lpcurr-def-' + code);
+    // Skip if already added
+    var already = (window._lpCurrencies || []).some(function(c){ return c.currency === code; });
+    if (already) return;
+    added.push({
+      currency:   code,
+      minAmt:     min ? min.value : '',
+      maxAmt:     max ? max.value : '',
+      defaultAmt: def ? def.value : '',
+      status:     'Active',
+    });
+  });
+  if (!added.length) {
+    alert('Please select at least one currency (or all selected currencies are already added).');
+    return;
+  }
   window._lpCurrencies = window._lpCurrencies || [];
-  window._lpCurrencies.push(entry);
+  added.forEach(function(e){ window._lpCurrencies.push(e); });
   if (typeof lpRefreshCurrencies === 'function') lpRefreshCurrencies();
+  // Reset checkboxes
+  codes.forEach(function(code){
+    var cb = document.getElementById('lpcurr-cb-' + code);
+    var row = document.getElementById('lpcurr-row-' + code);
+    if (cb) cb.checked = false;
+    if (row) row.classList.remove('selected');
+  });
+  var lbl = document.getElementById('lpcurr-sel-count');
+  if (lbl) lbl.textContent = 'No currencies selected';
   closeLpCurrencyModal();
+}
+
+// ── Interest Rate catalog (mocked per currency) ──────────────────────────────
+var _LP_IR_CATALOG = {
+  EUR: [
+    { id:'eur-1', name:'Standard EUR Fixed 5.50%',     type:'Fixed'    },
+    { id:'eur-2', name:'EUR Variable EURIBOR + 2.00%', type:'Variable' },
+    { id:'eur-3', name:'EUR Preferential Fixed 3.80%', type:'Fixed'    },
+  ],
+  USD: [
+    { id:'usd-1', name:'Standard USD Fixed 6.50%',     type:'Fixed'    },
+    { id:'usd-2', name:'USD SOFR + 2.50%',             type:'Variable' },
+    { id:'usd-3', name:'USD Preferential Fixed 4.20%', type:'Fixed'    },
+  ],
+  GBP: [
+    { id:'gbp-1', name:'Standard GBP Fixed 5.90%',     type:'Fixed'    },
+    { id:'gbp-2', name:'GBP SONIA + 2.80%',            type:'Variable' },
+    { id:'gbp-3', name:'GBP Preferential Fixed 4.50%', type:'Fixed'    },
+  ],
+  CHF: [
+    { id:'chf-1', name:'Standard CHF Fixed 3.20%',     type:'Fixed'    },
+    { id:'chf-2', name:'CHF SARON + 1.50%',            type:'Variable' },
+  ],
+  RSD: [
+    { id:'rsd-1', name:'Standard RSD Fixed 14.00%',    type:'Fixed'    },
+    { id:'rsd-2', name:'RSD Variable NBS + 3.00%',     type:'Variable' },
+    { id:'rsd-3', name:'RSD Preferential Fixed 11.00%',type:'Fixed'    },
+  ],
+  BAM: [
+    { id:'bam-1', name:'Standard BAM Fixed 7.50%',     type:'Fixed'    },
+    { id:'bam-2', name:'BAM Variable ZIBOR + 2.50%',   type:'Variable' },
+    { id:'bam-3', name:'BAM Preferential Fixed 5.80%', type:'Fixed'    },
+  ],
+  HRK: [
+    { id:'hrk-1', name:'Standard HRK Fixed 6.00%',     type:'Fixed'    },
+    { id:'hrk-2', name:'HRK Variable NHB + 2.00%',     type:'Variable' },
+  ],
+};
+
+// ── Interest Rate modal (per selected currency — radio-list) ──────────────────
+function openLpInterestRateModal() {
+  var currencies = window._lpCurrencies || [];
+  var body = document.getElementById('lpir-body');
+  if (!body) return;
+  if (!currencies.length) {
+    body.innerHTML = '<div class="lpir-empty"><div class="lpir-empty-icon">💱</div>No currencies added yet.<br>Please add at least one currency first, then configure interest rates.</div>';
+  } else {
+    body.innerHTML = currencies.map(function(c) {
+      var meta  = _LP_CURR_META[c.currency] || { name: c.currency, sym: c.currency, bg: '#f0f4f8', col: '#4a6080' };
+      var rates = _LP_IR_CATALOG[c.currency] || [];
+      var savedId = ((window._lpInterestRates || []).find(function(r){ return r.currency === c.currency; }) || {}).rateId || '';
+      var rows = rates.length
+        ? rates.map(function(r) {
+            var typeFixed = r.type === 'Fixed';
+            var typeBg  = typeFixed ? '#e8f4e8' : '#e8f0ff';
+            var typeCol = typeFixed ? '#256025' : '#1a4aa0';
+            var checked = (r.id === savedId) ? ' checked' : '';
+            return '<label class="lpir-rate-row" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #f0f4f8;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background=\'#f7f9fc\'" onmouseout="this.style.background=\'#fff\'">'
+              + '<input type="radio" name="lpir-sel-' + c.currency + '" value="' + r.id + '" data-rate-name="' + r.name + '" data-rate-type="' + r.type + '"' + checked + ' style="accent-color:#e06020;width:16px;height:16px;flex-shrink:0;cursor:pointer"/>'
+              + '<span style="flex:1;font-size:13px;color:#1a2e42;font-weight:500">' + r.name + '</span>'
+              + '<span style="background:' + typeBg + ';color:' + typeCol + ';padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;flex-shrink:0">' + r.type + '</span>'
+              + '</label>';
+          }).join('')
+        : '<div style="padding:14px 16px;color:#6a8faf;font-size:12.5px;font-style:italic">No interest rates defined for this currency.</div>';
+      return '<div class="lpir-currency-block">'
+        + '<div class="lpir-currency-header">'
+          + '<div class="lpir-currency-sym" style="background:' + meta.bg + ';color:' + meta.col + '">' + meta.sym + '</div>'
+          + '<span class="lpir-currency-label">' + c.currency + '</span>'
+          + '<span class="lpir-currency-fullname">— ' + meta.name + '</span>'
+        + '</div>'
+        + '<div style="background:#fff">' + rows + '</div>'
+        + '</div>';
+    }).join('');
+  }
+  document.getElementById('lpInterestRateModal').classList.add('open');
+}
+
+function closeLpInterestRateModal() {
+  document.getElementById('lpInterestRateModal').classList.remove('open');
+}
+
+function saveLpInterestRates() {
+  var currencies = window._lpCurrencies || [];
+  if (!currencies.length) { closeLpInterestRateModal(); return; }
+  window._lpInterestRates = [];
+  currencies.forEach(function(c) {
+    var sel = document.querySelector('input[name="lpir-sel-' + c.currency + '"]:checked');
+    if (!sel) return;
+    window._lpInterestRates.push({
+      currency: c.currency,
+      rateId:   sel.value,
+      rateName: sel.dataset.rateName || '',
+      rateType: sel.dataset.rateType || 'Fixed',
+    });
+  });
+  if (typeof lpRefreshInterestRates === 'function') lpRefreshInterestRates();
+  closeLpInterestRateModal();
 }
 
 // ── THEME TOGGLE ─────────────────────────────────────────────────────────────

@@ -2142,6 +2142,7 @@ function openLoanProductForm(mod, data) {
   const opt = (val, option) => (val||'') === option ? 'selected' : '';
   window._lpCustTypes = [];
   window._lpCurrencies = [];
+  window._lpInterestRates = [];
   window._lpFees = [];
 
   el.innerHTML = `
@@ -2292,6 +2293,20 @@ function openLoanProductForm(mod, data) {
       </div>
       <div id="lp-currencies-body">
         <div class="lp-sub-empty">No currencies added yet. Click "Add Currency" to create the first one.</div>
+      </div>
+    </div>
+
+    <!-- Product Interest Rates -->
+    <div class="lp-sub-panel">
+      <div class="lp-sub-header">
+        <span class="lp-sub-title">Product Interest Rates</span>
+        <button class="lp-add-btn" style="background:#fff4ee;color:#c05010;border-color:#f5c4a0;" data-action="lp-add-interest-rate">
+          ${_I_PLUS_12B}
+          Add Interest Rate
+        </button>
+      </div>
+      <div id="lp-interest-rates-body">
+        <div class="lp-sub-empty">No interest rates configured yet. Add currencies first, then click "Add Interest Rate".</div>
       </div>
     </div>
 
@@ -3010,38 +3025,57 @@ function lpRefreshCurrencies() {
   } else {
     body.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px">' +
       '<thead><tr style="background:#f6f9fc;border-bottom:1px solid #dce8f0">' +
-        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Currency</th>' +
-        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Interest Rate</th>' +
-        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Type</th>' +
-        '<th style="padding:7px 10px;text-align:right;color:#6a8faf;font-weight:600">Min</th>' +
-        '<th style="padding:7px 10px;text-align:right;color:#6a8faf;font-weight:600">Max</th>' +
-        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Valid From</th>' +
-        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Valid To</th>' +
-        '<th style="padding:7px 10px;text-align:left;color:#6a8faf;font-weight:600">Status</th>' +
-        '<th style="padding:7px 10px"></th>' +
+        '<th style="padding:7px 12px;text-align:left;color:#6a8faf;font-weight:600">Currency</th>' +
+        '<th style="padding:7px 12px;text-align:right;color:#6a8faf;font-weight:600">Min Amount</th>' +
+        '<th style="padding:7px 12px;text-align:right;color:#6a8faf;font-weight:600">Max Amount</th>' +
+        '<th style="padding:7px 12px;text-align:right;color:#6a8faf;font-weight:600">Default Amount</th>' +
+        '<th style="padding:7px 12px;text-align:left;color:#6a8faf;font-weight:600">Status</th>' +
+        '<th style="padding:7px 12px"></th>' +
       '</tr></thead><tbody>' +
       window._lpCurrencies.map(function(c, i) {
-        var isObj   = (typeof c === 'object');
-        var curr    = isObj ? c.currency    : c;
-        var rate    = isObj ? (c.rateName   || '') : '';
-        var type    = isObj ? (c.rateType   || '') : '';
-        var min     = isObj ? (c.minAmt     || '') : '';
-        var max     = isObj ? (c.maxAmt     || '') : '';
-        var vFrom   = isObj ? (c.validFrom  || '') : '';
-        var vTo     = isObj ? (c.validTo    || '') : '';
-        var status  = isObj ? (c.status     || 'Active') : 'Active';
+        var curr    = (typeof c === 'object') ? c.currency   : c;
+        var min     = (typeof c === 'object') ? (c.minAmt     || '—') : '—';
+        var max     = (typeof c === 'object') ? (c.maxAmt     || '—') : '—';
+        var def     = (typeof c === 'object') ? (c.defaultAmt || '—') : '—';
+        var status  = (typeof c === 'object') ? (c.status     || 'Active') : 'Active';
         var statusCls = (status === 'Active' || status === 'ACTIVE') ? 'fee-status-active' : 'fee-status-inactive';
         return '<tr style="border-bottom:1px solid #f0f4f8">' +
-          '<td style="padding:7px 10px;font-weight:600;color:#1a2e42">' + curr + '</td>' +
-          '<td style="padding:7px 10px;color:#3a5570;font-size:11.5px">' + rate + '</td>' +
-          '<td style="padding:7px 10px"><span class="badge orange" style="font-size:11px">' + type + '</span></td>' +
-          '<td style="padding:7px 10px;text-align:right;color:#3a5570">' + min + '</td>' +
-          '<td style="padding:7px 10px;text-align:right;color:#3a5570">' + max + '</td>' +
-          '<td style="padding:7px 10px;font-size:11.5px;color:#6a8faf">' + vFrom + '</td>' +
-          '<td style="padding:7px 10px;font-size:11.5px;color:#6a8faf">' + vTo + '</td>' +
-          '<td style="padding:7px 10px"><span class="' + statusCls + '">' + status + '</span></td>' +
-          '<td style="padding:7px 10px;text-align:center">' +
-            '<button onclick="window._lpCurrencies.splice(' + i + ',1);lpRefreshCurrencies()" title="Remove" ' +
+          '<td style="padding:8px 12px;font-weight:700;color:#1a2e42;font-size:13px">' + curr + '</td>' +
+          '<td style="padding:8px 12px;text-align:right;color:#3a5570">' + min + '</td>' +
+          '<td style="padding:8px 12px;text-align:right;color:#3a5570">' + max + '</td>' +
+          '<td style="padding:8px 12px;text-align:right;color:#3a5570;font-weight:600">' + def + '</td>' +
+          '<td style="padding:8px 12px"><span class="' + statusCls + '">' + status + '</span></td>' +
+          '<td style="padding:8px 12px;text-align:center">' +
+            '<button onclick="window._lpCurrencies.splice(' + i + ',1);lpRefreshCurrencies();' +
+              'window._lpInterestRates=(window._lpInterestRates||[]).filter(function(r){return r.currency!==\'' + curr + '\'});lpRefreshInterestRates();" ' +
+              'title="Remove" style="background:#fde8e8;color:#c0392b;border:1px solid #f5b7b1;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:12px">\xd7</button>' +
+          '</td></tr>';
+      }).join('') +
+      '</tbody></table>';
+  }
+}
+function lpRefreshInterestRates() {
+  var body = document.getElementById('lp-interest-rates-body');
+  if (!body) return;
+  if (!window._lpInterestRates || !window._lpInterestRates.length) {
+    body.innerHTML = '<div class="lp-sub-empty">No interest rates configured yet. Add currencies first, then click "Add Interest Rate".</div>';
+  } else {
+    body.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px">' +
+      '<thead><tr style="background:#fff8f2;border-bottom:1px solid #fde0c4">' +
+        '<th style="padding:7px 12px;text-align:left;color:#8a5030;font-weight:600">Currency</th>' +
+        '<th style="padding:7px 12px;text-align:left;color:#8a5030;font-weight:600">Interest Rate Name</th>' +
+        '<th style="padding:7px 12px;text-align:left;color:#8a5030;font-weight:600">Type</th>' +
+        '<th style="padding:7px 12px"></th>' +
+      '</tr></thead><tbody>' +
+      window._lpInterestRates.map(function(r, i) {
+        var typeBg  = r.rateType === 'Fixed'    ? '#e8f4e8' : '#e8f0ff';
+        var typeCol = r.rateType === 'Fixed'    ? '#256025' : '#1a4aa0';
+        return '<tr style="border-bottom:1px solid #f0f4f8">' +
+          '<td style="padding:8px 12px;font-weight:700;color:#1a2e42;font-size:13px">' + r.currency + '</td>' +
+          '<td style="padding:8px 12px;color:#3a5570">' + (r.rateName || '—') + '</td>' +
+          '<td style="padding:8px 12px"><span style="background:' + typeBg + ';color:' + typeCol + ';padding:2px 9px;border-radius:10px;font-size:11px;font-weight:600">' + (r.rateType || 'Fixed') + '</span></td>' +
+          '<td style="padding:8px 12px;text-align:center">' +
+            '<button onclick="window._lpInterestRates.splice(' + i + ',1);lpRefreshInterestRates()" title="Remove" ' +
               'style="background:#fde8e8;color:#c0392b;border:1px solid #f5b7b1;border-radius:5px;padding:3px 8px;cursor:pointer;font-size:12px">\xd7</button>' +
           '</td></tr>';
       }).join('') +
@@ -3098,6 +3132,7 @@ function lpRefreshFees() {
 }
 window.lpRefreshCustTypes = lpRefreshCustTypes;
 window.lpRefreshCurrencies = lpRefreshCurrencies;
+window.lpRefreshInterestRates = lpRefreshInterestRates;
 window.lpRefreshFees = lpRefreshFees;
 
 // ── INTEREST RATE DEFINITION FORM HELPER ──────────────────────────────────────
