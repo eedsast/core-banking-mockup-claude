@@ -314,7 +314,7 @@
   }
   /* Phase / status badge variants */
   .module-card--phase1::after {
-    content: 'I Phase';
+    content: 'Phase I';
     position: absolute;
     top: 12px; right: 12px;
     font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
@@ -322,7 +322,7 @@
     padding: 2px 7px; border-radius: 6px; border: 1px solid #c7d2fe;
   }
   .module-card--phase2::after {
-    content: 'II Phase';
+    content: 'Phase II';
     position: absolute;
     top: 12px; right: 12px;
     font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
@@ -344,6 +344,22 @@
     font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
     background: #f1f5f9; color: #64748b;
     padding: 2px 7px; border-radius: 6px; border: 1px solid #cbd5e1;
+  }
+  .module-card--phasesplit::after {
+    content: 'Possible Phase II Split';
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    background: #fff7ed; color: #c2410c;
+    padding: 2px 7px; border-radius: 6px; border: 1px solid #fed7aa;
+  }
+  .module-card--phase1split::after {
+    content: 'Phase I · Possible Phase II Split';
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    background: linear-gradient(90deg, #eef2ff 60%, #fff7ed 100%); color: #4f46e5;
+    padding: 2px 8px; border-radius: 6px; border: 1px solid #c7d2fe;
   }
 
   /* ── ARTIFACT MODAL ── */
@@ -1432,10 +1448,10 @@
   <div class="section-label">Microservice Modules</div>
   <div class="module-grid">
 
-    <div class="module-card module-card--phase1" style="--card-accent:#2e7dd1;--icon-bg:#e8f2fd;" data-action="show-module" data-module="auth">
+    <div class="module-card module-card--phase1split" style="--card-accent:#2e7dd1;--icon-bg:#e8f2fd;" data-action="show-module" data-module="auth">
       <div class="card-icon">🔐</div>
-      <div class="card-title">Authorisation</div>
-      <div class="card-desc">User management, role definitions, permissions, security settings and audit logs</div>
+      <div class="card-title">Authentication &amp; Authorization</div>
+      <div class="card-desc">Token-based authentication, RBAC, permissions and session management — may be split into separate microservices in Phase II</div>
       <div class="card-tag">auth-service-boundaries</div>
     </div>
     <div class="module-card module-card--phase1" style="--card-accent:#8e44ad;--icon-bg:#f3e8fd;" data-action="show-module" data-module="admin">
@@ -1450,17 +1466,11 @@
       <div class="card-desc">Client onboarding, KYC, profiles and relationship management</div>
       <div class="card-tag">client-service-boundaries</div>
     </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#16a085;--icon-bg:#e4f7f3;" data-action="show-module" data-module="accounts">
+    <div class="module-card module-card--phase1split" style="--card-accent:#16a085;--icon-bg:#e4f7f3;" data-action="show-module" data-module="accounts">
       <div class="card-icon">🏦</div>
-      <div class="card-title">Accounts</div>
-      <div class="card-desc">Transaction &amp; current accounts, savings, overdraft management</div>
-      <div class="card-tag">accounts-service-boundaries</div>
-    </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#7f77dd;--icon-bg:#eeedfe;" data-action="show-module" data-module="deposits">
-      <div class="card-icon">💰</div>
-      <div class="card-title">Deposits</div>
-      <div class="card-desc">Term deposits, fixed deposits, maturity and rollover management</div>
-      <div class="card-tag">deposits-service-boundaries</div>
+      <div class="card-title">Accounts &amp; Deposits</div>
+      <div class="card-desc">Transaction &amp; current accounts, savings, overdraft management — and term deposits, fixed deposits, maturity and rollover</div>
+      <div class="card-tag">accounts-deposits-service-boundaries</div>
     </div>
     <div class="module-card module-card--completed" style="--card-accent:#d35400;--icon-bg:#fdf0e6;" data-action="show-module" data-module="loans">
       <div class="card-icon">📋</div>
@@ -1489,7 +1499,7 @@
     <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#c0392b;--icon-bg:#fdecea;" data-action="show-module" data-module="cards">
       <div class="card-icon">💳</div>
       <div class="card-title">Cards</div>
-      <div class="card-desc">Debit & credit card issuance, limits, blocking</div>
+      <div class="card-desc">Debit &amp; credit card issuance, limits, blocking · Integration with 3rd party solution Card processor</div>
       <div class="card-tag">card-service-boundaries</div>
     </div>
     <div class="module-card module-card--phase1" style="--card-accent:#2c3e50;--icon-bg:#edf0f3;" data-action="show-module" data-module="accounting">
@@ -1504,7 +1514,7 @@
       <div class="card-desc">Expected credit loss, staging, provisioning and regulatory reporting</div>
       <div class="card-tag">ifrs9-service-boundaries</div>
     </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#0f766e;--icon-bg:#e0f7f5;">
+    <div class="module-card module-card--phase1" style="--card-accent:#0f766e;--icon-bg:#e0f7f5;cursor:pointer;" data-action="open-diagram" data-src="loan-origination-workflow.html">
       <div class="card-icon">⚡</div>
       <div class="card-title">Orchestration</div>
       <div class="card-desc">Temporal workflow orchestration for card processing pipelines and event-driven flows</div>
@@ -1524,9 +1534,9 @@
     </div>
     <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#7c3aed;--icon-bg:#f5f3ff;">
       <div class="card-icon">📨</div>
-      <div class="card-title">Infobip SMS/Notifications</div>
-      <div class="card-desc">SMS, email and WhatsApp templates, campaign triggers and delivery logs</div>
-      <div class="card-tag">infobip-service-boundaries</div>
+      <div class="card-title">SMS/Notifications</div>
+      <div class="card-desc">SMS, email and WhatsApp templates, campaign triggers and delivery logs · Integration with InfoBip or other 3rd party solution</div>
+      <div class="card-tag">sms-notifications-service-boundaries</div>
     </div>
 
     <div class="module-card module-card--phase2" style="--card-accent:#0d9488;--icon-bg:#e0f7f5;" data-action="show-module" data-module="marketplace">
@@ -1570,7 +1580,7 @@
   <nav class="sidebar" id="sidebar-auth">
     <div class="sidebar-header">
       <div class="mod-icon" style="background:#1e4a7a;">🔐</div>
-      <div><div class="mod-name">Authorisation</div><div class="mod-sub">auth-service-boundaries</div></div>
+      <div><div class="mod-name">Authentication &amp; Authorization</div><div class="mod-sub">auth-service-boundaries</div></div>
     </div>
     <div class="back-btn" data-action="show-home">
       <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><use href="#ico-back"/></svg>
@@ -2944,7 +2954,7 @@ function renderContent(containerId, mod, section, title, subtitle) {
   }
 
   const el = document.getElementById(containerId);
-  const modLabels = { auth: 'Authorisation', admin: 'Administration', loans: 'Loan Management', accounts: 'Accounts', deposits: 'Deposits', loanapp: 'Loan Application', decision: 'Decision Engine', payments: 'Payments', cards: 'Cards', accounting: 'Accounting', ifrs9: 'IFRS9 Reporting', loyalty: 'Loyalty', fxremit: 'FX Remittance' };
+  const modLabels = { auth: 'Authentication & Authorization', admin: 'Administration', loans: 'Loan Management', accounts: 'Accounts & Deposits', deposits: 'Accounts & Deposits', loanapp: 'Loan Application', decision: 'Decision Engine', payments: 'Payments', cards: 'Cards', accounting: 'Accounting', ifrs9: 'IFRS9 Reporting', loyalty: 'Loyalty', fxremit: 'FX Remittance' };
   const modLabel = modLabels[mod] || mod;
   const selfHeaded = SELF_HEADED_SECTIONS.has(section);
 
@@ -3743,6 +3753,13 @@ document.addEventListener('click', function(e) {
 
     case 'show-module':
       showModule(el.dataset.module);
+      break;
+
+    case 'open-diagram':
+      (function() {
+        var src = el.getAttribute('data-src') || '';
+        if (src) window.open(src, '_blank');
+      })();
       break;
 
     case 'set-content':

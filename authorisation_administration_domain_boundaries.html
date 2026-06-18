@@ -246,6 +246,9 @@
 <h1>Core Banking — Architecture Boundary Diagram</h1>
 <p class="subtitle">Three-pillar model · Multitenant · Multicurrency · Microservice</p>
 <p class="note-global">Global config (org hierarchy, currency registry, service catalogue, user provisioning) lives in Administration · gated by Superadmin RBAC scope</p>
+<p class="note-global" style="background:#fff7ed;border-color:#f97316;color:#9a3412;margin-top:-16px;">
+  <strong>Phase II possible split:</strong> The Authentication &amp; Authorization pillar may be separated into two independent microservices — dashed borders below show potential future bounded context boundaries
+</p>
 
 <!-- ══ THREE PILLARS ══ -->
 <div class="pillars">
@@ -281,38 +284,64 @@
     </div>
   </div>
 
-  <!-- PILLAR 2: Authorisation -->
+  <!-- PILLAR 2: Authentication & Authorization -->
   <div class="pillar pillar-auth">
     <div class="pillar-header">
-      <div class="pillar-title">Authorisation service</div>
-      <div class="pillar-sub">Identity, access control &amp; session · runtime authentication on hot path</div>
+      <div class="pillar-title">Authentication &amp; Authorization service</div>
+      <div class="pillar-sub">Identity, access control &amp; session · possible split into two microservices in Phase II</div>
     </div>
 
-    <div class="section s-identity">
-      <div class="section-title">Identity &amp; credentials</div>
-      <div class="items">
-        <div class="item"><span class="item-label">User identity record</span><span class="item-sub">Credential store, password hash, MFA</span></div>
-        <div class="item"><span class="item-label">Authentication flows</span><span class="item-sub">Login, password reset, MFA challenge</span></div>
-        <div class="item"><span class="item-label">Token issuance</span><span class="item-sub">JWT with embedded org, branch, scopes</span></div>
+    <!-- Future bounded context 1: Authentication -->
+    <div style="border:2px dashed #7f77dd;border-radius:12px;padding:10px;background:rgba(127,119,221,0.04);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#7f77dd;">Possible future microservice</span>
+        <span style="background:#7f77dd;color:#fff;font-size:10px;font-weight:700;padding:1px 8px;border-radius:10px;letter-spacing:0.04em;">Authentication</span>
+        <span style="font-size:10px;color:#afa9ec;margin-left:auto;">Possible Phase II split</span>
+      </div>
+
+      <div class="section s-identity">
+        <div class="section-title">Identity &amp; credentials</div>
+        <div class="items">
+          <div class="item"><span class="item-label">User identity record</span><span class="item-sub">Credential store, password hash, MFA</span></div>
+          <div class="item"><span class="item-label">Authentication flows</span><span class="item-sub">Login, password reset, MFA challenge</span></div>
+          <div class="item"><span class="item-label">Token issuance</span><span class="item-sub">JWT with embedded org, branch, scopes</span></div>
+        </div>
+      </div>
+
+      <div class="section s-session" style="margin-top:8px;">
+        <div class="section-title">Session management</div>
+        <div class="items">
+          <div class="item"><span class="item-label">Session lifecycle</span><span class="item-sub">Timeout, refresh token, revocation</span></div>
+          <div class="item"><span class="item-label">Brute-force protection</span><span class="item-sub">Failed attempts, lockout, reset</span></div>
+        </div>
+      </div>
+
+      <div class="section s-security" style="margin-top:8px;">
+        <div class="section-title">Security policy — Superadmin only</div>
+        <div class="items">
+          <div class="item"><span class="item-label">Password policy</span><span class="item-sub">Length, complexity, validity, history</span></div>
+          <div class="item"><span class="item-label">Session policy</span><span class="item-sub">Timeout, max failed attempts, lock reset</span></div>
+          <div class="item"><span class="item-label">Other settings</span><span class="item-sub">Inactivity warning, tab-close logout</span></div>
+        </div>
       </div>
     </div>
 
-    <div class="section s-session">
-      <div class="section-title">RBAC &amp; session</div>
-      <div class="items">
-        <div class="item"><span class="item-label">Role definitions</span><span class="item-sub">Permission sets, scopes per role</span></div>
-        <div class="item"><span class="item-label">Permission read model</span><span class="item-sub">Pre-resolved from admin events</span></div>
-        <div class="item"><span class="item-label">Session management</span><span class="item-sub">Timeout, refresh, revocation</span></div>
-        <div class="item"><span class="item-label">Token validation</span><span class="item-sub">Verified locally by downstream services</span></div>
+    <!-- Future bounded context 2: Authorization -->
+    <div style="border:2px dashed #4a42b0;border-radius:12px;padding:10px;background:rgba(74,66,176,0.04);margin-top:4px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#4a42b0;">Possible future microservice</span>
+        <span style="background:#4a42b0;color:#fff;font-size:10px;font-weight:700;padding:1px 8px;border-radius:10px;letter-spacing:0.04em;">Authorization</span>
+        <span style="font-size:10px;color:#afa9ec;margin-left:auto;">Possible Phase II split</span>
       </div>
-    </div>
 
-    <div class="section s-security">
-      <div class="section-title">Security policy — Superadmin only</div>
-      <div class="items">
-        <div class="item"><span class="item-label">Password policy</span><span class="item-sub">Length, complexity, validity, history</span></div>
-        <div class="item"><span class="item-label">Session policy</span><span class="item-sub">Timeout, max failed attempts, lock reset</span></div>
-        <div class="item"><span class="item-label">Other settings</span><span class="item-sub">Inactivity warning, tab-close logout</span></div>
+      <div class="section s-session">
+        <div class="section-title">RBAC &amp; permissions</div>
+        <div class="items">
+          <div class="item"><span class="item-label">Role definitions</span><span class="item-sub">Permission sets, scopes per role</span></div>
+          <div class="item"><span class="item-label">Permission read model</span><span class="item-sub">Pre-resolved from admin events</span></div>
+          <div class="item"><span class="item-label">Token validation</span><span class="item-sub">Verified locally by downstream services</span></div>
+          <div class="item"><span class="item-label">Scope resolution</span><span class="item-sub">Per org, branch and product context</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -422,7 +451,11 @@
   </div>
   <div class="legend-item">
     <div class="legend-dot" style="background:#7f77dd;"></div>
-    Authorisation
+    Authentication &amp; Authorization
+  </div>
+  <div class="legend-item">
+    <div style="width:16px;height:10px;border:2px dashed #7f77dd;border-radius:3px;flex-shrink:0;"></div>
+    Phase II bounded context split
   </div>
   <div class="legend-item">
     <div class="legend-dot" style="background:#378add;"></div>
