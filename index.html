@@ -1377,7 +1377,7 @@
     <!-- Environment badge -->
     <span class="env-badge" id="envBadge">UAT</span>
     <!-- Help -->
-    <div class="header-icon-btn" title="Help">
+    <div class="header-icon-btn" title="Help" data-action="open-help" style="cursor:pointer;">
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
         <circle cx="10" cy="10" r="8.5"/>
         <path d="M7.5 7.5a2.5 2.5 0 0 1 4.9.8c0 1.7-2.5 2.1-2.5 3.7" stroke-linecap="round"/>
@@ -3756,6 +3756,10 @@ document.addEventListener('click', function(e) {
         var src = el.getAttribute('data-src') || '';
         if (src) window.open(src, '_blank');
       })();
+      break;
+
+    case 'open-help':
+      window.open('help.html', '_blank');
       break;
 
     case 'set-content':

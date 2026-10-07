@@ -15,3 +15,5 @@ collect_data.py
 analyse_data.py
 step3_penalty_interest.py
 run_collect.bat
+# Downloaded artifact copy of help.html (kept locally, not tracked)
+Help & Reference*.html
