@@ -316,6 +316,11 @@
     border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
   }
   .lp-add-btn:hover { background:#5a32a3; }
+  .lp-add-btn-link {
+    background:none;border:none;color:#c05010;font-size:12.5px;font-weight:600;
+    cursor:pointer;padding:4px 0;text-decoration:none;display:inline-flex;align-items:center;gap:4px;
+  }
+  .lp-add-btn-link:hover { color:#e06020;text-decoration:underline; }
   .lp-cust-row { display:flex;align-items:center;gap:10px;padding:13px 18px; }
   .lp-cust-tags { display:flex;gap:8px;flex-wrap:wrap;flex:1; }
   .lp-cust-tag {
@@ -545,13 +550,44 @@
 
   .li-er-fields { display:flex; flex-direction:column; padding:0; }
 
-  .li-er-row { display:grid; grid-template-columns:1fr; padding:10px 18px; border-bottom:1px solid #f0f2f5; }
+  .li-er-row { display:grid; grid-template-columns:220px 1fr; padding:10px 18px; border-bottom:1px solid #f0f2f5; align-items:center; }
 
   .li-er-row:last-child { border-bottom:none; }
 
   .li-er-label { font-size:.72rem; color:var(--text-muted); }
 
   .li-er-val { font-size:.85rem; color:var(--text); font-weight:500; margin-top:2px; }
+
+  /* Summary grid with more columns */
+  .li-summary-grid--wide { grid-template-columns:repeat(4,1fr); }
+
+  /* Mono value (UUIDs, IDs) */
+  .li-sum-value--mono { font-size:.73rem; font-family:monospace; word-break:break-all; }
+
+  /* Collection action row */
+  .li-coll-action-row { display:flex; align-items:center; gap:10px; padding:12px 18px 14px; }
+
+  .li-coll-hdr-right { display:flex; gap:8px; align-items:center; }
+
+  /* Reset button */
+  .li-btn-reset { background:#fff; color:var(--text-muted); border:1px solid var(--border); border-radius:7px; padding:7px 14px; font-size:.79rem; font-weight:600; cursor:pointer; }
+  .li-btn-reset:hover { border-color:var(--accent); color:var(--accent); }
+
+  /* Get Quote / Pay buttons row */
+  .li-er-action-row { display:flex; align-items:center; gap:10px; }
+
+  .li-getquote-btn { background:#fff; color:var(--accent); border:1px solid var(--accent); border-radius:7px; padding:8px 18px; font-size:.82rem; font-weight:600; cursor:pointer; }
+  .li-getquote-btn:hover { background:var(--accent); color:#fff; }
+
+  /* Settlement date row */
+  .li-er-date-row { padding:14px 18px; border-bottom:1px solid var(--border); }
+
+  /* ER row with two columns and highlight */
+  .li-er-row--highlight { background:#f5f0ff; }
+  .li-er-val--total { font-size:.88rem; font-weight:700; color:var(--accent); }
+
+  /* ER total amount input */
+  .li-er-total-input { border:1px solid var(--accent); border-radius:6px; padding:6px 10px; font-size:.88rem; font-weight:700; color:var(--accent); background:#f5f0ff; width:160px; }
 
 /* ── .eod- namespace (moved from core) ───────────────────────────────────────── */
 .eod-wrap { padding: 0; }
@@ -734,3 +770,341 @@
   }
   .btn-eod-add-acct:hover { opacity: .88; }
   .btn-eod-sched-add:hover { opacity: .88; }
+
+/* ── Loan Simulation — autocomplete & product picker ─────────────────────── */
+.sim-autocomplete-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.sim-autocomplete-wrap .sim-input {
+  flex: 1;
+  border-radius: 8px 0 0 8px;
+}
+.sim-product-clear {
+  height: 40px;
+  min-width: 36px;
+  padding: 0 10px;
+  background: var(--surface2, #f1f5f9);
+  border: 1px solid var(--border2, #cbd5e1);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  color: var(--text3, #94a3b8);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.sim-product-clear:hover { background: #fee2e2; color: #e74c3c; }
+
+.sim-product-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border2, #cbd5e1);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  overflow: visible;
+}
+.sim-product-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.sim-product-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border1, #e2e8f0);
+  transition: background .12s;
+  user-select: none;
+}
+.sim-product-item:last-child { border-bottom: none; }
+.sim-product-item:hover,
+.sim-product-item:focus {
+  background: var(--accent-subtle, rgba(99,102,241,.08));
+  outline: none;
+}
+.sim-prod-code {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--accent, #6366f1);
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.sim-prod-name {
+  font-size: .88rem;
+  color: var(--fg, #1e293b);
+}
+.sim-product-sel-inner {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 4px 0;
+  background: transparent;
+  color: var(--text, #1e293b);
+  font-size: 13px;
+  cursor: pointer;
+}
+.sim-product-sel-inner option {
+  padding: 8px 14px;
+}
+.sim-no-products {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text3, #94a3b8);
+}
+
+/* ── Loan Simulation — field labels ─────────────────────────────────────── */
+.sim-label-required::after {
+  content: ' *';
+  color: #e74c3c;
+  font-weight: 700;
+}
+.sim-label-hint {
+  margin-left: 5px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text3, #94a3b8);
+  font-style: italic;
+}
+
+/* ── Loan Simulation — results header ───────────────────────────────────── */
+.sim-results-section {
+  margin-top: 28px;
+}
+.sim-results-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.sim-results-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text, #1e293b);
+}
+.sim-results-sub {
+  font-size: 12px;
+  color: var(--text3, #94a3b8);
+  margin-top: 3px;
+}
+
+/* ── Loan Simulation — export button ────────────────────────────────────── */
+.btn-sim-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 18px;
+  background: var(--surface2, #f1f5f9);
+  border: 1px solid var(--border2, #cbd5e1);
+  border-radius: 8px;
+  color: var(--text2, #475569);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  white-space: nowrap;
+}
+.btn-sim-export:hover {
+  background: var(--surface3, #e2e8f0);
+  border-color: var(--text3, #94a3b8);
+}
+
+/* ── Loan Simulation — summary cards ────────────────────────────────────── */
+.sim-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.sim-summary-card {
+  background: var(--surface2, #f1f5f9);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--card-accent, #7c3aed);
+}
+.sim-summary-card.sc-purple { --card-accent: #7c3aed; }
+.sim-summary-card.sc-blue   { --card-accent: #2563eb; }
+.sim-summary-card.sc-green  { --card-accent: #16a34a; }
+.sim-summary-card.sc-orange { --card-accent: #ea580c; }
+.sim-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text3, #94a3b8);
+  margin-bottom: 6px;
+}
+.sim-card-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text, #1e293b);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Loan Simulation — schedule table ───────────────────────────────────── */
+.sim-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.sim-schedule-table thead tr {
+  background: var(--surface2, #f1f5f9);
+}
+.sim-schedule-table th {
+  padding: 9px 12px;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text3, #94a3b8);
+  border-bottom: 2px solid var(--border, #e2e8f0);
+  white-space: nowrap;
+}
+.sim-schedule-table th:first-child,
+.sim-schedule-table th:nth-child(2) { text-align: left; }
+.sim-schedule-table td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border, #e2e8f0);
+  color: var(--text, #1e293b);
+}
+.sim-schedule-table td:first-child,
+.sim-schedule-table td:nth-child(2) { text-align: left; }
+.sim-schedule-table tbody tr:hover { background: var(--surface2, #f1f5f9); }
+
+/* Disbursement row */
+.sim-disb-row td {
+  background: #eff6ff;
+  font-weight: 600;
+  color: #1d4ed8;
+}
+.sim-disb-row:hover td { background: #dbeafe; }
+
+/* Total row */
+.sim-total-row td {
+  background: var(--surface2, #f1f5f9);
+  border-top: 2px solid var(--border2, #cbd5e1);
+  font-size: 13px;
+}
+
+/* ── Loan Simulation — open loan bar ────────────────────────────────────── */
+.sim-open-loan-bar {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-sim-open-loan {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 28px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .15s;
+  box-shadow: 0 2px 8px rgba(22,163,74,.25);
+}
+.btn-sim-open-loan:hover { opacity: .88; }
+
+/* ── Loan Simulation — loan opened success message ──────────────────────── */
+.sim-loan-opened-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #15803d;
+}
+.sim-loan-opened-msg::before {
+  content: '✓';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #16a34a;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Loan Simulation — reset button ─────────────────────────────────────── */
+.sim-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  background: transparent;
+  border: 1px solid var(--border2, #cbd5e1);
+  border-radius: 6px;
+  color: var(--text3, #94a3b8);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.sim-reset-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #e74c3c;
+}
+
+/* ── Dark-mode overrides for sim ─────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sim-disb-row td {
+    background: rgba(29,78,216,.2);
+    color: #93c5fd;
+  }
+  :root:not([data-theme="light"]) .sim-disb-row:hover td {
+    background: rgba(29,78,216,.3);
+  }
+  :root:not([data-theme="light"]) .sim-loan-opened-msg {
+    background: rgba(22,163,74,.15);
+    border-color: rgba(134,239,172,.3);
+    color: #86efac;
+  }
+  :root:not([data-theme="light"]) .sim-loan-opened-msg::before {
+    background: #16a34a;
+    color: #fff;
+  }
+}
+:root[data-theme="dark"] .sim-disb-row td {
+  background: rgba(29,78,216,.2);
+  color: #93c5fd;
+}
+:root[data-theme="dark"] .sim-disb-row:hover td {
+  background: rgba(29,78,216,.3);
+}
+:root[data-theme="dark"] .sim-loan-opened-msg {
+  background: rgba(22,163,74,.15);
+  border-color: rgba(134,239,172,.3);
+  color: #86efac;
+}

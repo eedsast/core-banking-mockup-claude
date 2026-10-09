@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Processing Providers — Competitive Analysis</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f4ef; padding: 40px 24px; min-height: 100vh; color: #2c2c2a;
+  }
+  h1 { font-size: 20px; font-weight: 500; text-align: center; color: #1a1a18; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #888780; text-align: center; margin-bottom: 8px; }
+  .questions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 900px; margin: 0 auto 28px; }
+  .q-box { border-radius: 8px; padding: 10px 14px; font-size: 12px; line-height: 1.5; }
+  .q1 { background: #e6f1fb; border: 1px solid #378add; color: #0c447c; }
+  .q2 { background: #e1f5ee; border: 1px solid #1d9e75; color: #085041; }
+  .q-box strong { font-weight: 500; display: block; margin-bottom: 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin: 30px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #d3d1c7; }
+  .section-head h2 { font-size: 15px; font-weight: 500; color: #1a1a18; }
+  .section-head span { font-size: 11px; color: #888780; }
+
+  .platform { background: #ffffff; border: 1px solid #d3d1c7; border-radius: 14px; margin-bottom: 20px; overflow: hidden; }
+  .platform-header { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 0; border-bottom: 1px solid #ece9e0; }
+  .platform-identity { padding: 16px 18px; border-right: 1px solid #ece9e0; display: flex; flex-direction: column; justify-content: center; }
+  .platform-name { font-size: 16px; font-weight: 500; color: #1a1a18; margin-bottom: 2px; }
+  .platform-type { font-size: 11px; color: #888780; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .platform-target { font-size: 11px; color: #5f5e5a; line-height: 1.4; }
+
+  .verdict-cell { padding: 14px 16px; display: flex; flex-direction: column; justify-content: flex-start; gap: 5px; }
+  .vc-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .vc-q1 { border-right: 1px solid #ece9e0; }
+  .vc-q1 .vc-label { color: #185fa5; }
+  .vc-q2 .vc-label { color: #085041; }
+
+  .verdict-badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-bottom: 4px; }
+  .vb-sep   { background: #e6f1fb; color: #0c447c; border: 0.5px solid #378add; }
+  .vb-int   { background: #faeeda; color: #633806; border: 0.5px solid #ba7517; }
+  .vb-both  { background: #eeedfe; color: #26215c; border: 0.5px solid #7f77dd; }
+  .vb-split { background: #e1f5ee; color: #085041; border: 0.5px solid #1d9e75; }
+  .vb-merge { background: #faece7; color: #4a1b0c; border: 0.5px solid #993c1d; }
+  .vb-mixed { background: #f1efe8; color: #444441; border: 0.5px solid #b4b2a9; }
+
+  .verdict-detail { font-size: 12px; color: #5f5e5a; line-height: 1.5; }
+
+  .platform-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .body-col { padding: 14px 18px; font-size: 12px; color: #2c2c2a; line-height: 1.6; }
+  .body-col:first-child { border-right: 1px solid #ece9e0; }
+  .body-col-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: #888780; margin-bottom: 8px; }
+  .point { display: flex; gap: 7px; margin-bottom: 5px; }
+  .point-dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: #b4b2a9; margin-top: 6px; }
+  .point-text { color: #5f5e5a; }
+  .point-text strong { color: #2c2c2a; font-weight: 500; }
+
+  .insight { background: #f1efe8; border-top: 1px solid #ece9e0; padding: 10px 18px; font-size: 11px; color: #5f5e5a; line-height: 1.55; display: flex; gap: 8px; align-items: flex-start; }
+  .insight-icon { flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+  .insight strong { color: #2c2c2a; font-weight: 500; }
+
+  .gen-tag { display: inline-block; font-size: 9px; font-weight: 500; padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+  .gen-cloud  { background: #e1f5ee; color: #085041; }
+  .gen-legacy { background: #faeeda; color: #633806; }
+  .gen-baas   { background: #eeedfe; color: #26215c; }
+
+  .matrix-section { margin-top: 32px; }
+  .matrix-title { font-size: 15px; font-weight: 500; color: #1a1a18; margin-bottom: 14px; }
+  .matrix-table { width: 100%; border-collapse: collapse; font-size: 11.5px; border-radius: 12px; overflow: hidden; }
+  .matrix-table th { padding: 10px 12px; text-align: left; font-weight: 500; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; background: #1a1a18; color: #f1efe8; }
+  .matrix-table td { padding: 9px 12px; border-bottom: 0.5px solid #ece9e0; background: #fff; vertical-align: top; line-height: 1.45; }
+  .matrix-table tr:last-child td { border-bottom: none; }
+  .matrix-table tr:nth-child(even) td { background: #fafaf8; }
+  .matrix-table td:first-child { font-weight: 500; color: #1a1a18; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  .yes { color: #085041; font-weight: 500; }
+  .no  { color: #993c1d; }
+  .unk { color: #888780; font-style: italic; }
+
+  .takeaway { background: #1a1a18; color: #f1efe8; border-radius: 14px; padding: 22px 24px; margin-top: 24px; }
+  .takeaway h3 { font-size: 12px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .takeaway-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .tk { display: flex; gap: 8px; font-size: 12px; color: #d3d1c7; line-height: 1.55; margin-bottom: 8px; }
+  .tk::before { content: '→'; color: #9FE1CB; flex-shrink: 0; }
+
+  .sources { margin-top: 24px; padding: 16px 18px; background: #fff; border: 1px solid #d3d1c7; border-radius: 12px; font-size: 11px; color: #5f5e5a; line-height: 1.6; }
+  .sources h4 { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: #888780; margin-bottom: 8px; }
+  .sources a { color: #185fa5; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Card Processing Providers — Competitive Analysis</h1>
+  <p class="subtitle">14 providers evaluated for European EMI card programmes · BIN sponsorship, white-label issuing and acquiring</p>
+
+  <div class="questions">
+    <div class="q-box q1">
+      <strong>Q1 — Licence &amp; BIN sponsorship</strong>
+      Does the provider hold its own EMI or bank licence and principal scheme membership, and will it act as BIN sponsor? Or is it processing only, requiring a separate sponsor?
+    </div>
+    <div class="q-box q2">
+      <strong>Q2 — Product coverage</strong>
+      White-label issuing and acquiring in one place? Business/corporate cards? Revolving or credit cards, as opposed to debit and prepaid only?
+    </div>
+  </div>
+
+  <!-- ══ MODEL PRIMER ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Three roles, often confused</div>
+        <div class="platform-type">How to read this analysis</div>
+        <div class="platform-target">A card programme needs all three roles filled — by one provider or by several</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">The roles</div>
+        <span class="verdict-badge vb-mixed">Sponsor · Processor · Manager</span>
+        <div class="verdict-detail"><strong>BIN sponsor</strong> holds the licence and scheme membership and carries regulatory liability. <strong>Issuer-processor</strong> runs authorisation, clearing and settlement. <strong>Programme manager</strong> owns the customer, the product and the operations.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Why it matters to you</div>
+        <span class="verdict-badge vb-sep">Your platform is the fourth role</span>
+        <div class="verdict-detail">The core banking platform is none of these. It holds the ledger and the customer record and must integrate cleanly with whichever combination the customer has already chosen — which means a processor-abstraction layer, not a single hard-wired integration.</div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Practical consequence:</strong> never quote a prospect on the assumption they will take your preferred card partner. Most arrive with an incumbent. Build one internal card API with adapters, certify two providers at launch, and treat the rest as a roadmap. Going direct to scheme membership typically costs 18+ months and substantial frozen collateral, versus roughly 8 weeks through a sponsor — which is why almost every EMI you sell to will be on a sponsored BIN.</div></div>
+  </div>
+
+  <div class="section-head"><h2>Licensed BIN sponsors — issuing-led</h2><span>Hold their own EMI licence and principal scheme membership. One contract covers licence, scheme access and processing.</span></div>
+
+  <!-- ══ ENFUCE ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Enfuce <span class="gen-tag gen-cloud">Dual-licensed EMI</span></div>
+        <div class="platform-type">BIN sponsor + issuer-processor · Finland/UK</div>
+        <div class="platform-target">Banks, EMIs, challenger lenders, non-financial brands, large enterprises · EEA + UK</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-split">Full BIN sponsorship, dual-regulated</span>
+        <div class="verdict-detail">Principal member of both Visa and Mastercard. Enfuce License Services sponsors in the EEA under a FIN-FSA EMI authorisation passported EU-wide; Enfuce UK sponsors in the UK under FCA EMI authorisation. Sponsorship bundles the e-money licence and the scheme membership.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-sep">Debit, prepaid and credit · consumer + corporate</span>
+        <div class="verdict-detail">Sponsors debit, prepaid and credit programmes, explicitly supporting both consumer and corporate. Issuing-only: no acquiring. Supports new BINs and BIN migration.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Dual EMI authorisation (FIN-FSA passported to EEA, UK FCA) — one of the few providers covering both post-Brexit perimeters under own licences</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Principal member of Visa <em>and</em> Mastercard — dual-scheme without bringing in a partner</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Compliance umbrella covers PSD2, AML, PCI DSS and GDPR obligations for the sponsored programme</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Modular: issuing-only or full programme support including front-end services and card bureau</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Prefund account mechanics: the sponsor holds customer funds as security covering several days of expected transaction volume — your ledger must model this collateral position</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Where the customer has no EMI licence, cards are issued under Enfuce's licence and Enfuce is the numeric user of the BIN — the end customer is a co-brand, not an issuer</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">No acquiring: customers needing acceptance will still need a second provider</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Strong public API documentation — a straightforward first adapter to build</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> the cleanest single-contract answer for an EEA+UK issuing programme, and the best documented. Dual-scheme principal membership removes the Visa-or-Mastercard constraint that limits Wallester and Swan. Strong candidate for your first certified adapter.</div></div>
+  </div>
+
+  <!-- ══ PAYNETICS ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Paynetics <span class="gen-tag gen-cloud">Dual-licensed EMI</span></div>
+        <div class="platform-type">Issuing + acquiring + IBAN · Bulgaria/UK</div>
+        <div class="platform-target">Fintechs, telcos, retailers, PSPs, smaller banks · B2B and B2B2C</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-split">BIN <em>and</em> IBAN sponsorship</span>
+        <div class="verdict-detail">EU EMI (Bulgaria) plus a UK FCA EMI licence granted in 2023, allowing programmes to be deployed across both perimeters. Principal member of Visa, Mastercard and UnionPay International, and a member of SEPA and SWIFT.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-both">Widest scope: issuing + acquiring</span>
+        <div class="verdict-detail">The rare provider doing card acceptance <em>and</em> issuance across mobile, e-wallet, online, digital and physical cards and POS, alongside IBAN accounts, transfers, tokenisation and software POS.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Three-scheme principal membership including UnionPay across the EEA — relevant for programmes targeting Asian cardholder corridors</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Publishes both <strong>BIN sponsorship</strong> and <strong>IBAN sponsorship</strong> as named services — one counterparty can cover both card and account rails</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">E-commerce and face-to-face acquiring, with a stated appetite for higher-risk merchant categories</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Android-agnostic software POS — an unusual capability among EMI sponsors</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Single-counterparty coverage of cards <em>and</em> IBANs simplifies the integration surface, but concentrates counterparty risk — see the risk card below</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Acquiring plus issuing means your Marketplace and Merchant propositions can be served from one partner</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Revolving/credit programme support is not clearly stated in public materials — verify directly before promising it</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Bulgarian EMI base: some conservative enterprise prospects will ask about the supervisory jurisdiction</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> the broadest functional coverage in this analysis, and the only provider here that credibly covers BIN sponsorship, IBAN sponsorship and acquiring together. If your target customer is a small EMI that wants one infrastructure counterparty, Paynetics is the reference partner to design against.</div></div>
+  </div>
+
+  <!-- ══ WALLESTER ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Wallester <span class="gen-tag gen-cloud">Visa principal</span></div>
+        <div class="platform-type">White-label issuing + expense management · Estonia/UK</div>
+        <div class="platform-target">Fintech startups, corporates, non-financial brands · EEA + UK</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-split">Sponsor and issuer — Visa-centric</span>
+        <div class="verdict-detail">Visa Principal Member, regulated in Estonia by the Estonian Financial Supervision Authority, with Wallester UK authorised by the FCA as an EMI. Acts as BIN sponsor and issuer of record, handling settlement, licensing and scheme compliance.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-sep">Debit, prepaid and credit · strong on business</span>
+        <div class="verdict-detail">White-label covers debit, prepaid and credit, physical and virtual, with business accounts carrying an IBAN as standard and a mature expense-management layer with per-user, per-category and per-merchant spend limits.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Visa Principal Member — Mastercard programmes require bringing in a partner, a real constraint for dual-scheme propositions</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Self-service portal for programme configuration, card art and controls, with a documented REST API</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Commercially aggressive: a free tier covering up to 300 virtual cards, then paid plans</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Founded 2016 — younger codebase and a smaller footprint outside the EEA than the incumbent processors</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Competitive overlap:</strong> Wallester bundles business accounts, IBANs and expense management free or cheap with issuing — it competes with your Tier 2 Expense Management module, not just complements it</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Position your expense module as processor-agnostic, working across issuers; do not compete on Wallester's own programmes</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Single-scheme limitation means customers wanting Mastercard will look elsewhere — an argument for your abstraction layer</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Good fit for corporate card and expense use cases specifically</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> the strongest business-card specialist in the set, and the clearest example of a card partner that is also a partial competitor. Integrate it, but do not build your SME proposition on top of a provider whose own product occupies the same space.</div></div>
+  </div>
+
+  <!-- ══ MONAVATE ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Monavate <span class="gen-tag gen-cloud">UK EMI</span></div>
+        <div class="platform-type">White-label issuing + programme management · UK</div>
+        <div class="platform-target">Fintechs and platforms launching card programmes · UK-centric</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-split">BIN and ATM BIN sponsorship</span>
+        <div class="verdict-detail">An EMI authorised and regulated by the FCA, focused specifically on white-label card solutions. Offers BIN sponsorship, ATM BIN sponsorship and white-label banking, plus reseller, EMD-agent and standalone-licence routes.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-mixed">Plastic, virtual and crypto cards</span>
+        <div class="verdict-detail">Issues plastic, virtual and crypto cards with modular programme-management infrastructure. Business-card and revolving-credit support is not clearly documented publicly — confirm directly.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Three cooperation models: reseller agreement, assisted EMD agent registration, or assisted own-licence application — flexible regulatory ramp</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">ATM BIN sponsorship is unusual and useful for cash-access propositions</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Small UK EMI by assets — around 0.47% of the UK e-money market, ranking in the mid-30s among domestic EMIs</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">UK-only licence perimeter: EEA programmes need a separate arrangement post-Brexit</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Scale matters in sponsorship: smaller sponsors carry more concentration risk and less negotiating power with the schemes</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Crypto card support is a differentiator for the digital-asset segment, which larger sponsors often decline</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Public profile data is dated — treat the licence and market-share figures as needing re-verification against the FCA register</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Lower integration priority than Enfuce or Paynetics for an EU-focused platform</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> a credible UK-only option with flexible regulatory models, best suited to customers whose market is Britain. For an EU-first platform, keep on the roadmap rather than the launch list, and verify current standing before quoting it to anyone.</div></div>
+  </div>
+
+  <!-- ══ FINXP ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">FinXP <span class="gen-tag gen-cloud">Malta EMI</span></div>
+        <div class="platform-type">Mastercard principal · BIN sponsorship + IBAN · Malta</div>
+        <div class="platform-target">Programme managers and merchants needing EU coverage from a Maltese base</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-split">Mastercard-only sponsorship</span>
+        <div class="verdict-detail">MFSA-licensed EMI and Mastercard Principal Member, also a SWIFT member. Launches branded Mastercard programmes under FinXP's licence, subject to eligibility and approval.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-sep">Issuing + broad payment acceptance</span>
+        <div class="verdict-detail">Branded physical and virtual Mastercard issuing alongside payment acceptance spanning a very large set of payment methods and countries. Revolving-credit support not publicly specified.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Single-scheme (Mastercard) sponsorship — the mirror image of Wallester's Visa-only constraint</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Malta base gives EU passporting with a regulator experienced in payments and gaming-adjacent flows</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Notably runs <strong>Oracle FLEXCUBE</strong> as its own core banking system — a legacy universal-banking core behind a modern EMI proposition</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Combines issuing with IBAN accounts and a wide payment-method catalogue</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">FinXP running FLEXCUBE is a live demonstration of your market thesis: EMIs are being served by cores designed for 1990s universal banks</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Providers like this are simultaneously a card partner and a <strong>prospect</strong> for your core — worth tracking as a sales target, not only an integration</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Scheme-single sponsorship again argues for your abstraction layer</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Eligibility is assessed case by case; approval is not guaranteed for higher-risk programmes</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> a secondary sponsor option, but strategically interesting for a different reason. An MFSA EMI with a Mastercard principal membership, SWIFT access and a legacy Oracle core is precisely the profile of customer your platform exists to replace.</div></div>
+  </div>
+
+  <!-- ══ B4B / BANKING CIRCLE ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">B4B Payments <span class="gen-tag gen-baas">Banking Circle group</span></div>
+        <div class="platform-type">BIN sponsorship + programme management · UK/Lithuania</div>
+        <div class="platform-target">EMIs and PIs progressing towards their own scheme membership; unregulated brands</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-split">Dual-perimeter e-money licences</span>
+        <div class="verdict-detail">Partners may operate under B4B's FCA (UK) and Bank of Lithuania (EU) e-money licences, removing the need for their own EMI authorisation. Eligibility is assessed individually against regulatory permissions and scheme requirements.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-both">Cards plus accounts and payments</span>
+        <div class="verdict-detail">Physical and virtual programmes including tokenised cards for Apple Pay and Google Pay, with regulatory coverage extending beyond cards to accounts and payment services more broadly.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Explicitly framed as a <strong>transitional</strong> arrangement: launch under sponsorship while your own scheme membership progresses, then graduate</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Connects into the wider Banking Circle lifecycle — at sufficient scale, a direct Banking Circle relationship becomes available</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Virtual accounts and vIBANs per loan or debtor for automated reconciliation sit alongside the card programme</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Backed by Banking Circle's balance sheet and direct scheme access — materially lower counterparty risk than a standalone small EMI</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">The graduation model mirrors your own lifecycle proposition — sponsored today, direct tomorrow. Natural strategic alignment</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Group coverage of cards, accounts, vIBANs and scheme access makes this a candidate for a single deep integration rather than two</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Prepaid and expense heritage: historically stronger in disbursement and expense than in full retail debit</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Revolving credit is not a stated capability</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> the lowest-counterparty-risk sponsor in the set because of the Banking Circle parentage, and philosophically the closest to your lifecycle positioning. Strong candidate for the second certified adapter, and the one to pair with the payments-side Banking Circle integration.</div></div>
+  </div>
+
+  <!-- ══ EDENRED PAYMENT SOLUTIONS ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Edenred Payment Solutions <span class="gen-tag gen-cloud">Dual-licensed EMI</span></div>
+        <div class="platform-type">BIN sponsorship + in-house processing · UK/Belgium · formerly PrePay Solutions / PPS</div>
+        <div class="platform-target">Fintechs, neobanks, brands, insurers, retailers and platforms · Tide, Sainsbury's, Oney, Countingup, PayByPhone</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-split">BIN sponsorship + agent model</span>
+        <div class="verdict-detail">An Electronic Money Institution regulated by the FCA in the UK and the NBB in Belgium, and a Mastercard Principal Member and Visa primary issuer. Offers two regulatory routes: act as BIN sponsor for an already-regulated institution, or take an unregulated partner on as an <strong>agent under its own e-money licence</strong>.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-both">Cards + e-money accounts + in-house processing</span>
+        <div class="verdict-detail">Virtual and physical cards with Apple Pay, Google Pay and Samsung Pay tokenisation, UK and EU e-money accounts with Faster Payments and SEPA, and a configurable in-house Mastercard processor with 24/7 clearing and settlement. Gift and closed-loop programmes alongside open-loop.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Dual UK/EU perimeter under its own licences, like Enfuce and Paynetics — one of only a handful of providers covering both post-Brexit</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Owns the processor as well as the licence</strong>, so sponsorship and processing come from one counterparty with no third party in between</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">The <strong>agent model is the distinguishing feature</strong>: an unregulated brand can go live under Edenred's e-money licence without obtaining its own EMI authorisation</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Backed by Edenred, a large listed group — materially stronger balance sheet than an independent EMI sponsor</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Programme management, design and integration, customer service and fraud services available as wraparound</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>The agent model widens your addressable market.</strong> It lets you sell the platform to an unregulated brand that has no licence and no intention of getting one — a segment otherwise only reachable through BaaS competitors</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Deep prepaid, gift and benefits heritage; verify full retail debit and revolving credit support against a specific programme before promising it</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Mastercard-led. Visa capability is stated as primary issuer but Mastercard is clearly the centre of gravity</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Business cards and revolving credit are not named in public materials — one listed customer runs a consumer credit and BNPL card programme, which is suggestive but not confirmation</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> the lowest-counterparty-risk sponsor in the set on balance-sheet grounds, and the only one offering a documented <strong>agent model</strong> as an alternative to sponsorship. That matters strategically: it is the one card partner that lets your platform serve customers who will never hold a licence, without you becoming a BaaS.</div></div>
+  </div>
+
+  <div class="section-head"><h2>Issuer-processors and platform vendors — no licence, no sponsorship</h2><span>Processing scale and product depth, but the customer must bring a separate BIN sponsor or hold its own membership.</span></div>
+
+  <!-- ══ MARQETA ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Marqeta <span class="gen-tag gen-baas">Processor + EMI (TransactPay)</span></div>
+        <div class="platform-type">Largest independent issuer-processor · US/UK/EU</div>
+        <div class="platform-target">Scaled fintechs and enterprises · debit, credit and prepaid</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-both">Acquired its way into sponsorship</span>
+        <div class="verdict-detail">Historically processing-only. Its 2025 acquisition of EMI TransactPay added BIN sponsorship and programme management across the UK and EU, making Marqeta a single-contract option in Europe for the first time.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-sep">Debit, credit and prepaid at scale</span>
+        <div class="verdict-detail">Full debit, credit and prepaid coverage with the deepest just-in-time funding and card-provisioning API in the market — the company that turned card issuing into an API in the early 2010s.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Cleared roughly $383 billion of processing volume in 2025 and reported its first GAAP-profitable quarter in early 2026 — scale and, now, financial stability</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">The TransactPay acquisition anchors European issuing in an EMI, the standard route for EU card programmes</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Developer sandbox and just-in-time funding remain the category benchmark</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Genuine credit-card capability, not debit dressed up as credit</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Just-in-time funding is architecturally significant: the processor calls <em>your</em> ledger at authorisation time, so your core must answer within the scheme timeout</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">That pattern is the right one to design your card adapter around, regardless of which processor a customer picks</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Pricing and minimums are oriented to scaled programmes — likely above the budget of your early EMI prospects</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">US-centric company culture and support model; EU coverage is newer</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> the processor to design your integration <em>pattern</em> against, even if few early customers use it. Just-in-time funding against an external ledger is the hardest card integration to support, so if your adapter handles Marqeta it handles everyone.</div></div>
+  </div>
+
+  <!-- ══ BPC ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">BPC <span class="gen-tag gen-baas">Platform vendor + processor</span></div>
+        <div class="platform-type">SmartVista · licensed software or SaaS processing · Switzerland</div>
+        <div class="platform-target">Banks and licensed institutions wanting to run their own card platform · strong CEE and Baltic presence</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-int">No licence, no sponsorship — technology</span>
+        <div class="verdict-detail">BPC is a payments software and processing vendor, not a regulated issuer. Public materials describe SmartVista as "card management as a service"; nothing indicates BPC holds a licence or acts as BIN sponsor. The customer brings its own scheme membership or a separate sponsor.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-sep">Issuing, switching, full card estate</span>
+        <div class="verdict-detail">Mastercard and Visa debit and credit programmes, tokenisation for Apple Pay and Google Pay, real-time fraud management and analytics. SmartVista historically spans issuing, acquiring and switching, which makes BPC broader than a pure issuer-processor.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Long-established platform vendor with a large installed base among banks, including processors and national switches — the opposite end of the market from the API-first startups</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">SmartVista is now offered cloud-native and microservices-based, delivered fully in SaaS mode, alongside the traditional licensed deployment</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Live reference in your target geography: Artea Bank, a Lithuanian commercial bank, migrated to cloud-native SmartVista to power Mastercard issuing, with stated expansion across the Baltics</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Marketing explicitly cites PSD2, GDPR and DORA alignment — a vendor used to selling into supervised institutions</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Partner and competitor at once.</strong> A bank that buys SmartVista as its card platform may also want a core; a bank that buys BPC's wider estate is buying something adjacent to what you sell</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Strong fit for the <em>small-bank</em> end of your market rather than the EMI end — institutions that want to own the card platform rather than consume a sponsor's</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Because BPC provides no licence, a customer on BPC still needs a BIN sponsor — so your adapter must support the split "platform here, sponsorship there" shape</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Enterprise sales cycle and implementation profile; not a self-serve integration</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> relevant where the customer is a small or mid-sized bank in CEE or the Baltics that already runs, or is buying, its own card platform. Treat it as an integration target rather than a recommendation, and note the Artea reference as proof that modern cloud card platforms are landing in exactly the institutions you are targeting.</div></div>
+  </div>
+
+  <!-- ══ RS2 ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">RS2 <span class="gen-tag gen-baas">Platform vendor + managed processing</span></div>
+        <div class="platform-type">BankWORKS · issuing + acquiring · Malta</div>
+        <div class="platform-target">Banks, PSPs, ISVs, payment facilitators and ISOs · 30+ European markets via partnership</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-int">Processing and managed services only</span>
+        <div class="verdict-detail">RS2 describes itself as a provider of payment technology and processing services; public materials do not indicate it holds a licence or scheme membership of its own. In its managed-acquiring arrangement with PXP, the <em>partner</em> is the Visa and Mastercard Principal Member — RS2 supplies the processing.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-both">Issuing <em>and</em> acquiring on one platform</span>
+        <div class="verdict-detail">A cloud-native platform covering both sides of the card transaction, with an orchestration layer, analytics, reporting and reconciliation. RS2 Smart Processing adds managed acquiring and card scheme processing: real-time authorisation, interchange prediction, scheme fee calculation, clearing and settlement, dispute management and reconciliation.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Dual issuing-and-acquiring coverage from one platform is genuinely uncommon in this set — most providers do one side well</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Malta-headquartered and publicly listed, which makes financial standing verifiable — a real advantage when your customer's procurement assesses counterparty risk</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">RS2 Smart Processing is the processing subsidiary running BankWORKS as a managed service rather than licensed software</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Partnership model extends reach across 30+ European markets including the UK, DACH, France, Italy, Iberia, the Nordics and Central and Eastern Europe</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>The strongest option where a customer needs acquiring as well as issuing</strong> — relevant to the Marketplace and merchant propositions, where Paynetics is otherwise the only route</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Interchange prediction and scheme fee calculation are exactly the data your GL needs to accrue card economics correctly; most processors expose this poorly</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">No licence means the customer still needs a sponsor or its own membership — same split shape as BPC</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Enterprise and institutional orientation; verify minimum volumes before proposing it to an early-stage EMI</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> the most interesting of the four additions, because dual issuing-and-acquiring coverage plus clean interchange and scheme-fee data solves two problems at once — merchant acceptance for your marketplace customers, and accurate card-economics accrual in the ledger. Worth a direct conversation on minimum volumes and whether managed processing can be resold through your platform.</div></div>
+  </div>
+
+  <!-- ══ PAYMENTOLOGY ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Paymentology <span class="gen-tag gen-baas">Issuer-processor</span></div>
+        <div class="platform-type">Processing only · global, emerging-market strength</div>
+        <div class="platform-target">Digital banks and fintechs, including core-banking vendor partnerships</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-int">No sponsorship — processing only</span>
+        <div class="verdict-detail">Card issuing and processing on Visa, Mastercard and domestic switches. No BIN sponsorship: the customer brings scheme membership or a sponsor.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-sep">Debit, prepaid, credit · broad geography</span>
+        <div class="verdict-detail">Full issuing and processing with unusually wide domestic-switch coverage, making it the common choice for multi-market programmes outside the core EEA.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Pre-integrated with 10x Banking's SuperCore as its card partner — the reference example of the "core plus specialist processor" model</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Single API across Visa, Mastercard and domestic switches</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Strongest in emerging markets, where sponsor options are thin</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Processing-only posture keeps the regulatory relationship with the customer</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">10x's partnership is the template for how a core vendor packages cards without building a processor — exactly your intended approach</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">It also illustrates the risk 10x carries: a single pre-integrated partner is a dependency. Certify two, not one</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Less relevant for a pure-EEA customer base than Enfuce or the European platform vendors</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Useful if you later target Africa, the Middle East or Asia-Pacific EMIs</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> roadmap rather than launch for an EEA-first platform, but worth studying as the model for how a core banking vendor structures a card partnership without taking on processing itself.</div></div>
+  </div>
+
+  <div class="section-head"><h2>BaaS platforms issuing under their own licence</h2><span>Cards arrive bundled with accounts. Convenient for the end customer, and partly competitive with your platform.</span></div>
+
+  <!-- ══ SWAN ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Swan <span class="gen-tag gen-baas">French EMI</span></div>
+        <div class="platform-type">Embedded banking · accounts + cards + SEPA</div>
+        <div class="platform-target">European SaaS platforms embedding accounts and cards for SME users</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-both">Own EMI licence, not a sponsor</span>
+        <div class="verdict-detail">Holds its own EMI licence authorised by the ACPR and regulated by the Banque de France, and is a Mastercard principal member. Partners operate under Swan's licence rather than taking a BIN sponsorship for their own programme.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-mixed">Mastercard only, debit-led</span>
+        <div class="verdict-detail">Digital-first Mastercards linked to Apple Pay and Google Pay, physical cards available, issued against accounts that carry local IBANs in France, Germany, Spain, Italy and the Netherlands. No Visa option.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Built its own core banking infrastructure rather than white-labelling someone else's — full control of its product roadmap</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">GraphQL API and sandbox widely regarded as the most developer-friendly in European embedded banking</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Local IBAN coverage limited to five countries; partners in Poland, Lithuania or Portugal hit that gap quickly</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">EMI, not a bank: no direct lending</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Direct competitor, not a partner.</strong> Swan built its own core and sells the whole stack — a prospect choosing Swan is a prospect not buying core banking software</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Your counter-positioning: Swan's partners operate inside Swan's licence and product boundaries; your customers keep their own licence, their own IBAN range and their own product control</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Swan's five-country local IBAN ceiling and single-scheme limit are the concrete objections to raise in competitive deals</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Its developer experience is the bar your API has to clear</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> competitor rather than card partner. Worth studying closely for API design, and worth having a prepared answer for, because every EU embedded-finance prospect will have looked at Swan.</div></div>
+  </div>
+
+  <!-- ══ TREEZOR ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Treezor <span class="gen-tag gen-baas">French EMI</span></div>
+        <div class="platform-type">BaaS · accounts, cards, SEPA · ownership in transition</div>
+        <div class="platform-target">French-market fintechs and brands embedding payments</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-both">Own EMI licence · owner changing</span>
+        <div class="verdict-detail">French EMI with EU passporting, owned by Société Générale. Exclusive negotiations to sell Treezor to fintech Shares were announced in January 2026 and had not been confirmed as closed at the time of writing.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-mixed">Mastercard, debit-led, France-first</span>
+        <div class="verdict-detail">Regulated payment accounts, card issuing and SEPA connectivity, with deep knowledge of French market requirements. Comparable scheme and IBAN limitations to Swan.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Société Générale ownership has been the principal trust argument — and that argument changes if the sale completes</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Long track record powering French fintech accounts and cards</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Middleware-plus-licence positioning closer to Swan than to a pure BIN sponsor</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">France-weighted coverage; less compelling outside that market</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Ownership transition is a procurement red flag.</strong> Any customer mid-integration with Treezor should be asked how they are hedging it</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Also an opportunity: platform migrations cluster around ownership changes, and migrating off a BaaS onto an own-licence core is exactly your sale</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Like Swan, competitor more than partner</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Verify the current ownership position before citing it in any customer-facing material</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> not a partner candidate, but a live source of displaced customers. Bank-owned BaaS assets changing hands create exactly the uncertainty that triggers re-platforming decisions.</div></div>
+  </div>
+
+  <!-- ══ SOLARIS ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Solaris <span class="gen-tag gen-baas">German bank licence</span></div>
+        <div class="platform-type">BaaS · full banking licence · BaFin-supervised</div>
+        <div class="platform-target">Non-bank brands, fintechs and neobanks embedding regulated services</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
+        <span class="verdict-badge vb-int">Bank licence, bundled — not sponsorship</span>
+        <div class="verdict-detail">A licensed German bank rather than a BIN sponsor. Partners consume regulated card and account services via one API under Solaris's BaFin supervision; there is no separately licensed Payments or Cards module.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Product coverage</div>
+        <span class="verdict-badge vb-both">Cards, accounts, lending, custody</span>
+        <div class="verdict-detail">Digital accounts, payment cards, card issuing and processing, lending and digital-asset custody — the widest regulated product set here, because the bank licence permits deposit-taking and lending that EMIs cannot do.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">The full banking licence is the differentiator: regulatory compliance is bundled with the technology, not merely licensed alongside it</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Lending capability means genuine revolving credit is possible, unlike at EMI-only sponsors</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">No modular pricing by service type is publicly disclosed — all-in BaaS commercials</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Also appears in the core banking analysis: Solaris is a platform competitor as well as a card provider</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Implications for your platform</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">A customer on Solaris has outsourced the licence as well as the technology; they are not buying core banking software</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">The segment that <em>leaves</em> Solaris — brands that grew enough to want their own licence and economics — is a high-quality prospect list for you</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Revolving credit under a bank licence is a capability your EMI customers structurally cannot match without a partner lender</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Not a card-partner candidate</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> competitor, and a useful illustration of the ceiling your EMI customers face. Any revolving-credit proposition they want either needs a bank licence or a funding partner — design the credit module for both.</div></div>
+  </div>
+
+  <!-- ══ COUNTERPARTY RISK ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Counterparty risk <span class="gen-tag gen-legacy">Cross-cutting</span></div>
+        <div class="platform-type">The failure mode nobody prices in</div>
+        <div class="platform-target">Applies to every sponsored programme in this document</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">What happened</div>
+        <span class="verdict-badge vb-merge">Sponsor failure is not hypothetical</span>
+        <div class="verdict-detail">The Bank of Lithuania revoked UAB PayrNet's EMI licence over gross and systematic AML and payments-law violations, initiated bankruptcy proceedings and required funds to be returned. PayrNet was the European licensed entity behind Railsr and served a large number of downstream fintechs.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">What it means for your design</div>
+        <span class="verdict-badge vb-split">Sponsor portability is a feature</span>
+        <div class="verdict-detail">When the sponsor goes, the programme goes: cards stopped working and client funds were frozen pending bankruptcy. The platforms that recovered fastest were the ones that could re-point to a second sponsor without rebuilding.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Risk factors to assess per sponsor</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Balance-sheet strength and parentage — a Banking Circle or Société Générale subsidiary is a different risk class from a small independent EMI</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Supervisory history: public enforcement actions, activity restrictions, licence conditions</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Business model concentration — sponsors operating exclusively through intermediaries and agents have proved the most fragile</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Prefund exposure: how much of your customer's money sits with the sponsor as security at any moment</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Mitigations to build into the product</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Processor and sponsor abstraction so a programme can be re-pointed without application changes</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Data portability: card tokens, mandates, balances and transaction history exportable in a standard format on demand</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Dual-sponsor capability for customers at scale — run two BINs in parallel</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Prefund and settlement position visible in the customer's own ledger, not only in the sponsor's portal</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>This is a sales argument, not just an engineering one.</strong> Every EMI founder who lived through 2023 understands sponsor risk viscerally. "Your programme survives your sponsor" is a sharper pitch than any feature comparison, and it is a direct consequence of architecture decisions you would make anyway.</div></div>
+  </div>
+
+  <!-- ══ SUMMARY MATRIX ══ -->
+  <div class="matrix-section">
+    <div class="matrix-title">Summary matrix — 14 providers</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th style="width:13%;">Provider</th>
+          <th style="width:13%;">Model</th>
+          <th style="width:14%;">Own licence</th>
+          <th style="width:10%;">BIN sponsor</th>
+          <th style="width:11%;">Business cards</th>
+          <th style="width:11%;">Revolving / credit</th>
+          <th style="width:9%;">Acquiring</th>
+          <th style="width:19%;">Priority for you</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Enfuce</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Sponsor + processor</td>
+          <td>EMI — FIN-FSA (EEA) + FCA (UK)</td>
+          <td class="yes">Yes · Visa + MC</td>
+          <td class="yes">Yes — corporate programmes</td>
+          <td class="yes">Yes — credit sponsored</td>
+          <td class="no">No</td>
+          <td><strong>Adapter 1.</strong> Dual-scheme, dual-perimeter, best documented.</td>
+        </tr>
+        <tr>
+          <td>Paynetics</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Sponsor + processor + acquirer</td>
+          <td>EMI — Bulgaria + FCA (UK)</td>
+          <td class="yes">Yes · Visa, MC, UnionPay</td>
+          <td class="yes">Yes — B2B and B2B2C</td>
+          <td class="unk">Not publicly stated</td>
+          <td class="yes">Yes — e-com + POS</td>
+          <td><strong>Adapter 2 candidate.</strong> Only provider covering BIN + IBAN + acquiring.</td>
+        </tr>
+        <tr>
+          <td>Wallester</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Sponsor + processor</td>
+          <td>Estonia FSA; Wallester UK FCA EMI</td>
+          <td class="yes">Yes · Visa only</td>
+          <td class="yes">Yes — core strength</td>
+          <td class="yes">Yes — under white label</td>
+          <td class="no">No</td>
+          <td>Integrate, but partial competitor on expense management.</td>
+        </tr>
+        <tr>
+          <td>Monavate</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Sponsor + programme mgmt</td>
+          <td>EMI — FCA (UK only)</td>
+          <td class="yes">Yes · incl. ATM BIN</td>
+          <td class="unk">Not publicly stated</td>
+          <td class="unk">Not publicly stated</td>
+          <td class="no">No</td>
+          <td>Roadmap. UK-only; small sponsor — re-verify standing.</td>
+        </tr>
+        <tr>
+          <td>FinXP</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Sponsor + acceptance</td>
+          <td>EMI — MFSA (Malta)</td>
+          <td class="yes">Yes · Mastercard only</td>
+          <td class="unk">Not publicly stated</td>
+          <td class="unk">Not publicly stated</td>
+          <td class="yes">Yes — broad methods</td>
+          <td>Low as partner. <strong>High as a prospect</strong> — runs FLEXCUBE.</td>
+        </tr>
+        <tr>
+          <td>B4B Payments</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Sponsor + programme mgmt</td>
+          <td>E-money — FCA (UK) + Bank of Lithuania (EU)</td>
+          <td class="yes">Yes · transitional model</td>
+          <td class="yes">Yes — expense heritage</td>
+          <td class="unk">Not stated</td>
+          <td class="unk">Via group</td>
+          <td><strong>Adapter 2 candidate.</strong> Lowest counterparty risk; graduation model fits yours.</td>
+        </tr>
+        <tr>
+          <td>Edenred Payment Solutions</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Sponsor + agent model + own processor</td>
+          <td>EMI — FCA (UK) + NBB (Belgium)</td>
+          <td class="yes">Yes · plus agent model</td>
+          <td class="unk">Not publicly stated</td>
+          <td class="unk">Not publicly stated</td>
+          <td class="unk">Not stated</td>
+          <td><strong>Add early.</strong> Agent model reaches customers who will never hold a licence. Owns licence + processor.</td>
+        </tr>
+        <tr>
+          <td>Marqeta</td>
+          <td><span class="dot" style="background:#7f77dd;"></span>Processor + EMI via TransactPay</td>
+          <td>EMI via 2025 TransactPay acquisition (UK/EU)</td>
+          <td class="yes">Yes — since 2025</td>
+          <td class="yes">Yes</td>
+          <td class="yes">Yes — true credit</td>
+          <td class="no">No</td>
+          <td>Design the adapter pattern against it; few early customers.</td>
+        </tr>
+        <tr>
+          <td>BPC</td>
+          <td><span class="dot" style="background:#7f77dd;"></span>Platform vendor + SaaS processing</td>
+          <td>None — technology vendor</td>
+          <td class="no">No — bring your own</td>
+          <td class="yes">Yes</td>
+          <td class="yes">Yes — credit programmes</td>
+          <td class="yes">Yes — SmartVista spans both</td>
+          <td>Integration target for small banks in CEE/Baltics. Live at Artea Bank (LT).</td>
+        </tr>
+        <tr>
+          <td>RS2</td>
+          <td><span class="dot" style="background:#7f77dd;"></span>Platform vendor + managed processing</td>
+          <td>None stated — PXP is the Principal Member</td>
+          <td class="no">No — bring your own</td>
+          <td class="yes">Yes</td>
+          <td class="yes">Yes</td>
+          <td class="yes">Yes — managed acquiring</td>
+          <td><strong>Best dual issuing+acquiring option.</strong> Clean interchange and scheme-fee data for the GL.</td>
+        </tr>
+        <tr>
+          <td>Paymentology</td>
+          <td><span class="dot" style="background:#7f77dd;"></span>Issuer-processor</td>
+          <td>None — processing only</td>
+          <td class="no">No — bring your own</td>
+          <td class="yes">Yes</td>
+          <td class="yes">Yes</td>
+          <td class="no">No</td>
+          <td>Roadmap. Relevant if you expand beyond the EEA.</td>
+        </tr>
+        <tr>
+          <td>Swan</td>
+          <td><span class="dot" style="background:#993c1d;"></span>BaaS on own licence</td>
+          <td>EMI — ACPR (France)</td>
+          <td class="no">No — partners use its licence</td>
+          <td class="yes">Yes — SME focus</td>
+          <td class="no">No — EMI, no lending</td>
+          <td class="no">No</td>
+          <td><strong>Competitor.</strong> Benchmark its API; prepare the counter-pitch.</td>
+        </tr>
+        <tr>
+          <td>Treezor</td>
+          <td><span class="dot" style="background:#993c1d;"></span>BaaS on own licence</td>
+          <td>EMI — France; SocGen-owned, sale pending</td>
+          <td class="no">No — partners use its licence</td>
+          <td class="yes">Yes</td>
+          <td class="no">No — EMI, no lending</td>
+          <td class="no">No</td>
+          <td><strong>Competitor.</strong> Ownership change = displaced-customer pipeline.</td>
+        </tr>
+        <tr>
+          <td>Solaris</td>
+          <td><span class="dot" style="background:#993c1d;"></span>BaaS on bank licence</td>
+          <td>Full bank licence — BaFin</td>
+          <td class="no">No — bundled service</td>
+          <td class="yes">Yes</td>
+          <td class="yes">Yes — lending permitted</td>
+          <td class="unk">Not stated</td>
+          <td><strong>Competitor.</strong> Its graduating customers are your prospects.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ FINAL TAKEAWAY ══ -->
+  <div class="takeaway">
+    <div class="takeaway-grid">
+      <div>
+        <h3>Q1 — Licence &amp; BIN sponsorship verdict</h3>
+        <div class="tk">Seven of fourteen providers hold their own EMI or bank licence and will act as BIN sponsor. Only <strong>Enfuce</strong>, <strong>Paynetics</strong> and <strong>Edenred</strong> combine dual-perimeter EEA+UK licences with principal scheme membership — everyone else is single-scheme, single-perimeter, or both.</div>
+        <div class="tk">Single-scheme sponsorship is the norm, not the exception: Wallester is Visa-only, FinXP and Swan are Mastercard-only. Any customer wanting both schemes needs either Enfuce, Paynetics, or two relationships — which is itself an argument for your abstraction layer.</div>
+        <div class="tk">The processors and platform vendors (Paymentology, BPC, RS2) carry no licence and sponsor nothing, which makes them the cleanest complements: no product overlap, no regulatory entanglement, and the customer keeps the scheme relationship. It also means every customer on them still needs a sponsor, so your adapter must support the split "platform here, sponsorship there" shape.</div>
+        <div class="tk">Marqeta buying TransactPay in 2025 confirms the direction of travel: processors are acquiring EMIs to offer a single contract in Europe. Expect further consolidation and design so that a partner changing shape does not break your customers.</div>
+      </div>
+      <div>
+        <h3>Q2 — Product coverage verdict</h3>
+        <div class="tk">Business cards are near-universal; <strong>revolving and credit are not</strong>. EMI-only sponsors cannot lend, so "credit" at an EMI is usually deferred debit or a partner-funded facility. Genuine revolving credit requires a bank licence (Solaris) or a funding partner behind the programme.</div>
+        <div class="tk">Issuing and acquiring together is rare. <strong>Paynetics</strong> is the clearest single-counterparty answer; FinXP covers acceptance broadly. Everyone else is issuing-only, so marketplace and merchant propositions will need a second provider.</div>
+        <div class="tk"><strong>Certify two adapters at launch:</strong> one licensed sponsor (Enfuce or Paynetics) and one sponsor-agnostic processor or platform (RS2, or Paymentology where the customer already runs it). That pairing covers both the "bring everything" and the "bring your own sponsor" customer. <strong>Edenred is the third worth adding early</strong>, because its agent model reaches customers who will never hold a licence.</div>
+        <div class="tk">Three of the twelve — Swan, Treezor and Solaris — are competitors rather than partners. They sell the whole stack on their own licence. Your counter-positioning is unchanged in every case: the customer keeps its own licence, IBAN range, product control and economics.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sources">
+    <h4>Sources</h4>
+    <a href="https://enfuce.com/payment-solutions/bin-sponsorship/">Enfuce BIN sponsorship</a> and <a href="https://docs.enfuce.com/guides/the-essentials/bin-sponsorship">Enfuce developer documentation</a> ·
+    <a href="https://www.fintechfutures.com/paytech/paynetics-lands-uk-emi-licence-from-the-fca">Paynetics UK EMI licence (FinTech Futures)</a> ·
+    <a href="https://wallester.com/blog/business-insights/how-to-launch-a-white-label-payment-card-programme">Wallester white-label programme guide</a>, <a href="https://www.forbes.com/advisor/uk/credit-cards/reviews/wallester-review/">Forbes Advisor review</a>, <a href="https://thebanks.eu/psps/wallester-355213">TheBanks.eu profile</a> ·
+    <a href="https://thebanks.eu/emis/monavate-355162">Monavate profile (TheBanks.eu, dated — re-verify)</a> ·
+    <a href="https://finxp.com/bin-sponsorship/">FinXP BIN sponsorship</a> ·
+    <a href="https://www.b4bpayments.com/prepaid/bin-sponsorship/">B4B Payments BIN sponsorship</a> ·
+    <a href="https://wiki.private.law/en/bin-sponsorship">Issuer-processor catalogue incl. Marqeta/TransactPay</a> ·
+    <a href="https://sdk.finance/blog/top-10-card-issuing-platforms-a-comprehensive-comparison-for-fintech-businesses/">Card issuing platform comparison (Paymentology, Solaris)</a> ·
+    <a href="https://eps.edenred.com/card-issuing">Edenred Payment Solutions card issuing</a>, <a href="https://eps.edenred.com/blog/what-is-bin-sponsorship">Edenred on BIN sponsorship and the agent model</a>, <a href="https://www.openbankingtracker.com/embedded-finance/edenred-payment-solutions">Edenred licences, scheme membership and in-house processing</a> ·
+    <a href="https://financialit.net/news/banking/artea-bank-migrates-bpcs-cloud-native-smartvista-platform-power-mastercard-issuing">BPC SmartVista at Artea Bank (vendor announcement)</a>, <a href="https://www.fintechfutures.com/bankingtech/artea-bank-adopts-bpc-smartvista-platform">FinTech Futures coverage</a> ·
+    <a href="https://www.finopotamus.com/post/rs2-smart-processing-partners-with-pxp-to-deliver-managed-acquiring-services-across-europe">RS2 Smart Processing / PXP managed acquiring across Europe</a>, <a href="https://financemalta.org/business-directory/rs2-software">RS2 Software (FinanceMalta)</a> ·
+    <a href="https://connectpay.com/blog/swan-io-alternatives/">Swan scheme and IBAN coverage</a>, <a href="https://codegotech.com/vs-swan">Swan licence detail</a> ·
+    <a href="https://sdk.finance/blog/top-banking-as-a-service-companies/">Treezor ownership and sale negotiations</a> ·
+    <a href="https://www.fintechfutures.com/paytech/bank-of-lithuania-revokes-emi-licence-of-payrnet">Bank of Lithuania revokes PayrNet EMI licence</a>, <a href="https://www.finextra.com/newsarticle/42529/lithuania-revokes-licence-of-former-railsr-unit">Finextra coverage</a>.
+    <br><br>
+    <em>Capability claims marked "not publicly stated" could not be confirmed from public materials and should be verified directly with the provider before being used commercially. Licence status and scheme memberships change; check national regulator registers before contracting.</em>
+  </div>
+
+</div>
+</body>
+</html>

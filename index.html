@@ -164,6 +164,130 @@
     flex-shrink: 0;
   }
 
+  /* ── VALUE PROPOSITION CARD ── */
+  /* ── PILLAR CARDS (5 gradient blue) ── */
+  .pillar-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .pillar-card {
+    background: linear-gradient(145deg, #0f2744 0%, #1a3f6f 65%, #1e5296 100%);
+    border-radius: 12px;
+    padding: 22px 20px 18px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: default;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .pillar-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15,40,80,0.28);
+  }
+  .pillar-card::after {
+    content: '';
+    position: absolute;
+    right: -40px; bottom: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+  .pillar-card-icon { font-size: 22px; line-height: 1; }
+  .pillar-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .pillar-card-desc {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.45;
+    flex: 1;
+  }
+  .pillar-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #7eb8f7;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .pillar-card-link:hover { color: #aad4ff; text-decoration: underline; }
+
+  /* ── ANALYSIS DOC CARDS ── */
+  .analysis-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .analysis-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    position: relative;
+  }
+  .analysis-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #1a3f6f, #2e7dd1);
+    border-radius: 12px 12px 0 0;
+  }
+  .analysis-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30,60,100,0.12);
+    border-color: var(--accent);
+  }
+  .analysis-card-icon { font-size: 20px; line-height: 1; margin-bottom: 2px; }
+  .analysis-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.3;
+  }
+  .analysis-card-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.45;
+    flex: 1;
+  }
+  .analysis-card-cta {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+  @media (max-width: 900px) {
+    .pillar-row { grid-template-columns: repeat(3, 1fr); }
+    .analysis-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .pillar-row { grid-template-columns: 1fr 1fr; }
+    .analysis-row { grid-template-columns: 1fr; }
+  }
+
   /* ── HOME PAGE ── */
   .home-page {
     padding-top: calc(var(--header-height) + 32px);
@@ -1338,6 +1462,7 @@
   body.theme-light .user-dd-item:hover { background: #f3f4f6; }
   body.theme-light .user-dd-item.active { background: #f3f4f6; color: #1f2937; }
   body.theme-light .user-dd-logout { color: #b91c1c; }
+
 </style>
 </head>
 <body>
@@ -1434,6 +1559,79 @@
 
 <!-- ════════════ HOME PAGE ════════════ -->
 <div id="home-page" class="home-page">
+
+  <!-- ── PLATFORM PILLARS ── -->
+  <div class="section-label" style="margin-bottom:14px;">Platform Pillars</div>
+  <div class="pillar-row">
+    <div class="pillar-card">
+      <div class="pillar-card-icon">🧩</div>
+      <div class="pillar-card-title">Microservice Architecture</div>
+      <div class="pillar-card-desc">Independent, loosely coupled modules — deploy what you need, scale each service separately</div>
+      <a class="pillar-card-link" href="Target Architecture - high level.png" target="_blank">Microservice Architecture ↗</a>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-card-icon">⚡</div>
+      <div class="pillar-card-title">Real-Time Processing</div>
+      <div class="pillar-card-desc">Instant payments (SCT Inst), live accrual engine, real-time risk and limit checks</div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-card-icon">🏛️</div>
+      <div class="pillar-card-title">Regulatory Ready</div>
+      <div class="pillar-card-desc">Built-in IFRS 9, SEPA compliance, AML hooks, KYC levels and audit trail across all modules</div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-card-icon">🔌</div>
+      <div class="pillar-card-title">API-First Integration</div>
+      <div class="pillar-card-desc">REST APIs on every service — connect cards, payments, merchant portals and third-party systems</div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-card-icon">📈</div>
+      <div class="pillar-card-title">Phased Delivery</div>
+      <div class="pillar-card-desc">Clear Phase I / Phase II roadmap — go live fast with core modules, expand capability over time</div>
+    </div>
+  </div>
+
+  <!-- ── ANALYSIS DOCUMENTS ── -->
+  <div class="section-label" style="margin-bottom:14px;">Analysis &amp; Research</div>
+  <div class="analysis-row">
+    <a class="analysis-card" href="value_propositions_1.html" target="_blank">
+      <div class="analysis-card-icon">🎯</div>
+      <div class="analysis-card-title">Value Propositions</div>
+      <div class="analysis-card-desc">21 strategic propositions covering platform differentiation, market positioning and phased delivery</div>
+      <div class="analysis-card-cta">Read Analysis ↗</div>
+    </a>
+    <a class="analysis-card" href="core_banking_providers_analysis.html" target="_blank">
+      <div class="analysis-card-icon">🏦</div>
+      <div class="analysis-card-title">Core Banking Providers</div>
+      <div class="analysis-card-desc">Competitive landscape of core banking system vendors — features, pricing and integration capabilities</div>
+      <div class="analysis-card-cta">Read Analysis ↗</div>
+    </a>
+    <a class="analysis-card" href="payment_processor_providers_analysis_1.html" target="_blank">
+      <div class="analysis-card-icon">💳</div>
+      <div class="analysis-card-title">Payment Processor Providers</div>
+      <div class="analysis-card-desc">SEPA, SWIFT and instant payment processors — rails, fees, settlement times and compliance</div>
+      <div class="analysis-card-cta">Read Analysis ↗</div>
+    </a>
+    <a class="analysis-card" href="card_processing_providers_analysis.html" target="_blank">
+      <div class="analysis-card-icon">💰</div>
+      <div class="analysis-card-title">Card Processing Providers</div>
+      <div class="analysis-card-desc">Debit and credit card issuing, processing networks, interchange models and scheme comparisons</div>
+      <div class="analysis-card-cta">Read Analysis ↗</div>
+    </a>
+    <a class="analysis-card" href="onboarding_kyc_kyb_analysis.html" target="_blank">
+      <div class="analysis-card-icon">🪪</div>
+      <div class="analysis-card-title">Onboarding &amp; KYC/KYB Analysis</div>
+      <div class="analysis-card-desc">Customer onboarding flows, identity verification providers, KYC and KYB process comparison</div>
+      <div class="analysis-card-cta">Read Analysis ↗</div>
+    </a>
+    <a class="analysis-card" href="phase_approach.html" target="_blank">
+      <div class="analysis-card-icon">📈</div>
+      <div class="analysis-card-title">Phase Approach</div>
+      <div class="analysis-card-desc">Phase I core modules, Phase I split candidates and Phase II extension services — structured delivery roadmap</div>
+      <div class="analysis-card-cta">Read Analysis ↗</div>
+    </a>
+  </div>
+
   <div class="home-greeting">
     <h1>OneFor Core Banking suite</h1>
     <p>Core Banking System — select a microservice module to continue</p>
@@ -1460,7 +1658,7 @@
       <div class="card-desc">Organisation setup, branch management, role assignments, services and system definitions</div>
       <div class="card-tag">admin-service-boundaries</div>
     </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#0e7490;--icon-bg:#e0f7fa;" data-action="show-module" data-module="clients">
+    <div class="module-card module-card--phase2" style="--card-accent:#0e7490;--icon-bg:#e0f7fa;" data-action="show-module" data-module="clients">
       <div class="card-icon">👤</div>
       <div class="card-title">Clients</div>
       <div class="card-desc">Client onboarding, KYC, profiles and relationship management</div>
@@ -1484,7 +1682,7 @@
       <div class="card-desc">Origination, application workflow and tracking</div>
       <div class="card-tag">origination-service-boundaries</div>
     </div>
-    <div class="module-card module-card--completed" style="--card-accent:#e74c3c;--icon-bg:#fde8e8;" data-action="show-module" data-module="decision">
+    <div class="module-card module-card--phase1" style="--card-accent:#e74c3c;--icon-bg:#fde8e8;" data-action="show-module" data-module="decision">
       <div class="card-icon">🤖</div>
       <div class="card-title">Decision Engine</div>
       <div class="card-desc">Scoring, rule execution and credit decisions</div>
@@ -1492,13 +1690,13 @@
     </div>
     <div class="module-card module-card--phase1" style="--card-accent:#2980b9;--icon-bg:#e5f0fa;" data-action="show-module" data-module="payments">
       <div class="card-icon">💳</div>
-      <div class="card-title">Payments</div>
+      <div class="card-title">Payments integration</div>
       <div class="card-desc">Domestic, SWIFT, SEPA, bulk payment processing</div>
       <div class="card-tag">payment-service-boundaries</div>
     </div>
-    <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#c0392b;--icon-bg:#fdecea;" data-action="show-module" data-module="cards">
+    <div class="module-card module-card--phase1" style="--card-accent:#c0392b;--icon-bg:#fdecea;" data-action="show-module" data-module="cards">
       <div class="card-icon">💳</div>
-      <div class="card-title">Cards</div>
+      <div class="card-title">Cards integration</div>
       <div class="card-desc">Debit &amp; credit card issuance, limits, blocking · Integration with 3rd party solution Card processor</div>
       <div class="card-tag">card-service-boundaries</div>
     </div>
@@ -1514,7 +1712,7 @@
       <div class="card-desc">Expected credit loss, staging, provisioning and regulatory reporting</div>
       <div class="card-tag">ifrs9-service-boundaries</div>
     </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#0f766e;--icon-bg:#e0f7f5;cursor:pointer;" data-action="open-diagram" data-src="loan-origination-workflow.html">
+    <div class="module-card module-card--outofscope" style="--card-accent:#0f766e;--icon-bg:#e0f7f5;cursor:pointer;" data-action="open-diagram" data-src="loan-origination-workflow.html">
       <div class="card-icon">⚡</div>
       <div class="card-title">Orchestration</div>
       <div class="card-desc">Temporal workflow orchestration for card processing pipelines and event-driven flows</div>
@@ -1526,7 +1724,13 @@
         </a>
       </div>
     </div>
-    <div class="module-card module-card--phase2" style="--card-accent:#1d4ed8;--icon-bg:#eff6ff;" data-action="show-module" data-module="digsig">
+    <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#0369a1;--icon-bg:#e0f2fe;" data-action="show-module" data-module="fxremit">
+      <div class="card-icon">💱</div>
+      <div class="card-title">FX Remittance</div>
+      <div class="card-desc">Foreign exchange, cross-border remittances, currency conversion and transfer tracking</div>
+      <div class="card-tag">fx-remittance-service-boundaries</div>
+    </div>
+    <div class="module-card module-card--phase1" style="--card-accent:#1d4ed8;--icon-bg:#eff6ff;" data-action="show-module" data-module="digsig">
       <div class="card-icon">✍️</div>
       <div class="card-title">Digital Signature</div>
       <div class="card-desc">Certificate management, signing queues, providers and audit trail</div>
@@ -1542,7 +1746,7 @@
     <div class="module-card module-card--phase2" style="--card-accent:#0d9488;--icon-bg:#e0f7f5;" data-action="show-module" data-module="marketplace">
       <div class="card-icon">🛒</div>
       <div class="card-title">Marketplace</div>
-      <div class="card-desc">Third-party integrations, plugins and extension catalogue</div>
+      <div class="card-desc">Merchant portal · Business profile, payout configuration, team access, notifications and storefront settings</div>
       <div class="card-tag">marketplace-boundaries</div>
     </div>
     <div class="module-card module-card--phase2" style="--card-accent:#f39c12;--icon-bg:#fef6e4;" data-action="show-module" data-module="loyalty">
@@ -1563,12 +1767,7 @@
       <div class="card-desc">Collateral registration, valuation, pledges and lien management</div>
       <div class="card-tag">collateral-service-boundaries</div>
     </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#0369a1;--icon-bg:#e0f2fe;" data-action="show-module" data-module="fxremit">
-      <div class="card-icon">💱</div>
-      <div class="card-title">FX Remittance</div>
-      <div class="card-desc">Foreign exchange, cross-border remittances, currency conversion and transfer tracking</div>
-      <div class="card-tag">fx-remittance-service-boundaries</div>
-    </div>
+
 
   </div>
 </div><!-- /#home-page -->
@@ -1721,6 +1920,20 @@
     </div>
     <div class="sidebar-nav">
 
+      <div class="nav-flat" data-action="set-content" data-module="loans" data-section="dashboard" data-title="Dashboard" data-subtitle="Loan management overview and key metrics">🏠 Dashboard</div>
+
+      <!-- CUSTOMERS -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">👤</span>Customers</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="customers" data-title="Customer Data" data-subtitle="View and manage customer profiles">Customer Data</div>
+        </div>
+      </div>
+
+      <!-- LOAN ACCOUNTS -->
       <div class="nav-group">
         <div class="nav-group-header open" data-action="toggle-group">
           <span class="group-label"><span class="group-icon">📁</span>Loan Accounts</span>
@@ -1732,43 +1945,92 @@
         </div>
       </div>
 
+      <!-- BACKGROUND JOBS -->
       <div class="nav-group">
-        <div class="nav-group-header" data-action="toggle-group">
-          <span class="group-label"><span class="group-icon">⚙️</span>Loan Operations</span>
+        <div class="nav-group-header open" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">⚙️</span>Background Jobs</span>
           <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
         </div>
-        <div class="nav-children">
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="eod" data-title="End of Day Manual Run" data-subtitle="Manually trigger end-of-day processing for loans">End of Day Manual Run</div>
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="eod-scheduler" data-title="End of Day Scheduler" data-subtitle="Schedule automated end-of-day processing jobs">End of Day Scheduler</div>
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="eod-monitor" data-title="End of Day Monitor" data-subtitle="Monitor execution status of all end-of-day jobs">End of Day Monitor</div>
+        <div class="nav-children open">
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="job-catalogue" data-title="Job Catalogue" data-subtitle="Browse all available background job definitions">Job Catalogue</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="job-scheduler" data-title="Job Scheduler" data-subtitle="Schedule and configure automated jobs">Job Scheduler</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="job-manual" data-title="Job Manual Run" data-subtitle="Manually trigger background jobs on demand">Job Manual Run</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="recent-runs" data-title="Recent Runs" data-subtitle="View history and status of recent job executions">Recent Runs</div>
         </div>
       </div>
 
+      <!-- LOAN PRODUCT DEFINITIONS -->
       <div class="nav-group">
         <div class="nav-group-header" data-action="toggle-group">
           <span class="group-label"><span class="group-icon">📦</span>Loan Product Definitions</span>
           <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
         </div>
         <div class="nav-children">
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loanprod" data-title="Loan Product" data-subtitle="Define and configure loan product templates">Loan Product</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loanprod" data-title="Loan Products" data-subtitle="Define and configure loan product templates">Loan Products</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-categories" data-title="Loan Categories" data-subtitle="Manage loan product categories">Loan Categories</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-purposes" data-title="Loan Purposes" data-subtitle="Define the purposes available for loan products">Loan Purposes</div>
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="interestdef" data-title="Interest Rate Definitions" data-subtitle="Define interest rate tiers and structures">Interest Rate Definitions</div>
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="accrual" data-title="Interest Accrual Definitions" data-subtitle="Configure accrual calendars and methods">Interest Accrual Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="collection" data-title="Collection Definitions" data-subtitle="Set up collection schedules and rules">Collection Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="penalty" data-title="Penalty Definitions" data-subtitle="Define late payment and penalty structures">Penalty Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="loans" data-section="feedef" data-title="Fee Definitions" data-subtitle="Manage fee definitions for loan products">Fee Definitions</div>
         </div>
       </div>
 
+      <!-- LOCAL SETTINGS -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">🔧</span>Local Settings</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-roles" data-title="Roles" data-subtitle="Manage roles within this LMS instance">Roles</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-role-scopes" data-title="Role Scopes" data-subtitle="Define the scopes attached to each role">Role Scopes</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-permissions" data-title="Permissions" data-subtitle="Configure fine-grained permissions">Permissions</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-users" data-title="Users" data-subtitle="Manage users with access to this service">Users</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-sessions" data-title="Sessions" data-subtitle="View and manage active user sessions">Sessions</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-user-roles" data-title="User Roles" data-subtitle="Assign roles to users">User Roles</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-api-clients" data-title="API Clients" data-subtitle="Manage API client credentials">API Clients</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-api-client-roles" data-title="API Client Roles" data-subtitle="Assign roles to API clients">API Client Roles</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="ls-batch-date" data-title="Batch Date Settings" data-subtitle="Configure the batch processing date">Batch Date Settings</div>
+        </div>
+      </div>
+
+      <!-- GLOBAL SETTINGS -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">🌐</span>Global Settings</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="gs-organisations" data-title="Organizations" data-subtitle="Manage global organization definitions">Organizations</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="gs-currency" data-title="Currency Definition" data-subtitle="Define currencies used across the system">Currency Definition</div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
       <div class="nav-group">
         <div class="nav-group-header" data-action="toggle-group">
           <span class="group-label"><span class="group-icon">📊</span>Reports</span>
           <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
         </div>
         <div class="nav-children">
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-open" data-title="Open Loans Report" data-subtitle="All currently active and disbursed loan accounts">Open Loans</div>
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-closed" data-title="Closed Loans Report" data-subtitle="Fully settled and closed loan accounts">Closed Loans</div>
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-eom" data-title="EoM Loans Report" data-subtitle="End-of-month loan portfolio snapshot">EoM Loans</div>
-          <div class="nav-item" data-action="set-content" data-module="loans" data-section="customer-report" data-title="Customer Report" data-subtitle="Search and view loan details per customer">Customer Report</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-open" data-title="Open Loans in Period" data-subtitle="All active loans disbursed within a selected period">Open Loans in Period</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-closed" data-title="Closed Loans in Period" data-subtitle="Fully settled loans within a selected period">Closed Loans in Period</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="loan-report-eom" data-title="End of Month Report" data-subtitle="End-of-month loan portfolio snapshot">End of Month Report</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="customer-report" data-title="Customer Reports" data-subtitle="Search and view loan details per customer">Customer Reports</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="daily-accrual" data-title="Daily Accrual Report" data-subtitle="Daily interest accrual breakdown">Daily Accrual Report</div>
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="transactions-report" data-title="Transactions" data-subtitle="Full transaction history for loan accounts">Transactions</div>
+        </div>
+      </div>
+
+      <!-- MIGRATION SETTINGS -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">🔄</span>Migration Settings</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="loans" data-section="migration" data-title="Migration" data-subtitle="Import and manage data migration tasks">Migration</div>
         </div>
       </div>
 
@@ -1790,27 +2052,29 @@
     </div>
     <div class="sidebar-nav">
 
+      <div class="nav-flat" data-action="set-content" data-module="accounts" data-section="acc-dashboard" data-title="Dashboard" data-subtitle="Accounts &amp; Deposits portfolio overview">📊 Dashboard</div>
+
+      <!-- CUSTOMERS -->
+      <div class="nav-group">
+        <div class="nav-group-header" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">👤</span>Customers</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children">
+          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="customers" data-title="Customer Data" data-subtitle="View and manage customer profiles">Customer Data</div>
+        </div>
+      </div>
+
       <div class="nav-flat active" data-action="set-content" data-module="accounts" data-section="txninfo" data-title="Transaction Accounts Information" data-subtitle="Browse and manage transaction (current) accounts">🔄 Transaction Accounts Info</div>
 
       <div class="nav-group">
         <div class="nav-group-header" data-action="toggle-group">
-          <span class="group-label"><span class="group-icon">⚙️</span>Account Operations</span>
+          <span class="group-label"><span class="group-icon">📦</span>Account/Deposit Product Definitions</span>
           <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
         </div>
         <div class="nav-children">
-          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acceod" data-title="End of Day Manual Run" data-subtitle="Trigger end-of-day batch processing for accounts">End of Day Manual Run</div>
-        </div>
-      </div>
-
-      <div class="nav-group">
-        <div class="nav-group-header" data-action="toggle-group">
-          <span class="group-label"><span class="group-icon">📦</span>Account Product Definitions</span>
-          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
-        </div>
-        <div class="nav-children">
-          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accprod" data-title="Account Product" data-subtitle="Define transaction and savings account product parameters">Account Product</div>
+          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accprod" data-title="Account Product Definitions" data-subtitle="Define transaction and savings account product parameters">Account Product Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accinterest" data-title="Interest Rate Definitions" data-subtitle="Configure savings and overdraft interest rate structures">Interest Rate Definitions</div>
-          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acccalc" data-title="Interest Calculation" data-subtitle="Set interest calculation methods and calendars">Interest Calculation</div>
           <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acccollect" data-title="Collection Definitions" data-subtitle="Define collection rules for accounts">Collection Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accpenalty" data-title="Penalty Definitions" data-subtitle="Configure overdraft and penalty charges">Penalty Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="accounts" data-section="accfees" data-title="Fee Definitions" data-subtitle="Define maintenance and transaction fees">Fee Definitions</div>
@@ -1818,7 +2082,19 @@
         </div>
       </div>
 
-      <div class="nav-flat" data-action="set-content" data-module="accounts" data-section="transactions" data-title="Transactions" data-subtitle="View and post account transactions">📑 Transactions</div>
+      <!-- BACKGROUND JOBS -->
+      <div class="nav-group">
+        <div class="nav-group-header open" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">⚙️</span>Background Jobs</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children open">
+          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acc-job-catalogue" data-title="Job Catalogue" data-subtitle="Browse all available background job definitions">Job Catalogue</div>
+          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acc-job-scheduler" data-title="Job Scheduler" data-subtitle="Schedule and configure automated jobs">Job Scheduler</div>
+          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acc-job-manual" data-title="Job Manual Run" data-subtitle="Manually trigger background jobs on demand">Job Manual Run</div>
+          <div class="nav-item" data-action="set-content" data-module="accounts" data-section="acc-recent-runs" data-title="Recent Runs" data-subtitle="View history and status of recent job executions">Recent Runs</div>
+        </div>
+      </div>
 
     </div>
   </nav>
@@ -1856,7 +2132,7 @@
           <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
         </div>
         <div class="nav-children">
-          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depprod" data-title="Deposit Product" data-subtitle="Define term and fixed deposit product parameters">Deposit Product</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depprod" data-title="Deposit Product Definitions" data-subtitle="Define term and fixed deposit product parameters">Deposit Product Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depinterest" data-title="Interest Rate Definitions" data-subtitle="Configure deposit interest rate structures and tiers">Interest Rate Definitions</div>
           <div class="nav-item" data-action="set-content" data-module="deposits" data-section="depcalc" data-title="Interest Calculation" data-subtitle="Set interest calculation methods, compounding and EIR">Interest Calculation</div>
           <div class="nav-item" data-action="set-content" data-module="deposits" data-section="deprollover" data-title="Rollover Rules" data-subtitle="Configure automatic rollover and maturity instructions">Rollover Rules</div>
@@ -1866,6 +2142,20 @@
       </div>
 
       <div class="nav-flat" data-action="set-content" data-module="deposits" data-section="deptransactions" data-title="Deposit Transactions" data-subtitle="View placement, maturity and breakage transactions">📑 Deposit Transactions</div>
+
+      <!-- BACKGROUND JOBS -->
+      <div class="nav-group">
+        <div class="nav-group-header open" data-action="toggle-group">
+          <span class="group-label"><span class="group-icon">⚙️</span>Background Jobs</span>
+          <svg class="nav-arrow" viewBox="0 0 14 14"><use href="#ico-nav-arrow"/></svg>
+        </div>
+        <div class="nav-children open">
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="acc-job-catalogue" data-title="Job Catalogue" data-subtitle="Browse all available background job definitions">Job Catalogue</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="acc-job-scheduler" data-title="Job Scheduler" data-subtitle="Schedule and configure automated jobs">Job Scheduler</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="acc-job-manual" data-title="Job Manual Run" data-subtitle="Manually trigger background jobs on demand">Job Manual Run</div>
+          <div class="nav-item" data-action="set-content" data-module="deposits" data-section="acc-recent-runs" data-title="Recent Runs" data-subtitle="View history and status of recent job executions">Recent Runs</div>
+        </div>
+      </div>
 
     </div>
   </nav>
@@ -2517,192 +2807,201 @@
   .lpir-empty-icon { font-size:28px; margin-bottom:8px; }
 </style>
 
-<!-- ════════════ ADD CURRENCY (Loan Product — multi-select) ════════════ -->
+<!-- ════════════ ADD CURRENCY (Loan Product — single form) ════════════ -->
 <div class="modal-overlay" id="lpCurrencyModal" onclick="if(event.target===this)closeLpCurrencyModal()">
-  <div class="modal-box" style="width:660px;max-width:96vw;">
+  <div class="modal-box" style="width:560px;max-width:96vw;">
     <div class="modal-header">
       <div class="modal-header-left">
         <div class="modal-hicon" style="background:#f3f0ff;font-size:18px">💱</div>
         <div>
-          <div class="modal-title">Add Currencies</div>
-          <div class="modal-subtitle">Select currencies and configure amount limits</div>
+          <div class="modal-title" id="lpcurr-modal-title">Add Currency</div>
+          <div class="modal-subtitle">Configure loan amount and tenor limits for the currency</div>
         </div>
       </div>
       <button class="modal-close" onclick="closeLpCurrencyModal()">✕</button>
     </div>
     <div class="modal-body" style="padding:20px 24px;overflow-y:auto;max-height:calc(85vh - 130px);">
-      <div class="lpcurr-list" id="lpcurr-list">
-        <!-- EUR -->
-        <div class="lpcurr-row" id="lpcurr-row-EUR">
-          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('EUR')">
-            <input type="checkbox" id="lpcurr-cb-EUR" value="EUR" onclick="event.stopPropagation();toggleLpCurrRow('EUR')"/>
-            <div class="lpcurr-sym" style="background:#e8f0fe;color:#1a56db">€</div>
-            <div class="lpcurr-info"><div class="lpcurr-code">EUR</div><div class="lpcurr-name">Euro</div></div>
-          </label>
-          <div class="lpcurr-amounts">
-            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-EUR" placeholder="e.g. 100" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-EUR" placeholder="e.g. 50000" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-EUR" placeholder="e.g. 5000" min="0" step="1"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;">
+        <div>
+          <label class="fee-form-label">Currency <span style="color:#e04030">*</span></label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="lpcurr-f-currency">
+              <option value="">Select currency…</option>
+              <option value="EUR">EUR — Euro</option>
+              <option value="USD">USD — US Dollar</option>
+              <option value="GBP">GBP — British Pound</option>
+              <option value="CHF">CHF — Swiss Franc</option>
+              <option value="RSD">RSD — Serbian Dinar</option>
+              <option value="BAM">BAM — Bosnian Convertible Mark</option>
+              <option value="HRK">HRK — Croatian Kuna</option>
+            </select>
           </div>
         </div>
-        <!-- USD -->
-        <div class="lpcurr-row" id="lpcurr-row-USD">
-          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('USD')">
-            <input type="checkbox" id="lpcurr-cb-USD" value="USD" onclick="event.stopPropagation();toggleLpCurrRow('USD')"/>
-            <div class="lpcurr-sym" style="background:#e6f9f0;color:#0a7a40">$</div>
-            <div class="lpcurr-info"><div class="lpcurr-code">USD</div><div class="lpcurr-name">US Dollar</div></div>
-          </label>
-          <div class="lpcurr-amounts">
-            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-USD" placeholder="e.g. 100" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-USD" placeholder="e.g. 50000" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-USD" placeholder="e.g. 5000" min="0" step="1"/></div>
+        <div>
+          <label class="fee-form-label">Status</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="lpcurr-f-status">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
           </div>
         </div>
-        <!-- GBP -->
-        <div class="lpcurr-row" id="lpcurr-row-GBP">
-          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('GBP')">
-            <input type="checkbox" id="lpcurr-cb-GBP" value="GBP" onclick="event.stopPropagation();toggleLpCurrRow('GBP')"/>
-            <div class="lpcurr-sym" style="background:#fde8f5;color:#b0166c">£</div>
-            <div class="lpcurr-info"><div class="lpcurr-code">GBP</div><div class="lpcurr-name">British Pound</div></div>
-          </label>
-          <div class="lpcurr-amounts">
-            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-GBP" placeholder="e.g. 100" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-GBP" placeholder="e.g. 50000" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-GBP" placeholder="e.g. 5000" min="0" step="1"/></div>
-          </div>
+        <div>
+          <label class="fee-form-label">Min Loan Amount</label>
+          <input type="number" class="fee-form-input" id="lpcurr-f-minAmt" placeholder="e.g. 50" min="0" step="1" style="width:100%;box-sizing:border-box"/>
         </div>
-        <!-- CHF -->
-        <div class="lpcurr-row" id="lpcurr-row-CHF">
-          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('CHF')">
-            <input type="checkbox" id="lpcurr-cb-CHF" value="CHF" onclick="event.stopPropagation();toggleLpCurrRow('CHF')"/>
-            <div class="lpcurr-sym" style="background:#fff0e0;color:#c06010">Fr</div>
-            <div class="lpcurr-info"><div class="lpcurr-code">CHF</div><div class="lpcurr-name">Swiss Franc</div></div>
-          </label>
-          <div class="lpcurr-amounts">
-            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-CHF" placeholder="e.g. 100" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-CHF" placeholder="e.g. 50000" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-CHF" placeholder="e.g. 5000" min="0" step="1"/></div>
-          </div>
+        <div>
+          <label class="fee-form-label">Max Loan Amount</label>
+          <input type="number" class="fee-form-input" id="lpcurr-f-maxAmt" placeholder="e.g. 5000" min="0" step="1" style="width:100%;box-sizing:border-box"/>
         </div>
-        <!-- RSD -->
-        <div class="lpcurr-row" id="lpcurr-row-RSD">
-          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('RSD')">
-            <input type="checkbox" id="lpcurr-cb-RSD" value="RSD" onclick="event.stopPropagation();toggleLpCurrRow('RSD')"/>
-            <div class="lpcurr-sym" style="background:#e8f4fd;color:#0a5fa0">din</div>
-            <div class="lpcurr-info"><div class="lpcurr-code">RSD</div><div class="lpcurr-name">Serbian Dinar</div></div>
-          </label>
-          <div class="lpcurr-amounts">
-            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-RSD" placeholder="e.g. 10000" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-RSD" placeholder="e.g. 5000000" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-RSD" placeholder="e.g. 500000" min="0" step="1"/></div>
-          </div>
+        <div>
+          <label class="fee-form-label">Default Loan Amount</label>
+          <input type="number" class="fee-form-input" id="lpcurr-f-defaultAmt" placeholder="e.g. 1000" min="0" step="1" style="width:100%;box-sizing:border-box"/>
         </div>
-        <!-- BAM -->
-        <div class="lpcurr-row" id="lpcurr-row-BAM">
-          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('BAM')">
-            <input type="checkbox" id="lpcurr-cb-BAM" value="BAM" onclick="event.stopPropagation();toggleLpCurrRow('BAM')"/>
-            <div class="lpcurr-sym" style="background:#eef6e8;color:#2d6a0a">KM</div>
-            <div class="lpcurr-info"><div class="lpcurr-code">BAM</div><div class="lpcurr-name">Bosnian Convertible Mark</div></div>
-          </label>
-          <div class="lpcurr-amounts">
-            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-BAM" placeholder="e.g. 200" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-BAM" placeholder="e.g. 100000" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-BAM" placeholder="e.g. 10000" min="0" step="1"/></div>
-          </div>
+        <div></div>
+        <div>
+          <label class="fee-form-label">Min Tenor (months)</label>
+          <input type="number" class="fee-form-input" id="lpcurr-f-minTenor" placeholder="e.g. 4" min="1" step="1" style="width:100%;box-sizing:border-box"/>
         </div>
-        <!-- HRK -->
-        <div class="lpcurr-row" id="lpcurr-row-HRK">
-          <label class="lpcurr-check-bar" onclick="toggleLpCurrRow('HRK')">
-            <input type="checkbox" id="lpcurr-cb-HRK" value="HRK" onclick="event.stopPropagation();toggleLpCurrRow('HRK')"/>
-            <div class="lpcurr-sym" style="background:#fdf3e8;color:#a05010">kn</div>
-            <div class="lpcurr-info"><div class="lpcurr-code">HRK</div><div class="lpcurr-name">Croatian Kuna</div></div>
-          </label>
-          <div class="lpcurr-amounts">
-            <div class="lpcurr-amt-group"><label>Min Amount</label><input type="number" id="lpcurr-min-HRK" placeholder="e.g. 500" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Max Amount</label><input type="number" id="lpcurr-max-HRK" placeholder="e.g. 200000" min="0" step="1"/></div>
-            <div class="lpcurr-amt-group"><label>Default Amount</label><input type="number" id="lpcurr-def-HRK" placeholder="e.g. 20000" min="0" step="1"/></div>
-          </div>
+        <div>
+          <label class="fee-form-label">Max Tenor (months)</label>
+          <input type="number" class="fee-form-input" id="lpcurr-f-maxTenor" placeholder="e.g. 12" min="1" step="1" style="width:100%;box-sizing:border-box"/>
         </div>
+        <div>
+          <label class="fee-form-label">Default Tenor (months) <span style="color:#9aaab8;font-weight:400;font-size:11px">optional</span></label>
+          <input type="number" class="fee-form-input" id="lpcurr-f-defTenor" placeholder="optional" min="1" step="1" style="width:100%;box-sizing:border-box"/>
+        </div>
+        <div></div>
+        <div>
+          <label class="fee-form-label">Valid From</label>
+          <input type="text" class="fee-form-input" id="lpcurr-f-validFrom" value="01.10.2025" placeholder="DD.MM.YYYY" style="width:100%;box-sizing:border-box"/>
+        </div>
+        <div>
+          <label class="fee-form-label">Valid To</label>
+          <input type="text" class="fee-form-input" id="lpcurr-f-validTo" value="31.12.2099" placeholder="DD.MM.YYYY" style="width:100%;box-sizing:border-box"/>
+        </div>
+      </div>
+      <div id="lpcurr-f-err" style="margin-top:12px;color:#c0392b;font-size:12.5px;display:none"></div>
+      <div style="display:none" id="lpcurr-list">
       </div>
     </div>
-    <div class="modal-footer" style="display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-top:1px solid #e8f0f8;">
-      <span id="lpcurr-sel-count" style="font-size:12px;color:#6a8faf;">No currencies selected</span>
-      <div style="display:flex;gap:12px;">
-        <button onclick="closeLpCurrencyModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>
-        <button onclick="saveLpCurrencies()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add Selected</button>
-      </div>
+    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;padding:14px 24px;border-top:1px solid #e8f0f8;">
+      <button onclick="closeLpCurrencyModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>
+      <button onclick="saveLpCurrency()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> <span id="lpcurr-save-lbl">Add Currency</span></button>
     </div>
   </div>
 </div>
 
-<!-- ════════════ ADD INTEREST RATES (Loan Product — per currency) ════════════ -->
+<!-- ════════════ ADD INTEREST RATE (Loan Product — single form) ════════════ -->
 <div class="modal-overlay" id="lpInterestRateModal" onclick="if(event.target===this)closeLpInterestRateModal()">
-  <div class="modal-box" style="width:640px;max-width:96vw;">
+  <div class="modal-box" style="width:520px;max-width:96vw;">
     <div class="modal-header">
       <div class="modal-header-left">
         <div class="modal-hicon" style="background:#fff0e6;font-size:18px">📈</div>
         <div>
-          <div class="modal-title">Add Interest Rates</div>
-          <div class="modal-subtitle">Configure interest rates for selected currencies</div>
+          <div class="modal-title" id="lpir-modal-title">Add Interest Rate</div>
+          <div class="modal-subtitle">Configure interest rate parameters</div>
         </div>
       </div>
       <button class="modal-close" onclick="closeLpInterestRateModal()">✕</button>
     </div>
     <div class="modal-body" style="padding:20px 24px;overflow-y:auto;max-height:calc(85vh - 130px);">
-      <div id="lpir-body">
-        <!-- Populated dynamically by openLpInterestRateModal() -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;">
+        <div>
+          <label class="fee-form-label">Currency <span style="color:#e04030">*</span></label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="lpir-f-currency">
+              <option value="">Select currency…</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="fee-form-label">Interest Rate Type</label>
+          <div class="fee-select-wrap">
+            <select class="fee-form-select" id="lpir-f-rateType">
+              <option value="Fixed">Fixed</option>
+              <option value="Variable">Variable</option>
+            </select>
+          </div>
+        </div>
+        <div style="grid-column:1/-1">
+          <label class="fee-form-label">Interest Rate Name <span style="color:#e04030">*</span></label>
+          <input type="text" class="fee-form-input" id="lpir-f-rateName" placeholder="e.g. Standard EUR Fixed 5.5%" style="width:100%;box-sizing:border-box"/>
+        </div>
+        <div>
+          <label class="fee-form-label">Min Rate (%)</label>
+          <input type="number" class="fee-form-input" id="lpir-f-minRate" placeholder="e.g. 3.00" min="0" step="0.01" style="width:100%;box-sizing:border-box"/>
+        </div>
+        <div>
+          <label class="fee-form-label">Max Rate (%)</label>
+          <input type="number" class="fee-form-input" id="lpir-f-maxRate" placeholder="e.g. 18.00" min="0" step="0.01" style="width:100%;box-sizing:border-box"/>
+        </div>
+        <div>
+          <label class="fee-form-label">Default Rate (%)</label>
+          <input type="number" class="fee-form-input" id="lpir-f-defRate" placeholder="e.g. 5.50" min="0" step="0.01" style="width:100%;box-sizing:border-box"/>
+        </div>
+        <div>
+          <label class="fee-form-label">Margin Rate (%)</label>
+          <input type="number" class="fee-form-input" id="lpir-f-marginRate" placeholder="e.g. 2.00" min="0" step="0.01" style="width:100%;box-sizing:border-box"/>
+        </div>
       </div>
+      <div id="lpir-f-err" style="margin-top:12px;color:#c0392b;font-size:12.5px;display:none"></div>
     </div>
     <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;padding:14px 24px;border-top:1px solid #e8f0f8;">
       <button onclick="closeLpInterestRateModal()" style="padding:9px 22px;border:1.5px solid #e06020;border-radius:20px;background:#fff;color:#e06020;font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>
-      <button onclick="saveLpInterestRates()" style="padding:9px 24px;border:none;border-radius:20px;background:#e06020;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Save Rates</button>
+      <button onclick="saveLpInterestRate()" style="padding:9px 24px;border:none;border-radius:20px;background:#e06020;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> <span id="lpir-save-lbl">Add Rate</span></button>
     </div>
   </div>
 </div>
 
-<!-- ════════════ ADD FEE PICKER (Loan Product) ════════════ -->
+<!-- ════════════ SELECT FEES (Loan Product — checkbox table) ════════════ -->
 <div class="modal-overlay" id="lpFeeModal" onclick="if(event.target===this)closeLpFeeModal()">
-  <div class="modal-box" style="width:740px;max-width:96vw;">
+  <div class="modal-box" style="width:680px;max-width:96vw;">
     <div class="modal-header">
       <div class="modal-header-left">
         <div class="modal-hicon" style="background:#f3f0ff;font-size:18px">$</div>
         <div>
-          <div class="modal-title">Add Fee</div>
-          <div class="modal-subtitle">Select a fee definition from the list</div>
+          <div class="modal-title">Select Fees</div>
+          <div class="modal-subtitle">Select one or more fees to add to the product</div>
         </div>
       </div>
       <button class="modal-close" onclick="closeLpFeeModal()">✕</button>
     </div>
     <div class="modal-body" style="padding:16px 24px 8px;overflow-y:auto;max-height:calc(85vh - 130px);">
-      <!-- Search -->
-      <div style="margin-bottom:12px">
-        <input type="text" id="lpfee-search" class="fee-form-input"
-          placeholder="Search by name, trigger or method…"
-          oninput="lpFeePickerFilter()"
-          style="width:100%;box-sizing:border-box;font-size:13px"/>
-      </div>
-      <!-- Fee list -->
       <table style="width:100%;border-collapse:collapse;font-size:13px">
         <thead>
           <tr style="background:#f0f4fa;border-bottom:2px solid #c5d8f5">
-            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272;width:32px"></th>
+            <th style="padding:8px 12px;width:36px"></th>
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Name</th>
-            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Version</th>
-            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Scope</th>
-            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Trigger</th>
             <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Method</th>
-            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Currency</th>
-            <th style="padding:8px 12px;text-align:right;font-weight:600;color:#3a5272">Min Amt</th>
-            <th style="padding:8px 12px;text-align:right;font-weight:600;color:#3a5272">Max Amt</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Trigger Event</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Currency Code</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Status</th>
           </tr>
         </thead>
-        <tbody id="lpfee-picker-body"></tbody>
+        <tbody id="lpfee-picker-body">
+          <tr style="border-bottom:1px solid #f0f4f8">
+            <td style="padding:10px 12px;text-align:center"><input type="checkbox" id="lpfee-cb-1" value="1" style="accent-color:#6b4fc8;width:15px;height:15px;cursor:pointer"/></td>
+            <td style="padding:10px 12px;font-weight:500;color:#1a2640">Per Instalment Service Fee</td>
+            <td style="padding:10px 12px;color:#3a5272">Per Instalment</td>
+            <td style="padding:10px 12px;color:#3a5272">Per Instalment</td>
+            <td style="padding:10px 12px;font-weight:600;color:#1a2640">EUR</td>
+            <td style="padding:10px 12px"><span class="fee-status-active">ACTIVE</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f4f8">
+            <td style="padding:10px 12px;text-align:center"><input type="checkbox" id="lpfee-cb-2" value="2" style="accent-color:#6b4fc8;width:15px;height:15px;cursor:pointer"/></td>
+            <td style="padding:10px 12px;font-weight:500;color:#1a2640">Upfront Processing Fee</td>
+            <td style="padding:10px 12px;color:#3a5272">Up Front</td>
+            <td style="padding:10px 12px;color:#3a5272">Up Front</td>
+            <td style="padding:10px 12px;font-weight:600;color:#1a2640">EUR</td>
+            <td style="padding:10px 12px"><span class="fee-status-active">ACTIVE</span></td>
+          </tr>
+        </tbody>
       </table>
-      <div id="lpfee-picker-empty" style="display:none;padding:24px;text-align:center;color:#6a8faf;font-size:13px">No fee definitions found.</div>
     </div>
     <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;padding:14px 24px;border-top:1px solid #e8f0f8;">
       <button onclick="closeLpFeeModal()" style="padding:9px 22px;border:1.5px solid #6b4fc8;border-radius:20px;background:#fff;color:#6b4fc8;font-size:13px;font-weight:600;cursor:pointer">Cancel</button>
-      <button onclick="saveLpFee()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add selected</button>
+      <button onclick="saveLpSelectedFees()" style="padding:9px 24px;border:none;border-radius:20px;background:#6b4fc8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 2h9l3 3v9H2z"/><path d="M5 2v4h6V2"/><path d="M5 9h6v5H5z"/></svg> Add Selected</button>
     </div>
   </div>
 </div>
@@ -2831,7 +3130,7 @@ function toggleGroup(header) {
 }
 
 // Sections that render their own full-page header (title + subtitle + CTA)
-const SELF_HEADED_SECTIONS = new Set(['fees', 'penalty', 'feedef', 'security', 'services', 'exchangerate', 'collection', 'accrual', 'interestdef', 'loanprod', 'loansim', 'eod', 'eod-scheduler', 'eod-monitor', 'loan-report-open', 'loan-report-closed', 'loan-report-eom', 'customer-report', 'loaninfo', 'organisation', 'users', 'roles', 'permissions', 'role-assignments', 'branch', 'user-list', 'loan-detail', 'rule-groups', 'rule-group-schema', 'rule-group-test', 'dec-rules', 'rule-thresholds', 'property-mappings', 'outcome-codes', 'execution-logs', 'analytics', 'dec-users', 'api-keys', 'import-json']);
+const SELF_HEADED_SECTIONS = new Set(['fees', 'penalty', 'feedef', 'security', 'services', 'exchangerate', 'collection', 'accrual', 'interestdef', 'loanprod', 'loansim', 'eod', 'job-scheduler','job-manual','recent-runs','job-catalogue', 'eod-monitor', 'loan-report-open', 'loan-report-closed', 'loan-report-eom', 'customer-report', 'loaninfo', 'organisation', 'users', 'roles', 'permissions', 'role-assignments', 'branch', 'user-list', 'loan-detail', 'rule-groups', 'rule-group-schema', 'rule-group-test', 'dec-rules', 'rule-thresholds', 'property-mappings', 'outcome-codes', 'execution-logs', 'analytics', 'dec-users', 'api-keys', 'import-json', 'customers', 'cust-detail', 'loan-purposes', 'loan-categories', 'acc-job-catalogue','acc-job-scheduler','acc-job-manual','acc-recent-runs']);
 
 // ── FORM UTILITIES (shared by module files) ─────────────────────────────────
 // ── FORM UTILITIES ────────────────────────────────────────────────────────────
@@ -2894,14 +3193,26 @@ const _I_PLUS_12B = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none"
 
 
 function renderContent(containerId, mod, section, title, subtitle) {
+  // Reset .main-content inline styles from full-bleed sections when navigating away
+  const _FULL_BLEED_SECTIONS = new Set(['customers','cust-detail','job-scheduler','job-manual','recent-runs','job-catalogue','acc-job-scheduler','acc-job-manual','acc-recent-runs','acc-job-catalogue']);
+  const el0 = document.getElementById(containerId);
+  if (el0 && !_FULL_BLEED_SECTIONS.has(section)) {
+    el0.style.padding = '';  el0.style.overflow = '';  el0.style.height = '';  el0.style.display = '';  el0.style.flexDirection = '';  el0.style.minHeight = '';  // restore .main-content for regular sections
+  }
   // ── LOANS MODULE DELEGATION ──────────────────────────────────────────────────
   const _LOANS_SECTIONS = new Set([
-    'loan-detail','loaninfo','eod-monitor','eod','eod-scheduler',
+    'dashboard','loan-detail','loaninfo','eod-monitor','eod','job-scheduler','job-manual','recent-runs','job-catalogue',
     'loansim','loanprod','interestdef','accrual','collection',
     'loan-report-open','loan-report-closed','loan-report-eom','penalty',
-    'customer-report','feedef'
+    'customer-report','feedef','customers','cust-detail','loan-purposes','loan-categories','gs-organisations','gs-currency','ls-roles','ls-role-scopes','ls-permissions','ls-users','ls-sessions','ls-user-roles','ls-api-clients','ls-api-client-roles','ls-batch-date','daily-accrual','transactions-report','migration',
+    'acc-job-catalogue','acc-job-scheduler','acc-job-manual','acc-recent-runs',
+    'accprod','depprod'
   ]);
   if (_LOANS_SECTIONS.has(section)) {
+    // Track which module opened the customers view so navigation (detail/back/add) returns correctly
+    if (section === 'customers' || section === 'cust-detail') {
+      window._custFromMod = mod;
+    }
     if (typeof renderLoansContent !== 'function') {
       loadLoansModule().then(() => renderContent(containerId, mod, section, title, subtitle));
       const el = document.getElementById(containerId);
@@ -2951,6 +3262,13 @@ function renderContent(containerId, mod, section, title, subtitle) {
       return;
     }
     return window[d.fn](containerId, mod, section, title, subtitle);
+  }
+
+  // ── ACCOUNTS / DEPOSITS DASHBOARD ───────────────────────────────────────────
+  if (section === 'acc-dashboard' && (mod === 'accounts' || mod === 'deposits')) {
+    var _accEl = document.getElementById(containerId);
+    if (_accEl) { _accEl.innerHTML = _buildAccDepDashboard(); }
+    return;
   }
 
   const el = document.getElementById(containerId);
@@ -3059,7 +3377,7 @@ const _debouncedFilter = debounce(_doFilter, 250);
 
 document.addEventListener('input', e => {
   const inp = e.target.closest('input[data-action="table-filter"]');
-  if (inp) _debouncedFilter(inp);
+  if (inp) { _debouncedFilter(inp); return; }
 });
 
 // ── RELATIVE DATE HELPER ─────────────────────────────────────
@@ -3734,6 +4052,100 @@ document.addEventListener('DOMContentLoaded', initArtifactButtons);
 
 // ── CENTRAL EVENT DISPATCHER ─────────────────────────────────────────────────
 // All data-action elements are handled here — no inline onclick needed.
+// ── Loan Simulation — global helper ─────────────────────────────────────────
+// ── Loan Simulation — product picker ────────────────────────────────────────
+function simInitProductPicker() {
+  const inp  = document.getElementById('sim-product-input');
+  const drop = document.getElementById('sim-product-dropdown');
+  const clr  = document.getElementById('sim-product-clear');
+  if (!inp || !drop) return;
+  // Already wired up?
+  if (inp.getAttribute('data-picker-init')) return;
+  inp.setAttribute('data-picker-init', '1');
+
+  function showDrop() {
+    drop.style.display = '';
+    filterList(inp.value);
+  }
+  function hideDrop() {
+    drop.style.display = 'none';
+  }
+  function filterList(q) {
+    const items = drop.querySelectorAll('.sim-product-item');
+    const lq = q.toLowerCase();
+    items.forEach(li => {
+      const label = (li.getAttribute('data-label') || '').toLowerCase();
+      li.style.display = (!lq || label.includes(lq)) ? '' : 'none';
+    });
+  }
+
+  inp.addEventListener('focus', () => showDrop());
+  inp.addEventListener('click', (e) => { e.stopPropagation(); showDrop(); });
+  inp.addEventListener('input', () => {
+    filterList(inp.value);
+    drop.style.display = '';
+    if (!inp.value.trim()) {
+      const hidId = document.getElementById('sim-product-id');
+      if (hidId) hidId.value = '';
+      if (clr) clr.style.display = 'none';
+    }
+  });
+  inp.addEventListener('blur', () => {
+    setTimeout(hideDrop, 200);
+  });
+
+  document.addEventListener('click', function outsideClose(e) {
+    const wrap = document.getElementById('sim-product-wrap');
+    if (wrap && !wrap.contains(e.target)) hideDrop();
+  });
+}
+
+function simFillFromProduct(prod) {
+  // Numeric fields
+  const setVal = (id, val) => { const e = document.getElementById(id); if (e) e.value = val; };
+  setVal('sim-annual-rate', prod.annualRate  || '');
+  setVal('sim-pref-rate',   prod.prefRate    || 0);
+  setVal('sim-tenure',      prod.tenure       || '');
+  setVal('sim-currency',    prod.currency     || 'EUR');
+
+  // Select fields — set by value (option value must match)
+  const setSel = (id, val) => {
+    const e = document.getElementById(id);
+    if (!e) return;
+    let found = Array.from(e.options).find(o => o.value === val);
+    if (!found) found = Array.from(e.options).find(o => o.text === val);
+    if (found) e.value = found.value;
+  };
+  setSel('sim-repay-pattern', prod.repayPattern);
+  setSel('sim-int-calc',      prod.intCalcMethod);
+  setSel('sim-day-count',     prod.dayCountConv);
+  setSel('sim-int-freq',      prod.intCalcFreq);
+  setSel('sim-short-month',   prod.shortMonthHandling);
+  setSel('sim-can-irregular', prod.canBeIrregular);
+  setSel('sim-irreg-adj',     prod.irregPeriodAdjMethod);
+  setSel('sim-int-at',        prod.intCalcAt);
+  setSel('sim-non-working',   prod.nonWorkingDayAdj);
+  setSel('sim-rounding',      prod.repayRoundingMode);
+
+  // Populate and reveal customer select
+  const custSel = document.getElementById('sim-customer');
+  const custField = document.getElementById('sim-customer-field');
+  if (custSel && typeof MOCK_SIM_CUSTOMERS !== 'undefined') {
+    if (!custSel.getAttribute('data-populated')) {
+      custSel.innerHTML = '<option value="">--- Select Customer ---</option>' +
+        MOCK_SIM_CUSTOMERS.map(c =>
+          '<option value="' + c.id + '">' + c.display + '</option>'
+        ).join('');
+      custSel.setAttribute('data-populated', '1');
+    }
+  }
+  if (custField) custField.style.display = '';
+
+  // Change run button label
+  const lbl = document.getElementById('sim-run-label');
+  if (lbl) lbl.textContent = 'Generate Plan';
+}
+
 document.addEventListener('click', function(e) {
   const el = e.target.closest('[data-action]');
   if (!el) return;
@@ -3976,17 +4388,54 @@ document.addEventListener('click', function(e) {
       const id = el.dataset.id;
       window._loanDetailId  = id;
       window._loanDetailTab = 'details';
+      window._collPreviewed = null;
+      window._erQuoted      = null;
       renderContent(moduleMap['loans'].contentId, 'loans', 'loan-detail', 'Loan Information', 'Detailed loan account view');
       break;
     }
     case 'loan-detail-back': {
       window._loanDetailId  = null;
       window._loanDetailTab = 'details';
+      window._collPreviewed = null;
+      window._erQuoted      = null;
       renderContent(moduleMap['loans'].contentId, 'loans', 'loaninfo', 'Loan Information', 'View and manage existing loan account details');
       break;
     }
     case 'loan-detail-tab': {
       window._loanDetailTab = el.dataset.tab;
+      renderContent(moduleMap['loans'].contentId, 'loans', 'loan-detail', 'Loan Information', 'Detailed loan account view');
+      break;
+    }
+
+    case 'coll-preview': {
+      const lid = window._loanDetailId;
+      window._collPreviewed = lid;
+      window._loanDetailTab = 'collection';
+      renderContent(moduleMap['loans'].contentId, 'loans', 'loan-detail', 'Loan Information', 'Detailed loan account view');
+      break;
+    }
+    case 'coll-post': {
+      window._collPreviewed = null;
+      window._loanDetailTab = 'collection';
+      renderContent(moduleMap['loans'].contentId, 'loans', 'loan-detail', 'Loan Information', 'Detailed loan account view');
+      break;
+    }
+    case 'coll-reset': {
+      window._collPreviewed = null;
+      window._loanDetailTab = 'collection';
+      renderContent(moduleMap['loans'].contentId, 'loans', 'loan-detail', 'Loan Information', 'Detailed loan account view');
+      break;
+    }
+    case 'er-get-quote': {
+      const lid = window._loanDetailId;
+      window._erQuoted = lid;
+      window._loanDetailTab = 'early';
+      renderContent(moduleMap['loans'].contentId, 'loans', 'loan-detail', 'Loan Information', 'Detailed loan account view');
+      break;
+    }
+    case 'er-pay': {
+      window._erQuoted = null;
+      window._loanDetailTab = 'early';
       renderContent(moduleMap['loans'].contentId, 'loans', 'loan-detail', 'Loan Information', 'Detailed loan account view');
       break;
     }
@@ -4065,10 +4514,305 @@ document.addEventListener('click', function(e) {
       break;
     }
 
-    // ── Loan Simulation ──────────────────────────────────────────────────────────
+// ── Loan Simulation ──────────────────────────────────────────────────────────
+    case 'sim-product-input': {
+      simInitProductPicker();
+      break;
+    }
+
+    case 'sched-edit': {
+      const jobName = el.getAttribute('data-job') || '';
+      const jobs = (typeof MOCK_SCHEDULER_JOBS !== 'undefined') ? MOCK_SCHEDULER_JOBS : [];
+      const job = jobs.find(j => j.job === jobName);
+      if (!job) break;
+      const existing = document.getElementById('sched-edit-modal');
+      if (existing) existing.remove();
+      const overlay = document.createElement('div');
+      overlay.id = 'sched-edit-modal';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+      overlay.innerHTML = `
+        <div style="background:var(--card-bg,#fff);border-radius:12px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+          <div style="padding:20px 24px;border-bottom:1px solid var(--border1,#e2e8f0);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:1rem;font-weight:600;color:var(--fg,#1e293b)">Edit Job: ${job.job}</div>
+              <div style="font-size:.78rem;color:var(--fg2,#64748b);margin-top:2px">Update cron schedule and execution settings</div>
+            </div>
+            <button data-action="sched-edit-close" style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--fg2,#64748b);padding:4px 8px;border-radius:6px;line-height:1">✕</button>
+          </div>
+          <form id="sched-edit-form" style="padding:24px;display:grid;gap:16px">
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+              Cron Expression
+              <input name="cron" type="text" value="${job.cron}" required
+                style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;font-family:monospace;background:var(--bg,#fff);color:var(--fg,#1e293b)"/>
+              <span style="font-size:.72rem;color:var(--fg2,#94a3b8)">Format: minute hour day month weekday (e.g. 0 14 * * *)</span>
+            </label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Time Zone
+                <select name="timezone" style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b)">
+                  <option ${job.timezone==='UTC'?'selected':''}>UTC</option>
+                  <option ${job.timezone==='CET'?'selected':''}>CET</option>
+                  <option ${job.timezone==='EST'?'selected':''}>EST</option>
+                </select>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Enabled
+                <select name="enabled" style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b)">
+                  <option ${job.enabled==='Yes'?'selected':''}>Yes</option>
+                  <option ${job.enabled==='No'?'selected':''}>No</option>
+                </select>
+              </label>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+              Execution Strategy
+              <select name="execStrategy" style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b)">
+                <option value="" ${!job.execStrategy?'selected':''}>-</option>
+                <option ${job.execStrategy==='sequential'?'selected':''}>sequential</option>
+                <option ${job.execStrategy==='parallel'?'selected':''}>parallel</option>
+              </select>
+            </label>
+            <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border1,#e2e8f0)">
+              <button type="button" data-action="sched-edit-close"
+                style="padding:8px 20px;border:1px solid var(--border1,#e2e8f0);border-radius:7px;background:none;color:var(--fg,#1e293b);font-size:.88rem;cursor:pointer">Cancel</button>
+              <button type="submit"
+                style="padding:8px 20px;border:none;border-radius:7px;background:var(--accent,#6366f1);color:#fff;font-size:.88rem;font-weight:600;cursor:pointer">Save Changes</button>
+            </div>
+          </form>
+        </div>`;
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+      document.getElementById('sched-edit-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        job.cron = fd.get('cron');
+        job.timezone = fd.get('timezone');
+        job.enabled = fd.get('enabled');
+        job.execStrategy = fd.get('execStrategy');
+        overlay.remove();
+        const m2 = window._moduleMap && window._moduleMap['loans'];
+        if (m2) renderContent(m2.contentId, 'loans', 'job-scheduler', 'Job Scheduler', 'Manage cron schedules, execution settings, and dependency rules per job.');
+      });
+      break;
+    }
+
+    case 'sched-edit-close': {
+      const m = document.getElementById('sched-edit-modal');
+      if (m) m.remove();
+      break;
+    }
+
+    case 'jm-remove-acct': {
+      // handled inline by loans.js addEventListener; this case prevents fall-through
+      break;
+    }
+
+    case 'accjm-remove-acct': {
+      // handled inline by loans.js addEventListener; this case prevents fall-through
+      break;
+    }
+
+    case 'cust-add': {
+      // Show Add Customer modal
+      const existing = document.getElementById('cust-add-modal');
+      if (existing) existing.remove();
+      const overlay = document.createElement('div');
+      overlay.id = 'cust-add-modal';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+      overlay.innerHTML = `
+        <div style="background:var(--card-bg,#fff);border-radius:12px;width:100%;max-width:560px;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+          <div style="padding:20px 24px;border-bottom:1px solid var(--border1,#e2e8f0);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:1rem;font-weight:600;color:var(--fg,#1e293b)">Add Customer</div>
+              <div style="font-size:.78rem;color:var(--fg2,#64748b);margin-top:2px">Create a new customer profile</div>
+            </div>
+            <button data-action="cust-add-close" style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--fg2,#64748b);padding:4px 8px;border-radius:6px;line-height:1" title="Close">✕</button>
+          </div>
+          <form id="cust-add-form" style="padding:24px;display:grid;gap:16px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                First Name *
+                <input name="name" type="text" required placeholder="e.g. Drilon"
+                  style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none"/>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Last Name *
+                <input name="surname" type="text" required placeholder="e.g. Gashi"
+                  style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none"/>
+              </label>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Gender
+                <select name="gender" style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none">
+                  <option value="">Select…</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Date of Birth
+                <input name="dob" type="text" placeholder="DD.MM.YYYY"
+                  style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none"/>
+              </label>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Customer Type
+                <select name="custType" style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none">
+                  <option value="">Select…</option>
+                  <option>Individual</option>
+                  <option>Corporate</option>
+                </select>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Organisation
+                <input name="org" type="text" placeholder="e.g. OneFor"
+                  style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none"/>
+              </label>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Phone
+                <input name="phone" type="text" placeholder="e.g. +383 44 123 456"
+                  style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none"/>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Email
+                <input name="email" type="email" placeholder="e.g. name@example.com"
+                  style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none"/>
+              </label>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Document Type
+                <select name="docType" style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none">
+                  <option value="-">-</option>
+                  <option>Passport</option>
+                  <option>ID Card</option>
+                  <option>Driving License</option>
+                </select>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:500;color:var(--fg,#1e293b)">
+                Document No.
+                <input name="docNo" type="text" placeholder="Document number"
+                  style="padding:8px 10px;border:1px solid var(--border1,#e2e8f0);border-radius:6px;font-size:.88rem;background:var(--bg,#fff);color:var(--fg,#1e293b);outline:none"/>
+              </label>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border1,#e2e8f0)">
+              <button type="button" data-action="cust-add-close"
+                style="padding:8px 20px;border:1px solid var(--border1,#e2e8f0);border-radius:7px;background:none;color:var(--fg,#1e293b);font-size:.88rem;cursor:pointer">
+                Cancel
+              </button>
+              <button type="submit"
+                style="padding:8px 20px;border:none;border-radius:7px;background:var(--accent,#6366f1);color:#fff;font-size:.88rem;font-weight:600;cursor:pointer">
+                Save Customer
+              </button>
+            </div>
+          </form>
+        </div>`;
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+      document.getElementById('cust-add-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const now = new Date();
+        const pad = n => String(n).padStart(2,'0');
+        const dateStr = pad(now.getDate())+'.'+pad(now.getMonth()+1)+'.'+now.getFullYear();
+        const newId = (window.MOCK_CUSTOMERS && window.MOCK_CUSTOMERS.length)
+          ? Math.max(...window.MOCK_CUSTOMERS.map(c=>c.id)) + 1 : 400;
+        const newCust = {
+          id: newId,
+          extId: String(newId),
+          name: fd.get('name') || '',
+          surname: fd.get('surname') || '',
+          gender: fd.get('gender') || '-',
+          org: fd.get('org') || '-',
+          branch: '-', country: '-',
+          docType: fd.get('docType') || '-',
+          docNo: fd.get('docNo') || '-',
+          custType: fd.get('custType') || '-',
+          riskClass: '-', isEmployee: 'No',
+          dob: fd.get('dob') || '-',
+          phone: fd.get('phone') || '-',
+          email: fd.get('email') || '-',
+          createdAt: dateStr, updatedAt: dateStr,
+          orgId: '-'
+        };
+        if (window.MOCK_CUSTOMERS) window.MOCK_CUSTOMERS.unshift(newCust);
+        overlay.remove();
+        // Re-render customers list in whichever module opened it
+        const _caMod = window._custFromMod || currentModule || 'loans';
+        const m2 = window._moduleMap && window._moduleMap[_caMod];
+        if (m2) renderContent(m2.contentId, _caMod, 'customers', 'Customer Data', 'View and manage customer profiles');
+      });
+      break;
+    }
+
+    case 'cust-add-close': {
+      const modal = document.getElementById('cust-add-modal');
+      if (modal) modal.remove();
+      break;
+    }
+
+    case 'cust-detail': {
+      const custId = el.getAttribute('data-cust-id') || '348';
+      window._custDetailId = custId;
+      const _cdMod = window._custFromMod || currentModule || 'loans';
+      const m = window._moduleMap && window._moduleMap[_cdMod];
+      if (m) {
+        renderContent(m.contentId, _cdMod, 'cust-detail', 'Customer Details', 'View customer information');
+      }
+      break;
+    }
+
+    case 'cust-back': {
+      const _cbMod = window._custFromMod || currentModule || 'loans';
+      const m = window._moduleMap && window._moduleMap[_cbMod];
+      if (m) {
+        renderContent(m.contentId, _cbMod, 'customers', 'Customer Data', 'View and manage customer profiles');
+      }
+      break;
+    }
+
+    case 'sim-pick-product': {
+      const li = el;
+      const prodId = parseInt(li.getAttribute('data-id'), 10);
+      const label  = li.getAttribute('data-label') || '';
+      const products = (typeof MOCK_SIM_PRODUCTS !== 'undefined') ? MOCK_SIM_PRODUCTS : [];
+      const prod = products.find(p => p.id === prodId);
+      const inp  = document.getElementById('sim-product-input');
+      const hidId = document.getElementById('sim-product-id');
+      const clr  = document.getElementById('sim-product-clear');
+      const drop = document.getElementById('sim-product-dropdown');
+      if (inp)  inp.value  = label;
+      if (hidId) hidId.value = prodId;
+      if (clr)  clr.style.display = '';
+      if (drop) drop.style.display = 'none';
+      if (prod) simFillFromProduct(prod);
+      break;
+    }
+
     case 'sim-clear-product': {
-      const inp = document.getElementById('sim-product');
+      const inp = document.getElementById('sim-product-input');
+      const hidId = document.getElementById('sim-product-id');
+      const clrBtn = document.getElementById('sim-product-clear');
       if (inp) inp.value = '';
+      if (hidId) hidId.value = '';
+      if (clrBtn) clrBtn.style.display = 'none';
+      // Hide customer field
+      const cf = document.getElementById('sim-customer-field');
+      if (cf) cf.style.display = 'none';
+      // Reset run button label
+      const lbl = document.getElementById('sim-run-label');
+      if (lbl) lbl.textContent = 'Run Simulation';
+      break;
+    }
+
+    case 'sim-reset': {
+      window._simFees = [];
+      // Re-render the section
+      renderContent(moduleMap['loans'].contentId, 'loans', 'loansim', 'Loan Simulation', 'Simulate loan scenarios and repayment schedules');
       break;
     }
 
@@ -4103,144 +4847,242 @@ document.addEventListener('click', function(e) {
     }
 
     case 'run-simulation': {
-      const gv = id => { const el2 = document.getElementById(id); return el2 ? el2.value : ''; };
-      const principal   = parseFloat(gv('sim-amount')      || '1000');
-      const annualRate  = parseFloat(gv('sim-annual-rate') || '0');
-      const prefRate    = parseFloat(gv('sim-pref-rate')   || '0');
-      const tenure      = parseInt(gv('sim-tenure')        || '12');
-      const currency    = gv('sim-currency') || 'EUR';
-      const disbDate    = gv('sim-disb-date');
-      const firstRepay  = gv('sim-first-repay');
+      // ── Read inputs ──────────────────────────────────────────────────────
+      const gv = id => { const e2 = document.getElementById(id); return e2 ? e2.value : ''; };
+      const principal  = parseFloat(gv('sim-amount')     || '1000');
+      const annualRate = parseFloat(gv('sim-annual-rate')|| '0');
+      const prefRate   = parseFloat(gv('sim-pref-rate')  || '0');
+      const tenure     = parseInt(gv('sim-tenure')       || '12');
+      const currency   = gv('sim-currency') || 'EUR';
+      const disbDateStr  = gv('sim-disb-date');
+      const firstRepayStr= gv('sim-first-repay');
+      const irregAdj   = gv('sim-irreg-adj');  // 'True Equal Installment' or 'Equal Installment'
+      const productId  = gv('sim-product-id');
+      const hasProduct = !!productId;
 
-      const netAnnual   = annualRate + prefRate;
-      const mr          = netAnnual / 100 / 12;   // monthly rate
+      // Validate customer when product selected
+      if (hasProduct) {
+        const custSel = document.getElementById('sim-customer');
+        if (!custSel || !custSel.value) {
+          custSel && custSel.closest('.sim-field').classList.add('sim-field--error');
+          alert('Please select a Customer before generating a plan.');
+          break;
+        }
+      }
 
-      // PMT (equal installment / annuity)
-      let pmt = mr === 0 ? principal / tenure
-                         : principal * mr / (1 - Math.pow(1 + mr, -tenure));
-      pmt = Math.round(pmt * 100) / 100;
+      if (!disbDateStr || !firstRepayStr) { alert('Please enter disbursement and first repayment dates.'); break; }
+      if (!annualRate && annualRate !== 0) { alert('Please enter the Annual Interest Rate.'); break; }
+      if (!tenure) { alert('Please enter the Tenure.'); break; }
 
-      const fmt = n => n.toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' ' + currency;
-      const fmtDate = s => {
-        if (!s) return '-';
-        const [y,m,d] = s.split('-');
-        return d + '.' + m + '.' + y;
-      };
-      const addMonths = (iso, n) => {
-        if (!iso) return '';
-        const d = new Date(iso);
+      const netAnnual = annualRate + prefRate;
+
+      // ── DAYS360 (European / 30/360) ──────────────────────────────────────
+      // DAYS360(start, end, TRUE) = (endY-startY)*360 + (endM-startM)*30 + min(endD,30) - min(startD,30)
+      function days360(startIso, endIso) {
+        const [sy, sm, sd] = startIso.split('-').map(Number);
+        const [ey, em, ed] = endIso.split('-').map(Number);
+        const d1 = Math.min(sd, 30);
+        const d2 = Math.min(ed, 30);
+        return (ey - sy) * 360 + (em - sm) * 30 + (d2 - d1);
+      }
+
+      // ── Add N months (monthly anniversary of first repayment) ────────────
+      function addMonths(isoDate, n) {
+        const d = new Date(isoDate + 'T00:00:00');
+        const day = d.getDate();
         d.setMonth(d.getMonth() + n);
-        return d.toISOString().slice(0,10);
-      };
+        // If month rolled over (e.g. Jan 31 + 1 = Mar 3), go back to end of month
+        if (d.getDate() !== day) d.setDate(0);
+        return d.toISOString().slice(0, 10);
+      }
 
-      // Fee totals
+      function fmtDate(iso) {
+        if (!iso) return '-';
+        const [y,m,d] = iso.split('-');
+        return d + '.' + m + '.' + y;
+      }
+
+      function fmt(n) {
+        return n.toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 }) + ' ' + currency;
+      }
+
+      // ── True Equal Instalment (TEI) algorithm ────────────────────────────
+      // Monthly rate r = i_annual × 30/360  (same as i/12 for 30/360)
+      const r = netAnnual / 100 / 12;
+
+      // First period days using DAYS360 European
+      const firstPeriodDays = days360(disbDateStr, firstRepayStr);
+      const f = firstPeriodDays / 30;   // period fraction
+
+      // TEI = P * r * (1+r)^(f-1) / (1 - (1+r)^-N)
+      // When f=1 this collapses to standard EMI = P*r*(1+r)^N / ((1+r)^N - 1)
+      let installment;
+      if (r === 0) {
+        installment = principal / tenure;
+      } else if (irregAdj === 'True Equal Installment') {
+        installment = principal * r * Math.pow(1 + r, f - 1) / (1 - Math.pow(1 + r, -tenure));
+      } else {
+        // EMI (equal installment, ignores irregular first period)
+        installment = principal * r * Math.pow(1 + r, tenure) / (Math.pow(1 + r, tenure) - 1);
+      }
+      installment = Math.round(installment * 100) / 100;  // round to 2dp
+
+      // ── Build schedule ───────────────────────────────────────────────────
       const fees = window._simFees || [];
       let upfrontFee = 0, perInstallFee = 0;
-      fees.forEach(f => {
-        const amt = f.method === 'fixed' ? f.fixed : (f.pct / 100 * principal);
-        if (f.trigger === 'upfront' || f.trigger === 'disbursement') upfrontFee += amt;
+      fees.forEach(ff => {
+        const amt = ff.method === 'fixed' ? ff.fixed : (ff.pct / 100 * principal);
+        if (ff.trigger === 'upfront' || ff.trigger === 'disbursement') upfrontFee += amt;
         else perInstallFee += amt;
       });
 
-      // Build schedule rows
       let schedule = [];
-      schedule.push({ inst:'-', date: fmtDate(disbDate), principal:0, interest:0, fee:upfrontFee, total:-principal, balance:principal });
+      // Row 1 = disbursement (instalment number 1, total = -principal)
+      schedule.push({ inst:1, date: fmtDate(disbDateStr), principal:0, interest:0, fee: upfrontFee, total:-principal, balance:principal });
 
       let balance = principal;
-      let totPrincipal = 0, totInterest = 0, totFee = upfrontFee, totPayment = -principal;
+      let cumPrincipal = 0;
+      let residual = 0;   // running sum of (exact interest - rounded interest)
+      let totPrincipal = 0, totInterest = 0, totFee = upfrontFee;
 
       for (let i = 1; i <= tenure; i++) {
-        const interest = Math.round(balance * mr * 100) / 100;
-        let princ = Math.round((pmt - interest) * 100) / 100;
-        if (i === tenure) princ = Math.round(balance * 100) / 100;   // last installment adjustment
-        const fee   = Math.round(perInstallFee * 100) / 100;
-        const total = Math.round((princ + interest + fee) * 100) / 100;
+        const dueDate = addMonths(firstRepayStr, i - 1);
+        // Period days: first instalment uses firstPeriodDays, rest use 30
+        const periodDays = (i === 1) ? firstPeriodDays : 30;
+        const exactInterest = balance * (netAnnual / 100) * periodDays / 360;
+        const roundedInterest = Math.round(exactInterest * 100) / 100;
+        residual += (exactInterest - roundedInterest);
+
+        let princ, total;
+        if (i < tenure) {
+          princ = Math.round((installment - roundedInterest) * 100) / 100;
+          total = Math.round((installment + perInstallFee) * 100) / 100;
+        } else {
+          // Last instalment: principal = remaining balance (PRINCIPAL adjustment = TRUE)
+          princ = Math.round(balance * 100) / 100;
+          const lastInterest = roundedInterest; // INTEREST adjustment = FALSE per spec
+          total = Math.round((princ + lastInterest + perInstallFee) * 100) / 100;
+        }
+        const fee = Math.round(perInstallFee * 100) / 100;
         balance = Math.round((balance - princ) * 100) / 100;
         if (balance < 0) balance = 0;
 
+        cumPrincipal += princ;
         totPrincipal += princ;
-        totInterest  += interest;
+        totInterest  += roundedInterest;
         totFee       += fee;
-        totPayment   += total;
 
-        schedule.push({ inst:'-', date: fmtDate(addMonths(firstRepay, i-1)), principal:princ, interest, fee, total, balance });
+        schedule.push({ inst: i + 1, date: fmtDate(dueDate), principal:princ, interest:roundedInterest, fee, total, balance });
       }
 
-      // Effective annual rate
-      const ear = mr > 0 ? (Math.pow(1 + mr, 12) - 1) * 100 : netAnnual;
-      const totalRepayment = principal + totInterest + (upfrontFee + perInstallFee * tenure);
+      // ── Effective Interest Rate (EIR) ─────────────────────────────────────
+      // Solve: sum of PV(cashflows) = 0  using Newton-Raphson on monthly rate
+      // cashflows: -principal at t=0 (in first-period-fraction months),
+      //            +installment at t=1,2,...N months from firstRepay
+      // Approximate: use compound annual from monthly rate
+      const eir = r > 0 ? (Math.pow(1 + r, 12) - 1) * 100 : netAnnual;
+      const totalRepayment = principal + totInterest + upfrontFee + perInstallFee * tenure;
 
-      const rowsHtml = schedule.map(r => `
-        <tr>
-          <td>${r.inst}</td>
-          <td>${r.date}</td>
-          <td>${fmt(r.principal)}</td>
-          <td>${fmt(r.interest)}</td>
-          <td>${fmt(r.fee)}</td>
-          <td>${fmt(r.total)}</td>
-          <td>${fmt(r.balance)}</td>
-        </tr>`).join('');
+      const rowsHtml = schedule.map(r2 => {
+        const isDisb = r2.inst === 1;
+        return '<tr' + (isDisb ? ' class="sim-disb-row"' : '') + '>' +
+          '<td>' + r2.inst + '</td>' +
+          '<td>' + r2.date + '</td>' +
+          '<td>' + fmt(r2.principal) + '</td>' +
+          '<td>' + (isDisb ? fmt(0) : fmt(r2.interest)) + '</td>' +
+          '<td>' + fmt(r2.fee) + '</td>' +
+          '<td style="' + (r2.total < 0 ? 'color:#e74c3c;font-weight:600' : '') + '">' + fmt(r2.total) + '</td>' +
+          '<td>' + fmt(r2.balance) + '</td>' +
+          '</tr>';
+      }).join('');
 
       const wrap = document.getElementById('sim-results-wrap');
       if (!wrap) break;
       wrap.style.display = '';
-      wrap.innerHTML = `
-        <div class="sim-results-section">
-          <div class="sim-results-title">Simulation Results</div>
-          <div class="sim-results-sub">Repayment schedule calculated successfully</div>
-          <div class="sim-summary-cards">
-            <div class="sim-summary-card sc-purple">
-              <div class="sim-card-label">Total Loan Amount</div>
-              <div class="sim-card-value">${principal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} ${currency}</div>
-            </div>
-            <div class="sim-summary-card sc-blue">
-              <div class="sim-card-label">Total Interest Amount</div>
-              <div class="sim-card-value">${totInterest.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} ${currency}</div>
-            </div>
-            <div class="sim-summary-card sc-green">
-              <div class="sim-card-label">Total Repayment Amount</div>
-              <div class="sim-card-value">${totalRepayment.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} ${currency}</div>
-            </div>
-            <div class="sim-summary-card sc-orange">
-              <div class="sim-card-label">Effective Interest Rate</div>
-              <div class="sim-card-value">${ear.toFixed(2)} %</div>
-            </div>
-          </div>
-          <table class="sim-schedule-table">
-            <thead>
-              <tr>
-                <th>Installment</th><th>Due Date</th><th>Principal</th>
-                <th>Interest</th><th>Fee</th><th>Total Payment</th><th>Remaining Balance</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rowsHtml}
-              <tr class="sim-total-row">
-                <td colspan="2"><strong>Total</strong></td>
-                <td><strong>${fmt(totPrincipal)}</strong></td>
-                <td><strong>${fmt(totInterest)}</strong></td>
-                <td></td>
-                <td><strong>${fmt(totalRepayment)}</strong></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="sim-open-loan-bar">
-            <button class="btn-sim-open-loan" data-action="sim-open-loan">Open Loan</button>
-          </div>
-        </div>`;
+
+      // Open Loan button only if product + customer selected
+      const custSel2 = document.getElementById('sim-customer');
+      const custName = custSel2 && custSel2.value ? custSel2.options[custSel2.selectedIndex]?.text : '';
+      const openLoanBar = hasProduct
+        ? '<div class="sim-open-loan-bar"><button class="btn-sim-open-loan" data-action="sim-open-loan">Open Loan</button></div>'
+        : '';
+
+      const nextLoanId = 1426 + Math.floor(Math.random() * 10);
+      window._simLastParams = { principal, annualRate, prefRate, tenure, currency, disbDateStr, firstRepayStr, productId, custName, netAnnual, installment, totInterest, totalRepayment, eir, nextLoanId };
+
+      wrap.innerHTML =
+        '<div class="sim-results-section">' +
+          '<div class="sim-results-header">' +
+            '<div>' +
+              '<div class="sim-results-title">Simulation Results</div>' +
+              '<div class="sim-results-sub">Repayment schedule calculated successfully</div>' +
+            '</div>' +
+            '<button class="btn-sim-export" data-action="sim-export">Export</button>' +
+          '</div>' +
+          '<div class="sim-summary-cards">' +
+            '<div class="sim-summary-card sc-purple"><div class="sim-card-label">Total Loan Amount</div>' +
+              '<div class="sim-card-value">' + principal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' ' + currency + '</div></div>' +
+            '<div class="sim-summary-card sc-blue"><div class="sim-card-label">Total Interest Amount</div>' +
+              '<div class="sim-card-value">' + totInterest.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' ' + currency + '</div></div>' +
+            '<div class="sim-summary-card sc-green"><div class="sim-card-label">Total Repayment Amount</div>' +
+              '<div class="sim-card-value">' + totalRepayment.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' ' + currency + '</div></div>' +
+            '<div class="sim-summary-card sc-orange"><div class="sim-card-label">Effective Interest Rate</div>' +
+              '<div class="sim-card-value">' + eir.toFixed(2) + ' %</div></div>' +
+          '</div>' +
+          '<table class="sim-schedule-table">' +
+            '<thead><tr><th>Installment</th><th>Due Date</th><th>Principal</th>' +
+            '<th>Interest</th><th>Fee</th><th>Total Payment</th><th>Remaining Balance</th></tr></thead>' +
+            '<tbody>' + rowsHtml +
+              '<tr class="sim-total-row">' +
+                '<td colspan="2"><strong>Total</strong></td>' +
+                '<td><strong>' + fmt(totPrincipal) + '</strong></td>' +
+                '<td><strong>' + fmt(totInterest) + '</strong></td>' +
+                '<td></td>' +
+                '<td><strong>' + fmt(totalRepayment) + '</strong></td>' +
+                '<td></td>' +
+              '</tr>' +
+            '</tbody>' +
+          '</table>' +
+          openLoanBar +
+        '</div>';
+
       wrap.scrollIntoView({ behavior:'smooth', block:'start' });
       break;
     }
 
-    case 'sim-open-loan':
-      alert('Opening loan application with simulated parameters...');
+    case 'sim-export': {
+      // Simple CSV export
+      const p = window._simLastParams;
+      if (!p) break;
+      alert('Export to CSV — in a real implementation this would download the schedule as CSV/Excel.');
       break;
+    }
+
+    case 'sim-open-loan': {
+      const p = window._simLastParams;
+      if (!p) break;
+      const bar = document.querySelector('.sim-open-loan-bar');
+      if (bar) {
+        bar.innerHTML = '<div class="sim-loan-opened-msg">Loan account ID ' + p.nextLoanId + ' has been opened.</div>';
+      }
+      break;
+    }
 
     // ── Loan Product ─────────────────────────────────────────────────────────
     case 'open-loan-product-form':
       openLoanProductForm(el.dataset.module, el.dataset);
       break;
+
+    // ── Account/Deposit Product ───────────────────────────────────────────────
+    case 'open-acc-product-form': {
+      const backSec = el.dataset.section || 'accprod';
+      const apData = el.dataset.id ? {
+        id: el.dataset.id, code: el.dataset.code, name: el.dataset.name,
+        category: el.dataset.category, status: el.dataset.status
+      } : null;
+      if (typeof openAccProductForm === 'function') openAccProductForm(el.dataset.module, backSec, apData);
+      break;
+    }
 
     case 'loan-product-save':
       alert('Loan Product saved!');
@@ -4271,7 +5113,7 @@ document.addEventListener('click', function(e) {
     }
 
     case 'lp-add-currency':
-      document.getElementById('lpCurrencyModal').classList.add('open');
+      openLpAddCurrencyModal(null);
       break;
 
     case 'lp-add-interest-rate':
@@ -4507,270 +5349,184 @@ function searchKeydown(e) {
 // ─────────────────────────────────────────────────────────────────────────────
 var _envOptions = ['UAT', 'PROD', 'DEV'];
 var _currentEnv = 'UAT';
-// ── ADD CURRENCY MODAL ───────────────────────────────────────────────────────
-// ── LP FEE PICKER ────────────────────────────────────────────────────────────
-var LP_FEE_CATALOG = [
-  { id:13, name:'Talat fee',                       version:'v1.0', scope:'Account',      trigger:'Per Instalment', method:'Fixed',      currency:'EUR', minAmt:'',    maxAmt:'',     status:'Active'   },
-  { id:12, name:'Upfront processing fee 3%',       version:'v1.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', currency:'EUR', minAmt:'100', maxAmt:'500',  status:'Pending'  },
-  { id:11, name:'100 bucks fee',                   version:'v1.0', scope:'Loan Product', trigger:'Per Instalment', method:'Fixed',      currency:'EUR', minAmt:'',    maxAmt:'',     status:'Active'   },
-  { id:10, name:'Upfront fee 2%',                  version:'v2.0', scope:'Loan Product', trigger:'Up Front',       method:'Percentage', currency:'EUR', minAmt:'200', maxAmt:'2000', status:'Active'   },
-  { id:9,  name:'Monthly maintenance fee',         version:'v1.0', scope:'Account',      trigger:'Monthly',        method:'Fixed',      currency:'EUR', minAmt:'',    maxAmt:'',     status:'Active'   },
-  { id:8,  name:'Late payment fee',                version:'v1.0', scope:'Account',      trigger:'Per Instalment', method:'Fixed',      currency:'USD', minAmt:'',    maxAmt:'',     status:'Active'   },
-  { id:7,  name:'Disbursement fee 1.5%',           version:'v1.0', scope:'Loan Product', trigger:'Disbursement',   method:'Percentage', currency:'USD', minAmt:'150', maxAmt:'3000', status:'Active'   },
-  { id:6,  name:'Early settlement fee 2.5%',       version:'v1.0', scope:'Loan Product', trigger:'Settlement',     method:'Percentage', currency:'EUR', minAmt:'100', maxAmt:'5000', status:'Active'   },
-  { id:5,  name:'Account opening fee',             version:'v1.0', scope:'Account',      trigger:'One-Off',        method:'Fixed',      currency:'RSD', minAmt:'',    maxAmt:'',     status:'Active'   },
-  { id:4,  name:'Annual review fee 0.5%',          version:'v1.0', scope:'Loan Product', trigger:'Annual',         method:'Percentage', currency:'CHF', minAmt:'50',  maxAmt:'1000', status:'Active'   },
-  { id:3,  name:'Insurance administration fee',    version:'v1.0', scope:'Account',      trigger:'Monthly',        method:'Fixed',      currency:'EUR', minAmt:'',    maxAmt:'',     status:'Inactive' },
-  { id:2,  name:'Restructuring fee 1%',            version:'v1.0', scope:'Loan Product', trigger:'Restructuring',  method:'Percentage', currency:'GBP', minAmt:'200', maxAmt:'4000', status:'Active'   },
-  { id:1,  name:'Origination fee 2%',              version:'v1.0', scope:'Loan Product', trigger:'Disbursement',   method:'Percentage', currency:'BAM', minAmt:'100', maxAmt:'2500', status:'Active'   },
-];
-var _lpFeePickerSelected = null;
-
-var LP_FEE_CATALOG_ACTIVE = LP_FEE_CATALOG.filter(function(f){ return f.status === 'Active'; });
-
-function openLpFeeModal() {
-  _lpFeePickerSelected = null;
-  document.getElementById('lpfee-search').value = '';
-  _lpFeePickerCurrentList = LP_FEE_CATALOG_ACTIVE;
-  lpFeePickerRender(LP_FEE_CATALOG_ACTIVE);
-  document.getElementById('lpFeeModal').classList.add('open');
+// ── ADD CURRENCY MODAL (single-form) ─────────────────────────────────────────
+function openLpAddCurrencyModal(data) {
+  var isEdit = data && typeof data === 'object';
+  var titleEl = document.getElementById('lpcurr-modal-title');
+  var saveLbl = document.getElementById('lpcurr-save-lbl');
+  if (titleEl) titleEl.textContent = isEdit ? 'Edit Currency' : 'Add Currency';
+  if (saveLbl) saveLbl.textContent = isEdit ? 'Save Changes' : 'Add Currency';
+  // Populate fields
+  var f = function(id, val) { var el = document.getElementById(id); if (el) el.value = val || ''; };
+  f('lpcurr-f-currency',   isEdit ? (data.currency   || '') : '');
+  f('lpcurr-f-status',     isEdit ? (data.status     || 'Active') : 'Active');
+  f('lpcurr-f-minAmt',     isEdit ? (data.minAmt     || '') : '');
+  f('lpcurr-f-maxAmt',     isEdit ? (data.maxAmt     || '') : '');
+  f('lpcurr-f-defaultAmt', isEdit ? (data.defaultAmt || '') : '');
+  f('lpcurr-f-minTenor',   isEdit ? (data.minTenor   || '') : '');
+  f('lpcurr-f-maxTenor',   isEdit ? (data.maxTenor   || '') : '');
+  f('lpcurr-f-defTenor',   isEdit ? (data.defTenor   || '') : '');
+  f('lpcurr-f-validFrom',  isEdit ? (data.validFrom  || '01.10.2025') : '01.10.2025');
+  f('lpcurr-f-validTo',    isEdit ? (data.validTo    || '31.12.2099') : '31.12.2099');
+  // Hide error
+  var err = document.getElementById('lpcurr-f-err');
+  if (err) { err.style.display = 'none'; err.textContent = ''; }
+  if (!isEdit) { window._lpCurrEditIdx = null; }
+  document.getElementById('lpCurrencyModal').classList.add('open');
 }
 
-function lpFeePickerRender(list) {
-  var tbody = document.getElementById('lpfee-picker-body');
-  var empty = document.getElementById('lpfee-picker-empty');
-  if (!list.length) {
-    tbody.innerHTML = '';
-    empty.style.display = 'block';
+function closeLpCurrencyModal() {
+  document.getElementById('lpCurrencyModal').classList.remove('open');
+  window._lpCurrEditIdx = null;
+}
+
+function saveLpCurrency() {
+  var g = function(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  var currency = g('lpcurr-f-currency');
+  if (!currency) {
+    var err = document.getElementById('lpcurr-f-err');
+    if (err) { err.textContent = 'Please select a currency.'; err.style.display = ''; }
     return;
   }
-  empty.style.display = 'none';
-  tbody.innerHTML = list.map(function(f) {
-    var sel = _lpFeePickerSelected && _lpFeePickerSelected.id === f.id;
-    var isPct = f.method === 'Percentage';
-    var methodBadge = isPct
-      ? '<span style="background:#e3f2fd;color:#1565c0;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Percentage</span>'
-      : '<span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">Fixed</span>';
-    var minAmt = isPct && f.minAmt ? f.minAmt : '—';
-    var maxAmt = isPct && f.maxAmt ? f.maxAmt : '—';
-    var curr   = f.currency || '—';
-    return '<tr data-fee-id="' + f.id + '" onclick="lpFeePickerSelect(' + f.id + ')" style="border-bottom:1px solid #f0f4fa;cursor:pointer;'
-      + (sel ? 'background:#f3f0ff;' : '') + '">'
-      + '<td style="padding:10px 12px;text-align:center">'
-      +   '<div style="width:16px;height:16px;border-radius:50%;border:2px solid #6b4fc8;display:inline-flex;align-items:center;justify-content:center">'
-      +     (sel ? '<div style="width:8px;height:8px;border-radius:50%;background:#6b4fc8"></div>' : '')
-      +   '</div>'
-      + '</td>'
-      + '<td style="padding:10px 12px;font-weight:500;color:#1a2640">' + f.name + '</td>'
-      + '<td style="padding:10px 12px;color:#6a8faf">' + f.version + '</td>'
-      + '<td style="padding:10px 12px;color:#3a5272">' + f.scope + '</td>'
-      + '<td style="padding:10px 12px;color:#3a5272">' + f.trigger + '</td>'
-      + '<td style="padding:10px 12px">' + methodBadge + '</td>'
-      + '<td style="padding:10px 12px;font-weight:600;color:#1a2640">' + curr + '</td>'
-      + '<td style="padding:10px 12px;text-align:right;color:' + (isPct ? '#1a4aa0' : '#b0b8c8') + ';font-size:12px">' + minAmt + '</td>'
-      + '<td style="padding:10px 12px;text-align:right;color:' + (isPct ? '#1a4aa0' : '#b0b8c8') + ';font-size:12px">' + maxAmt + '</td>'
-      + '</tr>';
-  }).join('');
+  window._lpCurrencies = window._lpCurrencies || [];
+  var entry = {
+    currency:   currency,
+    status:     g('lpcurr-f-status') || 'Active',
+    minAmt:     g('lpcurr-f-minAmt'),
+    maxAmt:     g('lpcurr-f-maxAmt'),
+    defaultAmt: g('lpcurr-f-defaultAmt'),
+    minTenor:   g('lpcurr-f-minTenor'),
+    maxTenor:   g('lpcurr-f-maxTenor'),
+    defTenor:   g('lpcurr-f-defTenor'),
+    validFrom:  g('lpcurr-f-validFrom') || '01.10.2025',
+    validTo:    g('lpcurr-f-validTo')   || '31.12.2099',
+  };
+  var idx = window._lpCurrEditIdx;
+  if (idx != null && idx >= 0) {
+    window._lpCurrencies[idx] = entry;
+  } else {
+    // Check duplicate
+    var dup = window._lpCurrencies.some(function(c){ return c.currency === currency; });
+    if (dup) {
+      var err2 = document.getElementById('lpcurr-f-err');
+      if (err2) { err2.textContent = 'This currency has already been added.'; err2.style.display = ''; }
+      return;
+    }
+    window._lpCurrencies.push(entry);
+  }
+  if (typeof lpRefreshCurrencies === 'function') lpRefreshCurrencies();
+  closeLpCurrencyModal();
 }
 
-function lpFeePickerSelect(id) {
-  _lpFeePickerSelected = LP_FEE_CATALOG.find(function(f) { return f.id === id; }) || null;
-  lpFeePickerRender(_lpFeePickerCurrentList || LP_FEE_CATALOG_ACTIVE);
-}
-
-var _lpFeePickerCurrentList = LP_FEE_CATALOG_ACTIVE;
-function lpFeePickerFilter() {
-  var q = document.getElementById('lpfee-search').value.trim().toLowerCase();
-  _lpFeePickerCurrentList = q
-    ? LP_FEE_CATALOG_ACTIVE.filter(function(f) {
-        return f.name.toLowerCase().includes(q)
-            || f.trigger.toLowerCase().includes(q)
-            || f.method.toLowerCase().includes(q)
-            || f.scope.toLowerCase().includes(q);
-      })
-    : LP_FEE_CATALOG_ACTIVE;
-  lpFeePickerRender(_lpFeePickerCurrentList);
+// ── SELECT FEES MODAL (checkbox) ──────────────────────────────────────────────
+function openLpFeeModal() {
+  // Uncheck all
+  [1, 2].forEach(function(n) {
+    var cb = document.getElementById('lpfee-cb-' + n);
+    if (cb) cb.checked = false;
+  });
+  document.getElementById('lpFeeModal').classList.add('open');
 }
 
 function closeLpFeeModal() {
   document.getElementById('lpFeeModal').classList.remove('open');
 }
 
-function saveLpFee() {
-  if (!_lpFeePickerSelected) { alert('Please select a fee from the list.'); return; }
-  var f = _lpFeePickerSelected;
-  var entry = { feeId:f.id, feeName:f.name, version:f.version, trigger:f.trigger, method:f.method, currency:f.currency||'', scope:f.scope, status:f.status };
+var _LP_FEE_DEFS = [
+  { id:1, feeName:'Per Instalment Service Fee', method:'Per Instalment', trigger:'Per Instalment', currency:'EUR', status:'ACTIVE' },
+  { id:2, feeName:'Upfront Processing Fee',     method:'Up Front',       trigger:'Up Front',       currency:'EUR', status:'ACTIVE' },
+];
+
+function saveLpSelectedFees() {
   window._lpFees = window._lpFees || [];
-  window._lpFees.push(entry);
+  var added = 0;
+  _LP_FEE_DEFS.forEach(function(def) {
+    var cb = document.getElementById('lpfee-cb-' + def.id);
+    if (!cb || !cb.checked) return;
+    var already = window._lpFees.some(function(f){ return f.feeName === def.feeName; });
+    if (already) return;
+    window._lpFees.push({ feeId:def.id, feeName:def.feeName, method:def.method, trigger:def.trigger, currency:def.currency, status:def.status });
+    added++;
+  });
   if (typeof lpRefreshFees === 'function') lpRefreshFees();
   closeLpFeeModal();
 }
 
-// ── Currency multi-select modal ───────────────────────────────────────────────
-var _LP_CURR_META = {
-  EUR: { name: 'Euro',                    sym: '€',  bg: '#e8f0fe', col: '#1a56db' },
-  USD: { name: 'US Dollar',               sym: '$',  bg: '#e6f9f0', col: '#0a7a40' },
-  GBP: { name: 'British Pound',           sym: '£',  bg: '#fde8f5', col: '#b0166c' },
-  CHF: { name: 'Swiss Franc',             sym: 'Fr', bg: '#fff0e0', col: '#c06010' },
-  RSD: { name: 'Serbian Dinar',           sym: 'din',bg: '#e8f4fd', col: '#0a5fa0' },
-  BAM: { name: 'Bosnian Convertible Mark',sym: 'KM', bg: '#eef6e8', col: '#2d6a0a' },
-  HRK: { name: 'Croatian Kuna',           sym: 'kn', bg: '#fdf3e8', col: '#a05010' },
-};
-
-function closeLpCurrencyModal() {
-  document.getElementById('lpCurrencyModal').classList.remove('open');
-}
-
-function toggleLpCurrRow(code) {
-  var cb  = document.getElementById('lpcurr-cb-' + code);
-  var row = document.getElementById('lpcurr-row-' + code);
-  if (!cb || !row) return;
-  // If called from label onclick, checkbox state has already toggled
-  var checked = cb.checked;
-  row.classList.toggle('selected', checked);
-  // Update counter
-  var total = document.querySelectorAll('#lpcurr-list input[type="checkbox"]:checked').length;
-  var lbl = document.getElementById('lpcurr-sel-count');
-  if (lbl) lbl.textContent = total === 0 ? 'No currencies selected'
-    : total === 1 ? '1 currency selected'
-    : total + ' currencies selected';
-}
-
-function saveLpCurrencies() {
-  var codes = ['EUR','USD','GBP','CHF','RSD','BAM','HRK'];
-  var added = [];
-  codes.forEach(function(code) {
-    var cb = document.getElementById('lpcurr-cb-' + code);
-    if (!cb || !cb.checked) return;
-    var min = document.getElementById('lpcurr-min-' + code);
-    var max = document.getElementById('lpcurr-max-' + code);
-    var def = document.getElementById('lpcurr-def-' + code);
-    // Skip if already added
-    var already = (window._lpCurrencies || []).some(function(c){ return c.currency === code; });
-    if (already) return;
-    added.push({
-      currency:   code,
-      minAmt:     min ? min.value : '',
-      maxAmt:     max ? max.value : '',
-      defaultAmt: def ? def.value : '',
-      status:     'Active',
-    });
-  });
-  if (!added.length) {
-    alert('Please select at least one currency (or all selected currencies are already added).');
-    return;
+// ── ADD INTEREST RATE MODAL (single-form) ─────────────────────────────────────
+function openLpAddInterestRateModal(data) {
+  var isEdit = data && typeof data === 'object';
+  var titleEl = document.getElementById('lpir-modal-title');
+  var saveLbl = document.getElementById('lpir-save-lbl');
+  if (titleEl) titleEl.textContent = isEdit ? 'Edit Interest Rate' : 'Add Interest Rate';
+  if (saveLbl) saveLbl.textContent = isEdit ? 'Save Changes' : 'Add Rate';
+  // Populate currency dropdown from added currencies
+  var sel = document.getElementById('lpir-f-currency');
+  if (sel) {
+    var currencies = (window._lpCurrencies || []).map(function(c){ return c.currency; });
+    sel.innerHTML = '<option value="">Select currency…</option>' +
+      currencies.map(function(c){ return '<option value="' + c + '">' + c + '</option>'; }).join('');
   }
-  window._lpCurrencies = window._lpCurrencies || [];
-  added.forEach(function(e){ window._lpCurrencies.push(e); });
-  if (typeof lpRefreshCurrencies === 'function') lpRefreshCurrencies();
-  // Reset checkboxes
-  codes.forEach(function(code){
-    var cb = document.getElementById('lpcurr-cb-' + code);
-    var row = document.getElementById('lpcurr-row-' + code);
-    if (cb) cb.checked = false;
-    if (row) row.classList.remove('selected');
-  });
-  var lbl = document.getElementById('lpcurr-sel-count');
-  if (lbl) lbl.textContent = 'No currencies selected';
-  closeLpCurrencyModal();
-}
-
-// ── Interest Rate catalog (mocked per currency) ──────────────────────────────
-var _LP_IR_CATALOG = {
-  EUR: [
-    { id:'eur-1', name:'Standard EUR Fixed 5.50%',     type:'Fixed'    },
-    { id:'eur-2', name:'EUR Variable EURIBOR + 2.00%', type:'Variable' },
-    { id:'eur-3', name:'EUR Preferential Fixed 3.80%', type:'Fixed'    },
-  ],
-  USD: [
-    { id:'usd-1', name:'Standard USD Fixed 6.50%',     type:'Fixed'    },
-    { id:'usd-2', name:'USD SOFR + 2.50%',             type:'Variable' },
-    { id:'usd-3', name:'USD Preferential Fixed 4.20%', type:'Fixed'    },
-  ],
-  GBP: [
-    { id:'gbp-1', name:'Standard GBP Fixed 5.90%',     type:'Fixed'    },
-    { id:'gbp-2', name:'GBP SONIA + 2.80%',            type:'Variable' },
-    { id:'gbp-3', name:'GBP Preferential Fixed 4.50%', type:'Fixed'    },
-  ],
-  CHF: [
-    { id:'chf-1', name:'Standard CHF Fixed 3.20%',     type:'Fixed'    },
-    { id:'chf-2', name:'CHF SARON + 1.50%',            type:'Variable' },
-  ],
-  RSD: [
-    { id:'rsd-1', name:'Standard RSD Fixed 14.00%',    type:'Fixed'    },
-    { id:'rsd-2', name:'RSD Variable NBS + 3.00%',     type:'Variable' },
-    { id:'rsd-3', name:'RSD Preferential Fixed 11.00%',type:'Fixed'    },
-  ],
-  BAM: [
-    { id:'bam-1', name:'Standard BAM Fixed 7.50%',     type:'Fixed'    },
-    { id:'bam-2', name:'BAM Variable ZIBOR + 2.50%',   type:'Variable' },
-    { id:'bam-3', name:'BAM Preferential Fixed 5.80%', type:'Fixed'    },
-  ],
-  HRK: [
-    { id:'hrk-1', name:'Standard HRK Fixed 6.00%',     type:'Fixed'    },
-    { id:'hrk-2', name:'HRK Variable NHB + 2.00%',     type:'Variable' },
-  ],
-};
-
-// ── Interest Rate modal (per selected currency — radio-list) ──────────────────
-function openLpInterestRateModal() {
-  var currencies = window._lpCurrencies || [];
-  var body = document.getElementById('lpir-body');
-  if (!body) return;
-  if (!currencies.length) {
-    body.innerHTML = '<div class="lpir-empty"><div class="lpir-empty-icon">💱</div>No currencies added yet.<br>Please add at least one currency first, then configure interest rates.</div>';
-  } else {
-    body.innerHTML = currencies.map(function(c) {
-      var meta  = _LP_CURR_META[c.currency] || { name: c.currency, sym: c.currency, bg: '#f0f4f8', col: '#4a6080' };
-      var rates = _LP_IR_CATALOG[c.currency] || [];
-      var savedId = ((window._lpInterestRates || []).find(function(r){ return r.currency === c.currency; }) || {}).rateId || '';
-      var rows = rates.length
-        ? rates.map(function(r) {
-            var typeFixed = r.type === 'Fixed';
-            var typeBg  = typeFixed ? '#e8f4e8' : '#e8f0ff';
-            var typeCol = typeFixed ? '#256025' : '#1a4aa0';
-            var checked = (r.id === savedId) ? ' checked' : '';
-            return '<label class="lpir-rate-row" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #f0f4f8;cursor:pointer;transition:background 0.1s;" onmouseover="this.style.background=\'#f7f9fc\'" onmouseout="this.style.background=\'#fff\'">'
-              + '<input type="radio" name="lpir-sel-' + c.currency + '" value="' + r.id + '" data-rate-name="' + r.name + '" data-rate-type="' + r.type + '"' + checked + ' style="accent-color:#e06020;width:16px;height:16px;flex-shrink:0;cursor:pointer"/>'
-              + '<span style="flex:1;font-size:13px;color:#1a2e42;font-weight:500">' + r.name + '</span>'
-              + '<span style="background:' + typeBg + ';color:' + typeCol + ';padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;flex-shrink:0">' + r.type + '</span>'
-              + '</label>';
-          }).join('')
-        : '<div style="padding:14px 16px;color:#6a8faf;font-size:12.5px;font-style:italic">No interest rates defined for this currency.</div>';
-      return '<div class="lpir-currency-block">'
-        + '<div class="lpir-currency-header">'
-          + '<div class="lpir-currency-sym" style="background:' + meta.bg + ';color:' + meta.col + '">' + meta.sym + '</div>'
-          + '<span class="lpir-currency-label">' + c.currency + '</span>'
-          + '<span class="lpir-currency-fullname">— ' + meta.name + '</span>'
-        + '</div>'
-        + '<div style="background:#fff">' + rows + '</div>'
-        + '</div>';
-    }).join('');
-  }
+  // Fill fields
+  var f = function(id, val) { var el = document.getElementById(id); if (el) el.value = val || ''; };
+  f('lpir-f-currency',   isEdit ? (data.currency   || '') : '');
+  f('lpir-f-rateType',   isEdit ? (data.rateType   || 'Fixed') : 'Fixed');
+  f('lpir-f-rateName',   isEdit ? (data.rateName   || '') : '');
+  f('lpir-f-minRate',    isEdit ? (data.minRate    != null ? data.minRate    : '') : '');
+  f('lpir-f-maxRate',    isEdit ? (data.maxRate    != null ? data.maxRate    : '') : '');
+  f('lpir-f-defRate',    isEdit ? (data.defRate    != null ? data.defRate    : (data.defaultRate != null ? data.defaultRate : '')) : '');
+  f('lpir-f-marginRate', isEdit ? (data.marginRate != null ? data.marginRate : '') : '');
+  var err = document.getElementById('lpir-f-err');
+  if (err) { err.style.display = 'none'; err.textContent = ''; }
+  if (!isEdit) { window._lpIrEditIdx = null; }
   document.getElementById('lpInterestRateModal').classList.add('open');
 }
 
+// Keep old name as alias for event handler
+function openLpInterestRateModal() { openLpAddInterestRateModal(null); }
+
 function closeLpInterestRateModal() {
   document.getElementById('lpInterestRateModal').classList.remove('open');
+  window._lpIrEditIdx = null;
 }
 
-function saveLpInterestRates() {
-  var currencies = window._lpCurrencies || [];
-  if (!currencies.length) { closeLpInterestRateModal(); return; }
-  window._lpInterestRates = [];
-  currencies.forEach(function(c) {
-    var sel = document.querySelector('input[name="lpir-sel-' + c.currency + '"]:checked');
-    if (!sel) return;
-    window._lpInterestRates.push({
-      currency: c.currency,
-      rateId:   sel.value,
-      rateName: sel.dataset.rateName || '',
-      rateType: sel.dataset.rateType || 'Fixed',
-    });
-  });
+function saveLpInterestRate() {
+  var g = function(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  var currency = g('lpir-f-currency');
+  var rateName = g('lpir-f-rateName');
+  if (!currency) {
+    var err = document.getElementById('lpir-f-err');
+    if (err) { err.textContent = 'Please select a currency.'; err.style.display = ''; }
+    return;
+  }
+  if (!rateName) {
+    var err2 = document.getElementById('lpir-f-err');
+    if (err2) { err2.textContent = 'Please enter an interest rate name.'; err2.style.display = ''; }
+    return;
+  }
+  window._lpInterestRates = window._lpInterestRates || [];
+  var entry = {
+    currency:   currency,
+    rateType:   g('lpir-f-rateType') || 'Fixed',
+    rateName:   rateName,
+    minRate:    g('lpir-f-minRate')    || '',
+    maxRate:    g('lpir-f-maxRate')    || '',
+    defRate:    g('lpir-f-defRate')    || '',
+    marginRate: g('lpir-f-marginRate') || '',
+  };
+  var idx = window._lpIrEditIdx;
+  if (idx != null && idx >= 0) {
+    window._lpInterestRates[idx] = entry;
+  } else {
+    window._lpInterestRates.push(entry);
+  }
   if (typeof lpRefreshInterestRates === 'function') lpRefreshInterestRates();
   closeLpInterestRateModal();
 }
+
+// Aliases for old function names (called from event handler case 'lp-add-fee', etc.)
+function saveLpFee() { saveLpSelectedFees(); }
+function saveLpCurrencies() { saveLpCurrency(); }
+function saveLpInterestRates() { saveLpInterestRate(); }
 
 // ── THEME TOGGLE ─────────────────────────────────────────────────────────────
 var _currentTheme = 'dark';
@@ -4857,6 +5613,334 @@ document.addEventListener('DOMContentLoaded', function() {
   var statEl = document.getElementById('home-stat-modules');
   if (statEl) statEl.textContent = modCount;
 });
+
+// ── ACCOUNTS & DEPOSITS DASHBOARD ─────────────────────────────────────────────
+function _buildAccDepDashboard() {
+  // ── Mock data ──────────────────────────────────────────────────────────────
+  // 30-day daily balance trend (transaction accounts, EUR mn)
+  var _ACC_DAYS = (function(){
+    var days = []; var bal = 42.1; var dep = 28.3;
+    var labels = [];
+    var base = new Date('2026-09-09');
+    for (var i = 0; i < 30; i++) {
+      var d = new Date(base); d.setDate(base.getDate()+i);
+      var dd = String(d.getDate()).padStart(2,'0');
+      var mm = String(d.getMonth()+1).padStart(2,'0');
+      labels.push(dd+'.'+mm);
+      bal += (Math.random()-0.46)*0.8;
+      dep += (Math.random()-0.44)*0.5;
+      days.push({ label: labels[i], txnBal: Math.round(bal*100)/100, depBal: Math.round(dep*100)/100 });
+    }
+    return days;
+  })();
+  var last = _ACC_DAYS[_ACC_DAYS.length-1];
+
+  // Recent transactions
+  var _ACC_RECENT = [
+    { accId:'ACC-10041', customer:'Marija Novak',    type:'Current',  txn:'Credit',  amount:3400.00,  date:'08.10.2026', status:'Posted' },
+    { accId:'SAV-20187', customer:'Petar Horvat',    type:'Savings',  txn:'Debit',   amount:1250.50,  date:'08.10.2026', status:'Posted' },
+    { accId:'DEP-30091', customer:'Ana Babić',       type:'Term Dep', txn:'Interest',amount:418.75,   date:'08.10.2026', status:'Posted' },
+    { accId:'ACC-10088', customer:'Ivan Jurić',      type:'Current',  txn:'Debit',   amount:870.00,   date:'07.10.2026', status:'Posted' },
+    { accId:'SAV-20044', customer:'Maja Perić',      type:'Savings',  txn:'Credit',  amount:5000.00,  date:'07.10.2026', status:'Posted' },
+    { accId:'DEP-30012', customer:'Tomislav Blažić', type:'Term Dep', txn:'Matured', amount:18500.00, date:'07.10.2026', status:'Posted' },
+    { accId:'ACC-10203', customer:'Ksenija Šimić',   type:'Current',  txn:'Credit',  amount:2100.00,  date:'06.10.2026', status:'Posted' },
+    { accId:'SAV-20301', customer:'Damir Kovač',     type:'Savings',  txn:'Debit',   amount:600.00,   date:'06.10.2026', status:'Posted' },
+  ];
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function fmt(n) { return n.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  function sparkLine(values, color, H) {
+    H = H || 72;
+    var W = 500;
+    var mn = Math.min.apply(null,values), mx = Math.max.apply(null,values);
+    var range = mx - mn || 1;
+    var pts = values.map(function(v,i){
+      var x = Math.round(i/(values.length-1)*W);
+      var y = Math.round(H - ((v-mn)/range)*(H-8) - 4);
+      return x+','+y;
+    }).join(' ');
+    var areaClose = ' '+W+','+H+' 0,'+H;
+    var hex = color.replace('#','');
+    return '<svg width="100%" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">'
+      +'<defs><linearGradient id="alg_'+hex+'" x1="0" y1="0" x2="0" y2="1">'
+      +'<stop offset="0%" stop-color="'+color+'" stop-opacity="0.18"/>'
+      +'<stop offset="100%" stop-color="'+color+'" stop-opacity="0.01"/></linearGradient></defs>'
+      +'<polygon points="'+pts+areaClose+'" fill="url(#alg_'+hex+')"/>'
+      +'<polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
+      +'</svg>';
+  }
+
+  function sparkBars(values, color, H) {
+    H = H || 60;
+    var W = 500;
+    var mx = Math.max.apply(null,values) || 1;
+    var bw = Math.floor(W/values.length)-1;
+    var bars = values.map(function(v,i){
+      var bh = Math.max(1, Math.round((v/mx)*(H-4)));
+      return '<rect x="'+(i*(bw+1))+'" y="'+(H-bh)+'" width="'+bw+'" height="'+bh+'" rx="2" fill="'+color+'" opacity="0.85"/>';
+    }).join('');
+    return '<svg width="100%" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">'+bars+'</svg>';
+  }
+
+  function xLabels(days) {
+    return '<div style="display:flex;justify-content:space-between;padding:0 2px;margin-top:4px">'
+      + days.map(function(d,i){ return i%5===0 ? '<span style="font-size:10px;color:var(--fg2,#64748b)">'+d.label+'</span>' : ''; }).filter(Boolean).join('')
+      +'</div>';
+  }
+
+  function kpi(label, value, sub, subColor) {
+    return '<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+      +'<div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--fg2,#64748b);margin-bottom:8px">'+label+'</div>'
+      +'<div style="font-size:24px;font-weight:700;color:var(--fg,#1e293b);font-variant-numeric:tabular-nums;line-height:1">'+value+'</div>'
+      +(sub ? '<div style="font-size:12px;color:'+(subColor||'var(--fg2,#64748b)')+';margin-top:6px">'+sub+'</div>' : '')
+      +'</div>';
+  }
+
+  function portfolioTile(label, value, highlight) {
+    var bg  = highlight ? 'background:#f0fdf9;' : '';
+    var lc  = highlight ? 'color:#0d9488;font-weight:600' : 'color:var(--fg2,#64748b)';
+    var vc  = highlight ? 'color:#0d9488' : 'color:var(--fg,#1e293b)';
+    return '<div style="padding:13px 18px;border-right:1px solid var(--border1,#e2e8f0);border-bottom:1px solid var(--border1,#e2e8f0);'+bg+'">'
+      +'<div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;'+lc+'">'+label+'</div>'
+      +'<div style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;'+vc+'">'+value+'</div>'
+      +'</div>';
+  }
+
+  // ── Donut: account type split ──────────────────────────────────────────────
+  var typeSlices = [
+    { label:'Current/Transaction', pct:48, color:'#16a085' },
+    { label:'Savings',             pct:29, color:'#3b82f6' },
+    { label:'Term Deposit',        pct:18, color:'#f59e0b' },
+    { label:'Overdraft',           pct:5,  color:'#ef4444' },
+  ];
+  var ang2 = 0;
+  var donutPaths = typeSlices.map(function(s){
+    var span = s.pct/100*360;
+    var toRad = function(a){ return (a-90)*Math.PI/180; };
+    var cx=60,cy=60,r=55;
+    var sv = { x: cx+r*Math.cos(toRad(ang2)),    y: cy+r*Math.sin(toRad(ang2)) };
+    var ev = { x: cx+r*Math.cos(toRad(ang2+span-0.5)), y: cy+r*Math.sin(toRad(ang2+span-0.5)) };
+    var large = span > 180 ? 1 : 0;
+    var path = '<path d="M '+cx+','+cy+' L '+sv.x+','+sv.y+' A '+r+','+r+' 0 '+large+' 1 '+ev.x+','+ev.y+' Z" fill="'+s.color+'"/>';
+    ang2 += span;
+    return path;
+  }).join('');
+  var donutSvg = '<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'
+    +donutPaths
+    +'<circle cx="60" cy="60" r="30" fill="var(--card-bg,#fff)"/>'
+    +'<text x="60" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="var(--fg,#1e293b)">9,847</text>'
+    +'<text x="60" y="70" text-anchor="middle" font-size="9" fill="var(--fg2,#64748b)">Accounts</text>'
+    +'</svg>';
+
+  // ── Product bars ───────────────────────────────────────────────────────────
+  var prodData = [
+    { label:'Standard Current', pct:38, color:'#16a085' },
+    { label:'Premium Savings',  pct:25, color:'#3b82f6' },
+    { label:'12-mo Term Dep.',  pct:19, color:'#f59e0b' },
+    { label:'6-mo Term Dep.',   pct:11, color:'#a78bfa' },
+    { label:'Overdraft',        pct:7,  color:'#94a3b8' },
+  ];
+  var prodBars = prodData.map(function(p){
+    return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">'
+      +'<div style="width:120px;font-size:12px;color:var(--fg2,#64748b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.label+'</div>'
+      +'<div style="flex:1;height:8px;border-radius:4px;background:var(--border1,#e2e8f0);overflow:hidden">'
+      +'<div style="width:'+p.pct+'%;height:100%;background:'+p.color+';border-radius:4px"></div></div>'
+      +'<div style="width:32px;text-align:right;font-size:12px;font-weight:600;color:var(--fg,#1e293b)">'+p.pct+'%</div>'
+      +'</div>';
+  }).join('');
+
+  // ── Recent transactions table rows ─────────────────────────────────────────
+  var recentRows = _ACC_RECENT.map(function(r){
+    var isCredit = r.txn === 'Credit' || r.txn === 'Interest' || r.txn === 'Matured';
+    var amtColor = isCredit ? '#16a34a' : '#ef4444';
+    var amtSign  = isCredit ? '+' : '-';
+    var badgeStyle = isCredit
+      ? 'background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0'
+      : 'background:#fef2f2;color:#dc2626;border:1px solid #fecaca';
+    return '<tr>'
+      +'<td style="padding:11px 14px;font-size:12.5px;font-family:monospace;color:#16a085">'+r.accId+'</td>'
+      +'<td style="padding:11px 14px;font-size:13px;color:var(--fg,#1e293b)">'+r.customer+'</td>'
+      +'<td style="padding:11px 14px;font-size:12px;color:var(--fg2,#64748b)">'+r.type+'</td>'
+      +'<td style="padding:11px 14px;font-size:12px;color:var(--fg2,#64748b)">'+r.txn+'</td>'
+      +'<td style="padding:11px 14px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:'+amtColor+'">'+amtSign+fmt(r.amount)+'</td>'
+      +'<td style="padding:11px 14px;font-size:12px;color:var(--fg2,#64748b)">'+r.date+'</td>'
+      +'<td style="padding:11px 14px"><span style="padding:2px 10px;border-radius:12px;font-size:11.5px;font-weight:600;'+badgeStyle+'">'+r.status+'</span></td>'
+      +'</tr>';
+  }).join('');
+
+  // ── Chart data series ──────────────────────────────────────────────────────
+  var txnBalVals = _ACC_DAYS.map(function(d){ return d.txnBal; });
+  var depBalVals = _ACC_DAYS.map(function(d){ return d.depBal; });
+  // Daily inflows / outflows (mock)
+  var inflowVals = _ACC_DAYS.map(function(){ return Math.round((1.2+Math.random()*2.1)*100)/100; });
+  var outflowVals= _ACC_DAYS.map(function(){ return Math.round((0.9+Math.random()*1.8)*100)/100; });
+  var xLbl = xLabels(_ACC_DAYS);
+
+  // ── Maturing deposits (next 30 days) ──────────────────────────────────────
+  var maturingRows = [
+    { accId:'DEP-30441', customer:'Mirko Šarić',    product:'12-mo Term Dep.', matDate:'11.10.2026', amount:'25,000.00', interest:'1,250.00' },
+    { accId:'DEP-30189', customer:'Ljiljana Cindrić',product:'6-mo Term Dep.', matDate:'14.10.2026', amount:'10,000.00', interest:'320.00'   },
+    { accId:'DEP-30502', customer:'Stjepan Vukšić', product:'12-mo Term Dep.', matDate:'18.10.2026', amount:'50,000.00', interest:'2,500.00' },
+    { accId:'DEP-30077', customer:'Vesna Brković',  product:'24-mo Term Dep.', matDate:'22.10.2026', amount:'35,000.00', interest:'3,850.00' },
+    { accId:'DEP-30613', customer:'Nela Tomić',     product:'6-mo Term Dep.',  matDate:'29.10.2026', amount:'8,500.00',  interest:'272.00'   },
+  ].map(function(r){
+    return '<tr>'
+      +'<td style="padding:10px 14px;font-size:12.5px;font-family:monospace;color:#16a085">'+r.accId+'</td>'
+      +'<td style="padding:10px 14px;font-size:13px;color:var(--fg,#1e293b)">'+r.customer+'</td>'
+      +'<td style="padding:10px 14px;font-size:12px;color:var(--fg2,#64748b)">'+r.product+'</td>'
+      +'<td style="padding:10px 14px;font-size:12px;font-weight:600;color:#f59e0b">'+r.matDate+'</td>'
+      +'<td style="padding:10px 14px;font-size:13px;font-weight:600;color:var(--fg,#1e293b);font-variant-numeric:tabular-nums">'+r.amount+'</td>'
+      +'<td style="padding:10px 14px;font-size:13px;color:#16a34a;font-variant-numeric:tabular-nums">'+r.interest+'</td>'
+      +'</tr>';
+  }).join('');
+
+  // ── Build HTML ─────────────────────────────────────────────────────────────
+  return '<div style="padding:24px;max-width:1400px">'
+
+    // Header
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">'
+    +'<div>'
+    +'<div style="font-size:22px;font-weight:700;color:var(--fg,#1e293b)">Dashboard</div>'
+    +'<div style="font-size:13px;color:var(--fg2,#64748b);margin-top:3px">Accounts &amp; Deposits portfolio overview — as of 09 Oct 2026</div>'
+    +'</div>'
+    +'<select style="padding:7px 12px;border:1px solid var(--border1,#e2e8f0);border-radius:8px;font-size:13px;color:var(--fg,#1e293b);background:var(--card-bg,#fff)">'
+    +'<option>Last 30 days</option><option>Last 7 days</option><option>This month</option><option>This year</option>'
+    +'</select>'
+    +'</div>'
+
+    // ── Portfolio Position ─────────────────────────────────────────────────
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:20px 24px;margin-bottom:20px">'
+    +'<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">'
+    +'<div style="font-size:15px;font-weight:700;color:var(--fg,#1e293b)">Portfolio Position</div>'
+    +'<div style="font-size:12px;color:var(--fg2,#64748b)">at 8 October 2026</div>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:0;border:1px solid var(--border1,#e2e8f0);border-radius:8px;overflow:hidden">'
+    // Row 1 — Transaction accounts
+    +portfolioTile('Transaction Accounts','4,312')
+    +portfolioTile('TXN Account Balance','43,218,450.00')
+    +portfolioTile('Overdraft Accounts','187')
+    +portfolioTile('Overdraft Utilised','2,341,670.00')
+    +portfolioTile('Avg. Daily Volume','8,941,200.00')
+    +portfolioTile('Total TXN Balance','43,218,450.00', true)
+    // Row 2 — Savings & deposits
+    +portfolioTile('Savings Accounts','2,891')
+    +portfolioTile('Savings Balance','29,114,880.00')
+    +portfolioTile('Term Deposits','2,644')
+    +portfolioTile('Deposit Balance','68,742,300.00')
+    +portfolioTile('Interest Accrued YTD','3,218,640.00')
+    +portfolioTile('Total Deposit Balance','97,857,180.00', true)
+    +'</div>'
+    +'</div>'
+
+    // ── KPI row ────────────────────────────────────────────────────────────
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:20px">'
+    +kpi('Total Accounts', '9,847', '↑ 34 opened this week', '#16a085')
+    +kpi('New Accounts Today', '12', '7 current · 3 savings · 2 deposits', '#3b82f6')
+    +kpi('Closed Today', '4', '4 accounts closed', 'var(--fg2,#64748b)')
+    +kpi('Maturing in 30 days', '129', 'EUR 14.2M at maturity', '#f59e0b')
+    +kpi('Overdraft Accounts', '187', 'Limit utilisation 64%', '#a78bfa')
+    +kpi('Interest Paid YTD', 'EUR 3.2M', 'Across all deposit products', '#16a085')
+    +'</div>'
+
+    // ── Chart row 1: TXN balance + Deposit balance ─────────────────────────
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">'
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:4px">Transaction Account Balances</div>'
+    +'<div style="font-size:11.5px;color:var(--fg2,#64748b);margin-bottom:4px">End-of-day aggregate balance (EUR mn)</div>'
+    +'<div style="font-size:18px;font-weight:700;color:#16a085;margin-bottom:8px;font-variant-numeric:tabular-nums">EUR '+fmt(last.txnBal)+' mn</div>'
+    +sparkLine(txnBalVals,'#16a085',88)
+    +xLbl
+    +'</div>'
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:4px">Deposit Portfolio Balance</div>'
+    +'<div style="font-size:11.5px;color:var(--fg2,#64748b);margin-bottom:4px">Term deposits + savings (EUR mn)</div>'
+    +'<div style="font-size:18px;font-weight:700;color:#3b82f6;margin-bottom:8px;font-variant-numeric:tabular-nums">EUR '+fmt(last.depBal)+' mn</div>'
+    +sparkLine(depBalVals,'#3b82f6',88)
+    +xLbl
+    +'</div>'
+    +'</div>'
+
+    // ── Chart row 2: inflows / outflows bars ───────────────────────────────
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">'
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:4px">Daily Inflows</div>'
+    +'<div style="font-size:11.5px;color:var(--fg2,#64748b);margin-bottom:12px">Credits posted per day (EUR mn)</div>'
+    +sparkBars(inflowVals,'#16a085',88)
+    +xLbl
+    +'</div>'
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:4px">Daily Outflows</div>'
+    +'<div style="font-size:11.5px;color:var(--fg2,#64748b);margin-bottom:12px">Debits posted per day (EUR mn)</div>'
+    +sparkBars(outflowVals,'#ef4444',88)
+    +xLbl
+    +'</div>'
+    +'</div>'
+
+    // ── Bottom row: donut + product distribution + recent txns ─────────────
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 2fr;gap:14px;margin-bottom:14px">'
+
+    // Account type donut
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:16px">Account Type Split</div>'
+    +'<div style="display:flex;align-items:center;gap:18px">'
+    +donutSvg
+    +'<div>'
+    +typeSlices.map(function(s){
+      return '<div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">'
+        +'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+s.color+';flex-shrink:0"></span>'
+        +'<span style="font-size:12px;color:var(--fg2,#64748b)">'+s.label+'</span>'
+        +'<span style="font-size:12px;font-weight:600;color:var(--fg,#1e293b);margin-left:auto">'+s.pct+'%</span>'
+        +'</div>';
+    }).join('')
+    +'</div></div></div>'
+
+    // Product distribution
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:16px">By Product</div>'
+    +prodBars
+    +'</div>'
+
+    // Recent transactions
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:12px">Recent Transactions</div>'
+    +'<div style="overflow-x:auto">'
+    +'<table style="width:100%;border-collapse:collapse">'
+    +'<thead><tr style="border-bottom:1px solid var(--border1,#e2e8f0)">'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Account</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Customer</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Type</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Txn</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Amount</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Date</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Status</th>'
+    +'</tr></thead>'
+    +'<tbody>'+recentRows+'</tbody>'
+    +'</table>'
+    +'</div>'
+    +'</div>'
+    +'</div>'  // end bottom row
+
+    // ── Maturing deposits table ────────────────────────────────────────────
+    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:12px">Deposits Maturing in Next 30 Days</div>'
+    +'<div style="overflow-x:auto">'
+    +'<table style="width:100%;border-collapse:collapse">'
+    +'<thead><tr style="border-bottom:1px solid var(--border1,#e2e8f0)">'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Account</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Customer</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Product</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Maturity Date</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Principal (EUR)</th>'
+    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Interest Due (EUR)</th>'
+    +'</tr></thead>'
+    +'<tbody>'+maturingRows+'</tbody>'
+    +'</table>'
+    +'</div>'
+    +'</div>'
+
+    +'</div>'; // end outer padding div
+}
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════

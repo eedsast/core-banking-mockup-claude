@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Phase Approach — OneFor Core Banking</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"/>
+<style>
+:root {
+  --bg: #f4f6f9;
+  --bg-card: #ffffff;
+  --bg-card2: #f8fafc;
+  --border: #dde3ec;
+  --text: #0f1f38;
+  --text-muted: #5a7494;
+  --text-light: #8aafd4;
+  --accent: #1a3f6f;
+  --accent-mid: #2e7dd1;
+  --accent-bright: #5ba4f5;
+  --phase1: #2e7dd1;
+  --phase1-bg: #e8f2fd;
+  --phase1split: #0f766e;
+  --phase1split-bg: #e0f7f5;
+  --phase2: #6c3fc5;
+  --phase2-bg: #f0ebfd;
+  --oos: #6b7280;
+  --oos-bg: #f3f4f6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1929;
+    --bg-card: #0f2744;
+    --bg-card2: #0d2038;
+    --border: #1e3a5f;
+    --text: #dce8f5;
+    --text-muted: #7a9ec4;
+    --text-light: #4a7aaa;
+    --accent: #2e7dd1;
+    --accent-mid: #5ba4f5;
+    --accent-bright: #7eb8f7;
+    --phase1: #5ba4f5;
+    --phase1-bg: #0f2744;
+    --phase1split: #2dd4bf;
+    --phase1split-bg: #0a2d2b;
+    --phase2: #a78bfa;
+    --phase2-bg: #1e1040;
+    --oos: #9ca3af;
+    --oos-bg: #1f2937;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1929;
+  --bg-card: #0f2744;
+  --bg-card2: #0d2038;
+  --border: #1e3a5f;
+  --text: #dce8f5;
+  --text-muted: #7a9ec4;
+  --text-light: #4a7aaa;
+  --accent: #2e7dd1;
+  --accent-mid: #5ba4f5;
+  --accent-bright: #7eb8f7;
+  --phase1: #5ba4f5;
+  --phase1-bg: #0f2744;
+  --phase1split: #2dd4bf;
+  --phase1split-bg: #0a2d2b;
+  --phase2: #a78bfa;
+  --phase2-bg: #1e1040;
+  --oos: #9ca3af;
+  --oos-bg: #1f2937;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 0 0 60px;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(145deg, #0a1e38 0%, #0f2744 55%, #1a3f6f 100%);
+  padding: 52px 40px 44px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  right: -80px; top: -80px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(46,125,209,0.12);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 30%; bottom: -60px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(126,184,247,0.9);
+  margin-bottom: 14px;
+}
+.hero-title {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  margin: 0 0 14px;
+  text-wrap: balance;
+  max-width: 640px;
+}
+.hero-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  max-width: 580px;
+  line-height: 1.6;
+  margin: 0 0 28px;
+}
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.hero-badge--p1 { background: rgba(46,125,209,0.25); color: #7eb8f7; border: 1px solid rgba(46,125,209,0.3); }
+.hero-badge--p1s { background: rgba(15,118,110,0.25); color: #5eead4; border: 1px solid rgba(15,118,110,0.3); }
+.hero-badge--p2 { background: rgba(108,63,197,0.25); color: #c4b5fd; border: 1px solid rgba(108,63,197,0.3); }
+.hero-badge--oos { background: rgba(107,114,128,0.25); color: #d1d5db; border: 1px solid rgba(107,114,128,0.3); }
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── LEGEND ── */
+.legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px 40px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-dot--p1 { background: var(--phase1); }
+.legend-dot--p1s { background: var(--phase1split); }
+.legend-dot--p2 { background: var(--phase2); }
+
+/* ── SECTION HEADER ── */
+.section {
+  padding: 40px 40px 0;
+}
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.section-phase-badge {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2;
+}
+.section-phase-badge--p1 { background: var(--phase1-bg); color: var(--phase1); }
+.section-phase-badge--p1s { background: var(--phase1split-bg); color: var(--phase1split); }
+.section-phase-badge--p2 { background: var(--phase2-bg); color: var(--phase2); }
+.section-phase-badge--oos { background: var(--oos-bg); color: var(--oos); }
+.section-phase-num { font-size: 22px; font-weight: 800; line-height: 1; }
+
+.section-header-body { flex: 1; min-width: 0; }
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── MODULE GRID ── */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding-bottom: 40px;
+}
+
+.module-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.module-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.module-item--p1::before { background: var(--phase1); }
+.module-item--p1s::before { background: var(--phase1split); }
+.module-item--p2::before { background: var(--phase2); }
+.module-item--oos::before { background: var(--oos); }
+.module-item--oos { opacity: 0.7; }
+
+.module-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.module-body { flex: 1; min-width: 0; }
+.module-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 3px;
+  line-height: 1.3;
+}
+.module-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  display: inline-block;
+  line-height: 1.6;
+}
+.module-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ── SPLIT NOTE ── */
+.split-note {
+  background: linear-gradient(90deg, rgba(15,118,110,0.08), transparent);
+  border-left: 3px solid var(--phase1split);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 16px;
+  margin: 0 0 24px;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* ── TIMELINE ── */
+.timeline-section {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 36px 40px;
+  margin-top: 8px;
+}
+.timeline-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 22px; left: 11px; right: 11px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--phase1), var(--phase1split), var(--phase2));
+  z-index: 0;
+}
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+.timeline-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 3px solid var(--bg);
+  flex-shrink: 0;
+}
+.timeline-dot--p1 { background: var(--phase1); }
+.timeline-dot--p1s { background: var(--phase1split); }
+.timeline-dot--p2 { background: var(--phase2); }
+.timeline-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+.timeline-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ── FOOTER ── */
+.doc-footer {
+  padding: 32px 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.doc-footer-brand {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.doc-footer-date {
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 720px) {
+  .hero { padding: 36px 20px 32px; }
+  .legend { padding: 16px 20px; }
+  .section { padding: 28px 20px 0; }
+  .module-grid { grid-template-columns: 1fr 1fr; }
+  .timeline { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .timeline::before { display: none; }
+  .timeline-section { padding: 28px 20px; }
+  .doc-footer { padding: 24px 20px 0; }
+}
+@media (max-width: 480px) {
+  .module-grid { grid-template-columns: 1fr; }
+  .timeline { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">OneFor · Core Banking Platform</div>
+  <h1 class="hero-title">Phased Delivery Approach</h1>
+  <p class="hero-sub">OneFor is structured for incremental adoption. Phase I delivers the complete core banking foundation — accounts, loans, payments, cards, digital signing and reporting. Phase II extends the platform with advanced and optional capabilities once the core is live and stable.</p>
+  <div class="hero-badges">
+    <span class="hero-badge hero-badge--p1">📦 Phase I · Core Platform</span>
+    <span class="hero-badge hero-badge--p1s">✂️ Phase I · Split Candidates</span>
+    <span class="hero-badge hero-badge--p2">🚀 Phase II · Extensions</span>
+    <span class="hero-badge hero-badge--oos">⛔ Out of Scope</span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot legend-dot--p1"></div>Phase I — delivered as single service, potentially split in Phase II</div>
+  <div class="legend-item"><div class="legend-dot legend-dot--p1s"></div>Phase I — likely split into separate microservices in Phase II</div>
+  <div class="legend-item"><div class="legend-dot legend-dot--p2"></div>Phase II — optional extension modules activated after core go-live</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--oos)"></div>Out of Scope — not part of this platform delivery</div>
+</div>
+
+<!-- PHASE I -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-phase-badge section-phase-badge--p1">
+      <div class="section-phase-num">I</div>
+      <div>Phase</div>
+    </div>
+    <div class="section-header-body">
+      <h2 class="section-title">Core Banking Foundation</h2>
+      <p class="section-desc">All Phase I modules form the non-negotiable operational core. They are deployed first and go live together, providing a complete end-to-end banking platform from day one.</p>
+    </div>
+  </div>
+
+  <div class="module-grid">
+    <div class="module-item module-item--p1">
+      <div class="module-icon">⚙️</div>
+      <div class="module-body">
+        <div class="module-name">Administration</div>
+        <div class="module-tag">admin-service-boundaries</div>
+        <div class="module-note">Organisation setup, branch management, role assignments and system definitions</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p1">
+      <div class="module-icon">📋</div>
+      <div class="module-body">
+        <div class="module-name">Loan Management</div>
+        <div class="module-tag">loan-service-boundaries</div>
+        <div class="module-note">Full loan lifecycle — disbursement, repayment schedules, accrual and restructuring</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p1">
+      <div class="module-icon">🖊️</div>
+      <div class="module-body">
+        <div class="module-name">Loan Application</div>
+        <div class="module-tag">origination-service-boundaries</div>
+        <div class="module-note">Origination workflow, application intake, document collection and underwriting</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p1">
+      <div class="module-icon">🧠</div>
+      <div class="module-body">
+        <div class="module-name">Decision Engine</div>
+        <div class="module-tag">decision-service-boundaries</div>
+        <div class="module-note">Credit scoring, rule-based decisioning, risk policy engine and limit management</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p1">
+      <div class="module-icon">💸</div>
+      <div class="module-body">
+        <div class="module-name">Payments Integration</div>
+        <div class="module-tag">payment-service-boundaries</div>
+        <div class="module-note">SEPA SCT, SCT Inst, SWIFT, internal transfers and payment orchestration</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p1">
+      <div class="module-icon">💳</div>
+      <div class="module-body">
+        <div class="module-name">Cards Integration</div>
+        <div class="module-tag">card-service-boundaries</div>
+        <div class="module-note">Debit and credit card issuance, authorisation hooks and scheme connectivity</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p1">
+      <div class="module-icon">📒</div>
+      <div class="module-body">
+        <div class="module-name">Accounting</div>
+        <div class="module-tag">accounting-service-boundaries</div>
+        <div class="module-note">Double-entry general ledger, real-time postings and chart of accounts management</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p1">
+      <div class="module-icon">✍️</div>
+      <div class="module-body">
+        <div class="module-name">Digital Signature</div>
+        <div class="module-tag">digsig-service-boundaries</div>
+        <div class="module-note">Electronic document signing, qualified e-signature workflows and audit trail</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE I SPLIT CANDIDATES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-phase-badge section-phase-badge--p1s">
+      <div class="section-phase-num">I</div>
+      <div>Split</div>
+    </div>
+    <div class="section-header-body">
+      <h2 class="section-title">Phase I · Split Candidates</h2>
+      <p class="section-desc">These modules ship as Phase I services but are architected to split into finer-grained microservices in Phase II as load and complexity grow.</p>
+    </div>
+  </div>
+
+  <div class="split-note">
+    <span>✂️</span>
+    <span>These services are deployed as single bounded contexts in Phase I. Their internal domain complexity makes them natural candidates for decomposition as the platform scales — each boundary is pre-defined to make the split a structural refactoring, not a redesign.</span>
+  </div>
+
+  <div class="module-grid">
+    <div class="module-item module-item--p1s">
+      <div class="module-icon">🔐</div>
+      <div class="module-body">
+        <div class="module-name">Authentication &amp; Authorization</div>
+        <div class="module-tag">auth-service-boundaries</div>
+        <div class="module-note">Token-based auth, RBAC and session management — may split into Auth and Permissions services in Phase II</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p1s">
+      <div class="module-icon">🏦</div>
+      <div class="module-body">
+        <div class="module-name">Accounts &amp; Deposits</div>
+        <div class="module-tag">accounts-deposits-service-boundaries</div>
+        <div class="module-note">Current, savings and deposit accounts — product configuration may split to a separate Deposits service</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE II -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-phase-badge section-phase-badge--p2">
+      <div class="section-phase-num">II</div>
+      <div>Phase</div>
+    </div>
+    <div class="section-header-body">
+      <h2 class="section-title">Extension Modules</h2>
+      <p class="section-desc">Phase II modules extend the platform with advanced capabilities. They integrate with Phase I services and can be activated individually based on business need.</p>
+    </div>
+  </div>
+
+  <div class="module-grid">
+    <div class="module-item module-item--p2">
+      <div class="module-icon">👥</div>
+      <div class="module-body">
+        <div class="module-name">Clients</div>
+        <div class="module-tag">client-service-boundaries</div>
+        <div class="module-note">Customer onboarding, KYC levels, identity verification and CRM</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p2">
+      <div class="module-icon">📲</div>
+      <div class="module-body">
+        <div class="module-name">SMS / Notifications</div>
+        <div class="module-tag">sms-notifications-service-boundaries</div>
+        <div class="module-note">Multi-channel notification engine — SMS, push, email and in-app alerts</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p2">
+      <div class="module-icon">🛒</div>
+      <div class="module-body">
+        <div class="module-name">Marketplace</div>
+        <div class="module-tag">marketplace-boundaries</div>
+        <div class="module-note">Third-party product and service marketplace integrated with core banking flows</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p2">
+      <div class="module-icon">🎁</div>
+      <div class="module-body">
+        <div class="module-name">Loyalty</div>
+        <div class="module-tag">loyalty-service-boundaries</div>
+        <div class="module-note">Points, rewards, cashback programmes and partner redemption integrations</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p2">
+      <div class="module-icon">₿</div>
+      <div class="module-body">
+        <div class="module-name">Crypto</div>
+        <div class="module-tag">crypto-service-boundaries</div>
+        <div class="module-note">Cryptocurrency custody, trading integration and crypto-backed product support</div>
+      </div>
+    </div>
+    <div class="module-item module-item--p2">
+      <div class="module-icon">🏠</div>
+      <div class="module-body">
+        <div class="module-name">Collaterals</div>
+        <div class="module-tag">collateral-service-boundaries</div>
+        <div class="module-note">Collateral registry, valuation, lien management and pledge tracking</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUT OF SCOPE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-phase-badge section-phase-badge--oos">
+      <div class="section-phase-num">⛔</div>
+      <div>Scope</div>
+    </div>
+    <div class="section-header-body">
+      <h2 class="section-title">Out of Scope</h2>
+      <p class="section-desc">These modules are not part of the current platform delivery. They may be considered in a future phase or sourced from third-party providers.</p>
+    </div>
+  </div>
+
+  <div class="module-grid">
+    <div class="module-item module-item--oos">
+      <div class="module-icon">📊</div>
+      <div class="module-body">
+        <div class="module-name">IFRS9 Reporting</div>
+        <div class="module-tag">ifrs9-service-boundaries</div>
+        <div class="module-note">Provision calculation, stage classification, ECL modelling and regulatory output</div>
+      </div>
+    </div>
+    <div class="module-item module-item--oos">
+      <div class="module-icon">🔁</div>
+      <div class="module-body">
+        <div class="module-name">Orchestration</div>
+        <div class="module-tag">temporal-service-boundaries</div>
+        <div class="module-note">Workflow automation for loan origination, KYC flows and cross-service coordination</div>
+      </div>
+    </div>
+    <div class="module-item module-item--oos">
+      <div class="module-icon">🌍</div>
+      <div class="module-body">
+        <div class="module-name">FX Remittance</div>
+        <div class="module-tag">fx-remittance-service-boundaries</div>
+        <div class="module-note">Foreign exchange, multi-currency accounts and cross-border remittance</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline-section">
+  <div class="timeline-title">Delivery Timeline</div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot timeline-dot--p1"></div>
+      <div class="timeline-label">Months 1–3</div>
+      <div class="timeline-sub">Foundation — Admin, Auth, Accounts, Loans, Decision Engine</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot timeline-dot--p1"></div>
+      <div class="timeline-label">Months 3–6</div>
+      <div class="timeline-sub">Payments, Cards, Accounting, Digital Signature — Phase I go-live</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot timeline-dot--p1s"></div>
+      <div class="timeline-label">Months 6–9</div>
+      <div class="timeline-sub">Stabilisation, Auth/Accounts splitting, Clients onboarding</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot timeline-dot--p2"></div>
+      <div class="timeline-label">Month 9+</div>
+      <div class="timeline-sub">Phase II extensions activated per business priority</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer container">
+  <div class="doc-footer-brand">OneFor · Core Banking Platform</div>
+  <div class="doc-footer-date">October 2026 · Sideros d.o.o.</div>
+</div>
+
+</body>
+</html>

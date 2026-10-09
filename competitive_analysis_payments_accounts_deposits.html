@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Banking Platforms — Competitive Analysis</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f4ef;
+    padding: 40px 24px;
+    min-height: 100vh;
+    color: #2c2c2a;
+  }
+  h1 { font-size: 20px; font-weight: 500; text-align: center; color: #1a1a18; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #888780; text-align: center; margin-bottom: 8px; }
+  .questions {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    max-width: 900px; margin: 0 auto 28px;
+  }
+  .q-box {
+    border-radius: 8px; padding: 10px 14px; font-size: 12px; line-height: 1.5;
+  }
+  .q1 { background: #e6f1fb; border: 1px solid #378add; color: #0c447c; }
+  .q2 { background: #e1f5ee; border: 1px solid #1d9e75; color: #085041; }
+  .q-box strong { font-weight: 500; display: block; margin-bottom: 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ── Platform card ── */
+  .platform {
+    background: #ffffff;
+    border: 1px solid #d3d1c7;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .platform-header {
+    display: grid;
+    grid-template-columns: 220px 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid #ece9e0;
+  }
+  .platform-identity {
+    padding: 16px 18px;
+    border-right: 1px solid #ece9e0;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .platform-name { font-size: 16px; font-weight: 500; color: #1a1a18; margin-bottom: 2px; }
+  .platform-type { font-size: 11px; color: #888780; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .platform-target { font-size: 11px; color: #5f5e5a; line-height: 1.4; }
+
+  .verdict-cell {
+    padding: 14px 16px;
+    display: flex; flex-direction: column; justify-content: flex-start; gap: 5px;
+  }
+  .vc-label {
+    font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;
+  }
+  .vc-q1 { border-right: 1px solid #ece9e0; }
+  .vc-q1 .vc-label { color: #185fa5; }
+  .vc-q2 .vc-label { color: #085041; }
+
+  .verdict-badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 20px;
+    margin-bottom: 4px;
+  }
+  .vb-sep   { background: #e6f1fb; color: #0c447c; border: 0.5px solid #378add; }
+  .vb-int   { background: #faeeda; color: #633806; border: 0.5px solid #ba7517; }
+  .vb-both  { background: #eeedfe; color: #26215c; border: 0.5px solid #7f77dd; }
+  .vb-split { background: #e1f5ee; color: #085041; border: 0.5px solid #1d9e75; }
+  .vb-merge { background: #faece7; color: #4a1b0c; border: 0.5px solid #993c1d; }
+  .vb-mixed { background: #f1efe8; color: #444441; border: 0.5px solid #b4b2a9; }
+
+  .verdict-detail { font-size: 12px; color: #5f5e5a; line-height: 1.5; }
+
+  /* ── Body section ── */
+  .platform-body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-top: none;
+  }
+  .body-col {
+    padding: 14px 18px;
+    font-size: 12px; color: #2c2c2a; line-height: 1.6;
+  }
+  .body-col:first-child { border-right: 1px solid #ece9e0; }
+  .body-col-label {
+    font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em;
+    color: #888780; margin-bottom: 8px;
+  }
+  .point { display: flex; gap: 7px; margin-bottom: 5px; }
+  .point-dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: #b4b2a9; margin-top: 6px; }
+  .point-text { color: #5f5e5a; }
+  .point-text strong { color: #2c2c2a; font-weight: 500; }
+
+  /* ── Insight box ── */
+  .insight {
+    background: #f1efe8; border-top: 1px solid #ece9e0;
+    padding: 10px 18px; font-size: 11px; color: #5f5e5a; line-height: 1.55;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .insight-icon { flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+  .insight strong { color: #2c2c2a; font-weight: 500; }
+
+  /* ── Generation tags ── */
+  .gen-tag {
+    display: inline-block; font-size: 9px; font-weight: 500;
+    padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle;
+  }
+  .gen-cloud  { background: #e1f5ee; color: #085041; }
+  .gen-legacy { background: #faeeda; color: #633806; }
+  .gen-baas   { background: #eeedfe; color: #26215c; }
+
+  /* ── Summary matrix ── */
+  .matrix-section { margin-top: 32px; }
+  .matrix-title { font-size: 15px; font-weight: 500; color: #1a1a18; margin-bottom: 14px; }
+  .matrix-table { width: 100%; border-collapse: collapse; font-size: 12px; border-radius: 12px; overflow: hidden; }
+  .matrix-table th { padding: 10px 14px; text-align: left; font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; background: #1a1a18; color: #f1efe8; }
+  .matrix-table th:first-child { border-radius: 0; }
+  .matrix-table td { padding: 10px 14px; border-bottom: 0.5px solid #ece9e0; background: #fff; vertical-align: top; line-height: 1.5; }
+  .matrix-table tr:last-child td { border-bottom: none; }
+  .matrix-table tr:nth-child(even) td { background: #fafaf8; }
+  .matrix-table td:first-child { font-weight: 500; color: #1a1a18; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+  /* ── Final takeaway ── */
+  .takeaway {
+    background: #1a1a18; color: #f1efe8;
+    border-radius: 14px; padding: 22px 24px; margin-top: 24px;
+  }
+  .takeaway h3 { font-size: 12px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .takeaway-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .tk { display: flex; gap: 8px; font-size: 12px; color: #d3d1c7; line-height: 1.55; margin-bottom: 8px; }
+  .tk::before { content: '→'; color: #9FE1CB; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Core Banking Platforms — Competitive Analysis</h1>
+  <p class="subtitle">8 platforms evaluated on two key architectural and commercial questions</p>
+
+  <div class="questions">
+    <div class="q-box q1">
+      <strong>Q1 — Payments</strong>
+      Is Payments sold/architected as a separate module or bundled into core?
+    </div>
+    <div class="q-box q2">
+      <strong>Q2 — Accounts vs Deposits</strong>
+      Are current accounts and deposits in one microservice or split?
+    </div>
+  </div>
+
+  <!-- ══ MAMBU ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Mambu <span class="gen-tag gen-cloud">Cloud-native</span></div>
+        <div class="platform-type">SaaS · Composable banking</div>
+        <div class="platform-target">Fintechs, digital banks, EMIs, credit unions · 260+ clients, 65 countries</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-sep">Separate add-on module</span>
+        <div class="verdict-detail">Mambu Payments launched May 2025 via acquisition of Numeral. Independently licensed, modularly scalable. Customers can use core without Payments.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-merge">Merged in one module</span>
+        <div class="verdict-detail">Mambu's Deposits module covers current accounts, savings, wallets, and term deposits in a single configurable engine. Product type is a configuration parameter, not a separate service.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Acquired Numeral (Dec 2024), launched Mambu Payments at Money20/20 Europe (May 2025)</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Composable approach:</strong> payments, lending, deposits are independently licensable modules — customers choose their own path</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Natively integrated with core — payment routing updates GL accounts and handles AML suspense accounts automatically</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Supports SEPA CT/DD, UK Faster Payments, real-time payments. Existing customers (Western Union, Indexo Bank, BCB) already expanding to Payments</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Pre-payments era: customers integrated third-party PSPs (Wise, Marqeta, Stripe) via Mambu ecosystem connectors</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Single Deposits module</strong> covers: current accounts, savings, group savings, wallets, term/fixed deposits</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Product differentiation via configuration — account type, interest rules, maturity logic, rollover are parameters, not separate microservices</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Confirmed by Uno Bank implementation: launched with CASA and fixed deposit products on the same Deposits module before later adding mortgages</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Islamic banking (Mudarabah, Wakalah) also handled within same module with profit-sharing configuration</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> Mambu's merged Deposits module is a commercial simplification trade-off. It reduces implementation complexity and speeds time-to-market for customers who don't need the split. The risk: one change to the term deposit maturity engine could affect current account behaviour. For your SaaS targeting EMIs, splitting gives you a cleaner licensing lever — EMIs get DDA only.</div></div>
+  </div>
+
+  <!-- ══ THOUGHT MACHINE ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Thought Machine <span class="gen-tag gen-cloud">Cloud-native</span></div>
+        <div class="platform-type">Vault Core + Vault Payments · SaaS / self-hosted</div>
+        <div class="platform-target">Tier 1–3 banks, fintechs · JPMorgan Chase, Lloyds, Standard Chartered, Intesa Sanpaolo</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-sep">Fully separate product</span>
+        <div class="verdict-detail">Vault Payments is a completely separate product from Vault Core. Sold independently, deployed independently, can integrate with any core — not just Vault Core.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-mixed">Universal product engine</span>
+        <div class="verdict-detail">Vault Core uses a single Universal Product Engine and Ledger. All product types (current, savings, deposits, loans) are smart contracts on the same platform. No separate microservices per product type.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Vault Payments</strong> is a standalone cloud-native payment processing platform — built from scratch separately from Vault Core</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Can be adopted as a <strong>standalone product</strong> integrating with any legacy core banking system — not just Vault Core</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Supports ISO 20022 natively, card issuing on Mastercard network, all payment types and schemes via rails-based configuration</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Vault Payments routes payments end-to-end, completely decoupling payment instrument from funding source — dynamic account routing</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Gartner Magic Quadrant Leader 2025 for Retail Core Banking — recognised for both products separately</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Philosophy:</strong> product engine is intentionally product-agnostic — does not "know" the product it runs. All products are smart contracts</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Current accounts, savings, time deposits, credit cards, mortgages all run on the same Universal Product Engine and single Ledger</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Product Library contains 200+ pre-written smart contracts including deposits and current accounts — banks customise before launch</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Event sourcing: all account changes captured as immutable events on the same Ledger regardless of product type</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Differentiation via smart contract parameters, not microservice separation — sophisticated but requires developer capability</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> Thought Machine validates the separate Payments product decisively — Vault Payments can even be sold to banks not using Vault Core. This is the strongest market signal that separate Payments is commercially correct. Their universal product engine approach is elegant but demands developer investment — smart contracts in Python for every product. Your configuration-driven approach may be simpler to operate for Fintech/EMI customers.</div></div>
+  </div>
+
+  <!-- ══ TUUM ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Tuum <span class="gen-tag gen-cloud">Cloud-native</span></div>
+        <div class="platform-type">Modular microservices · API-first · SaaS</div>
+        <div class="platform-target">EMIs, PSPs, fintechs, digital banks · LHV, Zenus, Solidgate</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-sep">Separate module, separately licensed</span>
+        <div class="verdict-detail">Payments is an explicit standalone module on Tuum's module page. Supports SEPA, SWIFT, FX, local rails. Independently deployable with smart routing and pre-integrated settlement providers.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-merge">Single Core Banking module</span>
+        <div class="verdict-detail">Tuum's Core Banking module covers current, savings, group, and virtual accounts. Deposits (fixed, notice, flexible) are in the same module with automated lifecycle and interest logic.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Payments module: real-time, cross-border, direct debit across SEPA, SWIFT, FX, local rails — fully integrated with compliance</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Smart routing optimises settlement flows across providers via rule-based logic</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Pre-integrated with LHV Connect, Banking Circle, Currencycloud, CENTROlink (SEPA). Payment Router for custom integrations</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">H1 2025: upgraded for ISO 20022, nostro reconciliation, inter-group payments with multi-currency nostro/vostro logic</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Positioned explicitly for EMI flows — LHV BaaS powers 200+ fintechs including Coinbase and Wise via Tuum</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Core Banking module manages different account types, transaction processing, currency exchange — all in one</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Deposit Products sub-section: fixed, notice, and flexible deposits with automated lifecycle and interest logic within same module</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">FX and currency management also in same Core Banking module</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Islamic finance: Mudarabah, Wakalah, Wadiah deposit accounts added in H1 2025 — within same module</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Separately listed: Cards, Lending, Payments as distinct modules — but accounts + deposits stay merged</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> Tuum is the closest architectural and market comparator to what you are building — cloud-native, EMI-focused, modular. They also merge accounts and deposits. However, they target the same Fintech/EMI customer you do, and their Payments module is explicitly separate. Strong validation for your Q1 answer. Their merged accounts/deposits approach is pragmatic but sacrifices the upsell lever you identified.</div></div>
+  </div>
+
+  <!-- ══ SOLARISBANK ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Solarisbank (Solaris) <span class="gen-tag gen-baas">BaaS</span></div>
+        <div class="platform-type">Banking-as-a-Service · Full German banking licence</div>
+        <div class="platform-target">Non-bank brands, fintechs, neobanks embedding financial services</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-int">Integrated BaaS service</span>
+        <div class="verdict-detail">Payments are a core API service of the Solaris BaaS platform — not separably licensed. Partners access payments alongside accounts via the same API integration. No standalone Payments product.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-merge">Merged — single accounts API</span>
+        <div class="verdict-detail">Solaris exposes digital bank accounts (current, savings) and payment cards through one API service set. Deposits are part of the accounts service — no architectural separation.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Solaris is a licensed bank — partners don't buy a "Payments module", they consume regulated payment services via API</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Services: digital accounts, payment cards, card issuing and processing, lending, digital asset custody — all via same platform</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Payments processing, card issuing, and lending are bundled into the BaaS proposition — no modular pricing by service type publicly disclosed</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Key differentiator: partners get regulatory compliance (BaFin-supervised) bundled with the technology — not just a software license</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Solaris offers digital bank accounts (current + savings) and payment cards as core services — all via same API layer</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">No public architectural separation between current accounts and deposit/savings — treated as one accounts API</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Full banking licence means Solaris can take deposits — but the API surface does not expose this as a separable module</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Different model to yours: Solaris sells a licensed banking service, not core banking software. Less relevant as a direct architectural comparator</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> Solarisbank is a different model — they are a licensed bank selling banking services via API, not a core banking software vendor. Less directly comparable architecturally. The relevant signal: even in their bundled BaaS model, payments are a distinct API service set. The underlying architecture still separates concerns — it is just not exposed as a separate commercial licence.</div></div>
+  </div>
+
+  <!-- ══ VODENO ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Vodeno <span class="gen-tag gen-cloud">Cloud-native</span></div>
+        <div class="platform-type">BaaS · Google Cloud native · Aion Bank licence</div>
+        <div class="platform-target">Banks, fintechs, retailers, e-commerce embedding finance · EU focus</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-int">Integrated — part of BaaS suite</span>
+        <div class="verdict-detail">Payments are part of the Vodeno Cloud Platform (VCP) BaaS suite alongside accounts, cards, lending. Not sold as a standalone module. Full-stack or nothing — aligned with their bank-licence-plus-tech positioning.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-mixed">Separately listed but same platform</span>
+        <div class="verdict-detail">Vodeno lists savings accounts and term deposits as distinct from current accounts in their product catalogue, but both are delivered through the same VCP platform. Commercial separation exists; architectural microservice split not confirmed.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">VCP offers comprehensive payments: local/cross-border, FX, SEPA, SWIFT via direct scheme membership (Mastercard, Visa, EBA Clearing)</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Built on Google Cloud (GKE, Cloud Spanner, Cloud Bigtable) — payments are a first-class component of the platform</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Unique: Vodeno holds direct scheme memberships — most BaaS platforms rely on third-party payment providers</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Aion Bank (ECB licensed, BE/PL/DE/SE branches) provides the regulated layer — Vodeno provides the tech stack</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Backed by Warburg Pincus + NatWest (€58M) + EBRD (€50M) — well-capitalised for platform investment</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Current accounts (multi-currency, virtual IBANs) listed separately from savings accounts and term deposits in product catalogue</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">All deposits covered by Belgium's deposit guarantee via Aion Bank ECB licence — not available to EMI-only partners</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Blockchain-based smart contracts underpin product logic — similar philosophy to Thought Machine's smart contracts approach</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Savings and term deposits in multiple currencies — but underlying microservice separation not publicly documented</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> Vodeno's integrated BaaS model (tech + licence bundled) is a different commercial motion to yours. Their deposit guarantee through Aion Bank is a strong differentiator for deposit-taking clients — something a software-only vendor cannot replicate. If you target EMI-only customers, this is less relevant. Their direct scheme membership for payments is notable — most platforms in your segment rely on third-party PSPs.</div></div>
+  </div>
+
+  <!-- ══ 10x BANKING ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">10x Banking <span class="gen-tag gen-cloud">Cloud-native</span></div>
+        <div class="platform-type">SuperCore · Meta Core · SaaS (AWS)</div>
+        <div class="platform-target">Tier 1–2 banks, building societies, BaaS · Chase UK, Westpac, Old Mutual</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-both">Integrated + partner ecosystem</span>
+        <div class="verdict-detail">10x does not have a native payments engine. Payments are delivered via pre-integrated partners (Paymentology for cards). The SuperCore platform integrates with external payment schemes via SmartAdapters. No standalone Payments module sold.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-merge">Single product engine — no split</span>
+        <div class="verdict-detail">SuperCore's ProductKit handles deposits and lending products across retail, SME and corporate in a single configurable platform. No microservice separation between account types — product type is a configuration, not a service boundary.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">SuperCore integrates with payment schemes via SmartAdapters — not a payments engine itself</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Partnership with Paymentology: card issuing and processing on Visa/Mastercard and domestic switches — pre-integrated, single API</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">"Meta Core" philosophy: 10x focuses on the core ledger and product engine — payments are deliberately left to specialist partners</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Kafka-based event streaming (Confluent Cloud) enables real-time data flow to payment partners without tight coupling</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">ISO 20022 message formats supported via partner integrations — not natively in the core</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">ProductKit abstracts complexity of building "deposit and lending products across retail, SME and corporate" — treated as one domain</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Pre-built modules cover savings, deposits, current accounts — all configurable on the same SuperCore engine</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Polyglot development environment — banks can customise at any level in any language, but product boundary is one engine</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Chase UK and Westpac use SuperCore — both have term deposits and current accounts running on same platform instance</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> 10x's "meta core" strategy deliberately avoids building a payments engine — they partner instead. This is a valid product strategy: be the best ledger and product engine, outsource payments to specialists. The risk is dependency on partners. For your product, owning Payments as a separately licensed module gives you more commercial control than a partnership model.</div></div>
+  </div>
+
+  <!-- ══ TEMENOS TRANSACT ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Temenos Transact <span class="gen-tag gen-legacy">Modernised legacy</span></div>
+        <div class="platform-type">Cloud-native microservices (evolving) · SaaS + on-premise</div>
+        <div class="platform-target">3,000+ banks in 150 countries · 41 of top 50 global banks</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-sep">Separate standalone service</span>
+        <div class="verdict-detail">Temenos Payments is an explicit standalone service in the Transact microservices architecture — listed alongside FCM, Analytics as independently deployable services, predating the accounts/deposits microservices.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-merge">Single Accounts & Deposits microservice</span>
+        <div class="verdict-detail">Temenos explicitly named their new microservice "Accounts and Deposits" — a single service managing current, checking, and deposit accounts. A deliberate product decision, not an oversight.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Payments was one of Temenos's <strong>first standalone services</strong> — predates the Accounts and Deposits microservice launch</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Can be deployed in front of legacy T24 infrastructure — "overlay" capability that works with existing systems</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Benchmark: 150,080 TPS on Temenos Banking Cloud — combined solution including payments, FCM, data hub, digital channels</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Payments microservice integrates with SWIFT, SEPA, real-time payment schemes across 150+ countries</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Strong signal: Temenos listed Payments as standalone <em>before</em> core banking microservices — payments independence is a first principle for them</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">New microservice explicitly called <strong>"Accounts and Deposits"</strong> — manages all activities in the life of current, checking and deposit accounts in real time</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Supports "any currency and a great variety of interest calculation methods and configurable business rules" within one service</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Banks can integrate this microservice with any legacy infrastructure — modular adoption, not full replacement required</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Legacy T24 heritage: historically accounts and deposits were in the same core module — the microservices evolution preserved this boundary</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> Temenos — the world's largest core banking vendor — explicitly named their microservice "Accounts and Deposits" as one. This is the strongest signal that the merged approach has precedent at scale. However, Temenos's choice reflects legacy heritage: T24 always treated them together. You are building greenfield. You have the luxury of splitting, and the commercial argument for your EMI market favours it.</div></div>
+  </div>
+
+  <!-- ══ ORACLE FLEXCUBE ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Oracle FLEXCUBE <span class="gen-tag gen-legacy">Enterprise legacy</span></div>
+        <div class="platform-type">Universal banking · on-premise + Oracle Cloud</div>
+        <div class="platform-target">Large banks, 115+ countries · 10% of world banking population</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-int">Integrated module — not separately sold</span>
+        <div class="verdict-detail">FLEXCUBE includes payments processing as part of the core banking suite. Banks can integrate with payment hubs but payments are not a separately licensed standalone product. Universal banking philosophy bundles everything.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-merge">Merged — universal banking model</span>
+        <div class="verdict-detail">FLEXCUBE's universal banking approach treats accounts, deposits, and lending as integrated modules in one system. Configurable product types cover current, savings, and term deposits without microservice separation.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">FLEXCUBE Universal Banking includes payments as a core component — not a separately priced add-on</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Open-source environment and multiple API management allow integration with third-party payment hubs</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Processes 26+ billion daily transactions globally — payments volume is embedded in core processing</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Now integrates with Oracle Cloud Infrastructure AI services — but payments architecture remains traditional</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Not relevant as a direct comparator for your Fintech/EMI SaaS market — targets large traditional banks</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Universal banking model: retail accounts, corporate accounts, deposits, loans, treasury — all integrated in one platform</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Customer-focused core: "comprehensive view of all customers" across all product types in one system</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Product configuration defines account type behaviour — not microservice boundaries</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Legacy architecture: designed for traditional bank branch operations, not Fintech/EMI composable deployment</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> FLEXCUBE is the least relevant comparator for your market. Its integrated approach reflects the universal banking model of the 1990s-2000s — everything in one system, sold as a complete suite. The exact model you are disrupting. Its payments and accounts/deposits bundling validates why cloud-native modular SaaS platforms are winning 78% of new digital bank mandates.</div></div>
+  </div>
+
+  <!-- ══ INFOSYS FINACLE ══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Infosys Finacle <span class="gen-tag gen-legacy">Modernised legacy</span></div>
+        <div class="platform-type">Cloud-ready · API-first (evolving) · SaaS + on-premise</div>
+        <div class="platform-target">100+ countries · large retail, corporate, private banks · strong in Asia, Middle East, Africa</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Q1 — Payments</div>
+        <span class="verdict-badge vb-sep">Separate Finacle Payments Hub</span>
+        <div class="verdict-detail">Infosys offers Finacle Payments as a distinct product — a payments hub that can work with Finacle core or independently with other core systems. Separately licensable.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Q2 — Accounts vs Deposits</div>
+        <span class="verdict-badge vb-merge">Integrated — single core module</span>
+        <div class="verdict-detail">Finacle core banking covers retail accounts, deposits, and lending as integrated modules. No microservice separation between current accounts and deposits in the traditional architecture — though cloud-native evolution is ongoing.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Q1 — Payments detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Finacle Payments Hub is a standalone product — processes payments independently of Finacle Core Banking</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Supports SWIFT, SEPA, ISO 20022, local schemes — available as a separate licence for banks with existing cores</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Used in 100+ countries — deep regulatory payment scheme coverage especially in emerging markets</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Infosys scale ($18B+ revenue) provides deep implementation support — relevant for complex multi-market deployments</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Q2 — Accounts vs Deposits detail</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Traditional Finacle architecture: retail deposits (CASA, term deposits) treated as one domain within core banking</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">CASA (Current Account Savings Account) is Finacle's terminology — explicitly merging current and savings into one concept</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Cloud-native microservices evolution ongoing — but legacy CASA + term deposit model persists in most deployments</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">"CASA conversion" (AA to AC) mentioned as a source of confusion even in latest versions — architectural debt from original design</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Your lesson:</strong> Finacle's CASA concept (Current Account + Savings Account combined) is a banking industry standard term — many banks and fintech developers expect this grouping. Your architecture splits DDA from Deposits, which is technically correct but may require clear product naming in marketing materials so prospects understand the difference from traditional CASA. Finacle's separate Payments Hub confirms the separation pattern.</div></div>
+  </div>
+
+  <!-- ══ SUMMARY MATRIX ══ -->
+  <div class="matrix-section">
+    <div class="matrix-title">Summary matrix — all 8 platforms</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th style="width:18%;">Platform</th>
+          <th style="width:14%;">Generation</th>
+          <th style="width:20%;">Q1 — Payments approach</th>
+          <th style="width:20%;">Q2 — Accounts vs Deposits</th>
+          <th style="width:28%;">Relevance to your build</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mambu</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Cloud-native SaaS</td>
+          <td>Separate add-on (Mambu Payments, May 2025)</td>
+          <td>Merged — single Deposits module</td>
+          <td>Closest commercial model. Validates separate Payments. Their merged deposits is a simplification trade-off — you can differentiate by splitting.</td>
+        </tr>
+        <tr>
+          <td>Thought Machine</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Cloud-native</td>
+          <td>Fully separate product (Vault Payments) — saleable standalone</td>
+          <td>Universal product engine — no split (smart contracts)</td>
+          <td>Strongest validation for separate Payments. Smart contract approach is powerful but complex — your config-driven approach may suit EMIs better.</td>
+        </tr>
+        <tr>
+          <td>Tuum</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Cloud-native SaaS</td>
+          <td>Separate standalone module</td>
+          <td>Merged — single Core Banking module</td>
+          <td>Most direct comparator for EMI/fintech market. Confirms separate Payments. Their merged approach may leave upsell lever on table.</td>
+        </tr>
+        <tr>
+          <td>Solarisbank</td>
+          <td><span class="dot" style="background:#7f77dd;"></span>BaaS (licensed bank)</td>
+          <td>Integrated BaaS service — no separate licence</td>
+          <td>Merged — single accounts API</td>
+          <td>Different commercial model (bank + tech). Less architecturally comparable. Signal: even BaaS platforms separate concerns under the hood.</td>
+        </tr>
+        <tr>
+          <td>Vodeno</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Cloud-native BaaS</td>
+          <td>Integrated BaaS suite — not standalone</td>
+          <td>Separately listed but same platform</td>
+          <td>BaaS + ECB licence model is a strong differentiator you cannot replicate without a licence. Their deposit guarantee is a moat for deposit-taking clients.</td>
+        </tr>
+        <tr>
+          <td>10x Banking</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>Cloud-native SaaS</td>
+          <td>No native payments — partner ecosystem only</td>
+          <td>Merged — single SuperCore product engine</td>
+          <td>"Meta core" strategy deliberately avoids payments ownership. Risky partner dependency. Owning Payments as a module gives you more commercial control.</td>
+        </tr>
+        <tr>
+          <td>Temenos Transact</td>
+          <td><span class="dot" style="background:#ba7517;"></span>Modernised legacy</td>
+          <td>Separate standalone service (first microservice built)</td>
+          <td>Merged — explicit "Accounts and Deposits" microservice</td>
+          <td>Largest vendor confirms separate Payments decisively. Their "Accounts and Deposits" naming is industry precedent — but reflects legacy heritage, not greenfield design.</td>
+        </tr>
+        <tr>
+          <td>Oracle FLEXCUBE</td>
+          <td><span class="dot" style="background:#993c1d;"></span>Enterprise legacy</td>
+          <td>Integrated — universal banking bundle</td>
+          <td>Merged — universal banking model</td>
+          <td>Least relevant. Represents the old model you are disrupting. Its bundled approach is exactly why cloud-native modular platforms are winning new mandates.</td>
+        </tr>
+        <tr>
+          <td>Infosys Finacle</td>
+          <td><span class="dot" style="background:#ba7517;"></span>Modernised legacy</td>
+          <td>Separate Finacle Payments Hub</td>
+          <td>Merged — CASA model (current + savings combined)</td>
+          <td>Confirms separate Payments Hub across both legacy and modern vendors. CASA terminology is a market convention — factor into your product naming and marketing.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ FINAL TAKEAWAY ══ -->
+  <div class="takeaway">
+    <div class="takeaway-grid">
+      <div>
+        <h3>Q1 — Market verdict on Payments</h3>
+        <div class="tk">6 out of 8 platforms treat Payments as architecturally separate. 5 of those sell or licence it independently. The industry has converged on separation.</div>
+        <div class="tk">The two exceptions (FLEXCUBE, Vodeno/Solarisbank) are either legacy bundle models or BaaS operators with a bank licence — different commercial motions entirely.</div>
+        <div class="tk">Thought Machine's Vault Payments selling to non-Vault-Core banks is the most powerful signal: Payments is a standalone market, not just a feature.</div>
+        <div class="tk">Your decision to sell Payments separately is correct and validated by every relevant cloud-native competitor in your target market.</div>
+      </div>
+      <div>
+        <h3>Q2 — Market verdict on Accounts vs Deposits</h3>
+        <div class="tk">7 of 8 platforms merge accounts and deposits in one module or service. Only Vodeno shows any catalogue-level separation (and even that may be presentational).</div>
+        <div class="tk">The industry convention — driven by legacy CASA heritage and implementation simplicity — is to keep them together.</div>
+        <div class="tk">Your split decision is architecturally correct and technically superior. It is not yet the industry norm, which means it is a differentiation opportunity, not a risk.</div>
+        <div class="tk">The EMI licensing argument is your strongest justification: EMIs cannot take deposits. No competitor explicitly uses this as a commercial upsell lever. You can.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
