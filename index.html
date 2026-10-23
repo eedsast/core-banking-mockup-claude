@@ -1483,57 +1483,7 @@
     </div>
   </div>
   <div class="header-spacer"></div>
-  <div class="header-right">
-    <!-- Booking date -->
-    <div class="header-date">
-      <span class="date-label">Booking Date</span>
-      <span class="date-val" id="hdr-booking-date">24 Mar 2026</span>
-    </div>
-    <!-- Global search -->
-    <div class="global-search" id="globalSearch">
-      <input class="global-search-input" id="globalSearchInput" type="text" placeholder="Search modules, sections…" autocomplete="off" oninput="onGlobalSearch(this.value)" onblur="closeSearchDropdown()" onkeydown="searchKeydown(event)">
-      <svg class="global-search-icon" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6a8faf" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M11 11l3 3"/></svg>
-      <button class="global-search-btn" onclick="toggleSearch()" title="Search">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M11 11l3 3"/></svg>
-      </button>
-      <div class="search-dropdown" id="searchDropdown"></div>
-    </div>
-    <div class="header-divider"></div>
-    <!-- Environment badge -->
-    <span class="env-badge" id="envBadge">UAT</span>
-    <!-- Help -->
-    <div class="header-icon-btn" title="Help" data-action="open-help" style="cursor:pointer;">
-      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
-        <circle cx="10" cy="10" r="8.5"/>
-        <path d="M7.5 7.5a2.5 2.5 0 0 1 4.9.8c0 1.7-2.5 2.1-2.5 3.7" stroke-linecap="round"/>
-        <circle cx="10" cy="15" r=".6" fill="currentColor"/>
-      </svg>
-    </div>
-    <!-- Activities -->
-    <div class="header-icon-btn" title="Activities">
-      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
-        <polyline points="3 7 10 3 17 7 10 11 3 7" stroke-linecap="round" stroke-linejoin="round"/>
-        <polyline points="3 12 10 16 17 12" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <!-- Notifications -->
-    <div class="header-icon-btn" title="Notifications">
-      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
-        <path d="M10 2a6 6 0 0 0-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 0 0-6-6z" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8.5 17.5a1.5 1.5 0 0 0 3 0" stroke-linecap="round"/>
-      </svg>
-      <span class="notif-dot"></span>
-    </div>
-    <div class="header-divider"></div>
-    <!-- User -->
-    <div class="user-info" id="userInfoBtn" onclick="toggleUserDropdown(event)">
-      <div class="avatar">SS</div>
-      <span>Sasa Stanic</span>
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="#8aafd4"><path d="M2 3.5l3 3 3-3"/></svg>
-    </div>
-  </div>
 </header>
-<!-- Profile Dropdown -->
 <div id="userDropdown" class="user-dropdown">
   <div class="user-dd-header">
     <div class="user-dd-name">Sasa Stanic</div>

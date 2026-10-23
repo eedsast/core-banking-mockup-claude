@@ -373,8 +373,8 @@
       </div>
       <div class="verdict-cell vc-q2">
         <div class="vc-label">Q2 — IBAN model</div>
-        <span class="verdict-badge vb-sep">Sponsored IBAN accounts + cards</span>
-        <div class="verdict-detail">IBAN accounts, transfers and e-wallet management from the same platform that issues the cards and acquires the merchant transactions — the narrowest integration surface of any option here.</div>
+        <span class="verdict-badge vb-sep">Named IBANs — partner's or end customer's name</span>
+        <div class="verdict-detail">Publishes <strong>dedicated IBANs, not pooled virtual IBANs</strong> — its own materials state "no more virtual IBAN" and allow partners to issue in their own or their customer's name. EUR SEPA with instant, GBP account numbers on Faster Payments, Bacs and CHAPS, and SWIFT for cross-border. IBAN accounts, transfers and e-wallet management come from the same platform that issues the cards and acquires the merchant transactions — the narrowest integration surface of any option here.</div>
       </div>
     </div>
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> covered in full in the card processing analysis. Noted here because it is the only provider across both documents offering BIN sponsorship, IBAN sponsorship and acquiring together. That makes it the lowest-integration-effort option for a small EMI and, for exactly the same reason, the highest concentration of counterparty risk. Recommend it with an explicit second-source plan.</div></div>
@@ -534,7 +534,7 @@
           <td>Paynetics</td>
           <td><span class="dot" style="background:#7f77dd;"></span>EMI — Bulgaria + FCA</td>
           <td>SEPA, SWIFT; plus card schemes</td>
-          <td>Sponsored IBAN accounts + cards + acquiring</td>
+          <td>Named IBANs (partner or end customer) + cards + acquiring</td>
           <td class="yes">Yes — EMI-level</td>
           <td class="unk">Not stated</td>
           <td>High for small EMIs. One counterparty, one concentration risk.</td>
@@ -573,7 +573,7 @@
       </div>
       <div>
         <h3>Q2 — IBAN model verdict and strategy</h3>
-        <div class="tk"><strong>Named versus pooled is the decision that matters.</strong> Named IBANs (OpenPayd, Banking Circle, ClearBank) give cleaner reconciliation, better AML treatment and lower switching cost. Pooled vIBANs are cheaper and faster to launch. Make this an explicit attribute in your account model, not an implementation detail.</div>
+        <div class="tk"><strong>Named versus pooled is the decision that matters.</strong> Named IBANs (OpenPayd, Banking Circle, ClearBank and — confirmed on its own materials — Paynetics) give cleaner reconciliation, better AML treatment and lower switching cost. Pooled vIBANs are cheaper and faster to launch. Make this an explicit attribute in your account model, not an implementation detail.</div>
         <div class="tk"><strong>Routes 3 and 4 both require our own authorisation, and that changes the shortlist. CENTROlink (Route 3) is ruled out</strong> — it needs an EMI or PI licence we are not acquiring. <strong>Route 4 is unresolved</strong>: the Eurosystem admits payment institutions as well as EMIs, so analysis is needed on whether direct participation is achievable in Croatia without an EMI licence. Until that is answered, Routes 1 and 2 are our only paths.</div>
         <div class="tk"><strong>Treat sponsorship as a stage, not a state.</strong> Pooled vIBAN → named IBAN → own BIC via indirect participation → direct participation in T2/TIPS. Four rungs, one platform, no re-implementation. No core banking vendor in your competitive set markets this.</div>
         <div class="tk"><strong>Shortlist for build:</strong> ClearBank and LHV as bank-route adapters — these are the rails we can actually use. CENTROlink and direct participation are adapters built for <em>licensed customers</em>, not routes we can supply, and own-BIC operation must still work in release one because so many EU EMIs already run that way. Add Clear Junction or OpenPayd when a specific customer requires the EMI route.</div>
@@ -585,7 +585,7 @@
     <h4>Sources</h4>
     <a href="https://clear.bank/learn/insights/best-emi-banking-partners-in-the-uk-and-europe">ClearBank on EMI banking partners</a>, <a href="https://clear.bank/learn/insights/sepa-indirect-participant">SEPA indirect participation and own-BIC reachability</a>, <a href="https://clear.bank/learn/insights/virtual-account-providers-in-europe-with-automated-reconciliation-per-iban">virtual account providers compared</a>, <a href="https://clear.bank/learn/insights/banking-solutions-in-europe-with-direct-access-to-sepa-target2-and-swift">direct SEPA, T2 and SWIFT access</a> ·
     <a href="https://thepaypers.com/fintech/news/emoni-partners-with-clearbank-europe-for-safeguarding-and-sepa-access">emoni / ClearBank Europe safeguarding and SEPA case (Oct 2026)</a> ·
-    <a href="https://www.lorum.com/article/best-virtual-iban-providers-banks-fintechs">Named vs pooled IBAN models across providers</a> · Payout reach, FX execution and corridor economics — including Currencycloud and Airwallex, which answer that question rather than this one and are deliberately not repeated here — are assessed in the <em>FX &amp; Remittance Providers: Competitive Analysis</em> (companion document) ·
+    <a href="https://www.lorum.com/article/best-virtual-iban-providers-banks-fintechs">Named vs pooled IBAN models across providers</a> · Payout reach, FX execution and corridor economics — including Currencycloud and Airwallex, which answer that question rather than this one and are deliberately not repeated here — are assessed in the <em>FX &amp; Remittance Providers: Competitive Analysis</em> (companion document). <strong>iBanFirst</strong> was reviewed for this document and belongs in that companion rather than here: it is a Belgian payment institution (NBB), FCA-authorised as an EMI in the UK, selling multi-currency accounts and FX to SMBs and corporate finance teams directly. It publishes no IBAN sponsorship or banking-as-a-service offer to other regulated institutions, so it is not a sponsorship route ·
     <a href="https://sdk.finance/blog/top-virtual-iban-providers-a-structured-guide-for-psps-emis-and-fintech-platforms/">Virtual IBAN provider comparison (rails, currencies, segments)</a> ·
     <a href="https://www.modulrfinance.com/eu-safeguarding-information">Modulr EEA safeguarding structure</a> ·
     <a href="https://tauruslg.com/fintech-license/">EMI/PI licence capital, timelines and CENTROlink access</a> ·
