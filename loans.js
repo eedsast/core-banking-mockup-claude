@@ -4433,7 +4433,7 @@ function openLoanProductForm(mod, data) {
         <div class="lp-help-title">Cash vs Accruals Accounting</div>
         <div class="lp-help-sub">Accounting methodologies</div>
         <div class="lp-help-text">
-          OneFor Core Banking suite supports two main accounting methodologies you can choose from based on your internal operations:
+          Core Banking suite supports two main accounting methodologies you can choose from based on your internal operations:
           <ul><li>Cash</li><li>Accruals based accounting</li></ul>
           The key difference between the two methodologies is the moment when income or expenses are recognised in the General Ledger (GL).<br><br>
           You can select the methodology for each of your products independently.<br><br>
@@ -7924,10 +7924,10 @@ function wireLsUserRolesList(el) {
 const _MOCK_LS_API_CLIENTS = [
   {
     id: 'ac-001',
-    name: 'OneFor Core Orchestrator',
+    name: 'Core Banking Orchestrator',
     clientId: 'onefor-core',
     org: 'OneFor',
-    description: 'Core orchestration service for OneFor platform — handles loan lifecycle events and triggers downstream processing.',
+    description: 'Core orchestration service for The Bank platform — handles loan lifecycle events and triggers downstream processing.',
     status: 'ACTIVE',
     lastUsed: '08.10.2026 20:30:00'
   },
@@ -8275,7 +8275,7 @@ function wireLsApiClientsList(el) {
 // ═══════════════════════════════════════════════════════════════
 
 const _MOCK_LS_API_CLIENT_ROLES = [
-  { id:'acr-001', clientId:'ac-001', clientName:'OneFor Core Orchestrator', clientIdStr:'onefor-core',
+  { id:'acr-001', clientId:'ac-001', clientName:'Core Orchestrator', clientIdStr:'onefor-core',
     role:'SystemAdmin', org:'OneFor', branch:'', scopeLevel:'ORGANIZATION', status:'ACTIVE' },
 ];
 

@@ -91,7 +91,7 @@
 <div class="container">
 
   <h1>Payment Processors &amp; IBAN Sponsorship — Competitive Analysis</h1>
-  <p class="subtitle">11 routes to EUR and GBP rails for European EMIs · agency banking, vIBAN providers, central bank access and direct participation</p>
+  <p class="subtitle">9 routes to EUR and GBP rails for European EMIs · agency banking, vIBAN providers, central bank access and direct participation</p>
 
   <div class="questions">
     <div class="q-box q1">
@@ -358,82 +358,6 @@
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> specialist rather than general sponsor. Integrate when a payroll or mass-payout customer requires it; do not position it as a default. Its safeguarding structure is the most instructive model in this document for your reconciliation design.</div></div>
   </div>
 
-  <!-- ══ CURRENCYCLOUD ══ -->
-  <div class="platform">
-    <div class="platform-header">
-      <div class="platform-identity">
-        <div class="platform-name">Currencycloud <span class="gen-tag gen-baas">Visa-owned</span></div>
-        <div class="platform-type">FX-first multi-currency infrastructure</div>
-        <div class="platform-target">Platforms whose primary need is conversion and cross-border payout, not domestic accounts</div>
-      </div>
-      <div class="verdict-cell vc-q1">
-        <div class="vc-label">Q1 — Licence &amp; rail access</div>
-        <span class="verdict-badge vb-int">Broad but partner-extended</span>
-        <div class="verdict-detail">Acquired by Visa in 2021 and now part of Visa Cross-Border Solutions. Rail reach spans SEPA, Faster Payments and US and APAC rails, much of it extended through partners rather than held directly.</div>
-      </div>
-      <div class="verdict-cell vc-q2">
-        <div class="vc-label">Q2 — IBAN model</div>
-        <span class="verdict-badge vb-mixed">Multi-currency wallets, FX-led</span>
-        <div class="verdict-detail">Multi-currency wallets with conversion and payment execution across 35+ currencies through a well-established API. The account layer serves the FX product rather than the other way round.</div>
-      </div>
-    </div>
-    <div class="platform-body">
-      <div class="body-col">
-        <div class="body-col-label">Licence, rails &amp; coverage</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Visa ownership gives balance-sheet certainty that few independents can match</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Breadth of currencies is the strongest in this set; depth of domestic euro-rail control is not</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Mature API with a long track record among cross-border platforms</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Partner-extended reach means the settlement chain varies by corridor</div></div>
-      </div>
-      <div class="body-col">
-        <div class="body-col-label">Implications for your platform</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Treat it as an <strong>FX and payout provider</strong>, not an IBAN sponsor. Your rail abstraction should distinguish the two roles cleanly</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Good complement to a bank sponsor: ClearBank or LHV for euro rails, Currencycloud for exotic currency payout</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Your FX booking model needs to support an external rate and execution provider, not only an internal rate card</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Lower priority as a first adapter unless early customers are remittance-led</div></div>
-      </div>
-    </div>
-    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> complement, not sponsor. Its real lesson is architectural — FX execution and rail access are separate capabilities that your platform should be able to source from different providers.</div></div>
-  </div>
-
-  <!-- ══ AIRWALLEX ══ -->
-  <div class="platform">
-    <div class="platform-header">
-      <div class="platform-identity">
-        <div class="platform-name">Airwallex <span class="gen-tag gen-baas">Multi-licensed</span></div>
-        <div class="platform-type">Global accounts, FX and payouts</div>
-        <div class="platform-target">Global PSPs, marketplaces and platforms with multi-region flows</div>
-      </div>
-      <div class="verdict-cell vc-q1">
-        <div class="vc-label">Q1 — Licence &amp; rail access</div>
-        <span class="verdict-badge vb-both">Multiple licences across regions</span>
-        <div class="verdict-detail">Holds licences across several jurisdictions including the EU, with rail coverage spanning SEPA, SEPA Instant, UK Faster Payments, US ACH and APAC rails.</div>
-      </div>
-      <div class="verdict-cell vc-q2">
-        <div class="vc-label">Q2 — IBAN model</div>
-        <span class="verdict-badge vb-sep">Global multi-currency, 60+ currencies</span>
-        <div class="verdict-detail">The widest currency coverage in this analysis, suited to platforms whose flows genuinely span Europe, North America and Asia-Pacific rather than concentrating on the euro area.</div>
-      </div>
-    </div>
-    <div class="platform-body">
-      <div class="body-col">
-        <div class="body-col-label">Licence, rails &amp; coverage</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Global-first rather than Europe-first — a different design centre from every other provider here</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Well capitalised and expanding its regulatory footprint, including EU licences</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Also sells its own business accounts and spend management, so it competes downstream with some of your customers</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Euro-rail depth is less of a focus than for ClearBank, LHV or Banking Circle</div></div>
-      </div>
-      <div class="body-col">
-        <div class="body-col-label">Implications for your platform</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Relevant only if your pipeline includes genuinely global platforms; for EEA-focused EMIs it adds breadth you do not need</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Its own SME product set overlaps with your Business Account and Expense modules — partner carefully</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Useful as a secondary payout rail behind a European primary sponsor</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Verify which entity and licence covers each corridor before quoting coverage</div></div>
-      </div>
-    </div>
-    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> roadmap. Add when a customer's flows justify global coverage; do not let global breadth distract from euro-rail depth, which is what your target market actually buys.</div></div>
-  </div>
-
   <!-- ══ PAYNETICS (cross-ref) ══ -->
   <div class="platform">
     <div class="platform-header">
@@ -538,7 +462,7 @@
 
   <!-- ══ SUMMARY MATRIX ══ -->
   <div class="matrix-section">
-    <div class="matrix-title">Summary matrix — 11 routes to euro and sterling rails</div>
+    <div class="matrix-title">Summary matrix — 9 routes to euro and sterling rails</div>
     <table class="matrix-table">
       <thead>
         <tr>
@@ -607,24 +531,6 @@
           <td>Specialist. Payroll and mass payout only; study its safeguarding structure.</td>
         </tr>
         <tr>
-          <td>Currencycloud</td>
-          <td><span class="dot" style="background:#7f77dd;"></span>Visa Cross-Border Solutions</td>
-          <td>SEPA, FPS, US and APAC, partner-extended</td>
-          <td>Multi-currency wallets, FX-led</td>
-          <td class="no">Not an IBAN sponsor</td>
-          <td class="no">No</td>
-          <td>Complement. FX and payout provider, not a rail sponsor.</td>
-        </tr>
-        <tr>
-          <td>Airwallex</td>
-          <td><span class="dot" style="background:#7f77dd;"></span>Multi-licensed, incl. EU</td>
-          <td>SEPA, SCT Inst, FPS, ACH, APAC</td>
-          <td>Global multi-currency, 60+ currencies</td>
-          <td class="unk">Varies by entity</td>
-          <td class="unk">Not stated</td>
-          <td>Roadmap. Only for genuinely global customers; competes downstream.</td>
-        </tr>
-        <tr>
           <td>Paynetics</td>
           <td><span class="dot" style="background:#7f77dd;"></span>EMI — Bulgaria + FCA</td>
           <td>SEPA, SWIFT; plus card schemes</td>
@@ -679,7 +585,7 @@
     <h4>Sources</h4>
     <a href="https://clear.bank/learn/insights/best-emi-banking-partners-in-the-uk-and-europe">ClearBank on EMI banking partners</a>, <a href="https://clear.bank/learn/insights/sepa-indirect-participant">SEPA indirect participation and own-BIC reachability</a>, <a href="https://clear.bank/learn/insights/virtual-account-providers-in-europe-with-automated-reconciliation-per-iban">virtual account providers compared</a>, <a href="https://clear.bank/learn/insights/banking-solutions-in-europe-with-direct-access-to-sepa-target2-and-swift">direct SEPA, T2 and SWIFT access</a> ·
     <a href="https://thepaypers.com/fintech/news/emoni-partners-with-clearbank-europe-for-safeguarding-and-sepa-access">emoni / ClearBank Europe safeguarding and SEPA case (Oct 2026)</a> ·
-    <a href="https://www.lorum.com/article/best-virtual-iban-providers-banks-fintechs">Named vs pooled IBAN models across providers</a> ·
+    <a href="https://www.lorum.com/article/best-virtual-iban-providers-banks-fintechs">Named vs pooled IBAN models across providers</a> · Payout reach, FX execution and corridor economics — including Currencycloud and Airwallex, which answer that question rather than this one and are deliberately not repeated here — are assessed in the <em>FX &amp; Remittance Providers: Competitive Analysis</em> (companion document) ·
     <a href="https://sdk.finance/blog/top-virtual-iban-providers-a-structured-guide-for-psps-emis-and-fintech-platforms/">Virtual IBAN provider comparison (rails, currencies, segments)</a> ·
     <a href="https://www.modulrfinance.com/eu-safeguarding-information">Modulr EEA safeguarding structure</a> ·
     <a href="https://tauruslg.com/fintech-license/">EMI/PI licence capital, timelines and CENTROlink access</a> ·
