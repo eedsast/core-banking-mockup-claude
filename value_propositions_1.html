@@ -810,7 +810,47 @@
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 3 — module, partner-funded, explicitly scoped as "light".</strong> The reason this works is data, not capital: the platform already holds everything a funder needs to underwrite, which turns a traditionally paper-heavy product into an in-app decision. Keeping the heavy instruments out is what makes it buildable — and being honest in the naming about what it is not protects the proposition from an expectation it cannot meet.</div></div>
   </div>
 
-  <!-- 18 MARKETPLACE -->
+  <!-- 18 VALUE-ADDED PAYMENTS -->
+  <div class="platform">
+    <div class="platform-header">
+      <div class="platform-identity">
+        <div class="platform-name">Value-added Payments <span class="gen-tag gen-legacy">Game changer</span></div>
+        <div class="platform-type">Payments &amp; UX layer · Use-case wrappers on top of SCT, SCT Inst &amp; Direct Debit</div>
+        <div class="platform-target">Consumer, SME, B2B · groups, billers, public sector, mobility, parking</div>
+      </div>
+      <div class="verdict-cell vc-q1">
+        <div class="vc-label">Customer value</div>
+        <span class="verdict-badge vb-sep">Payments with context</span>
+        <div class="verdict-detail">Turn a bare payment rail into a named product: split a dinner, pay a utility bill, set a recurring subscription, settle a parking or mobility charge, or receive a government tax refund — each with its own UX, reference data and status lifecycle, all riding the same underlying SCT or SCT Inst rail.</div>
+      </div>
+      <div class="verdict-cell vc-q2">
+        <div class="vc-label">Commercial value</div>
+        <span class="verdict-badge vb-split">Per-use or subscription upsell</span>
+        <div class="verdict-detail">Each use-case wrapper is a separately priced module or add-on. The base rails (SCT, SCT Inst, SDD) are compliance cost; this layer is billable product. Biller directory access, scheduled-payment engines and split-management APIs all generate fee-per-transaction or SaaS revenue without touching the regulatory infrastructure beneath them.</div>
+      </div>
+    </div>
+    <div class="platform-body">
+      <div class="body-col">
+        <div class="body-col-label">Functional scope</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Split payments</strong> — group bill split: originate one Request-to-Pay (SRTP) per participant, track acceptance, collect via SCT Inst when accepted; handles unequal shares, partial payment and expiry</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Standing orders</strong> — customer-defined recurring SCT: amount, frequency, start/end date, execution calendar; pause, resume and amendment with full audit trail</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Utility payments</strong> — structured biller directory, creditor ID lookup, pre-populated reference and amount from bill scan or e-invoice; payment status routed back to biller via API or ViDA e-invoice acknowledgement</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Mobility &amp; parking</strong> — initiated payment triggered by a mobility provider callback (park-exit, EV charge end); amount confirmed at trigger, settled via SCT Inst; no pre-authorisation held on card</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Tax refund routing</strong> — inbound earmarked credit from a tax authority, auto-reconciled by creditor reference, optionally swept to a savings or investment pocket on receipt</div></div>
+      </div>
+      <div class="body-col">
+        <div class="body-col-label">Dependencies &amp; build notes</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">All five features are orchestration above the rails — they consume Money Send &amp; Request, Instant Payments, and SDD; none require a new payment rail</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Split payments depends on SRTP (Request-to-Pay): basic inbound in MVP, full SRTP in Phase 2; same dependency as the Money Send &amp; Request module</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Biller directory for utility payments is a third-party data source (national or scheme-operated); plan the integration and refresh cycle, not the directory itself</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Standing orders share the scheduler infrastructure with Invoicing recurring billing — build once, expose through both products</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Mobility and parking integrations are partner-side (ParkNow, Ecolane, EV networks); own the payment mechanic and the webhook receiver, not the parking logic</div></div>
+      </div>
+    </div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 2 — modular add-on layer.</strong> None of these features require a new licence or a new rail — they are all orchestration on top of what Phase 1 already builds. The split is between the base rail (priced as compliance) and the context layer (priced as product), and no competitor in the set packages them this way. Ship split payments and standing orders first; utility, mobility and tax refund are Phase 3 integrations that validate themselves once the module exists.</div></div>
+  </div>
+
+  <!-- 19 MARKETPLACE -->
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
@@ -848,7 +888,7 @@
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 3 — vertical module.</strong> Strong proposition, but it changes your sales motion: marketplaces buy payments infrastructure, not core banking. Treat it as a deliberate second market entered once the EMI base is established, and validate with one design-partner marketplace before building.</div></div>
   </div>
 
-  <!-- 19 LOYALTY -->
+  <!-- 20 LOYALTY -->
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
@@ -884,7 +924,7 @@
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 3 — module, partner-led.</strong> Build the rules engine and points ledger (cheap, reusable); integrate a third-party offers network rather than building merchant acquisition. The points ledger is worth building early regardless — it validates that your ledger genuinely supports arbitrary currencies.</div></div>
   </div>
 
-  <!-- 20 STABLECOIN -->
+  <!-- 21 STABLECOIN -->
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
@@ -922,7 +962,7 @@
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 3 — optional module.</strong> Do not build for this segment first, but make the ledger multi-asset from the start so the option stays open at near-zero marginal cost. The same ledger capability serves points, FX and stablecoins.</div></div>
   </div>
 
-  <!-- 21 DIRECT SCHEME ACCESS -->
+  <!-- 22 DIRECT SCHEME ACCESS -->
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
@@ -962,7 +1002,7 @@
 
   <!-- ══ SUMMARY MATRIX ══ -->
   <div class="matrix-section">
-    <div class="matrix-title">Summary matrix — 21 value propositions, scope and sequencing</div>
+    <div class="matrix-title">Summary matrix — 22 value propositions, scope and sequencing</div>
     <table class="matrix-table">
       <thead>
         <tr>
@@ -989,6 +1029,7 @@
         <tr><td>Embedded credit (BNPL)</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Instalments and merchant BNPL in-platform; revolving lines in Cards</td><td>Premium module pricing</td><td><strong>Phase 2 flagship, CCD2-native.</strong> Time to 20 Nov 2026. Plays to your LMS expertise.</td></tr>
         <tr><td>FX &amp; Remittance</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Corridor routing, locked rates, multi-method payout</td><td>FX spread — revenue scales with volume</td><td><strong>Phase 2 module, partner-executed.</strong> Own the margin engine, routing and treasury view.</td></tr>
         <tr><td>Light Trade Finance</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Invoice and PO finance inside the business account</td><td>Referral / revenue share — no balance sheet</td><td><strong>Phase 3, third-party funded.</strong> Needs Invoicing + Collections first. LCs and guarantees explicitly out of scope.</td></tr>
+        <tr><td>Value-added Payments</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Split, standing orders, utility, parking, tax refund — context on top of SCT/SCT Inst</td><td>Per-use or module subscription</td><td><strong>Phase 2 add-on layer.</strong> Orchestration above existing rails — no new licence. Ship split payments and standing orders first.</td></tr>
         <tr><td>Marketplace</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Escrow, split, mass payout, seller KYB</td><td>Opens a second vertical</td><td><strong>Phase 3 vertical module.</strong> Different sales motion — validate with a design partner first.</td></tr>
         <tr><td>Loyalty</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Merchant-funded rewards on spend</td><td>Third-party funded revenue</td><td><strong>Phase 3, partner-led.</strong> Build the points ledger early; buy the offers network.</td></tr>
         <tr><td>Stablecoin &amp; digital assets</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>24/7 cross-border settlement</td><td>Premium, narrow segment</td><td><strong>Phase 3 optional.</strong> Multi-asset ledger in the MVP; never custody keys.</td></tr>
