@@ -1580,6 +1580,12 @@
       <div class="analysis-card-desc">Cross-border payout reach — pay-to-account, push-to-card, corridor economics and settlement models</div>
       <div class="analysis-card-cta">Read Analysis ↗</div>
     </a>
+    <a class="analysis-card" href="crypto_stock_trading_providers_analysis.html" target="_blank">
+      <div class="analysis-card-icon">📊</div>
+      <div class="analysis-card-title">Crypto &amp; Stock Trading Providers</div>
+      <div class="analysis-card-desc">MiCA CASP and MiFID II providers for the investing proposition — licences, contracting models and who faces the end client</div>
+      <div class="analysis-card-cta">Read Analysis ↗</div>
+    </a>
     <a class="analysis-card" href="phase_approach.html" target="_blank">
       <div class="analysis-card-icon">📈</div>
       <div class="analysis-card-title">Phase Approach</div>
@@ -1601,66 +1607,133 @@
       <div class="card-desc">Token-based authentication, RBAC, permissions and session management — may be split into separate microservices in Phase II</div>
       <div class="card-tag">auth-service-boundaries</div>
     </div>
+
     <div class="module-card module-card--phase1" style="--card-accent:#8e44ad;--icon-bg:#f3e8fd;" data-action="show-module" data-module="admin">
       <div class="card-icon">⚙️</div>
       <div class="card-title">Administration</div>
       <div class="card-desc">Organisation setup, branch management, role assignments, services and system definitions</div>
       <div class="card-tag">admin-service-boundaries</div>
     </div>
-    <div class="module-card module-card--phase2" style="--card-accent:#0e7490;--icon-bg:#e0f7fa;" data-action="show-module" data-module="clients">
+
+    <div class="module-card module-card--phase1" style="--card-accent:#0e7490;--icon-bg:#e0f7fa;" data-action="show-module" data-module="clients">
       <div class="card-icon">👤</div>
-      <div class="card-title">Clients</div>
+      <div class="card-title">Clients onboarding</div>
       <div class="card-desc">Client onboarding, KYC, profiles and relationship management</div>
       <div class="card-tag">client-service-boundaries</div>
     </div>
+
     <div class="module-card module-card--phase1" style="--card-accent:#16a085;--icon-bg:#e4f7f3;" data-action="show-module" data-module="accounts">
       <div class="card-icon">🏦</div>
       <div class="card-title">Accounts &amp; Deposits</div>
       <div class="card-desc">Transaction &amp; current accounts, savings, overdraft management — and term deposits, fixed deposits, maturity and rollover</div>
       <div class="card-tag">accounts-deposits-service-boundaries</div>
     </div>
+
     <div class="module-card module-card--completed" style="--card-accent:#d35400;--icon-bg:#fdf0e6;" data-action="show-module" data-module="loans">
       <div class="card-icon">📋</div>
       <div class="card-title">Loan Management</div>
       <div class="card-desc">Loan accounts, operations, product definitions</div>
       <div class="card-tag">loan-service-boundaries</div>
     </div>
+
     <div class="module-card module-card--phase1" style="--card-accent:#27ae60;--icon-bg:#e6f7ee;" data-action="show-module" data-module="loanapp">
       <div class="card-icon">📝</div>
       <div class="card-title">Loan Application</div>
       <div class="card-desc">Origination, application workflow and tracking</div>
       <div class="card-tag">origination-service-boundaries</div>
     </div>
+
     <div class="module-card module-card--completed" style="--card-accent:#e74c3c;--icon-bg:#fde8e8;" data-action="show-module" data-module="decision">
       <div class="card-icon">🤖</div>
       <div class="card-title">Decision Engine</div>
       <div class="card-desc">Scoring, rule execution and credit decisions</div>
       <div class="card-tag">decision-service-boundaries</div>
     </div>
+
     <div class="module-card module-card--phase1" style="--card-accent:#2980b9;--icon-bg:#e5f0fa;" data-action="show-module" data-module="payments">
       <div class="card-icon">💳</div>
       <div class="card-title">Payments integration</div>
       <div class="card-desc">Domestic, SWIFT, SEPA, bulk payment processing</div>
       <div class="card-tag">payment-service-boundaries</div>
     </div>
+
     <div class="module-card module-card--phase1" style="--card-accent:#c0392b;--icon-bg:#fdecea;" data-action="show-module" data-module="cards">
       <div class="card-icon">💳</div>
       <div class="card-title">Cards integration</div>
       <div class="card-desc">Debit &amp; credit card issuance, limits, blocking · Integration with 3rd party solution Card processor</div>
       <div class="card-tag">card-service-boundaries</div>
     </div>
+
+    <div class="module-card module-card--phase1" style="--card-accent:#0f766e;--icon-bg:#e6f6f3;">
+      <div class="card-icon">🏛️</div>
+      <div class="card-title">Treasury integration</div>
+      <div class="card-desc">Currency positions, liquidity and pre-funding at partners, FX exposure limits and safeguarding reconciliation · Integration with external SaaS treasury solution</div>
+      <div class="card-tag">treasury-service-boundaries</div>
+    </div>
+
     <div class="module-card module-card--phase1" style="--card-accent:#2c3e50;--icon-bg:#edf0f3;" data-action="show-module" data-module="accounting">
       <div class="card-icon">📊</div>
       <div class="card-title">Accounting</div>
       <div class="card-desc">GL, journals, period close, chart of accounts</div>
       <div class="card-tag">accounting-service-boundaries</div>
     </div>
+
+    <div class="module-card module-card--phase1" style="--card-accent:#1d4ed8;--icon-bg:#eff6ff;" data-action="show-module" data-module="digsig">
+      <div class="card-icon">✍️</div>
+      <div class="card-title">Digital Signature</div>
+      <div class="card-desc">Certificate management, signing queues, providers and audit trail</div>
+      <div class="card-tag">digsig-service-boundaries</div>
+    </div>
+
+    <div class="module-card module-card--phase1" style="--card-accent:#0d9488;--icon-bg:#e0f7f5;" data-action="show-module" data-module="marketplace">
+      <div class="card-icon">🛒</div>
+      <div class="card-title">Marketplace</div>
+      <div class="card-desc">Merchant portal · Business profile, payout configuration, team access, notifications and storefront settings</div>
+      <div class="card-tag">marketplace-boundaries</div>
+    </div>
+
+    <div class="module-card module-card--phase1" style="--card-accent:#f39c12;--icon-bg:#fef6e4;" data-action="show-module" data-module="loyalty">
+      <div class="card-icon">⭐</div>
+      <div class="card-title">Loyalty</div>
+      <div class="card-desc">Campaigns, rewards, tiers, members, redemptions</div>
+      <div class="card-tag">loyalty-service-boundaries</div>
+    </div>
+
+    <div class="module-card module-card--phase1" style="--card-accent:#be185d;--icon-bg:#fdf2f8;">
+      <div class="card-icon">🏷️</div>
+      <div class="card-title">Packages</div>
+      <div class="card-desc">Package catalogue, eligibility and customer enrolment · Benefit resolution — fee waivers, preferential rates and non-price perks · Recurring charge raised through Administration</div>
+      <div class="card-tag">package-service-boundaries</div>
+    </div>
+
+    <div class="module-card module-card--phase2" style="--card-accent:#0369a1;--icon-bg:#e0f2fe;" data-action="show-module" data-module="fxremit">
+      <div class="card-icon">💱</div>
+      <div class="card-title">FX Remittance</div>
+      <div class="card-desc">Foreign exchange, cross-border remittances, currency conversion and transfer tracking</div>
+      <div class="card-tag">fx-remittance-service-boundaries</div>
+    </div>
+
+    <div class="module-card module-card--phase2" style="--card-accent:#6c3fc5;--icon-bg:#f0ebfd;" data-action="show-module" data-module="crypto">
+      <div class="card-icon">₿</div>
+      <div class="card-title">Crypto</div>
+      <div class="card-desc">Digital asset wallets, custody, trading and compliance</div>
+      <div class="card-tag">crypto-service-boundaries</div>
+    </div>
+
+    <div class="module-card module-card--phase2" style="--card-accent:#b45309;--icon-bg:#fef3c7;" data-action="show-module" data-module="collaterals">
+      <div class="card-icon">🏦</div>
+      <div class="card-title">Collaterals</div>
+      <div class="card-desc">Collateral registration, valuation, pledges and lien management</div>
+      <div class="card-tag">collateral-service-boundaries</div>
+    </div>
+
     <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#b45309;--icon-bg:#fef3c7;" data-action="show-module" data-module="ifrs9">
       <div class="card-icon">📐</div>
       <div class="card-title">IFRS9 Reporting</div>
       <div class="card-desc">Expected credit loss, staging, provisioning and regulatory reporting</div>
       <div class="card-tag">ifrs9-service-boundaries</div>
     </div>
+
     <div class="module-card module-card--outofscope" style="--card-accent:#0f766e;--icon-bg:#e0f7f5;cursor:pointer;" data-action="open-diagram" data-src="loan-origination-workflow.html">
       <div class="card-icon">⚡</div>
       <div class="card-title">Orchestration</div>
@@ -1673,56 +1746,13 @@
         </a>
       </div>
     </div>
-    <div class="module-card module-card--phase2" style="--card-accent:#0369a1;--icon-bg:#e0f2fe;" data-action="show-module" data-module="fxremit">
-      <div class="card-icon">💱</div>
-      <div class="card-title">FX Remittance</div>
-      <div class="card-desc">Foreign exchange, cross-border remittances, currency conversion and transfer tracking</div>
-      <div class="card-tag">fx-remittance-service-boundaries</div>
-    </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#1d4ed8;--icon-bg:#eff6ff;" data-action="show-module" data-module="digsig">
-      <div class="card-icon">✍️</div>
-      <div class="card-title">Digital Signature</div>
-      <div class="card-desc">Certificate management, signing queues, providers and audit trail</div>
-      <div class="card-tag">digsig-service-boundaries</div>
-    </div>
+
     <div class="module-card module-card--disabled module-card--outofscope" style="--card-accent:#7c3aed;--icon-bg:#f5f3ff;">
       <div class="card-icon">📨</div>
       <div class="card-title">SMS/Notifications</div>
       <div class="card-desc">SMS, email and WhatsApp templates, campaign triggers and delivery logs · Integration with InfoBip or other 3rd party solution</div>
       <div class="card-tag">sms-notifications-service-boundaries</div>
     </div>
-
-    <div class="module-card module-card--phase1" style="--card-accent:#0d9488;--icon-bg:#e0f7f5;" data-action="show-module" data-module="marketplace">
-      <div class="card-icon">🛒</div>
-      <div class="card-title">Marketplace</div>
-      <div class="card-desc">Merchant portal · Business profile, payout configuration, team access, notifications and storefront settings</div>
-      <div class="card-tag">marketplace-boundaries</div>
-    </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#f39c12;--icon-bg:#fef6e4;" data-action="show-module" data-module="loyalty">
-      <div class="card-icon">⭐</div>
-      <div class="card-title">Loyalty</div>
-      <div class="card-desc">Campaigns, rewards, tiers, members, redemptions</div>
-      <div class="card-tag">loyalty-service-boundaries</div>
-    </div>
-    <div class="module-card module-card--phase1" style="--card-accent:#be185d;--icon-bg:#fdf2f8;">
-      <div class="card-icon">🏷️</div>
-      <div class="card-title">Packages</div>
-      <div class="card-desc">Package catalogue, eligibility and customer enrolment · Benefit resolution — fee waivers, preferential rates and non-price perks · Recurring charge raised through Administration</div>
-      <div class="card-tag">package-service-boundaries</div>
-    </div>
-    <div class="module-card module-card--phase2" style="--card-accent:#6c3fc5;--icon-bg:#f0ebfd;" data-action="show-module" data-module="crypto">
-      <div class="card-icon">₿</div>
-      <div class="card-title">Crypto</div>
-      <div class="card-desc">Digital asset wallets, custody, trading and compliance</div>
-      <div class="card-tag">crypto-service-boundaries</div>
-    </div>
-    <div class="module-card module-card--phase2" style="--card-accent:#b45309;--icon-bg:#fef3c7;" data-action="show-module" data-module="collaterals">
-      <div class="card-icon">🏦</div>
-      <div class="card-title">Collaterals</div>
-      <div class="card-desc">Collateral registration, valuation, pledges and lien management</div>
-      <div class="card-tag">collateral-service-boundaries</div>
-    </div>
-
 
   </div>
 </div><!-- /#home-page -->
@@ -2591,7 +2621,7 @@
   <nav class="sidebar" id="sidebar-clients">
     <div class="sidebar-header">
       <div class="mod-icon" style="background:#0e5f73;">👤</div>
-      <div><div class="mod-name">Clients</div><div class="mod-sub">client-service-boundaries</div></div>
+      <div><div class="mod-name">Clients onboarding</div><div class="mod-sub">client-service-boundaries</div></div>
     </div>
     <div class="back-btn" data-action="show-home">
       <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><use href="#ico-back"/></svg>
