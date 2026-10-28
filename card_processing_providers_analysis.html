@@ -87,6 +87,27 @@
   .sources { margin-top: 24px; padding: 16px 18px; background: #fff; border: 1px solid #d3d1c7; border-radius: 12px; font-size: 11px; color: #5f5e5a; line-height: 1.6; }
   .sources h4 { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: #888780; margin-bottom: 8px; }
   .sources a { color: #185fa5; text-decoration: none; }
+
+  /* ── BIN Sponsorship explainer ── */
+  .explainer { background: #fff; border: 1px solid #d3d1c7; border-radius: 14px; margin-bottom: 24px; overflow: hidden; }
+  .explainer-head { background: #1a1a18; color: #f1efe8; padding: 16px 20px; }
+  .explainer-head h2 { font-size: 15px; font-weight: 500; color: #9FE1CB; margin-bottom: 3px; }
+  .explainer-head p { font-size: 12px; color: #b4b2a9; line-height: 1.5; }
+  .explainer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid #ece9e0; }
+  .exp-col { padding: 16px 18px; font-size: 12px; line-height: 1.6; color: #5f5e5a; }
+  .exp-col:not(:last-child) { border-right: 1px solid #ece9e0; }
+  .exp-col-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: #888780; margin-bottom: 8px; }
+  .exp-col strong { color: #2c2c2a; font-weight: 500; }
+  .exp-2col { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #ece9e0; }
+  .exp-2col .exp-col:first-child { border-right: 1px solid #ece9e0; }
+  .exp-flow { padding: 16px 20px; background: #f8f7f3; }
+  .exp-flow-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: #888780; margin-bottom: 10px; }
+  .flow-steps { display: flex; gap: 0; align-items: stretch; flex-wrap: wrap; }
+  .flow-step { flex: 1; min-width: 140px; background: #fff; border: 1px solid #d3d1c7; border-radius: 8px; padding: 10px 12px; margin: 4px; }
+  .flow-step-num { font-size: 10px; font-weight: 600; color: #378add; margin-bottom: 3px; }
+  .flow-step-title { font-size: 11px; font-weight: 500; color: #1a1a18; margin-bottom: 3px; }
+  .flow-step-desc { font-size: 11px; color: #5f5e5a; line-height: 1.4; }
+  .flow-arrow { display: flex; align-items: center; color: #b4b2a9; font-size: 16px; padding: 0 2px; align-self: center; }
 </style>
 </head>
 <body>
@@ -103,6 +124,82 @@
     <div class="q-box q2">
       <strong>Q2 — Product coverage</strong>
       White-label issuing and acquiring in one place? Business/corporate cards? Revolving or credit cards, as opposed to debit and prepaid only?
+    </div>
+  </div>
+
+  <!-- ══ BIN SPONSORSHIP EXPLAINER ══ -->
+  <div class="explainer">
+    <div class="explainer-head">
+      <h2>BIN sponsorship — how the model works</h2>
+      <p>Who can sponsor, how Enfuce and Paynetics operate without owning end-clients, and what an EMI licence lets you do as a pure B2B IBAN sponsor.</p>
+    </div>
+
+    <div class="explainer-grid">
+      <div class="exp-col">
+        <div class="exp-col-label">Who can be a BIN sponsor?</div>
+        <p>Two conditions must both be met. First, the provider must hold an <strong>EMI or banking licence</strong> in the EEA or UK — this makes them the regulated entity of record. Second, they must be a <strong>principal member of Visa and/or Mastercard</strong> — a separate application to each scheme, with minimum net-asset requirements (typically €5–10M depending on scheme and programme size), proven operational and fraud infrastructure, and minimum volume commitments.</p>
+        <br>
+        <p>An EMI licence alone does not make you a BIN sponsor. Many EMIs hold the licence but are not scheme principals — they still use Enfuce or GPS as their card sponsor. Getting scheme principal membership takes 12–24 months after EMI licence grant and is a significant additional investment.</p>
+        <br>
+        <p><strong>Providers in this analysis that can act as BIN sponsor:</strong> Enfuce, Paynetics, Wallester, Monavate, FinXP, B4B Payments, Edenred Payment Solutions, Marqeta (via the 2025 TransactPay acquisition), and <strong>RS2</strong> (EMI BaFin/Germany + Visa and Mastercard principal membership via its Beyond by RS2 platform, launched March 2026). BPC and Paymentology cannot — they are technology vendors with no scheme membership of their own.</p>
+      </div>
+      <div class="exp-col">
+        <div class="exp-col-label">How Enfuce / Paynetics operate without owning the end-clients</div>
+        <p>This is the classic BaaS sponsor model under <strong>PSD2 Article 19 — the agent model</strong>. The fintech does not hold any licence. Enfuce or Paynetics holds the EMI licence and is the regulated entity of record. The fintech is their B2B client and registers as a <strong>payment services agent</strong> with the national regulator, operating in the name of and under the licence of the sponsor.</p>
+        <br>
+        <p><strong>IBAN side:</strong> The sponsor issues IBANs from their own BIC namespace. The fintech's end-customers get IBANs that are technically accounts at the sponsor, white-labelled under the fintech's brand. The sponsor holds the safeguarding accounts and is responsible for fund segregation under EMD2.</p>
+        <br>
+        <p><strong>Card side:</strong> The sponsor holds a BIN range licensed from Visa/Mastercard. Cards issued to the fintech's end-customers carry that BIN. The sponsor is the <strong>issuer of record</strong> with the schemes — Visa/Mastercard see the sponsor as the card issuer, not the fintech.</p>
+        <br>
+        <p><strong>Commercially</strong>, the fintech owns the customer relationship — they acquired the customer, run the app/UX, do the branding, and often manage KYC under the sponsor's oversight. But <strong>legally and regulatorily</strong>, the end-customers are users of the sponsor's regulated service. Interchange from card spend goes to the sponsor as issuer of record; they share a portion back to the fintech under a revenue share agreement.</p>
+      </div>
+      <div class="exp-col">
+        <div class="exp-col-label">Can you be an IBAN sponsor without having own end-clients?</div>
+        <p><strong>Yes — entirely possible and increasingly common.</strong> This is the pure BaaS/infrastructure model. Banking Circle, Clear Junction, and Railsr all operate this way.</p>
+        <br>
+        <p>An EMI licence (under EMD2, transposed in Croatia by HNB) authorises the holder to issue electronic money and provide payment services. It does <strong>not</strong> require you to serve retail customers directly. You can operate exclusively as a B2B infrastructure layer.</p>
+        <br>
+        <p><strong>IBAN issuance without own clients:</strong> You apply for a BIC/SWIFT code and a national account number range. You issue IBANs from that namespace to your fintech clients' end-customers. You hold the safeguarding accounts at a credit institution. You are responsible for fund segregation — but the deposited funds belong to people you have never spoken to directly.</p>
+        <br>
+        <p><strong>Practical path for card capability:</strong> Apply for EMI licence → operate as IBAN sponsor from day one → partner with an existing scheme principal (e.g. Enfuce or GPS) for card BIN sponsorship while you build volume → apply for scheme principal membership when volume and capital justify it. This mirrors the "Direct scheme participation" proposition — MVP architecture, Phase 3 capability.</p>
+        <br>
+        <p>Your fintech clients either register as your <strong>agents</strong> (PSD2 Article 19) or operate under a separate licence of their own (an interbank/interinstitution arrangement rather than an agent model).</p>
+      </div>
+    </div>
+
+    <div class="exp-flow">
+      <div class="exp-flow-label">Revenue and liability flow — sponsored BaaS model</div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-title">End-customer</div>
+          <div class="flow-step-desc">Opens account / gets card via fintech app. Pays fees to fintech. Never interacts with sponsor directly.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-title">Fintech (agent)</div>
+          <div class="flow-step-desc">Owns UX, branding, KYC. Registered as PSD2 agent of sponsor. Pays per-account and per-transaction fees to sponsor.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-title">Sponsor (EMI)</div>
+          <div class="flow-step-desc">Holds licence and BIN. Issuer of record with Visa/MC. Receives interchange. Shares interchange back to fintech. Carries regulatory liability.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-title">Visa / Mastercard</div>
+          <div class="flow-step-desc">See only the sponsor as issuer. Scheme rules, fines and audits flow to the sponsor, not the fintech.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">5</div>
+          <div class="flow-step-title">Safeguarding bank</div>
+          <div class="flow-step-desc">Holds segregated funds on behalf of the sponsor. Required by EMD2. End-customer funds are protected in insolvency.</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -479,14 +576,14 @@
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
-        <div class="platform-name">RS2 <span class="gen-tag gen-baas">Platform vendor + managed processing</span></div>
-        <div class="platform-type">BankWORKS · issuing + acquiring · Malta</div>
-        <div class="platform-target">Banks, PSPs, ISVs, payment facilitators and ISOs · 30+ European markets via partnership</div>
+        <div class="platform-name">RS2 <span class="gen-tag gen-cloud">EMI + Platform vendor</span></div>
+        <div class="platform-type">BankWORKS · issuing + acquiring + BIN sponsorship · Malta/Germany</div>
+        <div class="platform-target">Banks, PSPs, ISVs, payment facilitators and ISOs · 30+ European markets · fintechs via Beyond by RS2</div>
       </div>
       <div class="verdict-cell vc-q1">
         <div class="vc-label">Q1 — Licence &amp; sponsorship</div>
-        <span class="verdict-badge vb-int">Processing and managed services only</span>
-        <div class="verdict-detail">RS2 describes itself as a provider of payment technology and processing services; public materials do not indicate it holds a licence or scheme membership of its own. In its managed-acquiring arrangement with PXP, the <em>partner</em> is the Visa and Mastercard Principal Member — RS2 supplies the processing.</div>
+        <span class="verdict-badge vb-split">BIN sponsorship confirmed — BaFin EMI + dual-scheme principal</span>
+        <div class="verdict-detail">RS2 Financial Services GmbH holds an EMI licence supervised by BaFin (Germany), and RS2 is a principal member of both Visa and Mastercard. The <strong>Beyond by RS2</strong> platform (launched March 2026) offers a sponsored issuer and acquiring programme, letting fintechs issue cards and acquire merchants without their own banking licence or direct scheme membership.</div>
       </div>
       <div class="verdict-cell vc-q2">
         <div class="vc-label">Q2 — Product coverage</div>
@@ -497,20 +594,20 @@
     <div class="platform-body">
       <div class="body-col">
         <div class="body-col-label">Licence, schemes &amp; model</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>BaFin EMI (Germany) + Visa and Mastercard principal membership</strong> — RS2 Financial Services GmbH meets both conditions for BIN sponsorship. BaFin is one of the more rigorous EEA regulators, lending credibility to enterprise prospects</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Beyond by RS2</strong> (March 2026): sponsored issuer and acquiring programme explicitly allowing fintechs to issue cards and acquire merchants under RS2's regulated stack without their own licence</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Dual issuing-and-acquiring coverage from one platform is genuinely uncommon in this set — most providers do one side well</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Malta-headquartered and publicly listed, which makes financial standing verifiable — a real advantage when your customer's procurement assesses counterparty risk</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">RS2 Smart Processing is the processing subsidiary running BankWORKS as a managed service rather than licensed software</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Partnership model extends reach across 30+ European markets including the UK, DACH, France, Italy, Iberia, the Nordics and Central and Eastern Europe</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Malta-headquartered and publicly listed — financial standing is verifiable; a real advantage when procurement assesses counterparty risk</div></div>
       </div>
       <div class="body-col">
         <div class="body-col-label">Implications for your platform</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>The strongest option where a customer needs acquiring as well as issuing</strong> — relevant to the Marketplace and merchant propositions, where Paynetics is otherwise the only route</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Now a full BIN sponsor as well as a processor.</strong> RS2 covers the full stack: EMI licence, dual-scheme principal membership, issuing processing, and acquiring — in a single contract via Beyond by RS2</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Strongest option where a customer needs both issuing and acquiring</strong> — directly relevant to Marketplace and merchant propositions, alongside Paynetics</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Interchange prediction and scheme fee calculation are exactly the data your GL needs to accrue card economics correctly; most processors expose this poorly</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">No licence means the customer still needs a sponsor or its own membership — same split shape as BPC</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Enterprise and institutional orientation; verify minimum volumes before proposing it to an early-stage EMI</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Enterprise and institutional orientation; verify minimum volumes for the Beyond programme before proposing it to an early-stage EMI</div></div>
       </div>
     </div>
-    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> the most interesting of the four additions, because dual issuing-and-acquiring coverage plus clean interchange and scheme-fee data solves two problems at once — merchant acceptance for your marketplace customers, and accurate card-economics accrual in the ledger. Worth a direct conversation on minimum volumes and whether managed processing can be resold through your platform.</div></div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Fit:</strong> upgraded from "processor only" to a full BIN sponsor with the Beyond by RS2 launch. Now one of the most complete options in the set: dual-scheme principal, BaFin EMI, and dual issuing+acquiring coverage. Particularly relevant for marketplace and merchant-acquiring propositions where a single counterparty covering cards and acceptance has clear operational advantages.</div></div>
   </div>
 
   <!-- ══ PAYMENTOLOGY ══ -->
@@ -814,13 +911,13 @@
         </tr>
         <tr>
           <td>RS2</td>
-          <td><span class="dot" style="background:#7f77dd;"></span>Platform vendor + managed processing</td>
-          <td>None stated — PXP is the Principal Member</td>
-          <td class="no">No — bring your own</td>
+          <td><span class="dot" style="background:#1d9e75;"></span>EMI + Platform vendor + managed processing</td>
+          <td>EMI — BaFin (Germany) · Visa + MC principal member</td>
+          <td class="yes">Yes — via Beyond by RS2 (2026)</td>
           <td class="yes">Yes</td>
           <td class="yes">Yes</td>
           <td class="yes">Yes — managed acquiring</td>
-          <td><strong>Best dual issuing+acquiring option.</strong> Clean interchange and scheme-fee data for the GL.</td>
+          <td><strong>Full-stack option.</strong> BIN sponsor + dual issuing+acquiring. Best for marketplace/merchant propositions.</td>
         </tr>
         <tr>
           <td>Paymentology</td>
@@ -871,15 +968,15 @@
     <div class="takeaway-grid">
       <div>
         <h3>Q1 — Licence &amp; BIN sponsorship verdict</h3>
-        <div class="tk">Seven of fourteen providers hold their own EMI or bank licence and will act as BIN sponsor. Only <strong>Enfuce</strong>, <strong>Paynetics</strong> and <strong>Edenred</strong> combine dual-perimeter EEA+UK licences with principal scheme membership — everyone else is single-scheme, single-perimeter, or both.</div>
-        <div class="tk">Single-scheme sponsorship is the norm, not the exception: Wallester is Visa-only, FinXP and Swan are Mastercard-only. Any customer wanting both schemes needs either Enfuce, Paynetics, or two relationships — which is itself an argument for your abstraction layer.</div>
-        <div class="tk">The processors and platform vendors (Paymentology, BPC, RS2) carry no licence and sponsor nothing, which makes them the cleanest complements: no product overlap, no regulatory entanglement, and the customer keeps the scheme relationship. It also means every customer on them still needs a sponsor, so your adapter must support the split "platform here, sponsorship there" shape.</div>
-        <div class="tk">Marqeta buying TransactPay in 2025 confirms the direction of travel: processors are acquiring EMIs to offer a single contract in Europe. Expect further consolidation and design so that a partner changing shape does not break your customers.</div>
+        <div class="tk">Eight of fourteen providers hold their own EMI or bank licence and will act as BIN sponsor. Only <strong>Enfuce</strong>, <strong>Paynetics</strong> and <strong>Edenred</strong> combine dual-perimeter EEA+UK licences with principal scheme membership — everyone else is single-scheme, single-perimeter, or both. <strong>RS2</strong> now joins as a full sponsor via BaFin EMI and dual Visa+MC membership through its Beyond by RS2 platform.</div>
+        <div class="tk">Single-scheme sponsorship is the norm, not the exception: Wallester is Visa-only, FinXP and Swan are Mastercard-only. Any customer wanting both schemes needs either Enfuce, Paynetics, RS2, or two relationships — which is itself an argument for your abstraction layer.</div>
+        <div class="tk">The pure technology vendors (BPC and Paymentology) carry no licence and sponsor nothing, which makes them the cleanest complements: no product overlap, no regulatory entanglement, and the customer keeps the scheme relationship. Every customer on them still needs a sponsor, so your adapter must support the split "platform here, sponsorship there" shape.</div>
+        <div class="tk">Marqeta buying TransactPay in 2025 and RS2 launching Beyond by RS2 in 2026 both confirm the direction of travel: processors and platform vendors are acquiring or building EMIs to offer a single contract in Europe. Expect further consolidation and design so that a partner changing shape does not break your customers.</div>
       </div>
       <div>
         <h3>Q2 — Product coverage verdict</h3>
         <div class="tk">Business cards are near-universal; <strong>revolving and credit are not</strong>. EMI-only sponsors cannot lend, so "credit" at an EMI is usually deferred debit or a partner-funded facility. Genuine revolving credit requires a bank licence (Solaris) or a funding partner behind the programme.</div>
-        <div class="tk">Issuing and acquiring together is rare. <strong>Paynetics</strong> is the clearest single-counterparty answer; FinXP covers acceptance broadly. Everyone else is issuing-only, so marketplace and merchant propositions will need a second provider.</div>
+        <div class="tk">Issuing and acquiring together is rare. <strong>Paynetics</strong> is the clearest single-counterparty answer for the sponsored EMI segment; <strong>RS2</strong> covers the same ground for customers who prefer a platform vendor with its own licence. FinXP covers acceptance broadly. Everyone else is issuing-only.</div>
         <div class="tk"><strong>Certify two adapters at launch:</strong> one licensed sponsor (Enfuce or Paynetics) and one sponsor-agnostic processor or platform (RS2, or Paymentology where the customer already runs it). That pairing covers both the "bring everything" and the "bring your own sponsor" customer. <strong>Edenred is the third worth adding early</strong>, because its agent model reaches customers who will never hold a licence.</div>
         <div class="tk">Three of the twelve — Swan, Treezor and Solaris — are competitors rather than partners. They sell the whole stack on their own licence. Your counter-positioning is unchanged in every case: the customer keeps its own licence, IBAN range, product control and economics.</div>
       </div>
@@ -898,7 +995,7 @@
     <a href="https://sdk.finance/blog/top-10-card-issuing-platforms-a-comprehensive-comparison-for-fintech-businesses/">Card issuing platform comparison (Paymentology, Solaris)</a> ·
     <a href="https://eps.edenred.com/card-issuing">Edenred Payment Solutions card issuing</a>, <a href="https://eps.edenred.com/blog/what-is-bin-sponsorship">Edenred on BIN sponsorship and the agent model</a>, <a href="https://www.openbankingtracker.com/embedded-finance/edenred-payment-solutions">Edenred licences, scheme membership and in-house processing</a> ·
     <a href="https://financialit.net/news/banking/artea-bank-migrates-bpcs-cloud-native-smartvista-platform-power-mastercard-issuing">BPC SmartVista at Artea Bank (vendor announcement)</a>, <a href="https://www.fintechfutures.com/bankingtech/artea-bank-adopts-bpc-smartvista-platform">FinTech Futures coverage</a> ·
-    <a href="https://www.finopotamus.com/post/rs2-smart-processing-partners-with-pxp-to-deliver-managed-acquiring-services-across-europe">RS2 Smart Processing / PXP managed acquiring across Europe</a>, <a href="https://financemalta.org/business-directory/rs2-software">RS2 Software (FinanceMalta)</a> ·
+    <a href="https://www.businesswire.com/news/home/20260313970444/en/RS2-Launches-Beyond-by-RS2-to-Power-the-Next-Generation-of-European-Fintech">RS2 Beyond by RS2 launch (Business Wire)</a>, <a href="https://www.finextra.com/pressarticle/87789/rs2-granted-emi-licence-in-germany">RS2 granted EMI licence in Germany (Finextra)</a>, <a href="https://tradeinformer.com/tech-news/rs2-launches-beyond-fintech-card-issuing-platform">RS2 Beyond platform detail (Trade Informer)</a>, <a href="https://www.finopotamus.com/post/rs2-smart-processing-partners-with-pxp-to-deliver-managed-acquiring-services-across-europe">RS2 Smart Processing / PXP managed acquiring across Europe</a> ·
     <a href="https://connectpay.com/blog/swan-io-alternatives/">Swan scheme and IBAN coverage</a>, <a href="https://codegotech.com/vs-swan">Swan licence detail</a> ·
     <a href="https://sdk.finance/blog/top-banking-as-a-service-companies/">Treezor ownership and sale negotiations</a> ·
     <a href="https://www.fintechfutures.com/paytech/bank-of-lithuania-revokes-emi-licence-of-payrnet">Bank of Lithuania revokes PayrNet EMI licence</a>, <a href="https://www.finextra.com/newsarticle/42529/lithuania-revokes-licence-of-former-railsr-unit">Finextra coverage</a>.
