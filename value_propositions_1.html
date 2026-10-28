@@ -244,6 +244,7 @@
         <div class="point"><div class="point-dot"></div><div class="point-text">Multi-currency balances on one customer, with FX booking against a configurable rate source</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Holds, authorisations, available vs booked balance, value dating, back-dated corrections</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Statement, audit trail and GL posting per movement — immutable, event-sourced</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Virtual IBAN (vIBAN) pool per customer — assign per debtor, invoice or loan for auto-matched inbound reconciliation; sweep to master account on receipt</div></div>
       </div>
       <div class="body-col">
         <div class="body-col-label">Dependencies &amp; build notes</div>
@@ -367,24 +368,24 @@
         <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Do not build a card processor.</strong> Integrate to issuer-processors and BIN sponsors (see <em>Card Processing Analysis</em>)</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Build a processor-abstraction layer: one internal card API, adapters per processor. Customers arrive with incumbent processor relationships</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">The authorisation path is the only sub-100ms requirement in the whole platform — architect it separately from batch posting</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Credit/revolving cards are a different product (see Game changers) — do not conflate with debit issuing</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Revolving credit line on a card: post-CCD2 option — a revolving limit attached to a card, with minimum payment and interest accrual. Requires a lending entity or partner lender. Ship as a Phase 2 card feature</div></div>
       </div>
     </div>
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: MVP — adapter only.</strong> Ship with two processors integrated at launch, abstracted behind one API. The value proposition is "bring your own processor, we normalise it", not "we are your processor". That is also what keeps you out of PCI scope.</div></div>
   </div>
 
-  <!-- 5 MONEY SEND -->
+  <!-- 5 MONEY SEND & REQUEST -->
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
-        <div class="platform-name">Money Send <span class="gen-tag gen-cloud">MUST</span></div>
-        <div class="platform-type">Payments · Outbound orchestration</div>
-        <div class="platform-target">All segments · SEPA CT, internal, SWIFT, local rails</div>
+        <div class="platform-name">Money Send &amp; Request <span class="gen-tag gen-cloud">MUST</span></div>
+        <div class="platform-type">Payments · Outbound &amp; Inbound initiation</div>
+        <div class="platform-target">All segments · SEPA CT, internal, SWIFT, local rails · P2P, SME, marketplaces</div>
       </div>
       <div class="verdict-cell vc-q1">
         <div class="vc-label">Customer value</div>
         <span class="verdict-badge vb-sep">One API, every rail</span>
-        <div class="verdict-detail">Outbound payment with Verification of Payee across SCT, internal book transfer, SWIFT and local rails, with one API, one status model and one set of exception semantics regardless of which rail carries it.</div>
+        <div class="verdict-detail">Outbound and inbound payment initiation in one module: outbound covers SCT, internal book transfer, SWIFT and local rails with one API and one status model; inbound covers Request-to-Pay, payment links and QR — payee initiates, payer approves, settles over SCT Inst.</div>
       </div>
       <div class="verdict-cell vc-q2">
         <div class="vc-label">Commercial value</div>
@@ -399,6 +400,8 @@
         <div class="point"><div class="point-dot"></div><div class="point-text">Smart routing: pick rail by cost, cut-off, amount, currency, beneficiary reachability</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Verification of Payee on outbound, recall and return handling, R-transaction lifecycle</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Batch and scheduled payments, standing orders, bulk payout files</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">SEPA Request-to-Pay (SRTP) messaging and proprietary in-scheme request for same-platform users</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Payment link and QR generation with expiry, amount lock or payer-entered amount; request states tracked to settling SCT Inst</div></div>
       </div>
       <div class="body-col">
         <div class="body-col-label">Dependencies &amp; build notes</div>
@@ -408,7 +411,7 @@
         <div class="point"><div class="point-dot"></div><div class="point-text">Instant settlement specifics live in the Instant Payments card — same payment object, different rail and different SLA</div></div>
       </div>
     </div>
-    <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: MVP — separate module, separately licensed.</strong> Your Q1 decision is correct and market-validated. Build the rail adapter so a customer can start on a sponsor and migrate to direct T2/TIPS participation without changing the application layer — that migration path is itself a sellable proposition.</div></div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: MVP — separate module, separately licensed.</strong> Outbound and inbound in one module boundary. Build the rail adapter so a customer can start on a sponsor and migrate to direct T2/TIPS participation without changing the application layer. Ship in-scheme requests and payment links in MVP; add full SRTP when reach justifies it. Model the request as a durable, linkable object from day one so Invoicing and BNPL can both attach to it.</div></div>
   </div>
 
   <!-- 6 INSTANT PAYMENTS -->
@@ -416,7 +419,7 @@
     <div class="platform-header">
       <div class="platform-identity">
         <div class="platform-name">Instant Payments <span class="gen-tag gen-cloud">MUST</span></div>
-        <div class="platform-type">Payments · SCT Inst · IPR-mandated</div>
+        <div class="platform-type">Payments · SEPA CT + SCT Inst · IPR-mandated</div>
         <div class="platform-target">Every euro-area PSP — no longer a premium feature, a legal obligation</div>
       </div>
       <div class="verdict-cell vc-q1">
@@ -433,6 +436,7 @@
     <div class="platform-body">
       <div class="body-col">
         <div class="body-col-label">Functional scope</div>
+        <div class="point"><div class="point-dot"></div><div class="point-text"><strong>SEPA Credit Transfer (SCT)</strong> — standard non-instant batch CT underpins the regular payment rail; SCT Inst is the same scheme object at instant speed and 24/7 availability, so both live inside this module</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">SCT Inst send and receive against TIPS or RT1, with ten-second end-to-end SLA and timeout/unknown-outcome handling</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Verification of Payee</strong> as both requester and responder — the responder side is an inbound obligation on the account-holding PSP</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">24/7 operation: no nightly batch window, no end-of-day close that blocks posting, no maintenance outage that stops receipt</div></div>
@@ -447,45 +451,7 @@
         <div class="point"><div class="point-dot"></div><div class="point-text">Legacy cores that cannot run 24/7 are being displaced by exactly this requirement — it is a migration trigger worth tracking in the pipeline</div></div>
       </div>
     </div>
-    <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: MVP — core, inside the Payments module.</strong> Listed separately from Money Send because the obligation and the architecture are different: Money Send is routing, Instant Payments is an always-on, sub-ten-second, VoP-answering commitment that constrains the whole ledger design. Build it first and the rest of the payments estate inherits the discipline; retrofit it and the batch assumptions have to be unpicked everywhere.</div></div>
-  </div>
-
-  <!-- 7 MONEY REQUEST -->
-  <div class="platform">
-    <div class="platform-header">
-      <div class="platform-identity">
-        <div class="platform-name">Money Request <span class="gen-tag gen-cloud">MUST</span></div>
-        <div class="platform-type">Payments · Inbound initiation</div>
-        <div class="platform-target">P2P apps, SME accounts, marketplaces, invoicing flows</div>
-      </div>
-      <div class="verdict-cell vc-q1">
-        <div class="vc-label">Customer value</div>
-        <span class="verdict-badge vb-sep">Pull, not push</span>
-        <div class="verdict-detail">Request-to-Pay, payment links and QR: the payee initiates, the payer approves. Settles over SCT Inst with no card rails, no chargebacks and no interchange.</div>
-      </div>
-      <div class="verdict-cell vc-q2">
-        <div class="vc-label">Commercial value</div>
-        <span class="verdict-badge vb-both">Bridge to merchant revenue</span>
-        <div class="verdict-detail">The feature that turns a consumer wallet into an acceptance product. It is the cheapest route for your customers into merchant monetisation without acquiring.</div>
-      </div>
-    </div>
-    <div class="platform-body">
-      <div class="body-col">
-        <div class="body-col-label">Functional scope</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">SEPA Request-to-Pay (SRTP) messaging, plus a proprietary in-scheme request for same-platform users</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Payment link and QR generation with expiry, amount lock or payer-entered amount</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Request states: pending, accepted, rejected, expired, partially paid — reconciled to the settling SCT Inst</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Splitting: one request to many payers, with per-payer tracking</div></div>
-      </div>
-      <div class="body-col">
-        <div class="body-col-label">Dependencies &amp; build notes</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">SRTP reach in the EEA is still thin — design so the proprietary in-scheme path carries the volume initially</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Open-banking payment initiation (PIS) is the practical fallback for off-platform payers</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Request objects must be first-class and linkable to an invoice (see Invoicing)</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Dispute handling is contractual, not scheme-driven — set expectations in the product</div></div>
-      </div>
-    </div>
-    <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: MVP — basic; Phase 2 — SRTP.</strong> Ship in-scheme requests and payment links in the MVP; add full SRTP when reach justifies it. Model the request as a durable object from day one so Invoicing and BNPL can both attach to it later.</div></div>
+    <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: MVP — core, inside the Payments module.</strong> Listed separately from Money Send &amp; Request because the obligation and the architecture are different: Money Send is routing, Instant Payments is an always-on, sub-ten-second, VoP-answering commitment that constrains the whole ledger design. Build it first and the rest of the payments estate inherits the discipline; retrofit it and the batch assumptions have to be unpicked everywhere.</div></div>
   </div>
 
   <!-- 8 PLATFORM SERVICES -->
@@ -563,7 +529,7 @@
         <div class="point"><div class="point-dot"></div><div class="point-text">Depends entirely on the KYB half of Onboarding — UBO discovery, registry lookups, periodic re-verification</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Retrofitting multi-user onto a single-customer party model is a rewrite. Decide now, not in Phase 2</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Cost centres and VAT codes on transactions are what make the accounting export actually usable</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Natural pairing with Expense management, Invoicing and Light Trade Finance — design them as one commercial bundle</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Natural pairing with Budget management, Invoicing and Light Trade Finance — design them as one commercial bundle</div></div>
       </div>
     </div>
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: MVP — party model; Phase 1 — full feature.</strong> The party and permission model must be multi-user from the first line of code even if the UI ships later. This is the single highest-leverage architectural decision in the document, and the one that is impossible to reverse cheaply.</div></div>
@@ -573,7 +539,7 @@
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
-        <div class="platform-name">Expense management <span class="gen-tag gen-baas">Differentiator</span></div>
+        <div class="platform-name">Budget management <span class="gen-tag gen-baas">Differentiator</span></div>
         <div class="platform-type">Cards · Spend control · Business</div>
         <div class="platform-target">Corporate card programmes, SME neobanks, vertical SaaS</div>
       </div>
@@ -607,49 +573,11 @@
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 2 — licensable module.</strong> High value, moderate build, clean module boundary. Worth noting that some card issuers (Wallester in particular) bundle expense management free with issuing — so position yours as the layer that works across whichever processor the customer already uses.</div></div>
   </div>
 
-  <!-- 11 COLLECTIONS -->
-  <div class="platform">
-    <div class="platform-header">
-      <div class="platform-identity">
-        <div class="platform-name">Collections &amp; reconciliation <span class="gen-tag gen-baas">Differentiator</span></div>
-        <div class="platform-type">Payments · Inbound · Receivables</div>
-        <div class="platform-target">PSPs, marketplaces, lenders, property and legal platforms, any EMI serving B2B</div>
-      </div>
-      <div class="verdict-cell vc-q1">
-        <div class="vc-label">Customer value</div>
-        <span class="verdict-badge vb-sep">Auto-matched money in</span>
-        <div class="verdict-detail">A dedicated virtual IBAN per payer, debtor, loan or invoice, so inbound funds reconcile themselves. Removes the single largest manual operations cost in a payments business.</div>
-      </div>
-      <div class="verdict-cell vc-q2">
-        <div class="vc-label">Commercial value</div>
-        <span class="verdict-badge vb-split">Priced per vIBAN</span>
-        <div class="verdict-detail">Volume-based and sticky: once a customer's debtors are paying into your IBANs, switching cost is enormous. This is the highest-retention proposition on the list.</div>
-      </div>
-    </div>
-    <div class="platform-body">
-      <div class="body-col">
-        <div class="body-col-label">Functional scope</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">vIBAN issuance at scale with a reference model (per debtor, per invoice, per loan, per tenancy)</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Matching engine: IBAN, reference, amount, name fuzzy-match, with a manual exception queue</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">SEPA Direct Debit: mandate management, pre-notification, R-transactions, representment</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Automatic sweep from vIBAN to operating or client-money account, with full audit trail</div></div>
-      </div>
-      <div class="body-col">
-        <div class="body-col-label">Dependencies &amp; build notes</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">vIBAN volume limits and naming rules are set by the sponsor — check before promising scale</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Some sponsors require the vIBAN to be in the end customer's name, others pool — materially different AML treatment</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">The exception queue UI is the product. The matching algorithm is table stakes — and the first place AI earns its keep (see AI usage)</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Direct debit is a credit-risk product, not just a message — model the collection-failure exposure</div></div>
-      </div>
-    </div>
-    <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 1 — licensable module.</strong> This is the proposition with the best ratio of revenue to build effort, and the one that most directly differentiates a fintech-focused core from a bank core. Banks reconcile; fintechs need reconciliation as a product they resell.</div></div>
-  </div>
-
   <!-- 12 DEPOSITS -->
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
-        <div class="platform-name">Deposits &amp; interest <span class="gen-tag gen-baas">Differentiator</span></div>
+        <div class="platform-name">Deposits <span class="gen-tag gen-baas">Differentiator</span></div>
         <div class="platform-type">Accounts · Term · Separate module</div>
         <div class="platform-target">Licensed credit institutions only — not EMIs</div>
       </div>
@@ -756,7 +684,7 @@
         <div class="point"><div class="point-dot"></div><div class="point-text">ViDA was adopted in March 2025; national B2B mandates are already live or scheduled ahead of the EU-wide 2030 deadline (Italy since 2019, France and Spain well advanced)</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Peppol access point: integrate a certified provider rather than becoming one</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Country-specific tax field requirements are the long tail — build an extensible schema</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Depends on Business account, Collections and Money Request</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Depends on Business account and Money Send &amp; Request</div></div>
       </div>
     </div>
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 2 — flagship module.</strong> One of the two strongest game-changers on the list. No analysed core banking vendor sells invoicing. Every EU SME will be compelled into structured e-invoicing by national mandates, and the platform that merges the invoice and the payment into one reconciled object owns the SME relationship.</div></div>
@@ -766,14 +694,14 @@
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
-        <div class="platform-name">Embedded credit — BNPL &amp; revolving <span class="gen-tag gen-legacy">Game changer</span></div>
+        <div class="platform-name">Embedded credit — BNPL <span class="gen-tag gen-legacy">Game changer</span></div>
         <div class="platform-type">Lending · Consumer &amp; SME</div>
         <div class="platform-target">Lenders, merchant platforms, card programmes moving beyond debit</div>
       </div>
       <div class="verdict-cell vc-q1">
         <div class="vc-label">Customer value</div>
         <span class="verdict-badge vb-sep">Revenue, not just float</span>
-        <div class="verdict-detail">Instalments on a card transaction, revolving credit lines, merchant-funded BNPL and SME working capital — originated, scored, serviced and collected inside the same platform.</div>
+        <div class="verdict-detail">Instalments on a card transaction, merchant-funded BNPL and SME working capital — originated, scored, serviced and collected inside the same platform. Revolving credit lines attach to cards as a Phase 2 card feature.</div>
       </div>
       <div class="verdict-cell vc-q2">
         <div class="vc-label">Commercial value</div>
@@ -784,7 +712,7 @@
     <div class="platform-body">
       <div class="body-col">
         <div class="body-col-label">Functional scope</div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Product engine: instalment plans, revolving lines with minimum payment, grace periods, interest and fee accrual</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Product engine: instalment plans, grace periods, interest and fee accrual — BNPL-focused; revolving lines live in the Cards module as a Phase 2 feature</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Origination: creditworthiness assessment workflow, affordability data, decisioning hooks, pre-contractual disclosure</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Servicing: statements, repayment allocation waterfall, restructuring, arrears and collections states, IFRS 9 staging</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">"Split this transaction" — post-purchase instalments triggered from a settled card authorisation</div></div>
@@ -795,6 +723,7 @@
         <div class="point"><div class="point-dot"></div><div class="point-text">Many incumbent BNPL providers are not CCD2-ready — a compliance-native engine is a timing advantage, not just a feature</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">EMIs cannot lend from e-money funds; the module must support a separate funding entity or partner lender</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Credit bureau and open-banking affordability adapters are buy, not build. Note the EU AI Act treats creditworthiness scoring as high-risk — keep the human decision point</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Repayment collection: per-loan vIBAN allocation and SEPA Direct Debit mandate management are the recommended collection path — model arrears and R-transaction handling from day one</div></div>
       </div>
     </div>
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 2 — flagship module, CCD2-native.</strong> Time this to the November 2026 CCD2 application date and market it as compliance-by-construction. This is where your loan management systems background is a genuine moat against Tuum and Mambu, whose lending engines are built for classic instalment loans rather than merchant-embedded credit.</div></div>
@@ -872,7 +801,7 @@
       <div class="body-col">
         <div class="body-col-label">Dependencies &amp; build notes</div>
         <div class="point"><div class="point-dot"></div><div class="point-text"><strong>Requires a third-party funding partner from day one.</strong> Design the module as a marketplace with a partner-agnostic offer API, so a customer can plug in their own funder or insurer rather than yours</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Depends on Invoicing and Collections — the invoice object and the per-invoice vIBAN are what make the advance self-liquidating. Without those this module has no foundation</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Depends on Invoicing — the invoice object and the per-invoice vIBAN are what make the advance self-liquidating. Without Invoicing this module has no foundation</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Receivables assignment, notification and set-off are legally jurisdiction-specific; scope one or two markets first and take local advice rather than generalising</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Where the end borrower is a consumer-adjacent micro-business, consumer credit rules may bite — keep the product strictly B2B</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">The risk to manage is reputational concentration: if the partner funder declines or fails, it is your customer's product that stops working. Contract for a second funder</div></div>
@@ -885,7 +814,7 @@
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
-        <div class="platform-name">Marketplace &amp; split payments <span class="gen-tag gen-legacy">Game changer</span></div>
+        <div class="platform-name">Marketplace <span class="gen-tag gen-legacy">Game changer</span></div>
         <div class="platform-type">Payments · Multi-party · Escrow</div>
         <div class="platform-target">Marketplaces, gig platforms, travel, property, crowdfunding, PSP-adjacent EMIs</div>
       </div>
@@ -913,7 +842,7 @@
         <div class="point"><div class="point-dot"></div><div class="point-text">Client-money segregation rules make escrow legally delicate — the ledger model must satisfy safeguarding audit</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Mass payout needs batch SCT Inst and strong beneficiary management with VoP at scale</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Sellers may be in multiple jurisdictions — tax reporting (DAC7) obligations follow</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Depends on the Business account party model, Onboarding KYB and Collections</div></div>
+        <div class="point"><div class="point-dot"></div><div class="point-text">Depends on the Business account party model and Onboarding KYB</div></div>
       </div>
     </div>
     <div class="insight"><div class="insight-icon">💡</div><div><strong>Scope decision: Phase 3 — vertical module.</strong> Strong proposition, but it changes your sales motion: marketplaces buy payments infrastructure, not core banking. Treat it as a deliberate second market entered once the EMI base is established, and validate with one design-partner marketplace before building.</div></div>
@@ -923,7 +852,7 @@
   <div class="platform">
     <div class="platform-header">
       <div class="platform-identity">
-        <div class="platform-name">Loyalty &amp; card-linked offers <span class="gen-tag gen-legacy">Game changer</span></div>
+        <div class="platform-name">Loyalty <span class="gen-tag gen-legacy">Game changer</span></div>
         <div class="platform-type">Engagement · Merchant-funded</div>
         <div class="platform-target">Consumer wallets, retail co-brands, telco and retailer embedded finance</div>
       </div>
@@ -943,14 +872,12 @@
         <div class="body-col-label">Functional scope</div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Rules engine on the transaction stream: earn by MCC, merchant, amount, frequency, campaign window</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Points ledger as a first-class currency on the same core ledger — earn, burn, expire, transfer</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Card-linked offers: merchant funds the reward, settled post-clearing with reconciliation back to the merchant</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Campaign management and performance reporting for the merchant side</div></div>
       </div>
       <div class="body-col">
         <div class="body-col-label">Dependencies &amp; build notes</div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Requires enriched merchant data (clean names, categories) — raw scheme data is not sufficient; plan for an enrichment provider</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Points as a ledger currency has accounting and, in some jurisdictions, e-money implications — take advice early</div></div>
-        <div class="point"><div class="point-dot"></div><div class="point-text">Needs a merchant-side relationship your EMI customers may not have; consider partnering with an existing CLO network</div></div>
         <div class="point"><div class="point-dot"></div><div class="point-text">Low technical risk, high go-to-market risk</div></div>
       </div>
     </div>
@@ -1051,21 +978,19 @@
         <tr><td>Digital wallet</td><td><span class="dot" style="background:#1d9e75;"></span>MUST</td><td>Low-KYC stored value, alias P2P</td><td>Entry-tier licence</td><td><strong>MVP.</strong> Same ledger as the IBAN Account, different product policy.</td></tr>
         <tr><td>Onboarding &amp; KYC</td><td><span class="dot" style="background:#1d9e75;"></span>MUST</td><td>Minutes to first transaction; KYC, KYB, screening, pKYC</td><td>Per onboarded customer, provider cost passed through</td><td><strong>MVP — own module.</strong> Orchestrate providers. Two deadlines: EUDI Wallet acceptance end-2027, AMLR 10 Jul 2027.</td></tr>
         <tr><td>Cards</td><td><span class="dot" style="background:#1d9e75;"></span>MUST</td><td>Virtual + physical, tokenised spend</td><td>Per active card</td><td><strong>MVP — adapter only.</strong> Two processors at launch behind one API. Never build a processor.</td></tr>
-        <tr><td>Money Send</td><td><span class="dot" style="background:#1d9e75;"></span>MUST</td><td>One API across SCT, internal, SWIFT, local rails</td><td>Separate module, per transaction</td><td><strong>MVP — separate module.</strong> Market-validated by 6 of 8 competitors.</td></tr>
+        <tr><td>Money Send &amp; Request</td><td><span class="dot" style="background:#1d9e75;"></span>MUST</td><td>One API for outbound rails + Request-to-Pay / payment links inbound</td><td>Separate module, per transaction</td><td><strong>MVP — combined module.</strong> Outbound market-validated; inbound Request-to-Pay ships basic in MVP, full SRTP in Phase 2.</td></tr>
         <tr><td>Instant Payments</td><td><span class="dot" style="background:#1d9e75;"></span>MUST</td><td>10 seconds, 24/7/365, VoP both directions</td><td>Compliance — cannot be priced at a premium</td><td><strong>MVP — core.</strong> Forbids a batch ledger. Build first; the estate inherits the discipline.</td></tr>
-        <tr><td>Money Request</td><td><span class="dot" style="background:#1d9e75;"></span>MUST</td><td>Payee-initiated pull, no card rails</td><td>Bundled, bridge to merchant revenue</td><td><strong>MVP basic, Phase 2 SRTP.</strong> Model the request as a durable, linkable object.</td></tr>
         <tr><td>Platform services &amp; security</td><td><span class="dot" style="background:#1d9e75;"></span>MUST</td><td>Party, pricing, GL, reporting + the audited security posture</td><td>Bundled; security is a sales asset</td><td><strong>MVP.</strong> Differentiate on safeguarding-grade reconciliation and DORA-ready transparency.</td></tr>
         <tr><td>Business account</td><td><span class="dot" style="background:#7f77dd;"></span>Differentiator</td><td>Multi-user, roles, approvals, entities</td><td>Premium tier, highest ARPU</td><td><strong>MVP party model, Phase 1 features.</strong> Irreversible architectural decision — decide now.</td></tr>
-        <tr><td>Expense management</td><td><span class="dot" style="background:#7f77dd;"></span>Differentiator</td><td>Budgets and policy at authorisation</td><td>Per spending seat</td><td><strong>Phase 2 module.</strong> Position as processor-agnostic; issuers bundle their own.</td></tr>
-        <tr><td>Collections &amp; reconciliation</td><td><span class="dot" style="background:#7f77dd;"></span>Differentiator</td><td>vIBAN per debtor, auto-matching</td><td>Per vIBAN, volume-based</td><td><strong>Phase 1 module.</strong> Best revenue-to-effort ratio and highest switching cost on the list.</td></tr>
-        <tr><td>Deposits &amp; interest</td><td><span class="dot" style="background:#7f77dd;"></span>Differentiator</td><td>Term, notice, savings with DGS</td><td>Separate licence — banks only</td><td><strong>Phase 2 separate module.</strong> The EMI licensing argument no competitor uses.</td></tr>
+        <tr><td>Budget management</td><td><span class="dot" style="background:#7f77dd;"></span>Differentiator</td><td>Budgets and policy at authorisation</td><td>Per spending seat</td><td><strong>Phase 2 module.</strong> Position as processor-agnostic; issuers bundle their own.</td></tr>
+        <tr><td>Deposits</td><td><span class="dot" style="background:#7f77dd;"></span>Differentiator</td><td>Term, notice, savings with DGS</td><td>Separate licence — banks only</td><td><strong>Phase 2 separate module.</strong> The EMI licensing argument no competitor uses.</td></tr>
         <tr><td>AI usage</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Migration, QA/test, reconciliation, fraud &amp; AML</td><td>Delivery margin + premium module</td><td><strong>Phase 1 internal (migration, QA), Phase 2 external (recon, fraud).</strong> Human decision point mandatory.</td></tr>
         <tr><td>Invoicing &amp; e-invoicing</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Invoice, payment and ledger as one object</td><td>New budget: business software</td><td><strong>Phase 2 flagship.</strong> National ViDA mandates create compelled demand. No core vendor offers it.</td></tr>
-        <tr><td>Embedded credit (BNPL / revolving)</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Instalments and credit lines in-platform</td><td>Premium module pricing</td><td><strong>Phase 2 flagship, CCD2-native.</strong> Time to 20 Nov 2026. Plays to your LMS expertise.</td></tr>
+        <tr><td>Embedded credit (BNPL)</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Instalments and merchant BNPL in-platform; revolving lines in Cards</td><td>Premium module pricing</td><td><strong>Phase 2 flagship, CCD2-native.</strong> Time to 20 Nov 2026. Plays to your LMS expertise.</td></tr>
         <tr><td>FX &amp; Remittance</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Corridor routing, locked rates, multi-method payout</td><td>FX spread — revenue scales with volume</td><td><strong>Phase 2 module, partner-executed.</strong> Own the margin engine, routing and treasury view.</td></tr>
         <tr><td>Light Trade Finance</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Invoice and PO finance inside the business account</td><td>Referral / revenue share — no balance sheet</td><td><strong>Phase 3, third-party funded.</strong> Needs Invoicing + Collections first. LCs and guarantees explicitly out of scope.</td></tr>
-        <tr><td>Marketplace &amp; split payments</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Escrow, split, mass payout, seller KYB</td><td>Opens a second vertical</td><td><strong>Phase 3 vertical module.</strong> Different sales motion — validate with a design partner first.</td></tr>
-        <tr><td>Loyalty &amp; card-linked offers</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Merchant-funded rewards on spend</td><td>Third-party funded revenue</td><td><strong>Phase 3, partner-led.</strong> Build the points ledger early; buy the offers network.</td></tr>
+        <tr><td>Marketplace</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Escrow, split, mass payout, seller KYB</td><td>Opens a second vertical</td><td><strong>Phase 3 vertical module.</strong> Different sales motion — validate with a design partner first.</td></tr>
+        <tr><td>Loyalty</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Merchant-funded rewards on spend</td><td>Third-party funded revenue</td><td><strong>Phase 3, partner-led.</strong> Build the points ledger early; buy the offers network.</td></tr>
         <tr><td>Stablecoin &amp; digital assets</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>24/7 cross-border settlement</td><td>Premium, narrow segment</td><td><strong>Phase 3 optional.</strong> Multi-asset ledger in the MVP; never custody keys.</td></tr>
         <tr><td>Direct scheme participation</td><td><span class="dot" style="background:#ba7517;"></span>Game changer</td><td>Sponsor-free T2 / TIPS / RT1 / STEP2</td><td>Retention, not new revenue</td><td><strong>MVP architecture, Phase 3 capability.</strong> The most defensible long-term position available.</td></tr>
       </tbody>
@@ -1079,7 +1004,7 @@
         <h3>Strategic direction</h3>
         <div class="tk"><strong>Bank-in-a-box, above the ledger.</strong> Every analysed vendor has a competent ledger. None sells onboarding orchestration, invoicing, receivables automation, FX margin management, trade finance, merchant-funded loyalty or AI-assisted migration as core banking modules. That is the whole opportunity.</div>
         <div class="tk"><strong>Five architectural commitments must be made before the first module ships:</strong> multi-user party model, multi-asset ledger, processor abstraction for cards, rail abstraction for payments, and a 24/7 non-batch ledger. Each is cheap now and a rewrite later.</div>
-        <div class="tk"><strong>Sell the lifecycle, not the platform.</strong> Wallet → IBAN Account → Payments → Collections → Credit → Deposits, and sponsored access → direct scheme participation. Each step is a priced module and a reason not to leave.</div>
+        <div class="tk"><strong>Sell the lifecycle, not the platform.</strong> Wallet → IBAN Account → Payments → Credit → Deposits, and sponsored access → direct scheme participation. Each step is a priced module and a reason not to leave.</div>
         <div class="tk"><strong>Regulation sets the release calendar.</strong> Instant Payments reachability is already mandatory; CCD2 applies 20 Nov 2026; the EUDI Wallet must be offered by member states by end-2026 and accepted by relying parties by end-2027; the AMLR applies 10 Jul 2027; PSD3/PSR is expected in H2 2026 with roughly a 21-month clock, and it repeals both PSD2 and the E-Money Directive.</div>
       </div>
       <div>
