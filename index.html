@@ -1586,6 +1586,12 @@
       <div class="analysis-card-desc">MiCA CASP and MiFID II providers for the investing proposition — licences, contracting models and who faces the end client</div>
       <div class="analysis-card-cta">Read Analysis ↗</div>
     </a>
+    <a class="analysis-card" href="treasury_providers_analysis.html" target="_blank">
+      <div class="analysis-card-icon">🏦</div>
+      <div class="analysis-card-title">EMI Light Treasury Providers</div>
+      <div class="analysis-card-desc">Safeguarding, the float, FX exposure and reconciliation — 15 providers and routes scoped to an EMI, not to a bank balance sheet</div>
+      <div class="analysis-card-cta">Read Analysis ↗</div>
+    </a>
     <a class="analysis-card" href="phase_approach.html" target="_blank">
       <div class="analysis-card-icon">📈</div>
       <div class="analysis-card-title">Phase Approach</div>
@@ -1664,10 +1670,10 @@
       <div class="card-tag">card-service-boundaries</div>
     </div>
 
-    <div class="module-card module-card--phase1" style="--card-accent:#0f766e;--icon-bg:#e6f6f3;">
+    <div class="module-card module-card--phase1" style="--card-accent:#0f766e;--icon-bg:#e6f6f3;" data-module="treasury">
       <div class="card-icon">🏛️</div>
       <div class="card-title">Treasury integration</div>
-      <div class="card-desc">Currency positions, liquidity and pre-funding at partners, FX exposure limits and safeguarding reconciliation · Integration with external SaaS treasury solution</div>
+      <div class="card-desc">Open FX position, liquidity, FX exposure limits and the safeguarding position &middot; Integration with an external SaaS treasury solution, or built internally</div>
       <div class="card-tag">treasury-service-boundaries</div>
     </div>
 
@@ -3382,6 +3388,7 @@ function relDateFmt(offsetDays) {
 }
 
 function buildSectionContent(mod, section, title) {
+
   // Generate context-aware mock content based on section
   const tables = {
     organisation: {
@@ -3801,6 +3808,23 @@ const artifactData = {
         meta: 'Entity-relationship diagram for the Loyalty service domain (v3)',
         badge: 'bg-data', label: 'Data Model',
         url: 'https://dbdiagram.io/d/loyalty-service-v3-691c50ed6735e111705bca30' },
+    ]
+  },
+  treasury: {
+    icon: '🏛️', title: 'Treasury integration', service: 'treasury-service-boundaries',
+    items: [
+      { icon: '📄', name: 'Multi-currency Account & Currency Exchange',
+        meta: 'Proof of concept for the move to microservices — account setup, exchange scenarios, booking, open position, closing, reconciliation and FX revaluation',
+        badge: 'bg-doc', label: 'Document',
+        url: 'multicurrency_fx_microservice_draft.html' },
+      { icon: '🔁', name: 'FX Flow',
+        meta: 'The exchange flow end to end — customer trade execution through FX integration, accounts, GL bookings and treasury',
+        badge: 'bg-arch', label: 'Process',
+        url: 'fx_flow.svg' },
+      { icon: '🏗️', name: 'FX Architecture',
+        meta: 'Target architecture for the FX capability — services, integrations and the boundaries between them',
+        badge: 'bg-arch', label: 'Architecture',
+        url: 'fx_architecture.svg' },
     ]
   },
   accounting: {
