@@ -3784,9 +3784,13 @@ const artifactData = {
     ]
   },
   accounts: {
-    icon: '🏦', title: 'Accounts', service: 'accounts-service-boundaries',
+    icon: '🏦', title: 'Accounts & Deposits', service: 'accounts-deposits-service-boundaries',
     items: [
-      { icon: '🏗️', name: 'Accounts vs Deposits — Context Boundaries',
+      { icon: '🏗️', name: 'Accounts & Deposits — Merged Context Boundary',
+        meta: 'One service, product-configured: setup, on-line and background operations with table ownership, enum reference and the tables and fields of the merged model',
+        badge: 'bg-arch', label: 'Architecture',
+        url: 'https://claude.ai/artifact/Jn5JGWEHLB8Mae4NL6qMLu' },
+      { icon: '🏗️', name: 'Accounts & Deposits split model',
         meta: 'Architecture analysis: why Accounts (transaction/current/overdraft) and Deposits (term/fixed) are two separate bounded contexts',
         badge: 'bg-arch', label: 'Architecture',
         url: 'accounts_deposits_context_boundaries.html' },
@@ -3795,7 +3799,7 @@ const artifactData = {
   deposits: {
     icon: '💰', title: 'Deposits', service: 'deposits-service-boundaries',
     items: [
-      { icon: '🏗️', name: 'Accounts vs Deposits — Context Boundaries',
+      { icon: '🏗️', name: 'Accounts & Deposits split model',
         meta: 'Architecture analysis: why Accounts (transaction/current/overdraft) and Deposits (term/fixed) are two separate bounded contexts',
         badge: 'bg-arch', label: 'Architecture',
         url: 'accounts_deposits_context_boundaries.html' },

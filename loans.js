@@ -2523,59 +2523,10 @@ function renderLoansContent(containerId, mod, section, title, subtitle) {
     return;
   }
 
-  // ── ACCOUNT/DEPOSIT PRODUCT DEFINITION (list) ─────────────────────────────
+  // ── ACCOUNT/DEPOSIT PRODUCT DEFINITION (list) — see accProdRenderList ─────
   if (section === 'accprod' || section === 'depprod') {
-    const isDeposit = section === 'depprod';
-    const apRows = isDeposit ? [
-      { id:5, code:'TD-12M-EUR',   name:'Term Deposit 12 Months EUR',  category:'Term Deposit',   status:'ACTIVE',  created:'10.01.2026' },
-      { id:4, code:'TD-24M-EUR',   name:'Term Deposit 24 Months EUR',  category:'Term Deposit',   status:'ACTIVE',  created:'10.01.2026' },
-      { id:3, code:'FD-STD-EUR',   name:'Fixed Deposit Standard EUR',  category:'Fixed Deposit',  status:'ACTIVE',  created:'05.01.2026' },
-      { id:2, code:'FD-PREM-EUR',  name:'Fixed Deposit Premium EUR',   category:'Fixed Deposit',  status:'ACTIVE',  created:'05.01.2026' },
-      { id:1, code:'TD-6M-EUR',    name:'Term Deposit 6 Months EUR',   category:'Term Deposit',   status:'PENDING', created:'15.12.2025' },
-    ] : [
-      { id:6, code:'CA-STD-001',   name:'Standard Current Account EUR', category:'Current Account', status:'ACTIVE',  created:'15.01.2026' },
-      { id:5, code:'CA-PREM-001',  name:'Premium Current Account EUR',  category:'Current Account', status:'ACTIVE',  created:'15.01.2026' },
-      { id:4, code:'SA-STD-001',   name:'Standard Savings Account EUR', category:'Savings Account', status:'ACTIVE',  created:'10.01.2026' },
-      { id:3, code:'SA-YOUTH-001', name:'Youth Savings Account EUR',    category:'Savings Account', status:'ACTIVE',  created:'10.01.2026' },
-      { id:2, code:'OD-STD-001',   name:'Overdraft Facility Standard',  category:'Overdraft',       status:'ACTIVE',  created:'05.01.2026' },
-      { id:1, code:'CA-BIZ-001',   name:'Business Current Account EUR', category:'Current Account', status:'PENDING', created:'15.12.2025' },
-    ];
-    const apLabel = isDeposit ? 'Deposit' : 'Account';
-    const statusCls = s => ({ ACTIVE:'lp-status-active', PENDING:'lp-status-pending', CLOSED:'lp-status-inactive' })[s] || 'lp-status-pending';
-    const rowsHtml = apRows.map(r => `
-      <tr>
-        <td>${r.id}</td>
-        <td style="font-family:monospace;font-size:12px">${r.code}</td>
-        <td>${r.name}</td>
-        <td>${r.category}</td>
-        <td><span class="${statusCls(r.status)}">${r.status}</span></td>
-        <td>${r.created}</td>
-        <td>
-          <div class="fee-actions">
-            <button class="fee-btn-edit"
-              data-action="open-acc-product-form"
-              data-module="${mod}" data-section="${section}"
-              data-id="${r.id}" data-code="${r.code}" data-name="${r.name}"
-              data-category="${r.category}" data-status="${r.status}">
-              ${_I_PENCIL_12} Edit
-            </button>
-            <button class="fee-btn-delete" style="background:#fde8e8;color:#c0392b;border-color:#f5b7b1;">
-              ${_I_BIN_12} Delete
-            </button>
-          </div>
-        </td>
-      </tr>`).join('');
-    return `
-      <div class="fee-page-header">
-        <div>
-          <div class="fee-page-title">${apLabel} Product Definitions</div>
-          <div class="fee-page-sub">Manage ${apLabel.toLowerCase()} product templates and parameters</div>
-        </div>
-        <button class="btn-create-fee" data-action="open-acc-product-form" data-module="${mod}" data-section="${section}">
-          ${_I_PLUS_14} + Add ${apLabel} Product
-        </button>
-      </div>
-      ${renderTable(['ID','Code','Name','Category','Status','Created At','Actions'], rowsHtml, apRows.length, {wrapStyle:'margin-top:0;'})}`;
+    accProdRenderList(containerId, mod, section);
+    return;
   }
 
   // ── ACC/DEP JOB MANUAL RUN ────────────────────────────────────────────────
@@ -4515,598 +4466,878 @@ function openLoanProductForm(mod, data) {
 }
 
 // ── ACCOUNT/DEPOSIT PRODUCT FORM ──────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// ACCOUNT / DEPOSIT PRODUCT DEFINITION — merged Accounts & Deposits model
+// One catalog (products) with account_type as discriminator:
+//   COMMON group  — every account type
+//   ACC group     — current · savings
+//   DEP group     — term_deposit
+// Currency-specific rates, limits and fees live on product_currencies,
+// with an optional rate chart (product_currency_interest_tiers) and
+// fee mapping (product_currency_fees → Shared fee_definitions).
+// ══════════════════════════════════════════════════════════════════════════════
+
+const AP_ENUM = {
+  account_type:        [['current','Current account'],['savings','Savings account'],['term_deposit','Term deposit']],
+  lifecycle_status:    [['pending','Pending'],['active','Active'],['inactive','Inactive']],
+  initial_account_state:[['pending','Pending'],['active','Active']],
+  day_count_convention:[['act_365','Actual/365'],['act_360','Actual/360'],['act_act','Actual/Actual'],['thirty_360','30/360']],
+  frequency:           [['daily','Daily'],['weekly','Weekly'],['monthly','Monthly'],['quarterly','Quarterly'],['half_yearly','Half-yearly'],['annually','Annually'],['at_maturity','At maturity']],
+  interest_timing:     [['end_of_period','End of period'],['beginning_of_period','Beginning of period']],
+  accounting_method:   [['accrual','Accrual'],['cash','Cash']],
+  rounding_mode:       [['half_up','Half up'],['half_down','Half down'],['half_even','Half even (banker’s)'],['up','Up'],['down','Down']],
+  non_working_day_adjustment:[['no_adjustment','No adjustment'],['next_working_day','Next working day'],['previous_working_day','Previous working day']],
+  statement_frequency: [['none','None'],['daily','Daily'],['weekly','Weekly'],['monthly','Monthly'],['quarterly','Quarterly'],['half_yearly','Half-yearly'],['annually','Annually'],['on_demand','On demand']],
+  renewal_type:        [['none','None'],['principal_only','Principal only'],['principal_and_interest','Principal and interest'],['manual','Manual instruction']],
+  interest_rate_type:  [['fixed','Fixed'],['variable','Variable']],
+  tier_treatment:      [['whole_balance','Whole balance'],['banded','Banded']],
+  customer_type:       [['individual','Individual'],['sme','SME'],['corporate','Corporate']],
+};
+const AP_LBL = (en, v) => { const r = (AP_ENUM[en] || []).find(x => x[0] === v); return r ? r[1] : (v || '—'); };
+
+// ── Reference data read from other services (mock) ──────────────────────────
+const AP_REF = {
+  categories: [
+    { id:1, name:'Retail current accounts' }, { id:2, name:'Business current accounts' },
+    { id:3, name:'Savings accounts' },        { id:4, name:'Term deposits' },
+  ],
+  currencies: ['EUR','USD','GBP','CHF'],                                   // Shared · currency_definitions
+  rates: [                                                                 // Shared · interest_rate_definitions
+    { id:1, name:'EURIBOR 3M' }, { id:2, name:'EURIBOR 6M' }, { id:3, name:'EURIBOR 12M' },
+    { id:4, name:'ECB deposit facility rate' }, { id:5, name:'SOFR' }, { id:6, name:'SONIA' },
+    { id:7, name:'Board rate — savings' },
+  ],
+  taxes: [                                                                 // this service · tax_definitions
+    { id:1, code:'WHT-INT-12', name:'Interest withholding tax 12%', event:'on_capitalisation', rate:12 },
+    { id:2, code:'WHT-INT-25', name:'Interest withholding tax 25% (non-resident)', event:'on_payout', rate:25 },
+  ],
+  penalties: [                                                             // this service · deposit_penalty_definitions
+    { id:1, name:'Break cost — 50% of accrued interest', base:'accrued_interest', rate:50 },
+    { id:2, name:'Break cost — 1% of withdrawn amount',  base:'withdrawn_amount', rate:1 },
+    { id:3, name:'Clawback of all paid interest',        base:'paid_interest',    rate:100 },
+  ],
+  fees: [                                                                  // Shared · fee_definitions
+    { id:1,  code:'ACC-MAINT-EUR',  name:'Monthly account maintenance', ccy:'EUR', scope:'account', trigger:'periodic',    method:'fixed',      value:'3.00' },
+    { id:2,  code:'ACC-MAINT-USD',  name:'Monthly account maintenance', ccy:'USD', scope:'account', trigger:'periodic',    method:'fixed',      value:'4.00' },
+    { id:3,  code:'ACC-MAINT-GBP',  name:'Monthly account maintenance', ccy:'GBP', scope:'account', trigger:'periodic',    method:'fixed',      value:'3.00' },
+    { id:4,  code:'ACC-STMT-EUR',   name:'Paper statement',             ccy:'EUR', scope:'account', trigger:'event_based', method:'fixed',      value:'2.00' },
+    { id:5,  code:'ACC-ODARR-EUR',  name:'Overdraft arrangement',       ccy:'EUR', scope:'account', trigger:'up_front',    method:'percentage', value:'0.50%' },
+    { id:6,  code:'ACC-CLOSE-EUR',  name:'Account closure',             ccy:'EUR', scope:'account', trigger:'event_based', method:'fixed',      value:'5.00' },
+    { id:7,  code:'SAV-XWDR-EUR',   name:'Withdrawal above 3 per month',ccy:'EUR', scope:'account', trigger:'event_based', method:'fixed',      value:'1.50' },
+    { id:8,  code:'DEP-CERT-EUR',   name:'Deposit certificate',         ccy:'EUR', scope:'deposit', trigger:'event_based', method:'fixed',      value:'10.00' },
+    { id:9,  code:'DEP-BREAK-EUR',  name:'Early termination handling',  ccy:'EUR', scope:'deposit', trigger:'event_based', method:'fixed',      value:'15.00' },
+    { id:10, code:'DEP-BREAK-USD',  name:'Early termination handling',  ccy:'USD', scope:'deposit', trigger:'event_based', method:'fixed',      value:'15.00' },
+  ],
+};
+
+// ── Product catalog (mock, session-persistent) ──────────────────────────────
+function apSeedProducts() {
+  const ccy = (o) => Object.assign({
+    creditType:'fixed', creditRate:'', creditRefId:'', creditMargin:'', hasChart:false, tierTreatment:'whole_balance', tiers:[],
+    debitType:'fixed', debitRate:'', debitRefId:'', debitMargin:'',
+    minOpening:'', minBalance:'', maxBalance:'', defDeposit:'', maxOverdraft:'', minTerm:'', maxTerm:'', defTerm:'',
+    validFrom:'2026-01-01', validTo:'', status:'active', fees:[]
+  }, o);
+  const base = (o) => Object.assign({
+    categoryId:1, initialState:'pending', jointAllowed:true, validFrom:'2026-01-01', validTo:'', status:'active', description:'',
+    customerTypes:['individual'],
+    interestBearing:true, calcMethod:'act_365', calcFreq:'daily', accrualPostFreq:'daily', capFreq:'monthly', interestTiming:'end_of_period',
+    accountingMethod:'accrual', rounding:'half_up', nwdAdj:'no_adjustment', whtApplicable:false, taxDefId:'', dgsEligible:true,
+    acc:{ useMinPeriodBalance:false, overdraftAllowed:false, debitInterest:false, ibanRequired:true, statementFreq:'monthly', dormancyDays:'730', closureNoticeDays:'30' },
+    dep:{ minTerm:'', maxTerm:'', defTerm:'', renewalAllowed:false, renewalType:'none', partialWithdrawal:false, earlyWithdrawal:false, penaltyId:'' },
+    audit:{ createdAt:'15.01.2026 09:12', createdBy:'m.horvat', updatedAt:'02.11.2026 14:40', updatedBy:'s.stanic' },
+  }, o);
+  const dep = (o) => Object.assign({ minTerm:'', maxTerm:'', defTerm:'', renewalAllowed:false, renewalType:'none', partialWithdrawal:false, earlyWithdrawal:false, penaltyId:'' }, o);
+  const acc = (o) => Object.assign({ useMinPeriodBalance:false, overdraftAllowed:false, debitInterest:false, ibanRequired:true, statementFreq:'monthly', dormancyDays:'730', closureNoticeDays:'30' }, o);
+  const tdTiers = (r) => {   // amount band × tenor band → rate
+    const amt = [[0,25000],[25000,100000],[100000,null]];
+    const ten = [[30,90],[91,180],[181,365],[366,730]];
+    const out = []; let k = 1;
+    ten.forEach((t, ti) => amt.forEach((a, ai) => out.push({ order:k++, from:String(a[0]), to:a[1]==null?'':String(a[1]), fromTerm:String(t[0]), toTerm:String(t[1]), rate:(r + ti*0.35 + ai*0.10).toFixed(2), margin:'' })));
+    return out;
+  };
+  return [
+    base({ id:1, code:'CA-STD-001', name:'Standard Current Account', accountType:'current', categoryId:1, interestBearing:false, capFreq:'',
+      acc:acc({ overdraftAllowed:true, debitInterest:true }),
+      currencies:[ ccy({ currency:'EUR', debitRate:'9.50', minOpening:'0.00', minBalance:'0.00', maxOverdraft:'5000.00', fees:[1,4,5,6] }) ] }),
+    base({ id:2, code:'CA-PREM-001', name:'Premium Current Account', accountType:'current', categoryId:1,
+      acc:acc({ overdraftAllowed:true, debitInterest:true, statementFreq:'on_demand' }),
+      currencies:[ ccy({ currency:'EUR', creditRate:'0.10', debitRate:'7.90', minOpening:'500.00', minBalance:'0.00', maxOverdraft:'15000.00', fees:[1,5] }),
+                   ccy({ currency:'USD', creditRate:'0.05', minOpening:'500.00', minBalance:'0.00', fees:[2] }) ] }),
+    base({ id:3, code:'CA-BIZ-001', name:'Business Current Account', accountType:'current', categoryId:2, status:'pending', customerTypes:['sme','corporate'],
+      interestBearing:false, capFreq:'', dgsEligible:true,
+      acc:acc({ overdraftAllowed:true, debitInterest:true, closureNoticeDays:'60' }),
+      currencies:[ ccy({ currency:'EUR', debitType:'variable', debitRefId:'1', debitMargin:'4.50', minOpening:'0.00', maxOverdraft:'50000.00', fees:[1,5,6] }),
+                   ccy({ currency:'USD', debitRate:'10.50', minOpening:'0.00', maxOverdraft:'20000.00', fees:[2], status:'pending' }),
+                   ccy({ currency:'GBP', debitRate:'10.00', minOpening:'0.00', maxOverdraft:'15000.00', fees:[3], status:'pending' }) ] }),
+    base({ id:4, code:'SA-STD-001', name:'Standard Savings Account', accountType:'savings', categoryId:3, whtApplicable:true, taxDefId:'1',
+      acc:acc({ useMinPeriodBalance:true, statementFreq:'quarterly' }), capFreq:'quarterly',
+      currencies:[ ccy({ currency:'EUR', hasChart:true, tierTreatment:'whole_balance', minOpening:'50.00', minBalance:'10.00', maxBalance:'500000.00', fees:[7],
+        tiers:[ {order:1,from:'0',to:'10000',fromTerm:'',toTerm:'',rate:'1.00',margin:''},
+                {order:2,from:'10000',to:'50000',fromTerm:'',toTerm:'',rate:'1.50',margin:''},
+                {order:3,from:'50000',to:'',fromTerm:'',toTerm:'',rate:'2.00',margin:''} ] }) ] }),
+    base({ id:5, code:'SA-YOUTH-001', name:'Youth Savings Account', accountType:'savings', categoryId:3, jointAllowed:false, whtApplicable:true, taxDefId:'1', capFreq:'monthly',
+      acc:acc({ statementFreq:'monthly', dormancyDays:'1095' }),
+      currencies:[ ccy({ currency:'EUR', creditRate:'2.50', minOpening:'10.00', minBalance:'0.00', maxBalance:'20000.00' }) ] }),
+    base({ id:6, code:'SA-FLEX-EUR', name:'Flexible Savings — EURIBOR linked', accountType:'savings', categoryId:3, whtApplicable:true, taxDefId:'1', capFreq:'monthly',
+      acc:acc({ statementFreq:'monthly' }),
+      currencies:[ ccy({ currency:'EUR', creditType:'variable', creditRefId:'1', creditMargin:'-0.75', hasChart:true, tierTreatment:'banded', minOpening:'1000.00', fees:[7],
+        tiers:[ {order:1,from:'0',to:'25000',fromTerm:'',toTerm:'',rate:'',margin:'-0.75'},
+                {order:2,from:'25000',to:'',fromTerm:'',toTerm:'',rate:'',margin:'-0.40'} ] }) ] }),
+    base({ id:7, code:'TD-STD-001', name:'Standard Term Deposit', accountType:'term_deposit', categoryId:4, whtApplicable:true, taxDefId:'1', capFreq:'at_maturity', accrualPostFreq:'monthly',
+      dep:dep({ minTerm:'30', maxTerm:'730', defTerm:'365', renewalAllowed:true, renewalType:'principal_and_interest', earlyWithdrawal:true, penaltyId:'1' }),
+      currencies:[ ccy({ currency:'EUR', hasChart:true, tierTreatment:'whole_balance', minOpening:'1000.00', defDeposit:'10000.00', fees:[8,9], tiers:tdTiers(1.20) }),
+                   ccy({ currency:'USD', creditRate:'3.10', minOpening:'2000.00', defDeposit:'10000.00', minTerm:'90', maxTerm:'365', defTerm:'180', fees:[10] }) ] }),
+    base({ id:8, code:'TD-PREM-24M', name:'Premium 24-month Deposit', accountType:'term_deposit', categoryId:4, status:'pending', whtApplicable:true, taxDefId:'1', capFreq:'annually', accrualPostFreq:'monthly',
+      dep:dep({ minTerm:'730', maxTerm:'730', defTerm:'730', renewalAllowed:true, renewalType:'principal_only', partialWithdrawal:false, earlyWithdrawal:true, penaltyId:'3' }),
+      currencies:[ ccy({ currency:'EUR', creditRate:'2.60', minOpening:'25000.00', defDeposit:'50000.00', status:'pending', fees:[8] }) ] }),
+  ];
+}
+function apProducts() { if (!window._apProducts) window._apProducts = apSeedProducts(); return window._apProducts; }
+
+// ── Small helpers ───────────────────────────────────────────────────────────
+const apEsc  = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const apAmt  = v => (v === '' || v == null) ? '—' : Number(v).toLocaleString('en-GB', { minimumFractionDigits:2, maximumFractionDigits:2 });
+const apPct  = v => (v === '' || v == null) ? '—' : Number(v).toFixed(2) + '%';
+const apDate = v => { if (!v) return '—'; const p = String(v).split('-'); return p.length === 3 ? p[2] + '.' + p[1] + '.' + p[0] : v; };
+const apOpts = (en, cur, blank) => (blank ? `<option value="">${blank}</option>` : '') + (AP_ENUM[en] || []).map(([v,l]) => `<option value="${v}" ${String(cur)===v?'selected':''}>${l}</option>`).join('');
+const apRateName = id => { const r = AP_REF.rates.find(x => String(x.id) === String(id)); return r ? r.name : '—'; };
+const apIsTD = p => p.accountType === 'term_deposit';
+
+function apInjectCss() {
+  if (document.getElementById('ap-css')) return;
+  const st = document.createElement('style'); st.id = 'ap-css';
+  st.textContent = `
+  .ap-filter { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 14px; }
+  .ap-filter button { border:1px solid var(--border); background:#fff; color:var(--text-main); border-radius:20px; padding:6px 14px; font-size:12.5px; font-weight:500; cursor:pointer; font-family:inherit; }
+  .ap-filter button.on { background:#6c3fc5; border-color:#6c3fc5; color:#fff; }
+  .ap-filter .ap-n { opacity:.7; margin-left:4px; font-variant-numeric:tabular-nums; }
+  .ap-type { display:inline-block; font-size:11px; font-weight:600; padding:2px 9px; border-radius:20px; white-space:nowrap; }
+  .ap-type.current { background:#e6f1fb; color:#0c447c; }
+  .ap-type.savings { background:#e1f5ee; color:#085041; }
+  .ap-type.term_deposit { background:#eeedfe; color:#3f3a7a; }
+  .ap-st { display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:2px 9px; border-radius:20px; border:1px solid; }
+  .ap-st.active { color:#15803d; border-color:#86efac; background:#f0fdf4; }
+  .ap-st.pending { color:#c2410c; border-color:#fed7aa; background:#fff7ed; }
+  .ap-st.inactive { color:#64748b; border-color:#cbd5e1; background:#f8fafc; }
+  .ap-ccy { display:inline-block; font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600; padding:1px 6px; border-radius:4px; background:#f0f4fa; color:#3a5272; margin:0 3px 2px 0; }
+  .ap-mono { font-family:ui-monospace,Menlo,monospace; font-size:12px; }
+  .ap-muted { color:var(--text-muted); }
+  .ap-grp { display:inline-block; font-size:9.5px; font-weight:700; letter-spacing:.06em; padding:1px 6px; border-radius:4px; margin-right:8px; vertical-align:1px; }
+  .ap-grp.c { background:#e8e6df; color:#3a3a38; } .ap-grp.a { background:#e6f1fb; color:#0c447c; } .ap-grp.d { background:#faeeda; color:#854f0b; }
+  .ap-sec-title { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+  .ap-sec-title .fee-form-section-title { margin-bottom:0; }
+  .ap-sec-note { font-size:11.5px; color:var(--text-muted); }
+  .ap-types { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
+  .ap-types label { border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; display:flex; gap:10px; align-items:flex-start; background:#fff; }
+  .ap-types label.on { border-color:#6c3fc5; background:#f7f3ff; }
+  .ap-types input { margin-top:3px; accent-color:#6c3fc5; }
+  .ap-types b { display:block; font-size:13px; color:var(--text-main); margin-bottom:2px; }
+  .ap-types span { font-size:11.5px; color:var(--text-muted); line-height:1.45; }
+  .ap-checks { display:flex; flex-wrap:wrap; gap:8px 18px; padding:10px 12px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; }
+  .ap-checks label { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--text-main); cursor:pointer; }
+  .ap-checks input { width:15px; height:15px; accent-color:#6c3fc5; }
+  .ap-na { border:1px dashed var(--border); border-radius:12px; padding:14px 18px; margin-bottom:14px; font-size:12.5px; color:var(--text-muted); background:#fafbfc; }
+  .ap-na b { color:var(--text-main); font-weight:600; }
+  .ap-tbl { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .ap-tbl th { padding:8px 10px; text-align:left; font-weight:600; color:#6a8faf; background:#f6f9fc; border-bottom:1px solid #dce8f0; font-size:11.5px; white-space:nowrap; }
+  .ap-tbl td { padding:9px 10px; border-bottom:1px solid #f0f4f8; vertical-align:top; color:#2a3f55; }
+  .ap-tbl td.r, .ap-tbl th.r { text-align:right; font-variant-numeric:tabular-nums; }
+  .ap-tbl tr.ap-chart td { background:#fbfaff; padding:6px 10px 12px 34px; }
+  .ap-chart-tbl { border-collapse:collapse; font-size:11.5px; min-width:420px; }
+  .ap-chart-tbl th { font-weight:600; color:#6c5fae; text-align:right; padding:4px 10px; border-bottom:1px solid #e3e1f5; }
+  .ap-chart-tbl th:first-child, .ap-chart-tbl td:first-child { text-align:left; }
+  .ap-chart-tbl td { text-align:right; padding:3px 10px; font-variant-numeric:tabular-nums; color:#3f3a7a; }
+  .ap-btn-s { border:1px solid #c5d8f5; background:#e8f0fe; color:#1a56db; border-radius:5px; padding:3px 9px; font-size:12px; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .ap-btn-s.del { border-color:#f5b7b1; background:#fde8e8; color:#c0392b; }
+  .ap-btn-s.del.arm { background:#c0392b; color:#fff; }
+  .ap-editor { border-top:1px solid var(--border); background:#f8fafc; padding:18px 18px 16px; }
+  .ap-editor h4 { font-size:13px; font-weight:600; color:var(--text-main); margin:0 0 14px; }
+  .ap-editor h5 { font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:#6a8faf; margin:18px 0 10px; }
+  .ap-g4 { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px 14px; }
+  .ap-g3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px 14px; }
+  .ap-g4 .fee-form-input, .ap-g4 .fee-form-select, .ap-g3 .fee-form-input, .ap-g3 .fee-form-select, .ap-tiers .fee-form-input { padding:8px 10px; font-size:12.5px; }
+  .ap-tiers { width:100%; border-collapse:collapse; font-size:12px; margin-top:4px; }
+  .ap-tiers th { text-align:left; font-weight:600; color:#6a8faf; padding:4px 6px; font-size:11px; }
+  .ap-tiers td { padding:3px 6px; }
+  .ap-err { color:#c0392b; font-size:12px; margin-top:10px; }
+  .ap-hint { font-size:11px; color:var(--text-muted); margin-top:4px; line-height:1.45; }
+  .ap-editor-foot { display:flex; justify-content:flex-end; gap:8px; margin-top:16px; }
+  .ap-btn-ghost { padding:7px 16px; background:#fff; color:#3a5272; border:1px solid #c5d8f5; border-radius:7px; font-size:12.5px; cursor:pointer; font-family:inherit; }
+  .ap-btn-pri { padding:7px 16px; background:#6c3fc5; color:#fff; border:none; border-radius:7px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .ap-fee-add { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .ap-fee-add .fee-form-select { padding:7px 30px 7px 10px; font-size:12px; }
+  .ap-disabled { opacity:.45; pointer-events:none; }
+  @media (max-width: 1100px) { .ap-g4 { grid-template-columns:repeat(2,minmax(0,1fr)); } .ap-types { grid-template-columns:1fr; } }
+  `;
+  document.head.appendChild(st);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// LIST
+// ══════════════════════════════════════════════════════════════════════════════
+function accProdRenderList(containerId, mod, section) {
+  apInjectCss();
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (window._apFilter == null || window._apFilterSec !== section) {
+    window._apFilter = section === 'depprod' ? 'term_deposit' : 'all';
+    window._apFilterSec = section;
+  }
+  const all = apProducts();
+  const f = window._apFilter;
+  const rows = all.filter(p => f === 'all' || p.accountType === f);
+  const count = t => all.filter(p => t === 'all' || p.accountType === t).length;
+
+  const interestCell = p => {
+    if (!p.interestBearing) return '<span class="ap-muted">Not interest bearing</span>';
+    const c = p.currencies[0]; if (!c) return '—';
+    if (c.hasChart) return `Rate chart · ${AP_LBL('tier_treatment', c.tierTreatment).toLowerCase()} <span class="ap-muted">(${c.tiers.length} bands)</span>`;
+    if (c.creditType === 'variable') return `${apRateName(c.creditRefId)} ${Number(c.creditMargin) >= 0 ? '+' : '−'} ${Math.abs(Number(c.creditMargin||0)).toFixed(2)}%`;
+    return 'Fixed ' + apPct(c.creditRate);
+  };
+  const rowsHtml = rows.map(p => `
+    <tr>
+      <td>${p.id}</td>
+      <td class="ap-mono">${apEsc(p.code)}</td>
+      <td>${apEsc(p.name)}</td>
+      <td><span class="ap-type ${p.accountType}">${AP_LBL('account_type', p.accountType)}</span></td>
+      <td>${p.currencies.map(c => `<span class="ap-ccy">${c.currency}</span>`).join('')}</td>
+      <td style="font-size:12.5px;white-space:normal;min-width:150px">${interestCell(p)}</td>
+      <td><span class="ap-st ${p.status}">${p.status}</span></td>
+      <td>
+        <div class="fee-actions">
+          <button class="fee-btn-edit" data-ap-edit="${p.id}">${_I_PENCIL_12} Edit</button>
+          <button class="fee-btn-delete ap-del-btn" data-ap-del="${p.id}" style="background:#fde8e8;color:#c0392b;border-color:#f5b7b1;">${_I_BIN_12} Delete</button>
+        </div>
+      </td>
+    </tr>`).join('');
+
+  const tabs = [['all','All products'],['current','Current'],['savings','Savings'],['term_deposit','Term deposits']];
+  el.innerHTML = `
+    <div class="fee-page-header">
+      <div>
+        <div class="fee-page-title">Account &amp; Deposit Products</div>
+        <div class="fee-page-sub">One product catalog for current, savings and term deposit products — the account type decides which parameters apply</div>
+      </div>
+      <button class="btn-create-fee" id="ap-new-btn">${_I_PLUS_14} Add Product</button>
+    </div>
+    <div class="ap-filter">
+      ${tabs.map(([k,l]) => `<button data-ap-filter="${k}" class="${f===k?'on':''}">${l}<span class="ap-n">${count(k)}</span></button>`).join('')}
+    </div>
+    ${renderTable(['ID','Code','Name','Account type','Currencies','Credit interest','Status','Actions'], rowsHtml, rows.length, {wrapStyle:'margin-top:0;'})}`;
+
+  el.querySelectorAll('[data-ap-filter]').forEach(b => b.addEventListener('click', () => {
+    window._apFilter = b.dataset.apFilter; accProdRenderList(containerId, mod, section);
+  }));
+  el.querySelector('#ap-new-btn').addEventListener('click', () => openAccProductForm(mod, section, null));
+  el.querySelectorAll('[data-ap-edit]').forEach(b => b.addEventListener('click', () => openAccProductForm(mod, section, { id: b.dataset.apEdit })));
+  el.querySelectorAll('[data-ap-del]').forEach(b => b.addEventListener('click', () => {
+    if (!b.classList.contains('arm')) { b.classList.add('arm'); b.style.background='#c0392b'; b.style.color='#fff'; b.innerHTML = 'Confirm delete'; return; }
+    const id = Number(b.dataset.apDel);
+    window._apProducts = apProducts().filter(p => p.id !== id);
+    accProdRenderList(containerId, mod, section);
+  }));
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// FORM
+// ══════════════════════════════════════════════════════════════════════════════
 function openAccProductForm(mod, backSection, data) {
+  apInjectCss();
   const moduleMap = window._moduleMap;
   const m = moduleMap ? moduleMap[mod] : null;
   if (!m) return;
   const el = document.getElementById(m.contentId);
-  const d = data || {};
-  const isEdit = !!d.id;
-  const opt = (val, option) => (String(val||'')) === String(option) ? 'selected' : '';
+  backSection = backSection || 'accprod';
 
-  // per-session state
-  window._apCustTypes = window._apCustTypes || [];
-  window._apFees      = window._apFees      || [];
-  if (!isEdit) { window._apCustTypes = []; window._apFees = []; }
+  const src = data && data.id ? apProducts().find(p => String(p.id) === String(data.id)) : null;
+  const isEdit = !!src;
+  // Work on a deep copy; committed to the catalog only on Save
+  const P = src ? JSON.parse(JSON.stringify(src)) : JSON.parse(JSON.stringify(Object.assign(apSeedProducts()[0], {
+    id:null, code:'', name:'', accountType: backSection === 'depprod' ? 'term_deposit' : 'current', categoryId: backSection === 'depprod' ? 4 : 1,
+    status:'pending', validFrom:'', currencies:[], audit:{ createdAt:'', createdBy:'', updatedAt:'', updatedBy:'' },
+    interestBearing:true, capFreq:'monthly',
+    acc:{ useMinPeriodBalance:false, overdraftAllowed:false, debitInterest:false, ibanRequired:true, statementFreq:'monthly', dormancyDays:'730', closureNoticeDays:'30' },
+  })));
+  if (!isEdit && P.accountType === 'term_deposit') { P.capFreq = 'at_maturity'; P.dep.minTerm='30'; P.dep.maxTerm='365'; P.dep.defTerm='90'; }
+  let editIdx = null;      // currency row being edited (null = none, -1 = new)
 
-  const isDeposit = (backSection === 'depprod');
-  const moduleLabel = isDeposit ? 'Accounts & Deposits' : 'Accounts & Deposits';
-  const listLabel   = isDeposit ? 'Deposit Product Definitions' : 'Account Product Definitions';
+  const listTitle = 'Account Product Definitions';
+  const ck = v => v ? 'checked' : '';
 
-  el.innerHTML = `
+  function render() {
+    const td = apIsTD(P);
+    const typeCards = [
+      ['current','Current account','Daily balance, overdraft, statements and dormancy rules'],
+      ['savings','Savings account','Interest-bearing balance, optional rate chart by amount band'],
+      ['term_deposit','Term deposit','Fixed tenor, rollover and early-withdrawal rules; chart by amount × tenor'],
+    ].map(([v,t,s]) => `<label class="${P.accountType===v?'on':''}"><input type="radio" name="ap-type" value="${v}" ${P.accountType===v?'checked':''} ${isEdit?'disabled':''}/><div><b>${t}</b><span>${s}</span></div></label>`).join('');
+
+    el.innerHTML = `
     <div class="breadcrumb">
       <span>Home</span><span class="bc-sep">›</span>
-      <span>${moduleLabel}</span><span class="bc-sep">›</span>
-      <span>${listLabel}</span><span class="bc-sep">›</span>
+      <span>Accounts &amp; Deposits</span><span class="bc-sep">›</span>
+      <span>${listTitle}</span><span class="bc-sep">›</span>
       <span class="bc-current">${isEdit ? 'Edit Product' : 'Create Product'}</span>
     </div>
 
     <div class="fee-form-topbar">
       <div class="fee-form-topbar-left">
-        <button class="fee-form-back"
-          data-action="set-content" data-module="${mod}"
-          data-section="${backSection}"
-          data-title="${listLabel}"
-          data-subtitle="Manage account and deposit product templates"
-          title="Back">${_I_BACK_14}</button>
+        <button class="fee-form-back" id="ap-back" title="Back">${_I_BACK_14}</button>
         <div>
-          <div class="fee-form-heading">${isEdit ? 'Edit' : 'Create'} Account/Deposit Product</div>
-          <div class="fee-form-subheading">Configure product parameters</div>
+          <div class="fee-form-heading">${isEdit ? apEsc(P.code) + ' — ' + apEsc(P.name) : 'New Account / Deposit Product'}</div>
+          <div class="fee-form-subheading">products · product_customer_types · product_currencies · product_currency_interest_tiers · product_currency_fees</div>
         </div>
       </div>
-      <button class="btn-fee-save" id="ap-save-btn">${_I_SAVE_14} Save</button>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="ap-st ${P.status}">${P.status}</span>
+        <button class="btn-fee-save" id="ap-save-btn">${_I_SAVE_14} Save</button>
+      </div>
     </div>
+    <div id="ap-form-err" class="ap-err" style="margin:-4px 0 12px"></div>
 
-    <!-- Identification -->
+    <!-- ── IDENTITY & CATALOG ─────────────────────────────── -->
     <div class="fee-form-section">
-      <div class="fee-form-section-title">Identification</div>
+      <div class="ap-sec-title"><div class="fee-form-section-title"><span class="ap-grp c">COMMON</span>Identity &amp; catalog</div>
+        <span class="ap-sec-note">${isEdit ? 'Account type is fixed once a product exists' : 'Account type is the discriminator — it decides which parameter groups apply'}</span></div>
+      <div class="ap-types">${typeCards}</div>
       <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Product Code <span style="color:#e74c3c">*</span></label>
-          <input class="fee-form-input" type="text" id="ap-code"
-            placeholder="e.g. CA-STD-001" value="${d.code || ''}"/>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Product Name <span style="color:#e74c3c">*</span></label>
-          <input class="fee-form-input" type="text" id="ap-name"
-            placeholder="Enter product name" value="${d.name || ''}"/>
-        </div>
+        <div class="fee-form-field"><label class="fee-form-label">Product code <span style="color:#e74c3c">*</span></label>
+          <input class="fee-form-input ap-mono" id="ap-code" data-k="code" placeholder="e.g. SA-STD-001" value="${apEsc(P.code)}"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Product name <span style="color:#e74c3c">*</span></label>
+          <input class="fee-form-input" id="ap-name" data-k="name" placeholder="Enter product name" value="${apEsc(P.name)}"/></div>
       </div>
       <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Product Category <span style="color:#e74c3c">*</span></label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-category" onchange="apToggleCategoryFields(this.value)">
-              <option value="">Select a category</option>
-              <option ${opt(d.category,'Current Account')}>Current Account</option>
-              <option ${opt(d.category,'Savings Account')}>Savings Account</option>
-              <option ${opt(d.category,'Term Deposit')}>Term Deposit</option>
-              <option ${opt(d.category,'Fixed Deposit')}>Fixed Deposit</option>
-              <option ${opt(d.category,'Overdraft')}>Overdraft</option>
-            </select>
-          </div>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Status</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-status">
-              <option ${opt(d.status,'Pending')}>Pending</option>
-              <option ${opt(d.status,'Active')}>Active</option>
-              <option ${opt(d.status,'Closed')}>Closed</option>
-            </select>
-          </div>
-        </div>
+        <div class="fee-form-field"><label class="fee-form-label">Category</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-k="categoryId" data-num="1">
+            ${AP_REF.categories.map(c => `<option value="${c.id}" ${String(P.categoryId)===String(c.id)?'selected':''}>${c.name}</option>`).join('')}
+          </select></div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Status</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-k="status">${apOpts('lifecycle_status', P.status)}</select></div></div>
+      </div>
+      <div class="fee-form-row">
+        <div class="fee-form-field"><label class="fee-form-label">Valid from</label>
+          <input class="fee-form-input" type="date" data-k="validFrom" value="${P.validFrom}"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Valid to</label>
+          <input class="fee-form-input" type="date" data-k="validTo" value="${P.validTo}"/>
+          <div class="ap-hint">Leave empty for open-ended. Code + valid from must be unique per organisation.</div></div>
+      </div>
+      <div class="fee-form-row">
+        <div class="fee-form-field"><label class="fee-form-label">Initial account state</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-k="initialState">${apOpts('initial_account_state', P.initialState)}</select></div>
+          <div class="ap-hint">State a new account opens in — Pending waits for activation (e.g. first funding or KYC completion).</div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Allowed customer types</label>
+          <div class="ap-checks">${AP_ENUM.customer_type.map(([v,l]) => `<label><input type="checkbox" data-ct="${v}" ${P.customerTypes.includes(v)?'checked':''}/>${l}</label>`).join('')}
+            <label style="margin-left:auto"><input type="checkbox" data-k="jointAllowed" data-bool="1" ${ck(P.jointAllowed)}/>Joint accounts allowed</label></div></div>
       </div>
       <div class="fee-form-row full">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Description</label>
-          <textarea class="fee-form-input" id="ap-desc" rows="3"
-            placeholder="Enter product description" style="resize:vertical">${d.description || ''}</textarea>
-        </div>
-      </div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Currency Mode</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-currency-mode">
-              <option ${opt(d.currencyMode,'Single')}>Single</option>
-              <option ${opt(d.currencyMode,'Multi-currency')}>Multi-currency</option>
-            </select>
-          </div>
-        </div>
-        <div class="fee-form-field" id="ap-currency-field">
-          <label class="fee-form-label">Currency</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-currency">
-              ${['EUR','USD','GBP','CHF','JPY','AUD','CAD','SEK','NOK','DKK'].map(c=>`<option ${opt(d.currency,c)}>${c}</option>`).join('')}
-            </select>
-          </div>
-        </div>
+        <div class="fee-form-field"><label class="fee-form-label">Description</label>
+          <textarea class="fee-form-input" data-k="description" rows="2" style="resize:vertical" placeholder="Shown to staff in product selection">${apEsc(P.description)}</textarea></div>
       </div>
     </div>
 
-    <!-- Allowed Customer Types -->
-    <div class="lp-sub-panel">
-      <div class="lp-sub-header">
-        <span class="lp-sub-title">Allowed Customer Types</span>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div class="fee-select-wrap" style="width:180px;margin-bottom:0;">
-            <select class="fee-form-select" id="ap-cust-type-sel" style="padding:7px 30px 7px 10px;font-size:12px;">
-              <option value="">Select customer type</option>
-              <option>Individual</option>
-              <option>Corporate</option>
-              <option>SME</option>
-              <option>Non-Profit</option>
-            </select>
-          </div>
-          <button class="lp-add-btn" id="ap-add-cust-btn">Add</button>
-        </div>
-      </div>
-      <div id="ap-cust-body">
-        <div class="lp-sub-empty">No customer types added yet. Select a type and click "Add".</div>
-      </div>
-    </div>
-
-    <!-- Interest -->
+    <!-- ── INTEREST, ACCOUNTING & TAX ─────────────────────── -->
     <div class="fee-form-section">
-      <div class="fee-form-section-title">Interest</div>
+      <div class="ap-sec-title"><div class="fee-form-section-title"><span class="ap-grp c">COMMON</span>Interest, accounting &amp; tax</div>
+        <span class="ap-sec-note">One accrual engine serves current, savings and deposits — rates themselves are set per currency below</span></div>
       <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Interest Rate Type</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-int-type" onchange="apToggleVariableRate(this.value)">
-              <option ${opt(d.intType,'Fixed')}>Fixed</option>
-              <option ${opt(d.intType,'Variable')}>Variable</option>
-            </select>
-          </div>
+        <div class="fee-form-field"><label class="fee-form-label">Interest bearing</label>
+          <div class="ap-checks"><label><input type="checkbox" data-k="interestBearing" data-bool="1" data-rerender="1" ${ck(P.interestBearing)}/>Product pays credit interest</label></div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Accounting method</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-k="accountingMethod">${apOpts('accounting_method', P.accountingMethod)}</select></div></div>
+      </div>
+      <div class="${P.interestBearing || (P.acc && P.acc.debitInterest && !td) ? '' : 'ap-disabled'}">
+        <div class="fee-form-row">
+          <div class="fee-form-field"><label class="fee-form-label">Day count convention</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-k="calcMethod">${apOpts('day_count_convention', P.calcMethod)}</select></div></div>
+          <div class="fee-form-field"><label class="fee-form-label">Interest calculation frequency</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-k="calcFreq">${apOpts('frequency', P.calcFreq)}</select></div></div>
         </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Interest Rate (%)</label>
-          <input class="fee-form-input" type="number" id="ap-int-rate"
-            placeholder="e.g. 2.50" min="0" max="100" step="0.001"
-            value="${d.intRate !== undefined ? d.intRate : ''}"/>
+        <div class="fee-form-row">
+          <div class="fee-form-field"><label class="fee-form-label">Accrual posting frequency</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-k="accrualPostFreq">${apOpts('frequency', P.accrualPostFreq)}</select></div></div>
+          <div class="fee-form-field"><label class="fee-form-label">Capitalisation frequency</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-k="capFreq" ${P.interestBearing?'':'disabled'}>${apOpts('frequency', P.interestBearing ? P.capFreq : '', P.interestBearing ? '' : 'n/a — not interest bearing')}</select></div>
+            ${td ? '<div class="ap-hint">Term deposits usually capitalise or pay out at maturity; payout method is chosen per contract.</div>' : ''}</div>
+        </div>
+        <div class="fee-form-row">
+          <div class="fee-form-field"><label class="fee-form-label">Interest timing</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-k="interestTiming">${apOpts('interest_timing', P.interestTiming)}</select></div></div>
+          <div class="fee-form-field"><label class="fee-form-label">Rounding mode</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-k="rounding">${apOpts('rounding_mode', P.rounding)}</select></div></div>
+        </div>
+        <div class="fee-form-row">
+          <div class="fee-form-field"><label class="fee-form-label">Non-working day adjustment</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-k="nwdAdj">${apOpts('non_working_day_adjustment', P.nwdAdj)}</select></div></div>
+          <div class="fee-form-field"></div>
         </div>
       </div>
-      <div class="fee-form-row" id="ap-variable-row" style="${(d.intType==='Variable') ? '' : 'display:none'}">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Reference Rate</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-ref-rate">
-              <option>EURIBOR 3M</option>
-              <option>EURIBOR 6M</option>
-              <option>EURIBOR 12M</option>
-              <option>SOFR</option>
-              <option>SONIA</option>
-              <option>Base Rate</option>
-            </select>
-          </div>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Spread (%)</label>
-          <input class="fee-form-input" type="number" id="ap-spread"
-            placeholder="e.g. 0.50" step="0.001"
-            value="${d.spread !== undefined ? d.spread : ''}"/>
-        </div>
-      </div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Calculation Basis</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-calc-basis">
-              <option ${opt(d.calcBasis,'Actual/365')}>Actual/365</option>
-              <option ${opt(d.calcBasis,'Actual/360')}>Actual/360</option>
-              <option ${opt(d.calcBasis,'30/360')}>30/360</option>
-            </select>
-          </div>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Compounding Frequency</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-compound-freq">
-              <option ${opt(d.compoundFreq,'Daily')}>Daily</option>
-              <option ${opt(d.compoundFreq,'Monthly')}>Monthly</option>
-              <option ${opt(d.compoundFreq,'Quarterly')}>Quarterly</option>
-              <option ${opt(d.compoundFreq,'Annually')}>Annually</option>
-              <option ${opt(d.compoundFreq,'At Maturity')}>At Maturity</option>
-            </select>
-          </div>
-        </div>
+      <div class="fee-form-row" style="margin-top:18px">
+        <div class="fee-form-field"><label class="fee-form-label">Withholding tax</label>
+          <div class="ap-checks"><label><input type="checkbox" data-k="whtApplicable" data-bool="1" data-rerender="1" ${ck(P.whtApplicable)}/>Withholding tax applies to interest</label></div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Tax definition ${P.whtApplicable ? '<span style="color:#e74c3c">*</span>' : ''}</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-k="taxDefId" ${P.whtApplicable?'':'disabled'}>
+            <option value="">${P.whtApplicable ? 'Select tax definition' : 'n/a'}</option>
+            ${AP_REF.taxes.map(t => `<option value="${t.id}" ${String(P.taxDefId)===String(t.id)&&P.whtApplicable?'selected':''}>${t.code} — ${t.name} · ${t.event.replace(/_/g,' ')}</option>`).join('')}
+          </select></div></div>
       </div>
       <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Capitalisation Frequency</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-cap-freq">
-              <option ${opt(d.capFreq,'Monthly')}>Monthly</option>
-              <option ${opt(d.capFreq,'Quarterly')}>Quarterly</option>
-              <option ${opt(d.capFreq,'Annually')}>Annually</option>
-              <option ${opt(d.capFreq,'At Maturity')}>At Maturity</option>
-            </select>
-          </div>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Negative Interest Allowed</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-neg-int">
-              <option ${opt(d.negInt,'No')}>No</option>
-              <option ${opt(d.negInt,'Yes')}>Yes</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Fees & Charges -->
-    <div class="lp-sub-panel">
-      <div class="lp-sub-header">
-        <span class="lp-sub-title">Fees &amp; Charges</span>
-        <button class="lp-add-btn" id="ap-add-fee-btn">${_I_PLUS_12B} Add Fee</button>
-      </div>
-      <div id="ap-fees-body">
-        <div class="lp-sub-empty">No fees added yet. Click "Add Fee" to define charges.</div>
-      </div>
-    </div>
-
-    <!-- Term & Maturity (deposits only — shown when category is Term/Fixed Deposit) -->
-    <div class="fee-form-section" id="ap-term-section" style="${(d.category==='Term Deposit'||d.category==='Fixed Deposit'||isDeposit) ? '' : 'display:none'}">
-      <div class="fee-form-section-title">Term &amp; Maturity</div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Minimum Term</label>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input class="fee-form-input" type="number" id="ap-min-term" min="1"
-              placeholder="e.g. 1" value="${d.minTerm || ''}" style="max-width:100px"/>
-            <div class="fee-select-wrap" style="margin-bottom:0;min-width:100px">
-              <select class="fee-form-select" id="ap-min-term-unit">
-                <option ${opt(d.minTermUnit,'Days')}>Days</option>
-                <option ${opt(d.minTermUnit,'Months')||(!d.minTermUnit?'selected':'')}>Months</option>
-                <option ${opt(d.minTermUnit,'Years')}>Years</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Maximum Term</label>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input class="fee-form-input" type="number" id="ap-max-term" min="1"
-              placeholder="e.g. 60" value="${d.maxTerm || ''}" style="max-width:100px"/>
-            <div class="fee-select-wrap" style="margin-bottom:0;min-width:100px">
-              <select class="fee-form-select" id="ap-max-term-unit">
-                <option ${opt(d.maxTermUnit,'Days')}>Days</option>
-                <option ${opt(d.maxTermUnit,'Months')||(!d.maxTermUnit?'selected':'')}>Months</option>
-                <option ${opt(d.maxTermUnit,'Years')}>Years</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Rollover at Maturity</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-rollover">
-              <option ${opt(d.rollover,'Payout')}>Payout</option>
-              <option ${opt(d.rollover,'Auto Principal')}>Auto Principal</option>
-              <option ${opt(d.rollover,'Auto Principal + Interest')}>Auto Principal + Interest</option>
-            </select>
-          </div>
-        </div>
+        <div class="fee-form-field"><label class="fee-form-label">Deposit guarantee scheme</label>
+          <div class="ap-checks"><label><input type="checkbox" data-k="dgsEligible" data-bool="1" ${ck(P.dgsEligible)}/>DGS eligible — included in deposit guarantee reporting</label></div></div>
         <div class="fee-form-field"></div>
       </div>
     </div>
 
-    <!-- Limits & Controls -->
+    ${td ? `
+    <div class="ap-na"><span class="ap-grp a">ACC</span><b>Account behaviour</b> — not used for term deposits (overdraft, statements, dormancy, minimum period balance apply to current and savings only).</div>
+    ` : `
+    <!-- ── ACCOUNT BEHAVIOUR (ACC) ─────────────────────────── -->
     <div class="fee-form-section">
-      <div class="fee-form-section-title">Limits &amp; Controls</div>
+      <div class="ap-sec-title"><div class="fee-form-section-title"><span class="ap-grp a">ACC</span>Account behaviour</div>
+        <span class="ap-sec-note">Current and savings only</span></div>
       <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Minimum Opening Balance</label>
-          <input class="fee-form-input" type="number" id="ap-min-open"
-            placeholder="e.g. 100.00" min="0" step="0.01"
-            value="${d.minOpen !== undefined ? d.minOpen : ''}"/>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Minimum Operating Balance</label>
-          <input class="fee-form-input" type="number" id="ap-min-oper"
-            placeholder="e.g. 10.00" min="0" step="0.01"
-            value="${d.minOper !== undefined ? d.minOper : ''}"/>
-        </div>
+        <div class="fee-form-field"><label class="fee-form-label">Balance used for interest</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-acc="useMinPeriodBalance" data-bool="1">
+            <option value="0" ${P.acc.useMinPeriodBalance?'':'selected'}>Daily closing balance</option>
+            <option value="1" ${P.acc.useMinPeriodBalance?'selected':''}>Minimum balance in period</option>
+          </select></div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Statement frequency</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-acc="statementFreq">${apOpts('statement_frequency', P.acc.statementFreq)}</select></div></div>
       </div>
       <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Maximum Balance</label>
-          <input class="fee-form-input" type="number" id="ap-max-bal"
-            placeholder="e.g. 500000.00" min="0" step="0.01"
-            value="${d.maxBal !== undefined ? d.maxBal : ''}"/>
-        </div>
-        <div class="fee-form-field" id="ap-overdraft-field">
-          <label class="fee-form-label">Overdraft Limit</label>
-          <input class="fee-form-input" type="number" id="ap-od-limit"
-            placeholder="e.g. 5000.00" min="0" step="0.01"
-            value="${d.odLimit !== undefined ? d.odLimit : ''}"/>
-        </div>
-      </div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Daily Debit Limit</label>
-          <input class="fee-form-input" type="number" id="ap-daily-debit"
-            placeholder="e.g. 10000.00" min="0" step="0.01"
-            value="${d.dailyDebit !== undefined ? d.dailyDebit : ''}"/>
-        </div>
-        <div class="fee-form-field"></div>
-      </div>
-    </div>
-
-    <!-- Flags -->
-    <div class="fee-form-section">
-      <div class="fee-form-section-title">Flags</div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">KYC Level Required</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-kyc">
-              <option ${opt(d.kyc,'Basic')}>Basic</option>
-              <option ${opt(d.kyc,'Standard')||(!d.kyc?'selected':'')}>Standard</option>
-              <option ${opt(d.kyc,'Enhanced')}>Enhanced</option>
-            </select>
+        <div class="fee-form-field"><label class="fee-form-label">Overdraft</label>
+          <div class="ap-checks">
+            <label><input type="checkbox" data-acc="overdraftAllowed" data-bool="1" data-rerender="1" ${ck(P.acc.overdraftAllowed)}/>Overdraft allowed</label>
+            <label class="${P.acc.overdraftAllowed?'':'ap-disabled'}"><input type="checkbox" data-acc="debitInterest" data-bool="1" data-rerender="1" ${ck(P.acc.overdraftAllowed && P.acc.debitInterest)}/>Debit interest charged</label>
           </div>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Eligible Customer Segments</label>
-          <div class="fee-select-wrap">
-            <select class="fee-form-select" id="ap-segments" multiple
-              style="height:72px;padding:4px 8px" title="Hold Ctrl/Cmd to select multiple">
-              <option ${(d.segments||[]).includes('Retail')?'selected':''}>Retail</option>
-              <option ${(d.segments||[]).includes('SME')?'selected':''}>SME</option>
-              <option ${(d.segments||[]).includes('Corporate')?'selected':''}>Corporate</option>
-            </select>
-          </div>
-        </div>
+          <div class="ap-hint">Overdraft limit and debit rate are set per currency.</div></div>
+        <div class="fee-form-field"><label class="fee-form-label">IBAN</label>
+          <div class="ap-checks"><label><input type="checkbox" data-acc="ibanRequired" data-bool="1" ${ck(P.acc.ibanRequired)}/>Generate IBAN at opening</label></div></div>
       </div>
       <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Min Age Restriction</label>
-          <input class="fee-form-input" type="number" id="ap-age-min"
-            placeholder="e.g. 18" min="0" max="120"
-            value="${d.ageMin !== undefined ? d.ageMin : ''}"/>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Max Age Restriction</label>
-          <input class="fee-form-input" type="number" id="ap-age-max"
-            placeholder="e.g. 80 (leave blank for none)" min="0" max="120"
-            value="${d.ageMax !== undefined ? d.ageMax : ''}"/>
-        </div>
+        <div class="fee-form-field"><label class="fee-form-label">Dormancy period (days)</label>
+          <input class="fee-form-input" type="number" min="0" data-acc="dormancyDays" value="${apEsc(P.acc.dormancyDays)}" placeholder="e.g. 730"/>
+          <div class="ap-hint">No customer-initiated movement for this long → status dormant (daily job).</div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Closure notice (days)</label>
+          <input class="fee-form-input" type="number" min="0" data-acc="closureNoticeDays" value="${apEsc(P.acc.closureNoticeDays)}" placeholder="e.g. 30"/></div>
+      </div>
+    </div>`}
+
+    ${td ? `
+    <!-- ── TERM & TENOR RULES (DEP) ─────────────────────────── -->
+    <div class="fee-form-section">
+      <div class="ap-sec-title"><div class="fee-form-section-title"><span class="ap-grp d">DEP</span>Term &amp; tenor rules</div>
+        <span class="ap-sec-note">Term deposits only · currency rows may override the term range</span></div>
+      <div class="ap-g3" style="margin-bottom:18px">
+        <div class="fee-form-field"><label class="fee-form-label">Minimum term (days) <span style="color:#e74c3c">*</span></label>
+          <input class="fee-form-input" type="number" min="1" data-dep="minTerm" value="${apEsc(P.dep.minTerm)}"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Maximum term (days) <span style="color:#e74c3c">*</span></label>
+          <input class="fee-form-input" type="number" min="1" data-dep="maxTerm" value="${apEsc(P.dep.maxTerm)}"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Default term (days)</label>
+          <input class="fee-form-input" type="number" min="1" data-dep="defTerm" value="${apEsc(P.dep.defTerm)}"/></div>
+      </div>
+      <div class="fee-form-row">
+        <div class="fee-form-field"><label class="fee-form-label">Rollover at maturity</label>
+          <div class="ap-checks"><label><input type="checkbox" data-dep="renewalAllowed" data-bool="1" data-rerender="1" ${ck(P.dep.renewalAllowed)}/>Renewal allowed</label></div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Default renewal type</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-dep="renewalType" ${P.dep.renewalAllowed?'':'disabled'}>${apOpts('renewal_type', P.dep.renewalAllowed ? P.dep.renewalType : 'none')}</select></div>
+          <div class="ap-hint">Successor contract is created at the board rate on the maturity date.</div></div>
+      </div>
+      <div class="fee-form-row">
+        <div class="fee-form-field"><label class="fee-form-label">Withdrawals before maturity</label>
+          <div class="ap-checks">
+            <label><input type="checkbox" data-dep="earlyWithdrawal" data-bool="1" data-rerender="1" ${ck(P.dep.earlyWithdrawal)}/>Early withdrawal (full break) allowed</label>
+            <label><input type="checkbox" data-dep="partialWithdrawal" data-bool="1" ${ck(P.dep.partialWithdrawal)}/>Partial withdrawal allowed</label>
+          </div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Deposit penalty definition ${P.dep.earlyWithdrawal ? '<span style="color:#e74c3c">*</span>' : ''}</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-dep="penaltyId" ${P.dep.earlyWithdrawal?'':'disabled'}>
+            <option value="">${P.dep.earlyWithdrawal ? 'Select penalty' : 'n/a'}</option>
+            ${AP_REF.penalties.map(x => `<option value="${x.id}" ${String(P.dep.penaltyId)===String(x.id)&&P.dep.earlyWithdrawal?'selected':''}>${x.name}</option>`).join('')}
+          </select></div>
+          <div class="ap-hint">Break cost — separate from the Loans overdue penalty definitions.</div></div>
       </div>
     </div>
+    ` : `
+    <div class="ap-na"><span class="ap-grp d">DEP</span><b>Term &amp; tenor rules</b> — not used for ${AP_LBL('account_type', P.accountType).toLowerCase()}s (tenor, rollover and early-withdrawal penalty apply to term deposits only).</div>
+    `}
 
-    <!-- GL Mapping -->
-    <div class="fee-form-section">
-      <div class="fee-form-section-title">GL Mapping</div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">GL Account — Interest Income</label>
-          <input class="fee-form-input" type="text" id="ap-gl-int-inc"
-            placeholder="e.g. 4001-INT-INC" value="${d.glIntInc || ''}"/>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">GL Account — Interest Expense</label>
-          <input class="fee-form-input" type="text" id="ap-gl-int-exp"
-            placeholder="e.g. 5001-INT-EXP" value="${d.glIntExp || ''}"/>
-        </div>
+    <!-- ── CURRENCIES, RATES & LIMITS ──────────────────────── -->
+    <div class="lp-sub-panel" style="background:#fff">
+      <div class="lp-sub-header">
+        <span class="lp-sub-title"><span class="ap-grp c">COMMON</span>Currencies, rates &amp; limits <span class="ap-muted" style="font-weight:400;font-size:12px">· product_currencies</span></span>
+        <button class="lp-add-btn" id="ap-add-ccy" ${editIdx!==null?'disabled style="opacity:.5"':''}>${_I_PLUS_12} Add currency</button>
       </div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">GL Account — Fee Income</label>
-          <input class="fee-form-input" type="text" id="ap-gl-fee-inc"
-            placeholder="e.g. 4002-FEE-INC" value="${d.glFeeInc || ''}"/>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">GL Account — Penalty Income</label>
-          <input class="fee-form-input" type="text" id="ap-gl-pen-inc"
-            placeholder="e.g. 4003-PEN-INC" value="${d.glPenInc || ''}"/>
-        </div>
-      </div>
+      <div id="ap-ccy-body">${renderCcyTable()}</div>
+      ${editIdx !== null ? renderCcyEditor() : ''}
     </div>
 
-    <!-- Audit Trail -->
-    <div class="fee-form-section">
-      <div class="fee-form-section-title">Audit Trail (read-only)</div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Created At</label>
-          <input class="fee-form-input" type="text" readonly
-            style="background:var(--input-readonly-bg,#f5f7fa);color:var(--text-muted,#8a9ab0)"
-            value="${d.createdAt || '-'}"/>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Created By</label>
-          <input class="fee-form-input" type="text" readonly
-            style="background:var(--input-readonly-bg,#f5f7fa);color:var(--text-muted,#8a9ab0)"
-            value="${d.createdBy || '-'}"/>
-        </div>
+    <!-- ── FEES ──────────────────────────────────────────────── -->
+    <div class="lp-sub-panel" style="background:#fff">
+      <div class="lp-sub-header">
+        <span class="lp-sub-title"><span class="ap-grp c">COMMON</span>Fees <span class="ap-muted" style="font-weight:400;font-size:12px">· product_currency_fees → Shared fee catalog (scope ${td ? 'deposit' : 'account'})</span></span>
+        <div class="ap-fee-add">${renderFeeAdder()}</div>
       </div>
-      <div class="fee-form-row">
-        <div class="fee-form-field">
-          <label class="fee-form-label">Updated At</label>
-          <input class="fee-form-input" type="text" readonly
-            style="background:var(--input-readonly-bg,#f5f7fa);color:var(--text-muted,#8a9ab0)"
-            value="${d.updatedAt || '-'}"/>
-        </div>
-        <div class="fee-form-field">
-          <label class="fee-form-label">Updated By</label>
-          <input class="fee-form-input" type="text" readonly
-            style="background:var(--input-readonly-bg,#f5f7fa);color:var(--text-muted,#8a9ab0)"
-            value="${d.updatedBy || '-'}"/>
-        </div>
+      <div>${renderFeeTable()}</div>
+    </div>
+
+    <!-- ── AUDIT ─────────────────────────────────────────────── -->
+    <div class="fee-form-section">
+      <div class="fee-form-section-title">Audit trail (read-only)</div>
+      <div class="ap-g4">
+        ${[['Created at',P.audit.createdAt],['Created by',P.audit.createdBy],['Updated at',P.audit.updatedAt],['Updated by',P.audit.updatedBy]].map(([l,v]) =>
+          `<div class="fee-form-field"><label class="fee-form-label">${l}</label><input class="fee-form-input" readonly style="background:#f5f7fa;color:#8a9ab0" value="${apEsc(v || '—')}"/></div>`).join('')}
       </div>
     </div>`;
-
-  // ── Wire interactions ──────────────────────────────────────────────────────
-  // Category → show/hide Term section & Overdraft field
-  window.apToggleCategoryFields = function(cat) {
-    const termSec  = el.querySelector('#ap-term-section');
-    const odField  = el.querySelector('#ap-overdraft-field');
-    const isTermDep = cat === 'Term Deposit' || cat === 'Fixed Deposit';
-    const isOD      = cat === 'Overdraft';
-    if (termSec) termSec.style.display = isTermDep ? '' : 'none';
-    if (odField) odField.style.display = isOD ? '' : '';  // always visible but label hint differs
-    if (odField) odField.querySelector('label').textContent = isOD ? 'Overdraft Limit *' : 'Overdraft Limit';
-  };
-  // Run once on load
-  const catSel = el.querySelector('#ap-category');
-  if (catSel) window.apToggleCategoryFields(catSel.value);
-
-  // Variable rate toggle
-  window.apToggleVariableRate = function(type) {
-    const row = el.querySelector('#ap-variable-row');
-    if (row) row.style.display = type === 'Variable' ? '' : 'none';
-  };
-
-  // Currency mode toggle
-  el.querySelector('#ap-currency-mode').addEventListener('change', function() {
-    const cf = el.querySelector('#ap-currency-field');
-    if (cf) cf.style.display = this.value === 'Multi-currency' ? 'none' : '';
-  });
-
-  // Allowed Customer Types sub-panel
-  function renderApCustTypes() {
-    const body = el.querySelector('#ap-cust-body');
-    if (!body) return;
-    if (!window._apCustTypes.length) {
-      body.innerHTML = '<div class="lp-sub-empty">No customer types added yet. Select a type and click "Add".</div>';
-      return;
-    }
-    body.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px">
-      <thead><tr style="background:#f0f4fa">
-        <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Type</th>
-        <th style="padding:8px 12px;width:60px"></th>
-      </tr></thead>
-      <tbody>${window._apCustTypes.map((t,i) => `
-        <tr style="border-bottom:1px solid #f0f4fa">
-          <td style="padding:8px 12px">${t}</td>
-          <td style="padding:8px 12px;text-align:center">
-            <button class="fee-btn-delete" style="background:#fde8e8;color:#c0392b;border-color:#f5b7b1;padding:3px 8px;font-size:11px"
-              data-ap-del-cust="${i}">${_I_BIN_12}</button>
-          </td>
-        </tr>`).join('')}
-      </tbody></table>`;
-    body.querySelectorAll('[data-ap-del-cust]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        window._apCustTypes.splice(parseInt(btn.dataset.apDelCust), 1);
-        renderApCustTypes();
-      });
-    });
-  }
-  el.querySelector('#ap-add-cust-btn').addEventListener('click', () => {
-    const sel = el.querySelector('#ap-cust-type-sel');
-    const val = sel ? sel.value : '';
-    if (!val) return;
-    if (!window._apCustTypes.includes(val)) {
-      window._apCustTypes.push(val);
-      renderApCustTypes();
-    }
-    if (sel) sel.value = '';
-  });
-  renderApCustTypes();
-
-  // Fees sub-panel
-  function renderApFees() {
-    const body = el.querySelector('#ap-fees-body');
-    if (!body) return;
-    if (!window._apFees.length) {
-      body.innerHTML = '<div class="lp-sub-empty">No fees added yet. Click "Add Fee" to define charges.</div>';
-      return;
-    }
-    body.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px">
-      <thead><tr style="background:#f0f4fa">
-        <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Fee Name</th>
-        <th style="padding:8px 12px;text-align:left;font-weight:600;color:#3a5272">Type</th>
-        <th style="padding:8px 12px;text-align:right;font-weight:600;color:#3a5272">Amount / Rate</th>
-        <th style="padding:8px 12px;width:60px"></th>
-      </tr></thead>
-      <tbody>${window._apFees.map((f,i) => `
-        <tr style="border-bottom:1px solid #f0f4fa">
-          <td style="padding:8px 12px">${f.name}</td>
-          <td style="padding:8px 12px">${f.type}</td>
-          <td style="padding:8px 12px;text-align:right">${f.amount}</td>
-          <td style="padding:8px 12px;text-align:center">
-            <button class="fee-btn-delete" style="background:#fde8e8;color:#c0392b;border-color:#f5b7b1;padding:3px 8px;font-size:11px"
-              data-ap-del-fee="${i}">${_I_BIN_12}</button>
-          </td>
-        </tr>`).join('')}
-      </tbody></table>`;
-    body.querySelectorAll('[data-ap-del-fee]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        window._apFees.splice(parseInt(btn.dataset.apDelFee), 1);
-        renderApFees();
-      });
-    });
+    wire();
   }
 
-  el.querySelector('#ap-add-fee-btn').addEventListener('click', () => {
-    // Inline mini-modal inside the panel
-    const body = el.querySelector('#ap-fees-body');
-    if (body.querySelector('#ap-fee-inline-form')) return; // already open
-    const formHtml = `
-      <div id="ap-fee-inline-form" style="background:#f8fafc;border:1px solid #d0dce8;border-radius:8px;padding:14px 16px;margin:10px 0;">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end">
-          <div>
-            <label style="font-size:11px;font-weight:600;color:#3a5272;display:block;margin-bottom:4px">Fee Name</label>
-            <input id="ap-fi-name" class="fee-form-input" placeholder="e.g. Monthly Maintenance" style="margin-bottom:0"/>
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:600;color:#3a5272;display:block;margin-bottom:4px">Type</label>
-            <div class="fee-select-wrap" style="margin-bottom:0">
-              <select id="ap-fi-type" class="fee-form-select" style="padding:7px 30px 7px 10px;font-size:12px">
-                <option>Flat</option><option>Percentage</option><option>Per Transaction</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:600;color:#3a5272;display:block;margin-bottom:4px">Amount / Rate</label>
-            <input id="ap-fi-amount" class="fee-form-input" type="number" placeholder="e.g. 5.00" min="0" step="0.01" style="margin-bottom:0"/>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-          <button id="ap-fi-cancel" style="padding:6px 16px;background:#f0f4fa;color:#3a5272;border:1px solid #c5d8f5;border-radius:6px;font-size:12px;cursor:pointer">Cancel</button>
-          <button id="ap-fi-add" style="padding:6px 16px;background:#1a6ab5;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">Add Fee</button>
-        </div>
-      </div>`;
-    body.insertAdjacentHTML('beforeend', formHtml);
-    body.querySelector('#ap-fi-cancel').addEventListener('click', () => {
-      const f = body.querySelector('#ap-fee-inline-form');
-      if (f) f.remove();
-      renderApFees();
-    });
-    body.querySelector('#ap-fi-add').addEventListener('click', () => {
-      const name = body.querySelector('#ap-fi-name').value.trim();
-      const type = body.querySelector('#ap-fi-type').value;
-      const amt  = body.querySelector('#ap-fi-amount').value;
-      if (!name) { body.querySelector('#ap-fi-name').style.borderColor='#ef4444'; return; }
-      window._apFees.push({ name, type, amount: amt || '0' });
-      const f = body.querySelector('#ap-fee-inline-form');
-      if (f) f.remove();
-      renderApFees();
-    });
-  });
-  renderApFees();
-
-  // Save
-  el.querySelector('#ap-save-btn').addEventListener('click', () => {
-    const code = el.querySelector('#ap-code').value.trim();
-    const name = el.querySelector('#ap-name').value.trim();
-    const cat  = el.querySelector('#ap-category').value;
-    let err = false;
-    if (!code) { el.querySelector('#ap-code').style.borderColor='#ef4444'; err=true; }
-    if (!name) { el.querySelector('#ap-name').style.borderColor='#ef4444'; err=true; }
-    if (!cat)  { el.querySelector('#ap-category').parentElement.style.outline='1px solid #ef4444'; err=true; }
-    if (err) return;
-    // Navigate back to list
-    if (typeof renderLoansContent === 'function') {
-      const listTitle = (backSection==='depprod') ? 'Deposit Product Definitions' : 'Account Product Definitions';
-      renderLoansContent(m.contentId, mod, backSection, listTitle, 'Manage account and deposit product templates');
+  // ── Currency table ─────────────────────────────────────────────────────────
+  function creditText(c) {
+    if (!P.interestBearing) return '<span class="ap-muted">—</span>';
+    if (c.hasChart) return `Rate chart · ${AP_LBL('tier_treatment', c.tierTreatment).toLowerCase()}${c.creditType==='variable' ? '<br><span class="ap-muted">' + apRateName(c.creditRefId) + ' + margin by band</span>' : ''}`;
+    if (c.creditType === 'variable') return `${apRateName(c.creditRefId)} ${Number(c.creditMargin)>=0?'+':'−'} ${Math.abs(Number(c.creditMargin||0)).toFixed(2)}%`;
+    return 'Fixed ' + apPct(c.creditRate);
+  }
+  function debitText(c) {
+    if (apIsTD(P) || !P.acc.overdraftAllowed || !P.acc.debitInterest) return '<span class="ap-muted">—</span>';
+    if (c.debitType === 'variable') return `${apRateName(c.debitRefId)} + ${Number(c.debitMargin||0).toFixed(2)}%`;
+    return c.debitRate === '' ? '<span class="ap-muted">not set</span>' : 'Fixed ' + apPct(c.debitRate);
+  }
+  function renderChart(c) {
+    const td = apIsTD(P);
+    const isVar = c.creditType === 'variable';
+    const val = t => isVar ? (Number(t.margin)>=0?'+':'') + Number(t.margin||0).toFixed(2) + '%' : apPct(t.rate);
+    if (td && c.tiers.some(t => t.fromTerm !== '')) {
+      // amount band × tenor band matrix
+      const amtKey = t => t.from + '|' + t.to, tenKey = t => t.fromTerm + '|' + t.toTerm;
+      const amts = [...new Map(c.tiers.map(t => [amtKey(t), t])).values()].sort((a,z) => Number(a.from) - Number(z.from));
+      const tens = [...new Map(c.tiers.map(t => [tenKey(t), t])).values()].sort((a,z) => Number(a.fromTerm) - Number(z.fromTerm));
+      const cell = (tn, am) => { const t = c.tiers.find(x => tenKey(x) === tenKey(tn) && amtKey(x) === amtKey(am)); return t ? val(t) : '—'; };
+      return `<table class="ap-chart-tbl"><thead><tr><th>Tenor (days) · amount</th>${amts.map(a => `<th>${apAmt(a.from)} – ${a.to===''?'above':apAmt(a.to)}</th>`).join('')}</tr></thead><tbody>
+        ${tens.map(tn => `<tr><td>${tn.fromTerm}–${tn.toTerm||'open'}</td>${amts.map(am => `<td>${cell(tn, am)}</td>`).join('')}</tr>`).join('')}
+      </tbody></table><div class="ap-hint">${c.tiers.length} bands · ${AP_LBL('tier_treatment', c.tierTreatment).toLowerCase()}${isVar ? ' · margin over ' + apRateName(c.creditRefId) : ''}</div>`;
     }
-  });
+    return `<table class="ap-chart-tbl"><thead><tr><th>#</th><th>From amount</th><th>To amount</th>${td?'<th>From day</th><th>To day</th>':''}<th>${isVar?'Margin':'Rate'}</th></tr></thead><tbody>
+      ${c.tiers.map(t => `<tr><td>${t.order}</td><td>${apAmt(t.from)}</td><td>${t.to===''?'and above':apAmt(t.to)}</td>${td?`<td>${t.fromTerm||'—'}</td><td>${t.toTerm||'open'}</td>`:''}<td>${val(t)}</td></tr>`).join('')}
+    </tbody></table>`;
+  }
+  function renderCcyTable() {
+    if (!P.currencies.length) return '<div class="lp-sub-empty">No currencies yet. A product needs at least one currency row before it can be activated.</div>';
+    const td = apIsTD(P);
+    const od = !td && P.acc.overdraftAllowed;
+    return `<div style="overflow-x:auto"><table class="ap-tbl" style="min-width:900px"><thead><tr>
+      <th>Currency</th><th>Credit interest</th>${od?'<th>Debit interest</th>':''}
+      <th class="r">Min opening</th><th class="r">Min balance</th><th class="r">Max balance</th>
+      ${td ? '<th class="r">Default deposit</th><th class="r">Term (days)</th>' : (od ? '<th class="r">Max overdraft</th>' : '')}
+      <th>Valid from</th><th>Status</th><th></th></tr></thead><tbody>
+      ${P.currencies.map((c, i) => `
+        <tr>
+          <td><span class="ap-ccy" style="font-size:12px">${c.currency}</span></td>
+          <td>${creditText(c)}</td>
+          ${od?`<td>${debitText(c)}</td>`:''}
+          <td class="r">${apAmt(c.minOpening)}</td><td class="r">${apAmt(c.minBalance)}</td><td class="r">${apAmt(c.maxBalance)}</td>
+          ${td ? `<td class="r">${apAmt(c.defDeposit)}</td><td class="r">${(c.minTerm||P.dep.minTerm)}–${(c.maxTerm||P.dep.maxTerm)}${c.minTerm||c.maxTerm?'':' <span class="ap-muted">(product)</span>'}</td>`
+               : (od ? `<td class="r">${apAmt(c.maxOverdraft)}</td>` : '')}
+          <td>${apDate(c.validFrom)}</td>
+          <td><span class="ap-st ${c.status}">${c.status}</span></td>
+          <td style="text-align:right;white-space:nowrap">
+            <button class="ap-btn-s" data-ccy-edit="${i}" ${editIdx!==null?'disabled':''}>✏ Edit</button>
+            <button class="ap-btn-s del" data-ccy-del="${i}" ${editIdx!==null?'disabled':''}>🗑</button>
+          </td>
+        </tr>
+        ${P.interestBearing && c.hasChart && c.tiers.length ? `<tr class="ap-chart"><td colspan="${td?10:(od?10:8)}">${renderChart(c)}</td></tr>` : ''}`).join('')}
+    </tbody></table></div>`;
+  }
+
+  // ── Currency editor ────────────────────────────────────────────────────────
+  let C = null; // working copy of the currency row
+  function renderCcyEditor() {
+    const td = apIsTD(P);
+    const used = P.currencies.map(x => x.currency);
+    const odOn = !td && P.acc.overdraftAllowed;
+    const dbOn = odOn && P.acc.debitInterest;
+    const isVar = C.creditType === 'variable';
+    const tierRows = C.tiers.map((t, i) => `<tr>
+        <td style="width:40px;color:#6a8faf">${i+1}</td>
+        <td><input class="fee-form-input" type="number" step="0.01" data-tier="${i}" data-tk="from" value="${apEsc(t.from)}"/></td>
+        <td><input class="fee-form-input" type="number" step="0.01" data-tier="${i}" data-tk="to" value="${apEsc(t.to)}" placeholder="and above"/></td>
+        ${td ? `<td><input class="fee-form-input" type="number" data-tier="${i}" data-tk="fromTerm" value="${apEsc(t.fromTerm)}"/></td>
+                <td><input class="fee-form-input" type="number" data-tier="${i}" data-tk="toTerm" value="${apEsc(t.toTerm)}" placeholder="open"/></td>` : ''}
+        <td><input class="fee-form-input" type="number" step="0.001" data-tier="${i}" data-tk="${isVar?'margin':'rate'}" value="${apEsc(isVar?t.margin:t.rate)}"/></td>
+        <td style="width:40px"><button class="ap-btn-s del" data-tier-del="${i}">✕</button></td>
+      </tr>`).join('');
+
+    return `<div class="ap-editor">
+      <h4>${editIdx === -1 ? 'Add currency' : 'Edit currency — ' + C.currency}</h4>
+      <div class="ap-g4">
+        <div class="fee-form-field"><label class="fee-form-label">Currency</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-c="currency" ${editIdx!==-1?'disabled':''}>
+            ${AP_REF.currencies.map(x => `<option ${x===C.currency?'selected':''} ${used.includes(x)&&x!==C.currency?'disabled':''}>${x}</option>`).join('')}
+          </select></div></div>
+        <div class="fee-form-field"><label class="fee-form-label">Valid from</label><input class="fee-form-input" type="date" data-c="validFrom" value="${C.validFrom}"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Valid to</label><input class="fee-form-input" type="date" data-c="validTo" value="${C.validTo}"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Status</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-c="status">${apOpts('lifecycle_status', C.status)}</select></div></div>
+      </div>
+
+      <h5>Credit interest</h5>
+      ${!P.interestBearing ? '<div class="ap-hint">Product is not interest bearing — no credit rate is held.</div>' : `
+      <div class="ap-g4">
+        <div class="fee-form-field"><label class="fee-form-label">Rate type</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-c="creditType" data-re="1">${apOpts('interest_rate_type', C.creditType)}</select></div></div>
+        ${isVar ? `
+        <div class="fee-form-field"><label class="fee-form-label">Reference rate</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-c="creditRefId"><option value="">Select</option>${AP_REF.rates.map(r => `<option value="${r.id}" ${String(C.creditRefId)===String(r.id)?'selected':''}>${r.name}</option>`).join('')}</select></div></div>
+        <div class="fee-form-field ${C.hasChart?'ap-disabled':''}"><label class="fee-form-label">Margin (%)</label><input class="fee-form-input" type="number" step="0.001" data-c="creditMargin" value="${apEsc(C.creditMargin)}"/></div>`
+        : `<div class="fee-form-field ${C.hasChart?'ap-disabled':''}"><label class="fee-form-label">Fixed rate (%)</label><input class="fee-form-input" type="number" step="0.001" data-c="creditRate" value="${apEsc(C.creditRate)}"/></div><div></div>`}
+        <div class="fee-form-field"><label class="fee-form-label">Rate chart</label>
+          <div class="ap-checks" style="padding:8px 10px"><label><input type="checkbox" data-c="hasChart" data-bool="1" data-re="1" ${ck(C.hasChart)}/>Rate by ${td ? 'amount × tenor' : 'amount band'}</label></div></div>
+      </div>
+      ${C.hasChart ? `
+      <div style="margin-top:12px">
+        <div class="ap-g4" style="margin-bottom:8px">
+          <div class="fee-form-field"><label class="fee-form-label">Tier treatment</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-c="tierTreatment">${apOpts('tier_treatment', C.tierTreatment)}</select></div></div>
+          <div class="ap-hint" style="grid-column:span 3;align-self:end">Whole balance — the matched band's ${isVar?'margin':'rate'} applies to the entire balance. Banded — each slice of the balance earns its own band ${isVar?'margin':'rate'}. Bands must be contiguous, start at 0 and have exactly one open top band${td?' per tenor band':''}.</div>
+        </div>
+        <table class="ap-tiers"><thead><tr><th>#</th><th>From amount</th><th>To amount</th>${td?'<th>From day</th><th>To day</th>':''}<th>${isVar?'Margin (%)':'Rate (%)'}</th><th></th></tr></thead>
+          <tbody>${tierRows || `<tr><td colspan="${td?7:5}" class="ap-hint" style="padding:8px 6px">No bands yet.</td></tr>`}</tbody></table>
+        <button class="lp-add-btn-link" id="ap-tier-add" style="color:#6c3fc5;margin-top:6px">+ Add band</button>
+      </div>` : ''}`}
+
+      ${!td ? `
+      <h5>Debit interest &amp; overdraft</h5>
+      ${!odOn ? '<div class="ap-hint">Overdraft is not allowed on this product — enable it under Account behaviour to set a limit and debit rate.</div>' : `
+      <div class="ap-g4">
+        <div class="fee-form-field"><label class="fee-form-label">Max overdraft limit</label><input class="fee-form-input" type="number" step="0.01" data-c="maxOverdraft" value="${apEsc(C.maxOverdraft)}"/></div>
+        ${dbOn ? `
+        <div class="fee-form-field"><label class="fee-form-label">Debit rate type</label>
+          <div class="fee-select-wrap"><select class="fee-form-select" data-c="debitType" data-re="1">${apOpts('interest_rate_type', C.debitType)}</select></div></div>
+        ${C.debitType === 'variable' ? `
+          <div class="fee-form-field"><label class="fee-form-label">Reference rate</label>
+            <div class="fee-select-wrap"><select class="fee-form-select" data-c="debitRefId"><option value="">Select</option>${AP_REF.rates.map(r => `<option value="${r.id}" ${String(C.debitRefId)===String(r.id)?'selected':''}>${r.name}</option>`).join('')}</select></div></div>
+          <div class="fee-form-field"><label class="fee-form-label">Margin (%)</label><input class="fee-form-input" type="number" step="0.001" data-c="debitMargin" value="${apEsc(C.debitMargin)}"/></div>`
+        : `<div class="fee-form-field"><label class="fee-form-label">Fixed debit rate (%)</label><input class="fee-form-input" type="number" step="0.001" data-c="debitRate" value="${apEsc(C.debitRate)}"/></div><div></div>`}`
+        : '<div class="ap-hint" style="grid-column:span 3;align-self:end">Debit interest is switched off at product level — the overdraft is interest-free.</div>'}
+      </div>`}` : ''}
+
+      <h5>Amounts${td ? ' &amp; term override' : ''}</h5>
+      <div class="ap-g4">
+        <div class="fee-form-field"><label class="fee-form-label">Minimum opening amount</label><input class="fee-form-input" type="number" step="0.01" data-c="minOpening" value="${apEsc(C.minOpening)}"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Minimum balance</label><input class="fee-form-input" type="number" step="0.01" data-c="minBalance" value="${apEsc(C.minBalance)}"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Maximum balance</label><input class="fee-form-input" type="number" step="0.01" data-c="maxBalance" value="${apEsc(C.maxBalance)}" placeholder="no maximum"/></div>
+        ${td ? `<div class="fee-form-field"><label class="fee-form-label">Default deposit amount</label><input class="fee-form-input" type="number" step="0.01" data-c="defDeposit" value="${apEsc(C.defDeposit)}"/></div>` : '<div></div>'}
+      </div>
+      ${td ? `<div class="ap-g4" style="margin-top:12px">
+        <div class="fee-form-field"><label class="fee-form-label">Min term (days)</label><input class="fee-form-input" type="number" data-c="minTerm" value="${apEsc(C.minTerm)}" placeholder="${P.dep.minTerm || 'product'} (product)"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Max term (days)</label><input class="fee-form-input" type="number" data-c="maxTerm" value="${apEsc(C.maxTerm)}" placeholder="${P.dep.maxTerm || 'product'} (product)"/></div>
+        <div class="fee-form-field"><label class="fee-form-label">Default term (days)</label><input class="fee-form-input" type="number" data-c="defTerm" value="${apEsc(C.defTerm)}" placeholder="${P.dep.defTerm || 'product'} (product)"/></div>
+        <div class="ap-hint" style="align-self:end">Empty = inherit the product term range.</div>
+      </div>` : ''}
+
+      <div id="ap-ccy-err" class="ap-err"></div>
+      <div class="ap-editor-foot">
+        <button class="ap-btn-ghost" id="ap-ccy-cancel">Cancel</button>
+        <button class="ap-btn-pri" id="ap-ccy-save">${editIdx === -1 ? 'Add currency' : 'Apply changes'}</button>
+      </div>
+    </div>`;
+  }
+
+  // ── Fees ───────────────────────────────────────────────────────────────────
+  const feeScope = () => apIsTD(P) ? 'deposit' : 'account';
+  function renderFeeAdder() {
+    if (!P.currencies.length) return '<span class="ap-hint" style="margin:0">Add a currency first</span>';
+    const scope = feeScope();
+    const opts = P.currencies.map(c => {
+      const avail = AP_REF.fees.filter(f => f.ccy === c.currency && f.scope === scope && !c.fees.includes(f.id));
+      return avail.length ? `<optgroup label="${c.currency}">${avail.map(f => `<option value="${c.currency}|${f.id}">${f.code} — ${f.name}</option>`).join('')}</optgroup>` : '';
+    }).join('');
+    if (!opts) return '<span class="ap-hint" style="margin:0">All matching fees are mapped</span>';
+    return `<div class="fee-select-wrap" style="width:320px;margin:0"><select class="fee-form-select" id="ap-fee-sel"><option value="">Select fee from catalog</option>${opts}</select></div>
+            <button class="lp-add-btn" id="ap-fee-add">Map fee</button>`;
+  }
+  function renderFeeTable() {
+    const rows = [];
+    P.currencies.forEach((c, ci) => c.fees.forEach(fid => {
+      const f = AP_REF.fees.find(x => x.id === fid); if (!f) return;
+      rows.push(`<tr><td><span class="ap-ccy">${c.currency}</span></td><td class="ap-mono">${f.code}</td><td>${f.name}</td>
+        <td>${f.trigger.replace(/_/g,' ')}</td><td>${f.method}</td><td class="r">${f.value}</td>
+        <td style="text-align:right"><button class="ap-btn-s del" data-fee-del="${ci}|${fid}">🗑</button></td></tr>`);
+    }));
+    if (!rows.length) return '<div class="lp-sub-empty">No fees mapped. Fees are defined once in the Shared fee catalog and mapped here per currency — the fee currency must match the product currency.</div>';
+    return `<div style="overflow-x:auto"><table class="ap-tbl" style="min-width:700px"><thead><tr><th>Currency</th><th>Fee code</th><th>Name</th><th>Trigger</th><th>Method</th><th class="r">Value</th><th></th></tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+  }
+
+  // ── Validation ─────────────────────────────────────────────────────────────
+  function validateCcy() {
+    const td = apIsTD(P);
+    if (P.interestBearing) {
+      if (C.creditType === 'variable' && !C.creditRefId) return 'Variable rate needs a reference rate.';
+      if (!C.hasChart && C.creditType === 'fixed' && C.creditRate === '') return 'Enter a fixed credit rate, or switch on the rate chart.';
+      if (C.hasChart) {
+        if (!C.tiers.length) return 'Rate chart is switched on but has no bands.';
+        const key = C.creditType === 'variable' ? 'margin' : 'rate';
+        if (C.tiers.some(t => t[key] === '')) return 'Every band needs a ' + key + '.';
+        const groups = {};
+        C.tiers.forEach(t => { const g = td ? (t.fromTerm + '-' + t.toTerm) : 'all'; (groups[g] = groups[g] || []).push(t); });
+        for (const g in groups) {
+          const b = groups[g].slice().sort((a, z) => Number(a.from) - Number(z.from));
+          if (Number(b[0].from) !== 0) return 'Bands must start at 0' + (td ? ' within each tenor band.' : '.');
+          if (b.filter(t => t.to === '').length !== 1) return 'Exactly one open top band (empty "To amount") is required' + (td ? ' per tenor band.' : '.');
+          for (let i = 1; i < b.length; i++) if (Number(b[i].from) !== Number(b[i-1].to)) return 'Bands must be contiguous — band ' + (i+1) + ' should start at ' + apAmt(b[i-1].to) + '.';
+        }
+      }
+    }
+    if (!td && P.acc.overdraftAllowed && P.acc.debitInterest) {
+      if (C.debitType === 'fixed' && C.debitRate === '') return 'Enter a debit rate for the overdraft.';
+      if (C.debitType === 'variable' && !C.debitRefId) return 'Variable debit rate needs a reference rate.';
+    }
+    if (C.maxBalance !== '' && C.minBalance !== '' && Number(C.maxBalance) < Number(C.minBalance)) return 'Maximum balance is below the minimum balance.';
+    return '';
+  }
+  function validateProduct() {
+    if (!P.code.trim() || !P.name.trim()) return 'Product code and name are required.';
+    if (apProducts().some(x => x.id !== P.id && x.code.toLowerCase() === P.code.trim().toLowerCase() && (x.validFrom||'') === (P.validFrom||''))) return 'Another product already uses this code with the same valid-from date.';
+    if (!P.customerTypes.length) return 'Select at least one allowed customer type.';
+    if (P.whtApplicable && !P.taxDefId) return 'Select a tax definition, or switch off withholding tax.';
+    if (apIsTD(P)) {
+      if (!P.dep.minTerm || !P.dep.maxTerm) return 'Term deposits need a minimum and maximum term.';
+      if (Number(P.dep.minTerm) > Number(P.dep.maxTerm)) return 'Minimum term is longer than maximum term.';
+      if (P.dep.earlyWithdrawal && !P.dep.penaltyId) return 'Select a deposit penalty definition for early withdrawal.';
+    }
+    if (P.status === 'active' && !P.currencies.some(c => c.status === 'active')) return 'An active product needs at least one active currency row.';
+    if (editIdx !== null) return 'Finish or cancel the currency you are editing first.';
+    return '';
+  }
+
+  // ── Wiring ─────────────────────────────────────────────────────────────────
+  function readInto(obj, input, key) {
+    obj[key] = input.dataset.bool ? (input.type === 'checkbox' ? input.checked : input.value === '1')
+             : input.dataset.num ? Number(input.value) : input.value;
+  }
+  function wire() {
+    el.querySelector('#ap-back').addEventListener('click', () => accProdRenderList(m.contentId, mod, backSection));
+
+    el.querySelectorAll('input[name="ap-type"]').forEach(r => r.addEventListener('change', () => {
+      P.accountType = r.value;
+      if (r.value === 'term_deposit') { P.categoryId = 4; P.capFreq = P.interestBearing ? 'at_maturity' : ''; if (!P.dep.minTerm) { P.dep.minTerm='30'; P.dep.maxTerm='365'; P.dep.defTerm='90'; } }
+      else { if (P.categoryId === 4) P.categoryId = r.value === 'savings' ? 3 : 1; if (P.capFreq === 'at_maturity') P.capFreq = 'monthly'; }
+      P.currencies.forEach(c => { c.fees = c.fees.filter(fid => { const f = AP_REF.fees.find(x => x.id === fid); return f && f.scope === feeScope(); }); });
+      render();
+    }));
+
+    el.querySelectorAll('[data-k]').forEach(i => i.addEventListener('change', () => {
+      readInto(P, i, i.dataset.k);
+      if (i.dataset.k === 'interestBearing') P.capFreq = P.interestBearing ? (apIsTD(P) ? 'at_maturity' : 'monthly') : '';
+      if (i.dataset.k === 'whtApplicable' && !P.whtApplicable) P.taxDefId = '';
+      if (i.dataset.rerender) render();
+    }));
+    el.querySelectorAll('[data-k="code"],[data-k="name"]').forEach(i => i.addEventListener('input', () => { P[i.dataset.k] = i.value; i.style.borderColor=''; }));
+    el.querySelectorAll('[data-ct]').forEach(i => i.addEventListener('change', () => {
+      P.customerTypes = AP_ENUM.customer_type.map(x => x[0]).filter(v => el.querySelector(`[data-ct="${v}"]`).checked);
+    }));
+    el.querySelectorAll('[data-acc]').forEach(i => i.addEventListener('change', () => {
+      readInto(P.acc, i, i.dataset.acc);
+      if (i.dataset.acc === 'overdraftAllowed' && !P.acc.overdraftAllowed) P.acc.debitInterest = false;
+      if (i.dataset.rerender) render();
+    }));
+    el.querySelectorAll('[data-dep]').forEach(i => i.addEventListener('change', () => {
+      readInto(P.dep, i, i.dataset.dep);
+      if (i.dataset.dep === 'renewalAllowed') P.dep.renewalType = P.dep.renewalAllowed ? (P.dep.renewalType === 'none' ? 'principal_only' : P.dep.renewalType) : 'none';
+      if (i.dataset.dep === 'earlyWithdrawal' && !P.dep.earlyWithdrawal) P.dep.penaltyId = '';
+      if (i.dataset.rerender) render();
+    }));
+
+    // currencies
+    const addBtn = el.querySelector('#ap-add-ccy');
+    if (addBtn) addBtn.addEventListener('click', () => {
+      if (editIdx !== null) return;
+      const free = AP_REF.currencies.find(x => !P.currencies.some(c => c.currency === x));
+      if (!free) { el.querySelector('#ap-ccy-body').insertAdjacentHTML('beforeend', '<div class="ap-err" style="padding:0 18px 12px">All available currencies are already on this product.</div>'); return; }
+      C = Object.assign(JSON.parse(JSON.stringify(apSeedProducts()[0].currencies[0])), { currency:free, creditRate:'', debitRate:'', minOpening:'', minBalance:'', maxOverdraft:'', fees:[], status:'pending', validFrom: P.validFrom || '' });
+      editIdx = -1; render();
+      el.querySelector('.ap-editor').scrollIntoView({ block:'nearest', behavior:'smooth' });
+    });
+    el.querySelectorAll('[data-ccy-edit]').forEach(b => b.addEventListener('click', () => {
+      editIdx = Number(b.dataset.ccyEdit); C = JSON.parse(JSON.stringify(P.currencies[editIdx])); render();
+      el.querySelector('.ap-editor').scrollIntoView({ block:'nearest', behavior:'smooth' });
+    }));
+    el.querySelectorAll('[data-ccy-del]').forEach(b => b.addEventListener('click', () => {
+      if (!b.classList.contains('arm')) { b.classList.add('arm'); b.textContent = 'Remove?'; return; }
+      P.currencies.splice(Number(b.dataset.ccyDel), 1); render();
+    }));
+
+    if (editIdx !== null) {
+      const ed = el.querySelector('.ap-editor');
+      ed.querySelectorAll('[data-c]').forEach(i => i.addEventListener('change', () => {
+        readInto(C, i, i.dataset.c);
+        if (i.dataset.c === 'hasChart' && C.hasChart && !C.tiers.length) C.tiers = [{ order:1, from:'0', to:'', fromTerm: apIsTD(P) ? (P.dep.minTerm || '') : '', toTerm:'', rate:'', margin:'' }];
+        if (i.dataset.re) render();
+      }));
+      ed.querySelectorAll('[data-tier]').forEach(i => i.addEventListener('change', () => { C.tiers[Number(i.dataset.tier)][i.dataset.tk] = i.value; }));
+      ed.querySelectorAll('[data-tier-del]').forEach(b => b.addEventListener('click', () => {
+        C.tiers.splice(Number(b.dataset.tierDel), 1); C.tiers.forEach((t, k) => t.order = k + 1); render();
+      }));
+      const ta = ed.querySelector('#ap-tier-add');
+      if (ta) ta.addEventListener('click', () => {
+        const last = C.tiers[C.tiers.length - 1];
+        const td = apIsTD(P);
+        const nb = { order:C.tiers.length + 1, from: last && last.to !== '' ? last.to : '', to:'', fromTerm: td && last ? last.fromTerm : '', toTerm: td && last ? last.toTerm : '', rate:'', margin:'' };
+        C.tiers.push(nb); render();
+      });
+      ed.querySelector('#ap-ccy-cancel').addEventListener('click', () => { editIdx = null; C = null; render(); });
+      ed.querySelector('#ap-ccy-save').addEventListener('click', () => {
+        const err = validateCcy();
+        if (err) { ed.querySelector('#ap-ccy-err').textContent = err; return; }
+        if (!P.interestBearing) { C.hasChart = false; C.tiers = []; }
+        C.tiers.forEach((t, k) => t.order = k + 1);
+        if (editIdx === -1) P.currencies.push(C); else P.currencies[editIdx] = C;
+        editIdx = null; C = null; render();
+      });
+    }
+
+    // fees
+    const fa = el.querySelector('#ap-fee-add');
+    if (fa) fa.addEventListener('click', () => {
+      const v = el.querySelector('#ap-fee-sel').value; if (!v) return;
+      const [ccy, fid] = v.split('|');
+      const c = P.currencies.find(x => x.currency === ccy);
+      if (c && !c.fees.includes(Number(fid))) c.fees.push(Number(fid));
+      render();
+    });
+    el.querySelectorAll('[data-fee-del]').forEach(b => b.addEventListener('click', () => {
+      const [ci, fid] = b.dataset.feeDel.split('|').map(Number);
+      P.currencies[ci].fees = P.currencies[ci].fees.filter(x => x !== fid); render();
+    }));
+
+    // save
+    el.querySelector('#ap-save-btn').addEventListener('click', () => {
+      P.code = el.querySelector('#ap-code').value.trim(); P.name = el.querySelector('#ap-name').value.trim();
+      const err = validateProduct();
+      const box = el.querySelector('#ap-form-err');
+      if (err) { box.textContent = err; box.scrollIntoView({ block:'nearest' }); if (!P.code) el.querySelector('#ap-code').style.borderColor='#ef4444'; if (!P.name) el.querySelector('#ap-name').style.borderColor='#ef4444'; return; }
+      // enforce model rules on save
+      if (!P.interestBearing) P.capFreq = '';
+      if (apIsTD(P)) { P.acc = { useMinPeriodBalance:false, overdraftAllowed:false, debitInterest:false, ibanRequired:false, statementFreq:'none', dormancyDays:'', closureNoticeDays:'' }; }
+      else { P.dep = { minTerm:'', maxTerm:'', defTerm:'', renewalAllowed:false, renewalType:'none', partialWithdrawal:false, earlyWithdrawal:false, penaltyId:'' }; }
+      const now = new Date(); const pad = n => String(n).padStart(2,'0');
+      const stamp = pad(now.getDate()) + '.' + pad(now.getMonth()+1) + '.' + now.getFullYear() + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+      const list = apProducts();
+      if (isEdit) {
+        P.audit.updatedAt = stamp; P.audit.updatedBy = 's.stanic';
+        const i = list.findIndex(x => x.id === P.id); list[i] = P;
+      } else {
+        P.id = list.reduce((mx, x) => Math.max(mx, x.id), 0) + 1;
+        P.audit = { createdAt:stamp, createdBy:'s.stanic', updatedAt:stamp, updatedBy:'s.stanic' };
+        list.push(P);
+      }
+      window._apFilter = 'all';
+      accProdRenderList(m.contentId, mod, backSection);
+    });
+  }
+
+  render();
 
   // Sidebar active state
   if (m.pageId) {
