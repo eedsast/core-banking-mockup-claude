@@ -3093,7 +3093,9 @@ function showModule(mod) {
     digsig:  loadDigsigModule,
     infobip:  loadInfobipModule,
     decision: loadDecisionModule,
-    // stub modules (cards, accounts, loanapp, payments, accounting,
+    accounts: loadAccountsModule,
+    deposits: loadAccountsModule,
+    // stub modules (cards, loanapp, payments, accounting,
     // invrs, crypto) go here once their JS files have real content.
   };
   if (_lazyMods[mod]) {
@@ -3195,9 +3197,7 @@ function renderContent(containerId, mod, section, title, subtitle) {
     'dashboard','loan-detail','loaninfo','eod-monitor','eod','job-scheduler','job-manual','recent-runs','job-catalogue',
     'loansim','loanprod','interestdef','accrual','collection',
     'loan-report-open','loan-report-closed','loan-report-eom','penalty',
-    'customer-report','feedef','customers','cust-detail','loan-purposes','loan-categories','gs-organisations','gs-currency','ls-roles','ls-role-scopes','ls-permissions','ls-users','ls-sessions','ls-user-roles','ls-api-clients','ls-api-client-roles','ls-batch-date','daily-accrual','transactions-report','migration',
-    'acc-job-catalogue','acc-job-scheduler','acc-job-manual','acc-recent-runs',
-    'accprod','depprod'
+    'customer-report','feedef','customers','cust-detail','loan-purposes','loan-categories','gs-organisations','gs-currency','ls-roles','ls-role-scopes','ls-permissions','ls-users','ls-sessions','ls-user-roles','ls-api-clients','ls-api-client-roles','ls-batch-date','daily-accrual','transactions-report','migration'
   ]);
   if (_LOANS_SECTIONS.has(section)) {
     // Track which module opened the customers view so navigation (detail/back/add) returns correctly
@@ -3216,6 +3216,28 @@ function renderContent(containerId, mod, section, title, subtitle) {
     if (_loansHtml) {
       var _loansEl = document.getElementById(containerId);
       if (_loansEl) _loansEl.innerHTML = _loansHtml;
+    }
+    return;
+  }
+
+  // ── ACCOUNTS & DEPOSITS MODULE DELEGATION (accounts.js) ─────────────────────
+  // Sections built in accounts.js. Other Accounts menu items are still stubs and
+  // fall through to the generic section content below.
+  const _ACCOUNTS_SECTIONS = new Set([
+    'acc-dashboard','accprod','depprod',
+    'acc-job-catalogue','acc-job-scheduler','acc-job-manual','acc-recent-runs'
+  ]);
+  if (_ACCOUNTS_SECTIONS.has(section) && (mod === 'accounts' || mod === 'deposits')) {
+    if (typeof renderAccountsContent !== 'function') {
+      loadAccountsModule().then(() => renderContent(containerId, mod, section, title, subtitle));
+      const el = document.getElementById(containerId);
+      if (el) el.innerHTML = '<div style="padding:32px;text-align:center;color:var(--text-muted,#6b7a8d);font-size:14px;">Loading accounts module…</div>';
+      return;
+    }
+    var _accHtml = renderAccountsContent(containerId, mod, section, title, subtitle);
+    if (_accHtml) {
+      var _accEl = document.getElementById(containerId);
+      if (_accEl) _accEl.innerHTML = _accHtml;
     }
     return;
   }
@@ -3253,13 +3275,6 @@ function renderContent(containerId, mod, section, title, subtitle) {
       return;
     }
     return window[d.fn](containerId, mod, section, title, subtitle);
-  }
-
-  // ── ACCOUNTS / DEPOSITS DASHBOARD ───────────────────────────────────────────
-  if (section === 'acc-dashboard' && (mod === 'accounts' || mod === 'deposits')) {
-    var _accEl = document.getElementById(containerId);
-    if (_accEl) { _accEl.innerHTML = _buildAccDepDashboard(); }
-    return;
   }
 
   const el = document.getElementById(containerId);
@@ -4050,7 +4065,7 @@ function loadLoansModule() {
   window.loadAuthModule    = makeLoader('auth',    'auth.css', 'auth.js');
   // Stub module loaders — uncomment each when the corresponding JS file has real content:
   // window.loadCardsModule      = makeLoader('cards',      null, 'cards.js');
-  // window.loadAccountsModule   = makeLoader('accounts',   null, 'accounts.js');
+  window.loadAccountsModule   = makeLoader('accounts',   null, 'accounts.js');
   // window.loadLoanappModule    = makeLoader('loanapp',    null, 'loanapp.js');
   window.loadIfrs9Module      = makeLoader('ifrs9',      null, 'ifrs9.js');
   window.loadDecisionModule   = makeLoader('decision',   null, 'decision.js');
@@ -4620,7 +4635,7 @@ document.addEventListener('click', function(e) {
     }
 
     case 'accjm-remove-acct': {
-      // handled inline by loans.js addEventListener; this case prevents fall-through
+      // handled inline by accounts.js addEventListener; this case prevents fall-through
       break;
     }
 
@@ -5627,333 +5642,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (statEl) statEl.textContent = modCount;
 });
 
-// ── ACCOUNTS & DEPOSITS DASHBOARD ─────────────────────────────────────────────
-function _buildAccDepDashboard() {
-  // ── Mock data ──────────────────────────────────────────────────────────────
-  // 30-day daily balance trend (transaction accounts, EUR mn)
-  var _ACC_DAYS = (function(){
-    var days = []; var bal = 42.1; var dep = 28.3;
-    var labels = [];
-    var base = new Date('2026-09-09');
-    for (var i = 0; i < 30; i++) {
-      var d = new Date(base); d.setDate(base.getDate()+i);
-      var dd = String(d.getDate()).padStart(2,'0');
-      var mm = String(d.getMonth()+1).padStart(2,'0');
-      labels.push(dd+'.'+mm);
-      bal += (Math.random()-0.46)*0.8;
-      dep += (Math.random()-0.44)*0.5;
-      days.push({ label: labels[i], txnBal: Math.round(bal*100)/100, depBal: Math.round(dep*100)/100 });
-    }
-    return days;
-  })();
-  var last = _ACC_DAYS[_ACC_DAYS.length-1];
 
-  // Recent transactions
-  var _ACC_RECENT = [
-    { accId:'ACC-10041', customer:'Marija Novak',    type:'Current',  txn:'Credit',  amount:3400.00,  date:'08.10.2026', status:'Posted' },
-    { accId:'SAV-20187', customer:'Petar Horvat',    type:'Savings',  txn:'Debit',   amount:1250.50,  date:'08.10.2026', status:'Posted' },
-    { accId:'DEP-30091', customer:'Ana Babić',       type:'Term Dep', txn:'Interest',amount:418.75,   date:'08.10.2026', status:'Posted' },
-    { accId:'ACC-10088', customer:'Ivan Jurić',      type:'Current',  txn:'Debit',   amount:870.00,   date:'07.10.2026', status:'Posted' },
-    { accId:'SAV-20044', customer:'Maja Perić',      type:'Savings',  txn:'Credit',  amount:5000.00,  date:'07.10.2026', status:'Posted' },
-    { accId:'DEP-30012', customer:'Tomislav Blažić', type:'Term Dep', txn:'Matured', amount:18500.00, date:'07.10.2026', status:'Posted' },
-    { accId:'ACC-10203', customer:'Ksenija Šimić',   type:'Current',  txn:'Credit',  amount:2100.00,  date:'06.10.2026', status:'Posted' },
-    { accId:'SAV-20301', customer:'Damir Kovač',     type:'Savings',  txn:'Debit',   amount:600.00,   date:'06.10.2026', status:'Posted' },
-  ];
-
-  // ── Helpers ────────────────────────────────────────────────────────────────
-  function fmt(n) { return n.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-
-  function sparkLine(values, color, H) {
-    H = H || 72;
-    var W = 500;
-    var mn = Math.min.apply(null,values), mx = Math.max.apply(null,values);
-    var range = mx - mn || 1;
-    var pts = values.map(function(v,i){
-      var x = Math.round(i/(values.length-1)*W);
-      var y = Math.round(H - ((v-mn)/range)*(H-8) - 4);
-      return x+','+y;
-    }).join(' ');
-    var areaClose = ' '+W+','+H+' 0,'+H;
-    var hex = color.replace('#','');
-    return '<svg width="100%" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">'
-      +'<defs><linearGradient id="alg_'+hex+'" x1="0" y1="0" x2="0" y2="1">'
-      +'<stop offset="0%" stop-color="'+color+'" stop-opacity="0.18"/>'
-      +'<stop offset="100%" stop-color="'+color+'" stop-opacity="0.01"/></linearGradient></defs>'
-      +'<polygon points="'+pts+areaClose+'" fill="url(#alg_'+hex+')"/>'
-      +'<polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
-      +'</svg>';
-  }
-
-  function sparkBars(values, color, H) {
-    H = H || 60;
-    var W = 500;
-    var mx = Math.max.apply(null,values) || 1;
-    var bw = Math.floor(W/values.length)-1;
-    var bars = values.map(function(v,i){
-      var bh = Math.max(1, Math.round((v/mx)*(H-4)));
-      return '<rect x="'+(i*(bw+1))+'" y="'+(H-bh)+'" width="'+bw+'" height="'+bh+'" rx="2" fill="'+color+'" opacity="0.85"/>';
-    }).join('');
-    return '<svg width="100%" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">'+bars+'</svg>';
-  }
-
-  function xLabels(days) {
-    return '<div style="display:flex;justify-content:space-between;padding:0 2px;margin-top:4px">'
-      + days.map(function(d,i){ return i%5===0 ? '<span style="font-size:10px;color:var(--fg2,#64748b)">'+d.label+'</span>' : ''; }).filter(Boolean).join('')
-      +'</div>';
-  }
-
-  function kpi(label, value, sub, subColor) {
-    return '<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-      +'<div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--fg2,#64748b);margin-bottom:8px">'+label+'</div>'
-      +'<div style="font-size:24px;font-weight:700;color:var(--fg,#1e293b);font-variant-numeric:tabular-nums;line-height:1">'+value+'</div>'
-      +(sub ? '<div style="font-size:12px;color:'+(subColor||'var(--fg2,#64748b)')+';margin-top:6px">'+sub+'</div>' : '')
-      +'</div>';
-  }
-
-  function portfolioTile(label, value, highlight) {
-    var bg  = highlight ? 'background:#f0fdf9;' : '';
-    var lc  = highlight ? 'color:#0d9488;font-weight:600' : 'color:var(--fg2,#64748b)';
-    var vc  = highlight ? 'color:#0d9488' : 'color:var(--fg,#1e293b)';
-    return '<div style="padding:13px 18px;border-right:1px solid var(--border1,#e2e8f0);border-bottom:1px solid var(--border1,#e2e8f0);'+bg+'">'
-      +'<div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;'+lc+'">'+label+'</div>'
-      +'<div style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;'+vc+'">'+value+'</div>'
-      +'</div>';
-  }
-
-  // ── Donut: account type split ──────────────────────────────────────────────
-  var typeSlices = [
-    { label:'Current/Transaction', pct:48, color:'#16a085' },
-    { label:'Savings',             pct:29, color:'#3b82f6' },
-    { label:'Term Deposit',        pct:18, color:'#f59e0b' },
-    { label:'Overdraft',           pct:5,  color:'#ef4444' },
-  ];
-  var ang2 = 0;
-  var donutPaths = typeSlices.map(function(s){
-    var span = s.pct/100*360;
-    var toRad = function(a){ return (a-90)*Math.PI/180; };
-    var cx=60,cy=60,r=55;
-    var sv = { x: cx+r*Math.cos(toRad(ang2)),    y: cy+r*Math.sin(toRad(ang2)) };
-    var ev = { x: cx+r*Math.cos(toRad(ang2+span-0.5)), y: cy+r*Math.sin(toRad(ang2+span-0.5)) };
-    var large = span > 180 ? 1 : 0;
-    var path = '<path d="M '+cx+','+cy+' L '+sv.x+','+sv.y+' A '+r+','+r+' 0 '+large+' 1 '+ev.x+','+ev.y+' Z" fill="'+s.color+'"/>';
-    ang2 += span;
-    return path;
-  }).join('');
-  var donutSvg = '<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'
-    +donutPaths
-    +'<circle cx="60" cy="60" r="30" fill="var(--card-bg,#fff)"/>'
-    +'<text x="60" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="var(--fg,#1e293b)">9,847</text>'
-    +'<text x="60" y="70" text-anchor="middle" font-size="9" fill="var(--fg2,#64748b)">Accounts</text>'
-    +'</svg>';
-
-  // ── Product bars ───────────────────────────────────────────────────────────
-  var prodData = [
-    { label:'Standard Current', pct:38, color:'#16a085' },
-    { label:'Premium Savings',  pct:25, color:'#3b82f6' },
-    { label:'12-mo Term Dep.',  pct:19, color:'#f59e0b' },
-    { label:'6-mo Term Dep.',   pct:11, color:'#a78bfa' },
-    { label:'Overdraft',        pct:7,  color:'#94a3b8' },
-  ];
-  var prodBars = prodData.map(function(p){
-    return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">'
-      +'<div style="width:120px;font-size:12px;color:var(--fg2,#64748b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.label+'</div>'
-      +'<div style="flex:1;height:8px;border-radius:4px;background:var(--border1,#e2e8f0);overflow:hidden">'
-      +'<div style="width:'+p.pct+'%;height:100%;background:'+p.color+';border-radius:4px"></div></div>'
-      +'<div style="width:32px;text-align:right;font-size:12px;font-weight:600;color:var(--fg,#1e293b)">'+p.pct+'%</div>'
-      +'</div>';
-  }).join('');
-
-  // ── Recent transactions table rows ─────────────────────────────────────────
-  var recentRows = _ACC_RECENT.map(function(r){
-    var isCredit = r.txn === 'Credit' || r.txn === 'Interest' || r.txn === 'Matured';
-    var amtColor = isCredit ? '#16a34a' : '#ef4444';
-    var amtSign  = isCredit ? '+' : '-';
-    var badgeStyle = isCredit
-      ? 'background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0'
-      : 'background:#fef2f2;color:#dc2626;border:1px solid #fecaca';
-    return '<tr>'
-      +'<td style="padding:11px 14px;font-size:12.5px;font-family:monospace;color:#16a085">'+r.accId+'</td>'
-      +'<td style="padding:11px 14px;font-size:13px;color:var(--fg,#1e293b)">'+r.customer+'</td>'
-      +'<td style="padding:11px 14px;font-size:12px;color:var(--fg2,#64748b)">'+r.type+'</td>'
-      +'<td style="padding:11px 14px;font-size:12px;color:var(--fg2,#64748b)">'+r.txn+'</td>'
-      +'<td style="padding:11px 14px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:'+amtColor+'">'+amtSign+fmt(r.amount)+'</td>'
-      +'<td style="padding:11px 14px;font-size:12px;color:var(--fg2,#64748b)">'+r.date+'</td>'
-      +'<td style="padding:11px 14px"><span style="padding:2px 10px;border-radius:12px;font-size:11.5px;font-weight:600;'+badgeStyle+'">'+r.status+'</span></td>'
-      +'</tr>';
-  }).join('');
-
-  // ── Chart data series ──────────────────────────────────────────────────────
-  var txnBalVals = _ACC_DAYS.map(function(d){ return d.txnBal; });
-  var depBalVals = _ACC_DAYS.map(function(d){ return d.depBal; });
-  // Daily inflows / outflows (mock)
-  var inflowVals = _ACC_DAYS.map(function(){ return Math.round((1.2+Math.random()*2.1)*100)/100; });
-  var outflowVals= _ACC_DAYS.map(function(){ return Math.round((0.9+Math.random()*1.8)*100)/100; });
-  var xLbl = xLabels(_ACC_DAYS);
-
-  // ── Maturing deposits (next 30 days) ──────────────────────────────────────
-  var maturingRows = [
-    { accId:'DEP-30441', customer:'Mirko Šarić',    product:'12-mo Term Dep.', matDate:'11.10.2026', amount:'25,000.00', interest:'1,250.00' },
-    { accId:'DEP-30189', customer:'Ljiljana Cindrić',product:'6-mo Term Dep.', matDate:'14.10.2026', amount:'10,000.00', interest:'320.00'   },
-    { accId:'DEP-30502', customer:'Stjepan Vukšić', product:'12-mo Term Dep.', matDate:'18.10.2026', amount:'50,000.00', interest:'2,500.00' },
-    { accId:'DEP-30077', customer:'Vesna Brković',  product:'24-mo Term Dep.', matDate:'22.10.2026', amount:'35,000.00', interest:'3,850.00' },
-    { accId:'DEP-30613', customer:'Nela Tomić',     product:'6-mo Term Dep.',  matDate:'29.10.2026', amount:'8,500.00',  interest:'272.00'   },
-  ].map(function(r){
-    return '<tr>'
-      +'<td style="padding:10px 14px;font-size:12.5px;font-family:monospace;color:#16a085">'+r.accId+'</td>'
-      +'<td style="padding:10px 14px;font-size:13px;color:var(--fg,#1e293b)">'+r.customer+'</td>'
-      +'<td style="padding:10px 14px;font-size:12px;color:var(--fg2,#64748b)">'+r.product+'</td>'
-      +'<td style="padding:10px 14px;font-size:12px;font-weight:600;color:#f59e0b">'+r.matDate+'</td>'
-      +'<td style="padding:10px 14px;font-size:13px;font-weight:600;color:var(--fg,#1e293b);font-variant-numeric:tabular-nums">'+r.amount+'</td>'
-      +'<td style="padding:10px 14px;font-size:13px;color:#16a34a;font-variant-numeric:tabular-nums">'+r.interest+'</td>'
-      +'</tr>';
-  }).join('');
-
-  // ── Build HTML ─────────────────────────────────────────────────────────────
-  return '<div style="padding:24px;max-width:1400px">'
-
-    // Header
-    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">'
-    +'<div>'
-    +'<div style="font-size:22px;font-weight:700;color:var(--fg,#1e293b)">Dashboard</div>'
-    +'<div style="font-size:13px;color:var(--fg2,#64748b);margin-top:3px">Accounts &amp; Deposits portfolio overview — as of 09 Oct 2026</div>'
-    +'</div>'
-    +'<select style="padding:7px 12px;border:1px solid var(--border1,#e2e8f0);border-radius:8px;font-size:13px;color:var(--fg,#1e293b);background:var(--card-bg,#fff)">'
-    +'<option>Last 30 days</option><option>Last 7 days</option><option>This month</option><option>This year</option>'
-    +'</select>'
-    +'</div>'
-
-    // ── Portfolio Position ─────────────────────────────────────────────────
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:20px 24px;margin-bottom:20px">'
-    +'<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px">'
-    +'<div style="font-size:15px;font-weight:700;color:var(--fg,#1e293b)">Portfolio Position</div>'
-    +'<div style="font-size:12px;color:var(--fg2,#64748b)">at 8 October 2026</div>'
-    +'</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:0;border:1px solid var(--border1,#e2e8f0);border-radius:8px;overflow:hidden">'
-    // Row 1 — Transaction accounts
-    +portfolioTile('Transaction Accounts','4,312')
-    +portfolioTile('TXN Account Balance','43,218,450.00')
-    +portfolioTile('Overdraft Accounts','187')
-    +portfolioTile('Overdraft Utilised','2,341,670.00')
-    +portfolioTile('Avg. Daily Volume','8,941,200.00')
-    +portfolioTile('Total TXN Balance','43,218,450.00', true)
-    // Row 2 — Savings & deposits
-    +portfolioTile('Savings Accounts','2,891')
-    +portfolioTile('Savings Balance','29,114,880.00')
-    +portfolioTile('Term Deposits','2,644')
-    +portfolioTile('Deposit Balance','68,742,300.00')
-    +portfolioTile('Interest Accrued YTD','3,218,640.00')
-    +portfolioTile('Total Deposit Balance','97,857,180.00', true)
-    +'</div>'
-    +'</div>'
-
-    // ── KPI row ────────────────────────────────────────────────────────────
-    +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:20px">'
-    +kpi('Total Accounts', '9,847', '↑ 34 opened this week', '#16a085')
-    +kpi('New Accounts Today', '12', '7 current · 3 savings · 2 deposits', '#3b82f6')
-    +kpi('Closed Today', '4', '4 accounts closed', 'var(--fg2,#64748b)')
-    +kpi('Maturing in 30 days', '129', 'EUR 14.2M at maturity', '#f59e0b')
-    +kpi('Overdraft Accounts', '187', 'Limit utilisation 64%', '#a78bfa')
-    +kpi('Interest Paid YTD', 'EUR 3.2M', 'Across all deposit products', '#16a085')
-    +'</div>'
-
-    // ── Chart row 1: TXN balance + Deposit balance ─────────────────────────
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">'
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:4px">Transaction Account Balances</div>'
-    +'<div style="font-size:11.5px;color:var(--fg2,#64748b);margin-bottom:4px">End-of-day aggregate balance (EUR mn)</div>'
-    +'<div style="font-size:18px;font-weight:700;color:#16a085;margin-bottom:8px;font-variant-numeric:tabular-nums">EUR '+fmt(last.txnBal)+' mn</div>'
-    +sparkLine(txnBalVals,'#16a085',88)
-    +xLbl
-    +'</div>'
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:4px">Deposit Portfolio Balance</div>'
-    +'<div style="font-size:11.5px;color:var(--fg2,#64748b);margin-bottom:4px">Term deposits + savings (EUR mn)</div>'
-    +'<div style="font-size:18px;font-weight:700;color:#3b82f6;margin-bottom:8px;font-variant-numeric:tabular-nums">EUR '+fmt(last.depBal)+' mn</div>'
-    +sparkLine(depBalVals,'#3b82f6',88)
-    +xLbl
-    +'</div>'
-    +'</div>'
-
-    // ── Chart row 2: inflows / outflows bars ───────────────────────────────
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">'
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:4px">Daily Inflows</div>'
-    +'<div style="font-size:11.5px;color:var(--fg2,#64748b);margin-bottom:12px">Credits posted per day (EUR mn)</div>'
-    +sparkBars(inflowVals,'#16a085',88)
-    +xLbl
-    +'</div>'
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:4px">Daily Outflows</div>'
-    +'<div style="font-size:11.5px;color:var(--fg2,#64748b);margin-bottom:12px">Debits posted per day (EUR mn)</div>'
-    +sparkBars(outflowVals,'#ef4444',88)
-    +xLbl
-    +'</div>'
-    +'</div>'
-
-    // ── Bottom row: donut + product distribution + recent txns ─────────────
-    +'<div style="display:grid;grid-template-columns:1fr 1fr 2fr;gap:14px;margin-bottom:14px">'
-
-    // Account type donut
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:16px">Account Type Split</div>'
-    +'<div style="display:flex;align-items:center;gap:18px">'
-    +donutSvg
-    +'<div>'
-    +typeSlices.map(function(s){
-      return '<div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">'
-        +'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+s.color+';flex-shrink:0"></span>'
-        +'<span style="font-size:12px;color:var(--fg2,#64748b)">'+s.label+'</span>'
-        +'<span style="font-size:12px;font-weight:600;color:var(--fg,#1e293b);margin-left:auto">'+s.pct+'%</span>'
-        +'</div>';
-    }).join('')
-    +'</div></div></div>'
-
-    // Product distribution
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:16px">By Product</div>'
-    +prodBars
-    +'</div>'
-
-    // Recent transactions
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:12px">Recent Transactions</div>'
-    +'<div style="overflow-x:auto">'
-    +'<table style="width:100%;border-collapse:collapse">'
-    +'<thead><tr style="border-bottom:1px solid var(--border1,#e2e8f0)">'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Account</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Customer</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Type</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Txn</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Amount</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Date</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Status</th>'
-    +'</tr></thead>'
-    +'<tbody>'+recentRows+'</tbody>'
-    +'</table>'
-    +'</div>'
-    +'</div>'
-    +'</div>'  // end bottom row
-
-    // ── Maturing deposits table ────────────────────────────────────────────
-    +'<div style="background:var(--card-bg,#fff);border:1px solid var(--border1,#e2e8f0);border-radius:10px;padding:18px 20px">'
-    +'<div style="font-size:13px;font-weight:600;color:var(--fg,#1e293b);margin-bottom:12px">Deposits Maturing in Next 30 Days</div>'
-    +'<div style="overflow-x:auto">'
-    +'<table style="width:100%;border-collapse:collapse">'
-    +'<thead><tr style="border-bottom:1px solid var(--border1,#e2e8f0)">'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Account</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Customer</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Product</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Maturity Date</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Principal (EUR)</th>'
-    +'<th style="padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--fg2,#64748b);text-align:left;font-weight:600">Interest Due (EUR)</th>'
-    +'</tr></thead>'
-    +'<tbody>'+maturingRows+'</tbody>'
-    +'</table>'
-    +'</div>'
-    +'</div>'
-
-    +'</div>'; // end outer padding div
-}
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════
